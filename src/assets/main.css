@@ -1,0 +1,33 @@
+/* CSS file */
+@namespace s "library://ns.adobe.com/flex/spark";
+@namespace mx "library://ns.adobe.com/flex/mx";
+
+@font-face {
+	src: url("/assets/FlamaBook.ttf");
+    font-family: "FlamaBook";
+	embedAsCFF: true;
+	advancedAntiAliasing: true;      
+}
+/* @font-face {
+	src: url("/assets/fonts/FlamaBookIta.ttf");
+    font-family: "FlamaBookItalic";
+} */
+@font-face {
+	src: url("/assets/FlamaMedium.ttf");
+    font-family: "FlamaMedium";
+		embedAsCFF: true;
+	advancedAntiAliasing: true;      
+} 
+@font-face {
+	src: url("/assets/FlamaBold.ttf");
+    font-family: "FlamaBold";
+	embedAsCFF: true;
+	advancedAntiAliasing: true;      
+} 
+
+s|WindowedApplication{
+	backgroundColor: #FAFAFA;
+	fontFamily: FlamaBook;
+	fontSize: 14;
+	color: #111111;
+}

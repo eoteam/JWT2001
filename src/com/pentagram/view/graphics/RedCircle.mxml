@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="500" height="500">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			[Bindable] private var matr:Matrix;
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				matr = new Matrix();
+				matr.createGradientBox(width, height, -20, 0, 0);
+			}
+
+		]]>
+	</fx:Script>
+	<s:Ellipse width="100%" height="100%" verticalCenter="0" horizontalCenter="0">
+		<s:fill>
+			<s:LinearGradient  rotation="-45">
+				<s:GradientEntry color="0x763735" ratio="0" alpha="1" />
+				<s:GradientEntry color="0xBF3534" ratio="1" alpha="1" />
+			</s:LinearGradient>
+		</s:fill>
+	</s:Ellipse>
+</s:Group>

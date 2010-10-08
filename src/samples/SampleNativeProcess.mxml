@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					label="Native Process Sample"
+					creationComplete="init()">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			protected var process:NativeProcess;
+			
+			protected function init():void
+			{
+				if (!NativeProcess.isSupported)
+				{
+					// Note: you could also get this error if you forgot to add the extendedDesktop flag to your app.xml descriptor
+					// this line must be within the <application> tags: <supportedProfiles>extendedDesktop</supportedProfiles>
+					Alert.show("NativeProcess is not supported");
+				}
+			}
+			
+			protected function runProcess():void
+			{
+				var file:File = new File();
+				try
+				{
+					// Use default paths for ping... modify if your system does not use the default path
+					if (Capabilities.os.toLowerCase().indexOf("win") > -1)
+					{
+						file = new File("c:\\windows\\system32\\ping.exe");
+					}
+					else if (Capabilities.os.toLowerCase().indexOf("mac") > -1)
+					{
+						file = new File("/sbin/ping");
+						if (file == null)
+							file = new File("/bin/ping");
+						else if (file == null)
+							file = new File("/usr/bin/ping");
+					}
+					else if (Capabilities.os.toLowerCase().indexOf("linux") > -1)
+					{
+						file = new File("/sbin/ping");
+						if (file == null)
+							file = new File("/bin/ping");
+						else if (file == null)
+							file = new File("/usr/bin/ping");
+					}
+					
+					var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+					nativeProcessStartupInfo.executable = file;
+					var args:Vector.<String> = new Vector.<String>;
+					args.push("www.adobe.com"); 
+					nativeProcessStartupInfo.arguments = args;
+					process = new NativeProcess();
+					process.start(nativeProcessStartupInfo);
+					
+					process.addEventListener(ProgressEvent.STANDARD_OUTPUT_DATA, onStdout);
+					process.addEventListener(ProgressEvent.STANDARD_ERROR_DATA, onError);
+				}
+				catch (e:Error)
+				{
+					Alert.show(e.message, "Error");
+				}
+			}
+			
+			protected function onStdout(event:ProgressEvent):void
+			{
+				var process:NativeProcess = event.target as NativeProcess;
+				var data:String = process.standardOutput.readUTFBytes(process.standardOutput.bytesAvailable);
+				log.text += data;
+			}
+			
+			protected function onError(event:ProgressEvent):void
+			{
+				var process:NativeProcess = event.target as NativeProcess;
+				var data:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
+				log.text += data;
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:Panel width="95%" height="95%" horizontalCenter="0" title="NativeProcess Sample">
+		<s:layout>
+			<s:VerticalLayout paddingLeft="8" paddingTop="8" paddingRight="8" paddingBottom="8"/>
+		</s:layout>
+		
+		<s:Label left="10" top="5" width="90%" color="#323232" text="The NativeProcess feature allows you 
+to invoke any executable found on your Operating System. You can provide the necessary startup data and arguments for the executable using the 
+NativeProcessStartupInfo class. This sample shows how it can be used to run a native pingagainst www.adobe.com using the default path for ping
+on your OS."/>
+		<s:VGroup width="70%" paddingTop="15">
+			<s:Label text="Log:"/>
+			<s:TextArea id="log" width="100%" heightInLines="6" editable="false"/>
+		</s:VGroup>
+		
+		<s:HGroup width="100%" paddingBottom="25">
+			<s:Button label="Run" click="runProcess()" horizontalCenter="0"/>
+			<s:Button label="Stop" click="process.exit();" horizontalCenter="0"/>
+			<s:Button label="Clear" click="log.text=''"/>
+		</s:HGroup>
+		
+	</s:Panel>
+	
+</s:NavigatorContent>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					label="Socket Client Sample">
+	
+	<!-- This class uses the SocketClient.as class included in the same samples folder -->
+	<fx:Script>
+		<![CDATA[
+			
+			protected var client:SocketClient; // source code included in SocketClient.as
+			
+			protected function onConnect():void
+			{
+				client = new SocketClient(server.text, int(port.text), log);
+			}
+			
+			protected function sendBytes():void
+			{
+				var bytes:ByteArray = new ByteArray();
+				bytes.writeUTFBytes(command.text + "\n");
+				if (client != null)
+				{
+					trace("Writing to socket");
+					client.writeToSocket(bytes);
+				}
+				else
+				{    
+					onConnect();
+					sendBytes();
+				}
+				command.text = "";
+			}
+		]]>
+	</fx:Script>
+	<s:Panel width="95%" height="95%" horizontalCenter="0" title="Socket Client Sample" >
+		<s:layout>
+			<s:VerticalLayout paddingLeft="6" paddingTop="6" paddingBottom="6" paddingRight="6" gap="10"/>
+		</s:layout>
+		<s:HGroup left="8" top="5" verticalAlign="middle">
+			<s:Label text="Server:"/>
+			<s:TextInput id="server" text="localhost"/>
+			<s:Label text="Port #:"/>
+			<s:TextInput id="port" text="1235"/>
+			<s:Button label="Connect" click="onConnect()"/>    
+			<s:Button label="Disconnect" click="client.closeSocket()"/>
+		</s:HGroup>
+		
+		<s:VGroup horizontalAlign="left">
+			<s:Label text="Enter text to send to the socket server and press send:"/>
+			<s:HGroup>
+				<s:TextInput id="command" width="300" enter="sendBytes()"/>
+				<s:Button id="send" label="Send" click="sendBytes()"/>    
+			</s:HGroup>
+		</s:VGroup>
+		
+		<s:Label width="94%" verticalAlign="justify" color="#323232" 
+				 text="The ServerSocket class allows code to act as a server for Transport Control Protocol (TCP) connections. A TCP server
+listens for incoming connections from remote clients. When a client attempts to connect, the ServerSocket dispatches a connect event. Run the
+Socket Server Sample first and click 'Listen' to start listening on the server and port information above. When data is sent
+from the client it will show up in the log running the socket server app."/>
+		
+		<s:VGroup paddingTop="5" horizontalAlign="left" width="100%">
+			<s:Label text="Log:"/>
+			<s:TextArea id="log" width="80%" heightInLines="4" editable="false"/>
+		</s:VGroup>
+	</s:Panel>
+	
+</s:NavigatorContent>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					label="HTML Sample">
+
+	<fx:Script>
+		<![CDATA[
+			private function init():void {
+				minibrowser.location = "http://maps.google.com/maps?f=q&hl=en&geocode=&q=345+Park+Ave,+San+Jose,+CA+95110&sll=37.0625,-95.677068&sspn=40.409448,93.164063&ie=UTF8&ll=37.331014,-121.893611&spn=0.001241,0.002843&t=h&z=19";
+			}
+		]]>
+	</fx:Script>
+	<s:HGroup width="100%" paddingTop="5">
+		<s:Button label="&lt;" click="minibrowser.historyBack()"/>
+		<s:Button label="&gt;" click="minibrowser.historyForward()"/>
+		<s:Button label="Reload" click="minibrowser.reload()"/>
+		<s:TextInput id="loc" width="100%" enter="minibrowser.location = loc.text" text="{minibrowser.location}"/>
+		<s:Button label="Go" click="minibrowser.location = loc.text"/>
+	</s:HGroup>
+	<!-- Create an HTML control at 50% scale -->
+	<mx:HTML id="minibrowser" width="100%" height="100%" creationComplete="init()"/>
+	
+</s:NavigatorContent>
