@@ -2,6 +2,7 @@ package com.pentagram.services
 {
 	
 	import com.adobe.serialization.json.JSON;
+	import com.darronschall.serialization.ObjectTranslator;
 	
 	import flash.net.URLRequestMethod;
 	import flash.xml.XMLDocument;
@@ -13,15 +14,13 @@ package com.pentagram.services
 	import mx.rpc.xml.SimpleXMLDecoder;
 	import mx.utils.ArrayUtil;
 	
-	internal class XMLHTTPService
+	internal class JSONHTTPService
 	{
 		public var service:HTTPService;
 		public var decodeClass:Class;
 		public var token:AsyncToken;
 		public var params:Object;
-		public var dataResults:Array;
-		public var statusResult:Array;
-		public function XMLHTTPService(url:String,params:Object,responseType:String,decodeClass:Class=null) {
+		public function JSONHTTPService(url:String,params:Object,responseType:String,decodeClass:Class=null) {
 					
 			service = new HTTPService();
 			service.method = URLRequestMethod.POST;
@@ -29,16 +28,14 @@ package com.pentagram.services
 			service.showBusyCursor = false;
 			service.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			service.concurrency = Concurrency.MULTIPLE;
-			service.addEventListener(ResultEvent.RESULT,handleResults);
+			//service.addEventListener(ResultEvent.RESULT,handleResults);
 			//service.xmlDecode = (responseType == ResponseType.DATA) ? decodeData:decodeStatus;
 			this.params = params;
 			if(decodeClass)
 				this.decodeClass = decodeClass;
 			else
 				this.decodeClass = Object;
-		}
-	
-		
+		}	
 		public function execute():void {
 			if(params != null)
 				token = service.send(params);
@@ -46,9 +43,18 @@ package com.pentagram.services
 				token = service.send();
 			token.params = params;
 		}
-		protected function handleResults(event:ResultEvent):void
+		
+		public function decode(event:ResultEvent):void
 		{
-			var res:Array = ArrayUtil.toArray(JSON.decode(String(event.result)));
+			var temp:Array = ArrayUtil.toArray(JSON.decode(String(event.result)));
+			var results:Array = [];
+			for each(var item:Object in temp) 
+			{
+				var result:* = ObjectTranslator.objectToInstance(item, decodeClass);
+				results.push(result);
+				
+			}
+			token.results = results;
 		}
 //		protected function decodeData(xml:XMLDocument):Array {
 //			var children:Array = [];

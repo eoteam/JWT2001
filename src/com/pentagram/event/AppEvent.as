@@ -4,17 +4,18 @@ package com.pentagram.event
 	
 	public class AppEvent extends Event
 	{
-		public static const STARTUP:String = "startup";
+
 		public static const STARTUP_COMPLETE:String = "startupComplete";
 		public static const STARTUP_PROGRESS:String = "startupProgress";
 		
-		public static const LOGGEDIN:String = "loggedin";
+		public static const LOGIN:String = "login";
 		public static const LOGOUT:String = "logout";
 		public static const LOGIN_ERROR:String = "loginError";
 		
 		public static const TIMED_OUT:String = "timedout";
 		public static const BOOTSTRAP_COMPLETE:String = "bootStrapComplete";
 		
+		 
 		//public static const INIT:String = "init";	
 		
 		public var args:Array;

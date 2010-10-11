@@ -3,7 +3,6 @@
 						xmlns:s="library://ns.adobe.com/flex/spark" 
 					   	xmlns:mx="library://ns.adobe.com/flex/mx"
  						xmlns:samples="samples.*"
-						showStatusBar="false"
 						nativeDragEnter="onDragIn(event)"
 						nativeDragDrop="onDragDrop(event)"
 						creationComplete="handleCreationComplete()" 

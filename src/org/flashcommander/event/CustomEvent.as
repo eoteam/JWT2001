@@ -8,6 +8,8 @@ package org.flashcommander.event{
 	 */	
 	public class CustomEvent extends Event{
 		
+		public static const SELECT:String = "select";
+		
 		public var data:Object;
 
 		public function CustomEvent(type:String, mydata:Object, bubbles:Boolean = false, cancelable:Boolean = false){

@@ -18,7 +18,6 @@ package com.pentagram.services
 	import mx.rpc.mxml.Concurrency;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	
-	
 
 	//import org.mig.utils.GUID;
 	import org.robotlegs.mvcs.Actor;
@@ -28,22 +27,13 @@ package com.pentagram.services
 
 		protected var services:Array = [];
 		protected var url:String = Constants.DB_EXECUTE;
-		public function AbstractService() {
+		public function AbstractService() 
+		{
 			super();
-		}
-		
-/*		public function loadData(tablename:String,clazz:Class=null,...args):void {
-			var params:Object = new  Object();
-			params.action = ValidFunctions.GET_DATA;
-			params.tablename = tablename;
-			for each (var prop:Object in args) {
-				params[prop.key] = prop.value;
-			}
-			this.createService(params,ResponseType.DATA,clazz?clazz:Object);	
-		}	*/	
-		
+		}		
 		protected function result(event:ResultEvent):void {
 			if(event.token.resultCallBack) {
+				JSONHTTPService(services[event.token.id]).decode(event);
 				event.token.resultCallBack(event);
 			}
 			delete services[event.token.id];
@@ -53,10 +43,10 @@ package com.pentagram.services
 			delete services[info.token.id];
 		}
 		protected function createService(params:Object,responseType:String,decodeClass:Class=null,
-										 resultFunction:Function=null,faultFunction:Function=null):XMLHTTPService {
+										 resultFunction:Function=null,faultFunction:Function=null):JSONHTTPService {
 		
 			//var id:String = GUID.create();
-			var service:XMLHTTPService = new XMLHTTPService(url,params,responseType,decodeClass);
+			var service:JSONHTTPService = new JSONHTTPService(url,params,responseType,decodeClass);
 			services.push(service);
 			service.execute();
 			service.token.id = services.indexOf(service);
@@ -68,20 +58,16 @@ package com.pentagram.services
 			return service;
 		}
 		public function addHandlers(resultHandler:Function,faultHandler:Function=null):void {
-			var service:XMLHTTPService = services[services.length-1];
+			var service:JSONHTTPService = services[services.length-1];
 			service.token.resultCallBack = resultHandler;
 			service.token.faultCallBack = faultHandler;
 		}
 		public function addProperties(prop:String,value:*):void {
-			var service:XMLHTTPService = services[services.length-1];
+			var service:JSONHTTPService = services[services.length-1];
 			service.token[prop] = value;
 		}
 		public function get currentToken():AsyncToken {
-			return XMLHTTPService(services[services.length-1]).token ;
-		}
-/*		protected function getService(id:String):XMLHTTPService {
-			return services[id] as XMLHTTPService;
-		}*/
-		
+			return JSONHTTPService(services[services.length-1]).token ;
+		}	
 	}
 }

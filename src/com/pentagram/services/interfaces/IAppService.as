@@ -1,8 +1,11 @@
 package com.pentagram.services.interfaces
 {
-	public interface IAppService
+	import com.pentagram.model.vo.Continent;
+	
+
+	public interface IAppService extends IService
 	{
-		function loadCountries():void;
+		function loadCountries(continent:Continent):void;
 		
 		function loadContinents():void;
 		
