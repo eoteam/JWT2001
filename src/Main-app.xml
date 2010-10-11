@@ -9,9 +9,9 @@
             the application. Optional.-->
     <!-- A universally unique application identifier. Must be unique across all AIR applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>LaunchPad</id>
+    <id>View</id>
     <!-- Used as the filename for the application. Required. -->
-    <filename>LaunchPad</filename>
+    <filename>View</filename>
 
     <!-- The name that is displayed in the AIR application installer.
           May have multiple values for each language. See samples or xsd schema file. Optional. -->
@@ -36,7 +36,7 @@
         <content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
 
         <!-- The title of the main window. Optional. -->
-        <title>LaunchPad</title>
+        <title>View</title>
 
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
         <systemChrome>standard</systemChrome>
@@ -57,16 +57,16 @@
         <resizable>true</resizable>
 
         <!-- The windows initial width in pixels. Optional. -->
-        <width>700</width>
+        <width>1024</width>
 
         <!-- The windows initial height in pixels. Optional. -->
-        <height>500</height>
+        <height>768</height>
 
-        <!-- The windows initial x position. Optional. -->
-        <!-- <x></x> -->
+		<!-- The window's initial x position. Optional. -->
+		<x>150</x>
 
-        <!-- The windows initial y position. Optional. -->
-        <!-- <y></y> -->
+		<!-- The window's initial y position. Optional. -->
+		<y>50</y>
 
         <!-- The windows minimum size, specified as a width/height pair in pixels, such as "400 200". Optional. -->
         <!-- <minSize></minSize> -->
@@ -104,7 +104,7 @@
     <!-- <customUpdateUI></customUpdateUI> -->
 
     <!-- Whether the application can be launched when the user clicks a link in a web browser.
-    Optional. Default false. -->
+    Optional. Defau lt false. -->
     <!-- <allowBrowserInvocation></allowBrowserInvocation> -->
 
     <!-- Listing of file types for which the application can register. Optional. -->

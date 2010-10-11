@@ -4,10 +4,10 @@
 					   	xmlns:mx="library://ns.adobe.com/flex/mx"
  						xmlns:samples="samples.*"
 						showStatusBar="false"
-						nativeDragEnter="onDragIn(event)" 
+						nativeDragEnter="onDragIn(event)"
 						nativeDragDrop="onDragDrop(event)"
-						creationComplete="handleCreationComplete()"    
-						applicationComplete="init()" xmlns:graphics="com.pentagram.view.graphics.*">
+						creationComplete="handleCreationComplete()" 
+						applicationComplete="init()" xmlns:graphics="com.pentagram.view.graphics.*" xmlns:view="com.pentagram.view.*">
 	
 	<fx:Style source="assets/main.css" />
 	<fx:Script>
@@ -314,7 +314,7 @@
 	</fx:Script>
 	<!--<main:MainView width="100%" height="100%"  id="mainView"/>  -->
 	
-	<graphics:RedCircle verticalCenter="0" horizontalCenter="0"/>
+	<view:MainView width="100%" height="100%" verticalCenter="0" horizontalCenter="0"/>
 	
 	<!--<s:Label fontSize="14" text='LaunchPad'/>
 	<mx:TabNavigator width="100%" height="100%">
