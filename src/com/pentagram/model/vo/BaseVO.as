@@ -4,5 +4,7 @@ package com.pentagram.model.vo
 	{
 		public var id:Number;
 		public var name:String;
+		
+		
 	}
 }

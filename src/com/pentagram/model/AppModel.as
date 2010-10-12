@@ -1,5 +1,7 @@
 package com.pentagram.model
 {
+	import com.pentagram.model.vo.Client;
+	
 	import mx.collections.ArrayList;
 
 	public class AppModel
@@ -16,5 +18,7 @@ package com.pentagram.model
 		
 		[Bindable]
 		public var clients:ArrayList;
+		
+		public var selectedClient:Client;
 	}
 }

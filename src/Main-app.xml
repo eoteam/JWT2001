@@ -48,10 +48,10 @@
         <!-- <visible></visible> -->
 
         <!-- Whether the user can minimize the window. Optional. Default true. -->
-        <minimizable>true</minimizable>
+        <minimizable>false</minimizable>
 
         <!-- Whether the user can maximize the window. Optional. Default true. -->
-        <maximizable>true</maximizable>
+        <maximizable>false</maximizable>
 
         <!-- Whether the user can resize the window. Optional. Default true. -->
         <resizable>true</resizable>

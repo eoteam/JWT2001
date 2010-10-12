@@ -15,8 +15,9 @@ package com.pentagram.event
 		public static const TIMED_OUT:String = "timedout";
 		public static const BOOTSTRAP_COMPLETE:String = "bootStrapComplete";
 		
-		 
-		//public static const INIT:String = "init";	
+		 //slide show event
+		
+
 		
 		public var args:Array;
 		public function AppEvent(type:String,...args)

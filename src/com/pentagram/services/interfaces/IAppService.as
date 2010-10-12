@@ -1,6 +1,8 @@
 package com.pentagram.services.interfaces
 {
+	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Continent;
+	import com.pentagram.model.vo.Dataset;
 	
 
 	public interface IAppService extends IService
@@ -10,5 +12,9 @@ package com.pentagram.services.interfaces
 		function loadContinents():void;
 		
 		function loadClients():void;
+		
+		function loadClientData(client:Client):void;
+		
+		function loadDataSet(dataset:Dataset):void;
 	}
 }

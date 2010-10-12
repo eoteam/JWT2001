@@ -4,6 +4,7 @@ package com.pentagram.services
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Continent;
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
 	
 	import flash.net.URLRequestMethod;
@@ -40,7 +41,22 @@ package com.pentagram.services
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-
+		public function loadClientData(client:Client):void
+		{
+			var params:Object = new Object();
+			params.action = "getData";
+			params.tablename = "datasets";
+			params.contentid = client.id;
+			params.deleted = 0;
+			this.createService(params,ResponseType.DATA,Dataset);	
+		}
+		public function loadDataSet(dataset:Dataset):void
+		{
+			var params:Object = new Object();
+			params.action = "getData";
+			params.tablename = dataset.tablename;
+			this.createService(params,ResponseType.DATA,Dataset);				
+		}
 		
 	}
 }

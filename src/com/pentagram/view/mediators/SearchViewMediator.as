@@ -3,6 +3,7 @@ package com.pentagram.view.mediators
 	import com.pentagram.event.AppEvent;
 	import com.pentagram.event.VisualizerEvent;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.vo.Client;
 	import com.pentagram.view.components.SearchView;
 	
 	import org.flashcommander.event.CustomEvent;
@@ -26,9 +27,9 @@ package com.pentagram.view.mediators
 			view.searchInput.visible = true;
 			view.searchInput.dataProvider = appModel.clients.source;
 		}
-		private function handleSelect():void
+		private function handleSelect(event:CustomEvent):void
 		{
-			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED,event.data as Client));
 		}
 	}
 }

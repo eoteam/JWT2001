@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="org.flashcommander.components.*" 
+		 gap="0" verticalAlign="middle">
+
+		
+	<components:AutoComplete width="260" id="searchInput" labelField="name" />
+	
+	<s:Rect width="25" />
+	
+	<s:Button id="presentationBtn" />
+	<s:Button id="loginBtn" />
+	
+	<s:Rect width="100%" />
+	
+	<s:Button label="JWT" id="homeButton"  />
+		
+</s:HGroup>

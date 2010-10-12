@@ -9,17 +9,16 @@ package com.pentagram.model.vo
 		public var multiplier:Number;
 		public var time:int;
 		public var type:int;
-		public var name:String; 
 		public var tablename:String; //name of table
+		public var options:String; //for qualitative type
 		
-		public var data:ArrayCollection; //content of table
-		public var options:Array; //for qualitative type
-		public var optionsMap:Array;
+		public var data:String; //content of table
 		public var loaded:Boolean = false;
 		
-		public var max:Number = 0;
-		public var min:Number = -1;
-		
-		
+ 		public var createdby:int;
+		public var modifiedby:int;
+		public var createdate:int;
+		public var modifieddate:int;
+		public var deleted:int;
 	}
 }
