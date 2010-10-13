@@ -3,14 +3,42 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*">
 
+	
+	<s:states>
+		<s:State name="loggedout" />
+		<s:State name="loggedin" />
+	</s:states>
+
+	
+	<mx:ViewStack width="100%" height="100%" top="50" />
 	<components:ClientBarView width="100%" />
 	
-	
 	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0"  
-	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin">
+	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin">	
+		<components:BottomBarView width="100%" height="40" bottom="10"  />
 		
-		<components:BottomBarView width="100%" height="40" bottom="10"  />	
+		<s:ButtonBar right="150" height="22" bottom="28" includeIn="loggedin" />
 	</s:SkinnableContainer> 
 	
 	
+<!--		<s:dataProvider>
+			<s:ArrayList>
+				<fx:Object label="Vizualiser" />
+				<fx:Object label="Data Edior" />
+			</s:ArrayList>
+		</s:dataProvider>
+		<s:itemRenderer>
+			<fx:Component>
+				<s:ItemRenderer>
+					<fx:Script>
+						<![CDATA[
+							import com.pentagram.view.skins.TabBarButtonSkin;
+						]]>
+					</fx:Script>
+					<s:ButtonBarButton skinClass="com.pentagram.view.skins.TabBarButtonSkin" />
+					
+				</s:ItemRenderer>
+			</fx:Component>
+		</s:itemRenderer>
+	</s:ButtonBar>-->
 </s:Group>

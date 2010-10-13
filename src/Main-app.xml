@@ -57,10 +57,10 @@
         <resizable>true</resizable>
 
         <!-- The windows initial width in pixels. Optional. -->
-        <width>1024</width>
+        <width>1100</width>
 
         <!-- The windows initial height in pixels. Optional. -->
-        <height>768</height>
+        <height>800</height>
 
 		<!-- The window's initial x position. Optional. -->
 		<x>150</x>

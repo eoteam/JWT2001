@@ -15,13 +15,19 @@ package com.pentagram.view.mediators
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
 			var client:Client = event.args[0] as Client;
 			view.client = client;
-			view.logo.source = Constants.FILES_URL+client.thumbs;
 			trace(Constants.FILES_URL+client.thumbs);
+		}
+		private function handleLoadSearchView(event:VisualizerEvent):void
+		{
+			view.client = null;
+			view.infoBtn.selected = false;
+			view.currentState = view.closedState.name;
 		}
 	}
 }

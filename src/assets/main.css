@@ -5,28 +5,30 @@
 @font-face {
 	src: url("/assets/FlamaBook.ttf");
     font-family: "FlamaBook";
-	embedAsCFF: false;
+	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 }
 /* @font-face {
-	src: url("/assets/fonts/FlamaBookIta.ttf");
+	src: url("/assets/FlamaBookIta.ttf");
     font-family: "FlamaBookItalic";
+	embedAsCFF: true;
+	advancedAntiAliasing: true;     	
 } */
 @font-face {
 	src: url("/assets/FlamaMedium.ttf");
     font-family: "FlamaMedium";
-		embedAsCFF: false;
+	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 } 
 @font-face {
 	src: url("/assets/FlamaBold.ttf");
     font-family: "FlamaBold";
-	embedAsCFF: false;
+	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 } 
 
 s|WindowedApplication{
-	backgroundColor: #FAFAFA;
+	backgroundColor: #FBFCFB;
 	fontFamily: FlamaBook;
 	fontSize: 14;
 	color: #111111;

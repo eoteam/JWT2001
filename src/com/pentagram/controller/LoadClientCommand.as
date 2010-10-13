@@ -34,11 +34,18 @@ package com.pentagram.controller
 		{
 			var sets:Array = event.token.results as Array;
 			client.datasets = new ArrayCollection(sets);
-			for each(var dataset:Dataset in client.datasets) {
-				appService.loadDataSet(dataset);
-				appService.addHandlers(handleDatasetLoaded);
-				appService.addProperties("dataset",dataset);
+			if(sets.length > 0) {
+				for each(var dataset:Dataset in client.datasets) {
+					appService.loadDataSet(dataset);
+					appService.addHandlers(handleDatasetLoaded);
+					appService.addProperties("dataset",dataset);
+				}
 			}
+			else {
+					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,client));
+					appModel.selectedClient = client;
+			}
+			
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void
 		{

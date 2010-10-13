@@ -1,6 +1,7 @@
 package com.pentagram.model
 {
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.User;
 	
 	import mx.collections.ArrayList;
 
@@ -20,5 +21,9 @@ package com.pentagram.model
 		public var clients:ArrayList;
 		
 		public var selectedClient:Client;
+		
+		public var loggedIn:Boolean = false;
+		
+		public var user:User;
 	}
 }

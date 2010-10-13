@@ -12,7 +12,10 @@ package com.pentagram.model.vo
 		public var website:String;
 		public var description:String;
 		public var thumbs:String;
-		public var tags:String='';
+		
 		public var datasets:ArrayCollection;
+		
+		public var tags:String='';
+		public var relatedcontent:String;
 	}
 }

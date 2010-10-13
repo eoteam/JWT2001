@@ -30,6 +30,7 @@ package com.pentagram.view.mediators
 		private function handleSelect(event:CustomEvent):void
 		{
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED,event.data as Client));
+			view.searchInput.text = '';
 		}
 	}
 }
