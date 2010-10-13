@@ -19,6 +19,7 @@ package com.pentagram.view.mediators
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
 			var client:Client = event.args[0] as Client;
+			view.client = client;
 			view.logo.source = Constants.FILES_URL+client.thumbs;
 			trace(Constants.FILES_URL+client.thumbs);
 		}

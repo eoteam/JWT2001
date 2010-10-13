@@ -1,11 +1,11 @@
 /* CSS file */
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
-
+@namespace coren "com.hillelcoren.components.*";
 @font-face {
 	src: url("/assets/FlamaBook.ttf");
     font-family: "FlamaBook";
-	embedAsCFF: true;
+	embedAsCFF: false;
 	advancedAntiAliasing: true;      
 }
 /* @font-face {
@@ -15,13 +15,13 @@
 @font-face {
 	src: url("/assets/FlamaMedium.ttf");
     font-family: "FlamaMedium";
-		embedAsCFF: true;
+		embedAsCFF: false;
 	advancedAntiAliasing: true;      
 } 
 @font-face {
 	src: url("/assets/FlamaBold.ttf");
     font-family: "FlamaBold";
-	embedAsCFF: true;
+	embedAsCFF: false;
 	advancedAntiAliasing: true;      
 } 
 

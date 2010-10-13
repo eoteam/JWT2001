@@ -3,11 +3,11 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:components="org.flashcommander.components.*" 
-		 gap="0" verticalAlign="middle">
+		 gap="0" verticalAlign="middle" xmlns:components1="com.hillelcoren.components.*">
 
 		
 	<components:AutoComplete width="260" id="searchInput" labelField="name" />
-	
+
 	<s:Rect width="25" />
 	
 	<s:Button id="presentationBtn" />

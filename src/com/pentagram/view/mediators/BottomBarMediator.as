@@ -7,6 +7,8 @@ package com.pentagram.view.mediators
 	
 	import flash.events.MouseEvent;
 	
+	import mx.collections.ArrayCollection;
+	
 	import org.robotlegs.mvcs.Mediator;
 	
 	public class BottomBarMediator extends Mediator
@@ -19,7 +21,7 @@ package com.pentagram.view.mediators
 		
 		override public function onRegister():void
 		{
-			view.searchInput.dataProvider = appModel.clients.source;
+			view.searchInput.dataProvider = appModel.clients.source;	
 			view.homeButton.addEventListener(MouseEvent.CLICK,handleHomeButton);
 		}
 		private function handleHomeButton(event:MouseEvent):void
