@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.Client;
+			protected function setInfoBtn_clickHandler(event:MouseEvent):void
+			{
+				if(setInfoBtn.selected) {
+					infoPanelContainer.visible = true;
+					showInfoPanelEffect.play();
+				}	
+				else {
+					hideInfoPanelEffect.play();
+				}
+			}
+			private function hideInfoPanel(event:MouseEvent):void
+			{
+				hideInfoPanelEffect.play();
+				setInfoBtn.selected = false;
+			}
+			[Bindable] public var client:Client;
+
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		<s:Sequence id="hideInfoPanelEffect">
+			<s:Move target="{infoPanel}" duration="500" yTo="-200" />
+			<s:SetAction property="visible" value="false" target="{infoPanelContainer}" />
+		</s:Sequence>
+		<s:Move target="{infoPanel}" duration="500" yTo="0" id="showInfoPanelEffect" />
+	</fx:Declarations>
+
+	
+	<s:states>
+		<s:State name="loggedout" />
+		<s:State name="loggedin" />
+	</s:states>
+
+	
+	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack"  backgroundColor="0xFAFCFB">
+		<s:NavigatorContent width="100%" height="100%" label="Visualizer" >
+			<s:HGroup verticalAlign="middle" height="60" left="5" right="5">
+				<s:Label fontSize="24" fontFamily="FlamaBold" text="Number of Branches by Region" />
+				<s:ToggleButton id="setInfoBtn" width="10" height="8" click="setInfoBtn_clickHandler(event)" />
+			</s:HGroup>
+			<s:Rect width="100%" height="1" y="60">
+				<s:fill>
+					<s:SolidColor color="0xB3B1AC" />
+				</s:fill>
+			</s:Rect> 
+			<s:Group width="100%" height="200"  top="61"  visible="false" id="infoPanelContainer">
+				<s:clipAndEnableScrolling>true</s:clipAndEnableScrolling>
+				<s:SkinnableContainer id="infoPanel" width="100%" height="100%" backgroundColor="0xFAFCFB" backgroundAlpha="0.95" y="-200">
+					<s:RichEditableText width="100%"  height="100%" editable="false" editable.loggedin="true" right="120" left="10" >
+						<s:text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae convallis nibh. Morbi congue sollicitudin diam, vel facilisis nibh placerat hendrerit. Suspendisse faucibus orci id ligula malesuada mattis. Praesent eget purus ligula, quis scelerisque sapien. Ut pellentesque nisi in turpis pulvinar iaculis. Fusce dapibus vestibulum nisl, non consequat nunc mollis vel. Cras rutrum dictum dui, eu aliquet elit sodales vitae. Donec scelerisque suscipit mauris tincidunt pharetra. Donec nec nisi vel augue adipiscing dignissim sed vel leo. Cras vel diam a justo laoreet luctus vitae eu justo.</s:text>
+					</s:RichEditableText>
+					<s:VGroup right="10">
+						<s:Button label="close" click="hideInfoPanel(event)"/>
+						<s:Button label="Edit" includeIn="loggedin" />
+					</s:VGroup>		
+				</s:SkinnableContainer>
+			</s:Group>
+			
+			<!-- filters and tools -->
+			<s:Rect width="100%" height="1" bottom="120">
+				<s:fill>
+					<s:SolidColor color="0xB3B1AC" />
+				</s:fill>
+			</s:Rect> 
+
+			<s:Rect width="100%" height="1" bottom="60">
+				<s:fill>
+					<s:SolidColor color="0xB3B1AC" />
+				</s:fill>
+			</s:Rect> 
+			<s:HGroup width="100%" verticalAlign="middle" height="60"  bottom="0">
+				<s:Label text="size by:"/>
+				<s:DropDownList width="260" dataProvider="{client.datasets}" labelField="name"/>
+			</s:HGroup>
+		</s:NavigatorContent>
+	
+		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedin" />
+	</mx:ViewStack>
+	<components:ClientBarView width="100%" id="clientBar" client="{client}"/>
+	
+	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0"  
+	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin" id="bottomPanelContainer">	
+		<components:BottomBarView width="100%" height="40" bottom="10"  />
+		
+		<s:TabBar right="150" height="22" bottom="28" includeIn="loggedin" dataProvider="{mainStack}" />
+	</s:SkinnableContainer> 
+	
+
+</s:Group>

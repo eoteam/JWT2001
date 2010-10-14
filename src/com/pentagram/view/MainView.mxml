@@ -14,7 +14,7 @@
 	
 	
 	<components:SearchView width="100%" height="100%" includeIn="search" />
-	<components:VisualizerShellView width="100%" height="100%"  includeIn="visualizer"/>
+	<components:ShellView width="100%" height="100%"  includeIn="visualizer"/>
 	
 	<assets:CircularProgress includeIn="loading" verticalCenter="0" horizontalCenter="0" />
 </s:Group>

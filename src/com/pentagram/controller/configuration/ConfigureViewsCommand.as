@@ -5,10 +5,11 @@ package com.pentagram.controller.configuration
 	import com.pentagram.view.components.BottomBarView;
 	import com.pentagram.view.components.ClientBarView;
 	import com.pentagram.view.components.SearchView;
+	import com.pentagram.view.components.ShellView;
 	import com.pentagram.view.mediators.BottomBarMediator;
-	import com.pentagram.view.mediators.ClientBarMediator;
 	import com.pentagram.view.mediators.MainViewMediator;
 	import com.pentagram.view.mediators.SearchViewMediator;
+	import com.pentagram.view.mediators.ShellMediator;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.robotlegs.utilities.statemachine.StateEvent;
@@ -22,7 +23,7 @@ package com.pentagram.controller.configuration
 			mediatorMap.mapView(SearchView,	SearchViewMediator); 
 			mediatorMap.mapView(MainView, MainViewMediator);
 			mediatorMap.mapView(BottomBarView,BottomBarMediator);
-			mediatorMap.mapView(ClientBarView,ClientBarMediator);  
+			mediatorMap.mapView(ShellView,ShellMediator);  
 			trace("Configure: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));
 		}

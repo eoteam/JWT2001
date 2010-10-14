@@ -4,13 +4,14 @@ package com.pentagram.view.mediators
 	import com.pentagram.event.VisualizerEvent;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.view.components.ClientBarView;
+	import com.pentagram.view.components.ShellView;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
-	public class ClientBarMediator extends Mediator
+	public class ShellMediator extends Mediator
 	{
 		[Inject]
-		public var view:ClientBarView;
+		public var view:ShellView;
 		
 		override public function onRegister():void
 		{
@@ -26,8 +27,8 @@ package com.pentagram.view.mediators
 		private function handleLoadSearchView(event:VisualizerEvent):void
 		{
 			view.client = null;
-			view.infoBtn.selected = false;
-			view.currentState = view.closedState.name;
+			view.clientBar.infoBtn.selected = false;
+			view.clientBar.currentState = view.clientBar.closedState.name;
 		}
 	}
 }
