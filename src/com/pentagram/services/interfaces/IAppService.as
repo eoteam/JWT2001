@@ -16,5 +16,9 @@ package com.pentagram.services.interfaces
 		function loadClientData(client:Client):void;
 		
 		function loadDataSet(dataset:Dataset):void;
+		
+		function authenticateUser(username:String,password:String):void;
+		
+		function logOut():void;
 	}
 }

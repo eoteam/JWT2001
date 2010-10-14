@@ -1,6 +1,7 @@
 package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
+	import com.pentagram.controller.AuthenticateUserCommand;
 	import com.pentagram.controller.LoadClientCommand;
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.event.AppEvent;
@@ -18,6 +19,8 @@ package com.pentagram.controller.configuration
 			//after login, start sequence FSM
 			commandMap.mapEvent(AppEvent.BOOTSTRAP_COMPLETE,StartupCommand,AppEvent);  
 			commandMap.mapEvent(VisualizerEvent.CLIENT_SELECTED,LoadClientCommand,VisualizerEvent);
+			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
+			
 			trace("Configure: Commands Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_COMMANDS_COMPLETE));
 		}

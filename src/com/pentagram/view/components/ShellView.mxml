@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*" xmlns:primatives="ws.tink.spark.primatives.*" xmlns:graphics="ws.tink.spark.graphics.*" xmlns:modules="ws.tink.spark.modules.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -28,21 +28,32 @@
 	
 	<fx:Declarations>
 		<s:Sequence id="hideInfoPanelEffect">
-			<s:Move target="{infoPanel}" duration="500" yTo="-200" />
+			<s:Move target="{infoPanel}" duration="500" yTo="-120" />
 			<s:SetAction property="visible" value="false" target="{infoPanelContainer}" />
 		</s:Sequence>
 		<s:Move target="{infoPanel}" duration="500" yTo="0" id="showInfoPanelEffect" />
+		<s:Fade alphaTo="1" duration="500" id="fadeIn" />
+		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
+		<s:Power id="powerEasing" easeInFraction="0.25" exponent="4"/>
 	</fx:Declarations>
 
 	
 	<s:states>
-		<s:State name="loggedout" />
-		<s:State name="loggedin" />
+		<s:State name="loggedout" id="loggedOutState"/>
+		<s:State name="loggedin" id="loggedInState"/>
 	</s:states>
 
 	
 	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack"  backgroundColor="0xFAFCFB">
 		<s:NavigatorContent width="100%" height="100%" label="Visualizer" >
+			
+			<!-- viewing area -->
+			<s:Group width="100%" top="61" bottom="119" id="visualizerArea">
+				<mx:Image scaleContent="true" maintainAspectRatio="true" width="100%" height="100%" 
+			  	showEffect="{fadeIn}" hideEffect="{fadeOut}"		
+			  	source="assets/map.png" visible="{mapToggle.selected}" />
+			</s:Group>
+			
 			<s:HGroup verticalAlign="middle" height="60" left="5" right="5">
 				<s:Label fontSize="24" fontFamily="FlamaBold" text="Number of Branches by Region" />
 				<s:ToggleButton id="setInfoBtn" width="10" height="8" click="setInfoBtn_clickHandler(event)" />
@@ -52,10 +63,10 @@
 					<s:SolidColor color="0xB3B1AC" />
 				</s:fill>
 			</s:Rect> 
-			<s:Group width="100%" height="200"  top="61"  visible="false" id="infoPanelContainer">
+			<s:Group width="100%"   top="61"  visible="false" id="infoPanelContainer">
 				<s:clipAndEnableScrolling>true</s:clipAndEnableScrolling>
-				<s:SkinnableContainer id="infoPanel" width="100%" height="100%" backgroundColor="0xFAFCFB" backgroundAlpha="0.95" y="-200">
-					<s:RichEditableText width="100%"  height="100%" editable="false" editable.loggedin="true" right="120" left="10" >
+				<s:SkinnableContainer id="infoPanel" width="100%"  backgroundColor="0xFAFCFB" backgroundAlpha="0.8" y="-120">
+					<s:RichEditableText width="100%"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedin="true" right="120" left="10" >
 						<s:text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae convallis nibh. Morbi congue sollicitudin diam, vel facilisis nibh placerat hendrerit. Suspendisse faucibus orci id ligula malesuada mattis. Praesent eget purus ligula, quis scelerisque sapien. Ut pellentesque nisi in turpis pulvinar iaculis. Fusce dapibus vestibulum nisl, non consequat nunc mollis vel. Cras rutrum dictum dui, eu aliquet elit sodales vitae. Donec scelerisque suscipit mauris tincidunt pharetra. Donec nec nisi vel augue adipiscing dignissim sed vel leo. Cras vel diam a justo laoreet luctus vitae eu justo.</s:text>
 					</s:RichEditableText>
 					<s:VGroup right="10">
@@ -77,13 +88,33 @@
 					<s:SolidColor color="0xB3B1AC" />
 				</s:fill>
 			</s:Rect> 
-			<s:HGroup width="100%" verticalAlign="middle" height="60"  bottom="0">
+			<s:HGroup width="100%" verticalAlign="middle" height="60"  bottom="0" paddingLeft="10" paddingRight="10	">
 				<s:Label text="size by:"/>
 				<s:DropDownList width="260" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="10" />
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				<s:Rect width="10" />
+				<s:Label text="group by:"/>
+				<s:DropDownList width="260" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="10" />
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				<s:Rect width="10" />
+				<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle"   />
 			</s:HGroup>
 		</s:NavigatorContent>
 	
-		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedin" />
+		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedin">
+			<modules:ModuleLoader width="100%" height="100%" loadPolicy="addedToStage" 
+			url="com/pentagram/view/modules/editor/EditorModule.swf" /> 					  
+		</s:NavigatorContent>
 	</mx:ViewStack>
 	<components:ClientBarView width="100%" id="clientBar" client="{client}"/>
 	

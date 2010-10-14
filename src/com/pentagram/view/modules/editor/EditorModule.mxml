@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		   xmlns:s="library://ns.adobe.com/flex/spark" 
-		   implements="org.robotlegs.utilities.modular.core.IModule"      
-		   xmlns:mx="library://ns.adobe.com/flex/mx" layout="absolute" width="400" height="300">
+		   implements="org.robotlegs.utilities.modular.core.IModule,com.pentagram.view.modules.editor.IEditorModule"      
+		   xmlns:mx="library://ns.adobe.com/flex/mx" layout="absolute" width="100%" height="100%">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.Client;
+			
 			import mx.core.IVisualElementContainer;
 			
 			import org.robotlegs.core.IInjector;
@@ -33,8 +35,14 @@
 					IVisualElementContainer(parent).removeElement(this);
 				context.dispose(); 
 				context = null;       
-			}   
+			} 
+			public function set client(value:Client):void
+			{
+				
+			}
 		]]>
 	</fx:Script>
-	<s:Label  fontSize="50" horizontalCenter="0" verticalCenter="0" text="EDITOR MODULE" />
+	<s:HGroup left="10" top="50" bottom="50" right="10">
+		
+	</s:HGroup>
 </mx:Module> 

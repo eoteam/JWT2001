@@ -67,7 +67,9 @@ package com.pentagram.controller.startup
 		}
 		private function checkCount():void
 		{
+			trace("#######################",counter,total,"#######################");
 			if(counter == total) {
+				trace("#######################APP STARTED#######################");
 				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_COMPLETE));	
 			}
 		}

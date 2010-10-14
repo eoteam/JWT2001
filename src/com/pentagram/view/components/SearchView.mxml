@@ -57,9 +57,9 @@
 			</s:fill>
 		</s:Ellipse>
 		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260" 
-								 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
-								 enter="searchInput_enterHandler(event)" includeIn="search"
-								 labelField="name" />
+		 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
+		 enter="searchInput_enterHandler(event)" includeIn="search"
+		 labelField="name" />
 		
 		<s:VGroup id="errorMessageHolder"  horizontalCenter="0" verticalCenter="120" 
 				  gap="12" showEffect="{fadeIn}" includeIn="notfound" alpha="0" alpha.notfound="1">
@@ -75,6 +75,6 @@
 		<s:Fade alphaTo="1" duration="500" id="fadeIn" />	
 		<s:Fade alphaTo="1" duration="500" id="fadeIn2" target="{questionMark}" />	
 		<s:Power exponent="0.5" id="easeOutExpo2" />
-		<s:Power exponent="4" id="easeOutExpo" />
+		<s:Power exponent="3" id="easeOutExpo"/>
 	</fx:Declarations>
 </s:Group>

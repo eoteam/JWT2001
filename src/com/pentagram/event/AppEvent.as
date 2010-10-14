@@ -8,9 +8,10 @@ package com.pentagram.event
 		public static const STARTUP_COMPLETE:String = "startupComplete";
 		public static const STARTUP_PROGRESS:String = "startupProgress";
 		
-		public static const START_LOGIN:String = "startLogin"
+		public static const SHOW_LOGIN_WINDOW:String = "showLoginWindow"
 		public static const LOGIN:String = "login";
-		public static const LOGOUT:String = "logout";
+		public static const LOGGEDIN:String = "loggedin";
+		public static const LOGGEDOUT:String = "loggedout";
 		public static const LOGIN_ERROR:String = "loginError";
 		
 		public static const TIMED_OUT:String = "timedout";

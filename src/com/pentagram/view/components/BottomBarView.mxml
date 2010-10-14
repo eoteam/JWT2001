@@ -10,8 +10,8 @@
 
 	<s:Rect width="25" />
 	
-	<s:Button id="presentationBtn" label="P"  />
-	<s:Button id="loginBtn" label="U" />
+	<s:Button id="presentationBtn" label="P" width="25" />
+	<s:Button id="loginBtn" label="U" width="25"/>
 	
 	<s:Rect width="100%" />
 	

@@ -4,5 +4,68 @@
 		  xmlns:mx="library://ns.adobe.com/flex/mx" showStatusBar="false"
 		  type="{NativeWindowType.UTILITY}" >
 
-		
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.event.AppEvent;
+			import com.pentagram.model.vo.User;
+			[Bindable] public var user:User;
+			public function didLogin(user:User):void
+			{
+				this.user = user;
+				this.currentState = "loggedin";
+				stack.selectedIndex = 1;
+				
+			}
+			public function didLogout():void
+			{
+				this.currentState = "loggedout";
+				stack.selectedIndex = 0;
+			}
+			public function loginError(message:String):void
+			{
+				
+			}
+		]]>
+	</fx:Script>
+
+	<s:states>
+		<s:State name="loggedin" id="loggedInState" />
+		<s:State name="loggedout" id="loggedOutState" />
+	</s:states>
+
+	
+	<mx:ViewStack width="100%" height="100%"  id="stack" creationPolicy="all">
+		<s:NavigatorContent width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout paddingLeft="8" paddingTop="8" />
+			</s:layout>
+			<s:Label text="Login" fontSize="24" fontFamily="FlamaBold" />
+			<s:Rect height="20" />
+			<s:HGroup verticalAlign="middle">
+				<s:Label width="100" text="Username"/>
+				<s:TextInput width="260" id="unInput"/>
+			</s:HGroup>
+			<s:Rect height="10" />
+			<s:HGroup verticalAlign="middle">
+				<s:Label width="100" text="Password"/>
+				<s:TextInput width="260" displayAsPassword="true"  id="pwInput"/>
+			</s:HGroup>	
+			<s:Rect height="20" />
+			<s:HGroup verticalAlign="middle">
+				<s:Button label="Cancel" click="this.close()" />
+				<s:Button label="Log In" id="loginBtn"   />
+			</s:HGroup>				
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout paddingLeft="8" paddingTop="8"  />
+			</s:layout>
+			<s:Label text="Welcome Back! Masta {user.fullname}" fontSize="24" fontFamily="FlamaBold" />
+			<s:HGroup verticalAlign="middle">
+				<s:Button label="Close" click="this.close()" />
+				<s:Button label="Log Out" id="logoutBtn" />
+			</s:HGroup>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+
 </s:Window>

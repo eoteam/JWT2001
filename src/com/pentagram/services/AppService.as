@@ -5,6 +5,7 @@ package com.pentagram.services
 	import com.pentagram.model.vo.Continent;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.User;
 	import com.pentagram.services.interfaces.IAppService;
 	
 	import flash.net.URLRequestMethod;
@@ -57,6 +58,17 @@ package com.pentagram.services
 			params.tablename = dataset.tablename;
 			this.createService(params,ResponseType.DATA,Dataset);				
 		}
-		
+		public function authenticateUser(username:String, password:String):void
+		{
+			var params:Object = new Object();
+			params.username = username;
+			params.password = password;
+			params.action = "validateUser";	
+			this.createService(params,ResponseType.DATA,User);
+		}
+		public function logOut():void
+		{
+			
+		}
 	}
 }

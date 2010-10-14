@@ -9,6 +9,8 @@ package com.pentagram.event
 		public static const CLIENT_DATA_LOADED:String = "clientDataLoaded";
 		public static const LOAD_SEARCH_VIEW:String = "loadSearchView";
 		
+		public static const REFRESH_VISUALIZER:String = "refreshVisualizer";
+		
 		public var args:Array;
 		public function VisualizerEvent(type:String,...args)
 		{

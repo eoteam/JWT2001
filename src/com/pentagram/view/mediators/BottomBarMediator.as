@@ -32,7 +32,7 @@ package com.pentagram.view.mediators
 		}
 		private function handleUserButton(event:MouseEvent):void
 		{
-			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.START_LOGIN));
+			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.SHOW_LOGIN_WINDOW));
 		}
 	}
 }
