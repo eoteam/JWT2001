@@ -6,6 +6,10 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
+			import com.pentagram.view.modules.editor.IEditorModule;
+			
+			import mx.events.IndexChangedEvent;
+			import mx.events.ModuleEvent;
 			protected function setInfoBtn_clickHandler(event:MouseEvent):void
 			{
 				if(setInfoBtn.selected) {
@@ -23,6 +27,24 @@
 			}
 			[Bindable] public var client:Client;
 
+
+			protected function moduleloader1_readyHandler(event:ModuleEvent):void
+			{
+				if(editorLoader.child is IEditorModule)
+					IEditorModule(editorLoader.child).client = this.client;
+			}
+
+
+			protected function mainStack_changeHandler(event:IndexChangedEvent):void
+			{
+				if(mainStack.selectedIndex == 1) 
+					this.clientBar.currentState = this.clientBar.editorState.name;
+				else {
+					this.clientBar.currentState = this.clientBar.closedState.name;		
+					this.clientBar.infoBtn.selected = false;
+				}
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -39,12 +61,12 @@
 
 	
 	<s:states>
-		<s:State name="loggedout" id="loggedOutState"/>
-		<s:State name="loggedin" id="loggedInState"/>
+		<s:State name="loggedOut" id="loggedOutState"/>
+		<s:State name="loggedIn" id="loggedInState"/>
 	</s:states>
 
 	
-	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack"  backgroundColor="0xFAFCFB">
+	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack"  backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
 		<s:NavigatorContent width="100%" height="100%" label="Visualizer" >
 			
 			<!-- viewing area -->
@@ -66,12 +88,12 @@
 			<s:Group width="100%"   top="61"  visible="false" id="infoPanelContainer">
 				<s:clipAndEnableScrolling>true</s:clipAndEnableScrolling>
 				<s:SkinnableContainer id="infoPanel" width="100%"  backgroundColor="0xFAFCFB" backgroundAlpha="0.8" y="-120">
-					<s:RichEditableText width="100%"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedin="true" right="120" left="10" >
+					<s:RichEditableText width="100%"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedIn="true" right="120" left="10" >
 						<s:text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae convallis nibh. Morbi congue sollicitudin diam, vel facilisis nibh placerat hendrerit. Suspendisse faucibus orci id ligula malesuada mattis. Praesent eget purus ligula, quis scelerisque sapien. Ut pellentesque nisi in turpis pulvinar iaculis. Fusce dapibus vestibulum nisl, non consequat nunc mollis vel. Cras rutrum dictum dui, eu aliquet elit sodales vitae. Donec scelerisque suscipit mauris tincidunt pharetra. Donec nec nisi vel augue adipiscing dignissim sed vel leo. Cras vel diam a justo laoreet luctus vitae eu justo.</s:text>
 					</s:RichEditableText>
 					<s:VGroup right="10">
 						<s:Button label="close" click="hideInfoPanel(event)"/>
-						<s:Button label="Edit" includeIn="loggedin" />
+						<s:Button label="Edit" includeIn="loggedIn" />
 					</s:VGroup>		
 				</s:SkinnableContainer>
 			</s:Group>
@@ -111,9 +133,9 @@
 			</s:HGroup>
 		</s:NavigatorContent>
 	
-		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedin">
-			<modules:ModuleLoader width="100%" height="100%" loadPolicy="addedToStage" 
-			url="com/pentagram/view/modules/editor/EditorModule.swf" /> 					  
+		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
+			<mx:ModuleLoader width="100%" height="100%"  id="editorLoader"
+			url="com/pentagram/view/modules/editor/EditorModule.swf" ready="moduleloader1_readyHandler(event)" /> 					  
 		</s:NavigatorContent>
 	</mx:ViewStack>
 	<components:ClientBarView width="100%" id="clientBar" client="{client}"/>
@@ -122,7 +144,7 @@
 	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin" id="bottomPanelContainer">	
 		<components:BottomBarView width="100%" height="40" bottom="10"  />
 		
-		<s:TabBar right="150" height="22" bottom="28" includeIn="loggedin" dataProvider="{mainStack}" />
+		<s:TabBar right="150" height="22" bottom="28" includeIn="loggedIn" dataProvider="{mainStack}" />
 	</s:SkinnableContainer> 
 	
 

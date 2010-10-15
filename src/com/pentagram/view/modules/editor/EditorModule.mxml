@@ -36,13 +36,59 @@
 				context.dispose(); 
 				context = null;       
 			} 
+			[Bindable] private var _client:Client;
+			
 			public function set client(value:Client):void
 			{
-				
+				_client = value;
 			}
+			public function get client():Client
+			{
+				return _client;
+			} 
 		]]>
 	</fx:Script>
 	<s:HGroup left="10" top="50" bottom="50" right="10">
+		<s:VGroup width="200" gap="0">
+			<s:Button width="100%" label="Overview" textAlignLast="left" />
+			<s:Rect height="8" />
+			<s:Label text="Data Sets" />
+			<s:Rect height="4"/>
+			<s:List width="100%" dataProvider="{_client.datasets}" labelField="name" alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" />
+			<s:HGroup width="100%" gap="0">
+				<s:Button width="100%" label="+ Add Set" />
+				<s:Button width="100%" label="- Delete" />
+			</s:HGroup>
+		</s:VGroup>
+		<s:Rect width="20" />
+		<s:Group width="100%" height="100%">
+			<s:Rect left="0" right="0" top="0" bottom="0">
+				<s:stroke>
+					<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
+				</s:stroke>
+			</s:Rect>
+			<s:VGroup width="100%" top="15" left="8" right="8" bottom="40" >
+				<s:HGroup verticalAlign="top" width="90%">
+					<s:Label text="Data Set Title" width="100" />
+					<s:TextInput width="100%"  text="{dataSetList.selectedItem.name}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="top" width="90%">
+					<s:Label text="Description" width="100" />
+					<s:TextArea heightInLines="6" width="100%"   text="{dataSetList.selectedItem.description}"/>
+				</s:HGroup>				
+			</s:VGroup>
 		
+			<s:Rect left="0" right="0"  bottom="40">
+				<s:stroke>
+					<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
+				</s:stroke>
+			</s:Rect>
+			<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
+				<s:Button label="Save Changes" />
+				<s:Button label="Cancel" color="0xB3B1AC" />
+				<s:Rect width="100%" />
+				<s:Button label="- Delete Set" color="0xC61023" />
+			</s:HGroup>
+		</s:Group>
 	</s:HGroup>
 </mx:Module> 
