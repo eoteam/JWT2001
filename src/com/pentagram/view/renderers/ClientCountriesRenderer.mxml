@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="itemrenderer1_creationCompleteHandler(event)" 
+				autoDrawBackground="true" xmlns:components="org.flashcommander.components.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			
+			import spark.components.List;
+			public override function set data(value:Object):void
+			{
+				super.data = value;
+				if(data) {
+					if(List(this.owner).dataProvider.getItemIndex(data) == (List(this.owner).dataProvider.length -1)) {
+						currentState = "input";
+						
+					}
+					else
+						currentState = "country";
+						
+				}
+			}
+			[Bindable]
+			public var countries:Array;
+
+
+
+			protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="country" />
+		<s:State name="input" />
+	</s:states>
+	<s:Label text="{data.name}" includeIn="country"/>
+	<components:AutoComplete includeIn="input" width="200" dataProvider="{countries}"  labelField="name"		/>
+</s:ItemRenderer>

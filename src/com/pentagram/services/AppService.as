@@ -42,7 +42,7 @@ package com.pentagram.services
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-		public function loadClientData(client:Client):void
+		public function loadClientDatasets(client:Client):void
 		{
 			var params:Object = new Object();
 			params.action = "getData";
@@ -50,6 +50,14 @@ package com.pentagram.services
 			params.contentid = client.id;
 			params.deleted = 0;
 			this.createService(params,ResponseType.DATA,Dataset);	
+		}
+		public function loadClientCountries(client:Client):void
+		{
+			var params:Object = new Object();
+			params.action = "getData";
+			params.tablename = "client_countries";
+			params.countryid = client.id;
+			this.createService(params,ResponseType.DATA);	
 		}
 		public function loadDataSet(dataset:Dataset):void
 		{

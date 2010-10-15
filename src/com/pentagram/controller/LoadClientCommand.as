@@ -6,7 +6,7 @@ package com.pentagram.controller
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
 	
-	import mx.collections.ArrayCollection;
+	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
 	
 	import org.robotlegs.mvcs.Command;
@@ -26,16 +26,19 @@ package com.pentagram.controller
 		private var counter:int;
 		override public function execute():void
 		{
-			client = event.args[0] as Client;
-			appService.loadClientData(client);
-			appService.addHandlers(handleClientData);
+ 			client = event.args[0] as Client;
+			appService.loadClientDatasets(client);
+			appService.addHandlers(handleClientDatasets);
+			appService.loadClientCountries(client);
+			appService.addHandlers(handleClientCountries);
+			
 		}
-		private function handleClientData(event:ResultEvent):void
+		private function handleClientDatasets(event:ResultEvent):void
 		{
 			var sets:Array = event.token.results as Array;
-			client.datasets = new ArrayCollection(sets);
+			client.datasets = new ArrayList(sets);
 			if(sets.length > 0) {
-				for each(var dataset:Dataset in client.datasets) {
+				for each(var dataset:Dataset in client.datasets.source) {
 					appService.loadDataSet(dataset);
 					appService.addHandlers(handleDatasetLoaded);
 					appService.addProperties("dataset",dataset);
@@ -43,9 +46,12 @@ package com.pentagram.controller
 			}
 			else {
 					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,client));
-					appModel.selectedClient = client;
 			}
 			
+		}
+		private function handleClientCountries(event:ResultEvent):void
+		{
+			var relatedIds:Array = event.token.results as Array;
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void
 		{

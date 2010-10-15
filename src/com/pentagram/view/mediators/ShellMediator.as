@@ -7,6 +7,7 @@ package com.pentagram.view.mediators
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.view.components.ClientBarView;
 	import com.pentagram.view.components.ShellView;
+	import com.pentagram.view.event.ViewEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -29,6 +30,8 @@ package com.pentagram.view.mediators
 			}
 			else
 				view.currentState = view.loggedOutState.name;
+			
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{

@@ -1,6 +1,7 @@
 package com.pentagram
 {
 	import com.pentagram.controller.configuration.BootstrapApplicationCommand;
+
 	
 	import flash.display.DisplayObjectContainer;
 	
@@ -14,7 +15,6 @@ package com.pentagram
 			super(contextView, autoStartup);
 		}
 		override public function startup():void {
-					
 			commandMap.mapEvent( ContextEvent.STARTUP, BootstrapApplicationCommand, ContextEvent, true );
 			dispatchEvent(new ContextEvent(ContextEvent.STARTUP));
 			

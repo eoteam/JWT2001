@@ -13,7 +13,9 @@ package com.pentagram.services.interfaces
 		
 		function loadClients():void;
 		
-		function loadClientData(client:Client):void;
+		function loadClientDatasets(client:Client):void;
+		
+		function loadClientCountries(client:Client):void;
 		
 		function loadDataSet(dataset:Dataset):void;
 		

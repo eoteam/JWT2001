@@ -17,8 +17,6 @@
       <airExcludes/>
     </application>
   </applications>
-  <modules>
-    <module application="src/Main.mxml" destPath="com/pentagram/view/modules/editor/EditorModule.swf" optimize="true" sourcePath="src/com/pentagram/view/modules/editor/EditorModule.mxml"/>
-  </modules>
+  <modules/>
   <buildCSSFiles/>
 </actionScriptProperties>

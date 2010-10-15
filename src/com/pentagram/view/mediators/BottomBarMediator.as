@@ -23,8 +23,8 @@ package com.pentagram.view.mediators
 		override public function onRegister():void
 		{
 			view.searchInput.dataProvider = appModel.clients.source;	
-			view.homeButton.addEventListener(MouseEvent.CLICK,handleHomeButton);
-			view.loginBtn.addEventListener(MouseEvent.CLICK,handleUserButton);
+			view.homeButton.addEventListener(MouseEvent.CLICK,handleHomeButton,false,0,true);
+			view.loginBtn.addEventListener(MouseEvent.CLICK,handleUserButton,false,0,true);
 		}
 		private function handleHomeButton(event:MouseEvent):void
 		{

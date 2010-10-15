@@ -4,6 +4,7 @@ package com.pentagram.view.mediators
 	import com.pentagram.event.VisualizerEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.view.event.ViewEvent;
 	import com.pentagram.view.components.SearchView;
 	
 	import org.flashcommander.event.CustomEvent;
@@ -19,8 +20,8 @@ package com.pentagram.view.mediators
 		
 		public override function onRegister():void
 		{
-			eventMap.mapListener( eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
-			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect);
+			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
+			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect,false,0,true);
 		}
 		private function handleStartUp(event:AppEvent):void
 		{
@@ -29,7 +30,7 @@ package com.pentagram.view.mediators
 		}
 		private function handleSelect(event:CustomEvent):void
 		{
-			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED,event.data as Client));
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED,event.data as Client));
 			view.searchInput.text = '';
 		}
 	}
