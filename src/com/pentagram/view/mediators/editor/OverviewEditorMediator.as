@@ -16,12 +16,8 @@ package com.pentagram.view.mediators.editor
 		
 		public override function onRegister():void
 		{
-			//eventMap.mapListener(eventDispatcher, ViewEvent.SAVE_CLIENT_OVERVIEW,handleClientSaved,ViewEvent);
 			view.countryList.autoCompleteDataProvider = appModel.countries.source;
 			view.continentList.dataProvider = appModel.continents;	
-		}
-		private function handleClientSaved(event:ViewEvent):void {
-			
 		}
 	}
 }

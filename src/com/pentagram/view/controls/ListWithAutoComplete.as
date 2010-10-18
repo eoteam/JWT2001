@@ -54,7 +54,7 @@ package com.pentagram.view.controls
 		}
 		protected function handleAutoCompleteSelection(event:CustomEvent):void
 		{
-			//this.dispatchEvent(event);
+			autoComplete.text = '';
 		}
 		override protected function partRemoved(partName:String, instance:Object):void
 		{

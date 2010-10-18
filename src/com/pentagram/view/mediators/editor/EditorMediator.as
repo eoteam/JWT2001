@@ -1,6 +1,6 @@
 package com.pentagram.view.mediators.editor
 {
-	import com.pentagram.event.VisualizerEvent;
+	import com.pentagram.event.EditorEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
@@ -27,18 +27,21 @@ package com.pentagram.view.mediators.editor
 		public var appService:IAppService;
 		
 		public override function onRegister():void {	
+			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientDataUpdated,EditorEvent);
 			view.overviewEditor.client = view.client;
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 		}
 		
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_CLIENT_DATA,view.client));
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,view.client));
 			}
 			else {
 				
 			}
 		}
-
+		private function handleClientDataUpdated(event:EditorEvent):void {
+			view.statusModule.updateStatus("Client Data Updated");
+		}
 	}
 }

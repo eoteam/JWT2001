@@ -51,7 +51,7 @@ package com.pentagram.services
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "client_countries";
-			params.countryid = client.id;
+			params.clientid = client.id;
 			this.createService(params,ResponseType.DATA);	
 		}
 		public function loadDataSet(dataset:Dataset):void {
@@ -83,6 +83,14 @@ package com.pentagram.services
 		public function addClientCountry(client:Client,country:Country):void {
 			var params:Object = new Object();
 			params.action = "insertRecord";
+			params.tablename = "client_countries";
+			params.clientid = client.id;
+			params.countryid = country.id;
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function removeClientCountry(client:Client,country:Country):void {
+			var params:Object = new Object();
+			params.action = "removeRecord";
 			params.tablename = "client_countries";
 			params.clientid = client.id;
 			params.countryid = country.id;

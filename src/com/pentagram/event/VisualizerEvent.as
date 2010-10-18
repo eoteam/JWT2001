@@ -7,9 +7,7 @@ package com.pentagram.event
 		
 		public static const CLIENT_SELECTED:String = "clientSelected";
 		public static const CLIENT_DATA_LOADED:String = "clientDataLoaded";
-		public static const UPDATE_CLIENT_DATA:String = "updateClientData";
-		public static const CLIENT_DATA_UPDATED:String = "clientDataUpdated";
-		
+
 		public static const LOAD_SEARCH_VIEW:String = "loadSearchView";
 		
 		public static const REFRESH_VISUALIZER:String = "refreshVisualizer";

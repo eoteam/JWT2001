@@ -20,5 +20,9 @@ package com.pentagram.model.vo
 		public var createdate:int;
 		public var modifieddate:int;
 		public var deleted:int;
+		
+		
+		public var years:Array;
+		
 	}
 }

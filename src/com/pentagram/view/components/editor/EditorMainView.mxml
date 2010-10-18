@@ -29,6 +29,7 @@
 	<s:states>
 		<s:State name="overview" />
 		<s:State name="dataset" />
+		<s:State name="create" />
 	</s:states>
 	<s:VGroup width="200" gap="0">
 		<s:Button width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)" />
@@ -38,7 +39,7 @@
 		<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  
 		alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />
 		<s:HGroup width="100%" gap="0">
-			<s:Button width="100%" label="+ Add Set" />
+			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" />
 			<s:Button width="100%" label="- Delete" />
 		</s:HGroup>
 	</s:VGroup>
@@ -53,6 +54,7 @@
 		
 		<editor:DatasetEditor width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset" />
 		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="overview"  />
+		<editor:DatasetCreator width="100%" top="15" left="8" right="8" bottom="40" includeIn="create" />
 		
 		<s:Rect left="0" right="0"  bottom="40">
 			<s:stroke>

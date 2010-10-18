@@ -3,6 +3,7 @@ package com.pentagram.controller
 	import com.pentagram.event.VisualizerEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
 	
@@ -52,6 +53,14 @@ package com.pentagram.controller
 		private function handleClientCountries(event:ResultEvent):void
 		{
 			var relatedIds:Array = event.token.results as Array;
+			for each(var country:Country in appModel.countries.source) {
+				for each(var relatedId:Object in relatedIds) {
+					if(country.id.toString() == relatedId.countryid) {
+						client.countries.addItem(country);
+						break;
+					}
+				}
+			}
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void
 		{

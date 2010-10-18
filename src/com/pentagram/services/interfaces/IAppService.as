@@ -27,5 +27,7 @@ package com.pentagram.services.interfaces
 		function saveClientInfo(client:Client):void;
 		
 		function addClientCountry(client:Client,country:Country):void;
+		
+		function removeClientCountry(client:Client,country:Country):void;
 	}
 }

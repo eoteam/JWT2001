@@ -11,7 +11,6 @@ package com.pentagram.controller.configuration
 	{
 		override public function execute():void
 		{
-			
 			//services
 			trace("Configure: Services Complete");
 			injector.mapSingletonOf(IAppService, AppService); 

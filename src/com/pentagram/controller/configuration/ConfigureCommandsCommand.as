@@ -6,6 +6,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.UpdateClientCommand;
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.event.AppEvent;
+	import com.pentagram.event.EditorEvent;
 	import com.pentagram.event.VisualizerEvent;
 	
 	import mx.states.State;
@@ -22,7 +23,7 @@ package com.pentagram.controller.configuration
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
 			
 			commandMap.mapEvent(VisualizerEvent.CLIENT_SELECTED,LoadClientCommand,VisualizerEvent);
-			commandMap.mapEvent(VisualizerEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,VisualizerEvent);
+			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
 			
 			trace("Configure: Commands Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_COMMANDS_COMPLETE));
