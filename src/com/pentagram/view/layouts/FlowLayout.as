@@ -1,6 +1,8 @@
 package com.pentagram.view.layouts{
     import mx.core.ILayoutElement;
     
+    import org.flashcommander.components.AutoComplete;
+    
     import spark.components.supportClasses.GroupBase;
     import spark.layouts.supportClasses.LayoutBase;
 
@@ -15,6 +17,13 @@ package com.pentagram.view.layouts{
         private var _border:Number = 10;
         private var _gap:Number = 10;
 		[Bindable] public var runningHeight:Number = 0;
+		
+		[Bindable] public var autoCompleteX:Number = 0;
+		[Bindable] public var autoCompleteY:Number = 0;
+		public var autoCompleteWidth:Number = 200;
+		
+		
+		
         public function set border(val:Number):void {
             _border = val;
             var layoutTarget:GroupBase = target;
@@ -52,7 +61,7 @@ package com.pentagram.view.layouts{
                 //get element's size, but AFTER it has been resized to its preferred size.
                 var elementWidth:Number = element.getLayoutBoundsWidth();
                 var elementHeight:Number = element.getLayoutBoundsHeight();
-
+				
                 //does the element fit on this line, or should we move to the next line?
                 if (x + elementWidth > containerWidth) {
                     //start from the left side
@@ -73,8 +82,19 @@ package com.pentagram.view.layouts{
 
                 //update the current pos, and add the gap
                 x += elementWidth + _gap;
+				trace(x,y);
             }
 			runningHeight = maxHeight;
+			
+			autoCompleteY = maxHeight-elementHeight;
+			if(count > 0) {
+				autoCompleteX = x + _gap;
+				if (autoCompleteX + autoCompleteWidth > containerWidth) {
+					autoCompleteY += elementHeight + _gap;
+					autoCompleteX = _border;
+				}
+			}
+			trace(autoCompleteX,autoCompleteY);
             //set final content size (needed for scrolling)
             layoutTarget.setContentSize(maxWidth + _border, maxHeight + _border);
         }

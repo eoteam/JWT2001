@@ -2,6 +2,7 @@ package com.pentagram.services.interfaces
 {
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Continent;
+	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	
 
@@ -22,5 +23,9 @@ package com.pentagram.services.interfaces
 		function authenticateUser(username:String,password:String):void;
 		
 		function logOut():void;
+		
+		function saveClientInfo(client:Client):void;
+		
+		function addClientCountry(client:Client,country:Country):void;
 	}
 }

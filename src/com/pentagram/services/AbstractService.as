@@ -18,8 +18,6 @@ package com.pentagram.services
 	import mx.rpc.mxml.Concurrency;
 	import mx.rpc.xml.SimpleXMLDecoder;
 	
-
-	//import org.mig.utils.GUID;
 	import org.robotlegs.mvcs.Actor;
 	
 	public class AbstractService extends Actor
@@ -33,7 +31,11 @@ package com.pentagram.services
 		}		
 		protected function result(event:ResultEvent):void {
 			if(event.token.resultCallBack) {
-				JSONHTTPService(services[event.token.id]).decode(event);
+				var service:JSONHTTPService = services[event.token.id] as JSONHTTPService;
+				if(service.responseType == ResponseType.DATA)
+					service.decodeData(event);
+				else
+					service.decodeStatus(event);
 				event.token.resultCallBack(event);
 			}
 			delete services[event.token.id];

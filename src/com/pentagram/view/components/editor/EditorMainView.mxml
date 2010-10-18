@@ -2,7 +2,7 @@
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:editor="com.pentagram.view.components.*">
+		 xmlns:editor="com.pentagram.view.components.editor.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -60,9 +60,9 @@
 			</s:stroke>
 		</s:Rect>
 		<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
-			<s:Button label="Save Changes" />
-			<s:Button label="Cancel" color="0xB3B1AC" />
-			<s:Rect width="100%" />
+			<s:Button label="Save Changes" id="saveBtn" />
+			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
+			<editor:StatusModule id="statusModule" width="100%" />
 			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" />
 		</s:HGroup>			
 	</s:Group>

@@ -15,18 +15,14 @@ package com.pentagram.model.vo
 		public var thumbs:String;
 		
 		public var datasets:ArrayList;
-		public var countries:ArrayList;
+		public var countries:ArrayList = new ArrayList();
+		public var newCountries:Array = [];
+		public var deletedCountries:Array = [];
 		
 		public var tags:String='';
 		public var relatedcontent:String;
 		
-		public function Client()
-		{
-			var input:Country = new Country();
-			input.id = -1;
-			countries = new ArrayList();
-			countries.addItem(input);	
-		}
+
 		
 	}
 }

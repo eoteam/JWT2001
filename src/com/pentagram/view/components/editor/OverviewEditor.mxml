@@ -1,27 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"  creationComplete="group1_creationCompleteHandler(event)"
-		 xmlns:vo="com.pentagram.model.vo.*" xmlns:layouts="com.pentagram.view.layouts.*" xmlns:renderers="com.pentagram.view.renderers.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:vo="com.pentagram.model.vo.*"
+		 xmlns:layouts="com.pentagram.view.layouts.*"
+		 xmlns:renderers="com.pentagram.view.renderers.*"
+		 xmlns:controls="com.pentagram.view.controls.*">
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.MimeType;
+			
 			import mx.events.FlexEvent;
+			
+			import org.flashcommander.components.AutoComplete;
+			import org.flashcommander.event.CustomEvent;
 			
 			import spark.events.TextOperationEvent;
 
-			protected function textinput1_changeHandler(event:TextOperationEvent):void
+			protected function countryList_selectHandler(event:CustomEvent):void
 			{
-				// TODO Auto-generated method stub
+				client.countries.addItem(event.data);
+				client.newCountries.push(event.data);
 			}
 
-
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			protected function handlePropChange(event:Event,prop:String):void
 			{
-				countryList.addEventListener("getCountries",handleCountries);
+				if(client.modifiedProps.indexOf(prop) == -1) {
+					client.modifiedProps.push(prop);
+				}
+				client[prop] = event.target.text;
 			}
-			private function handleCountries(event:Event):void
-			{
-				trace(event.target.toString());
+			private function onDragIn(event:NativeDragEvent):void {
+				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
+					NativeDragManager.acceptDragDrop(logoHolder);
+				}
+			}
+			
+			private function onDragDrop(event:NativeDragEvent):void {
+				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					trace("file:///" + File(files[0]).nativePath);
+					if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
+						logo.source = "file:///" + File(files[0]).nativePath;
+						
+					}
+					else {
+						
+					}
+				}
 			}
 
 		]]>
@@ -30,7 +56,6 @@
 		<fx:int id="LABEL_WIDTH">90</fx:int>
 		<fx:int id="FIELD_WIDTH">400</fx:int>
 		<vo:Client id="client" />
-		<fx:Array id="countries" />
 	</fx:Declarations>
 	
 	<s:layout>
@@ -40,18 +65,18 @@
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 		<s:Rect width="8" />
-		<s:TextInput width="{FIELD_WIDTH}" change="textinput1_changeHandler(event)" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.name}" change="handlePropChange(event,'name')"/>
 	</s:HGroup>
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Short Name" />
 		<s:Rect width="8" />
-		<s:TextInput width="{FIELD_WIDTH}" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.shortname}" change="handlePropChange(event,'shortname')" />
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Logo" />
 		<s:Rect width="8" />
-		<s:Group width="{FIELD_WIDTH}" height="60">
+		<s:Group width="{FIELD_WIDTH}" id="logoHolder" height="60" nativeDragEnter="onDragIn(event)" nativeDragDrop="onDragDrop(event)">
 			<s:Rect left="0" top="0" bottom="0" right="0">
 				<s:fill>
 					<s:SolidColor  color="#F2F2F2" />
@@ -60,7 +85,7 @@
 					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 				</s:stroke>
 			</s:Rect>	
-			<mx:Image width="100%" height="100%" scaleContent="true" maintainAspectRatio="true"/>
+			<mx:Image id="logo"  left="1" right="1" top="1" bottom="1" scaleContent="true" maintainAspectRatio="true"/>
 		</s:Group>
 		<s:Group width="150" height="100%">
 			<s:Rect left="0" right="0" top="0" bottom="0">
@@ -81,34 +106,33 @@
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Website" />
 		<s:Rect width="8" />
-		<s:TextInput width="{FIELD_WIDTH}" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.website}" change="handlePropChange(event,'website')" />
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
 		<s:Rect width="8" />
-		<s:TextInput width="{FIELD_WIDTH}" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
 	</s:HGroup>
 
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Employees" />
 		<s:Rect width="8" />
-		<s:TextInput width="{FIELD_WIDTH}" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.employees}" change="handlePropChange(event,'employees')" />
 	</s:HGroup>
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Countries" />
 		<s:Rect width="8" />
-		<s:List id="countryList" width="{FIELD_WIDTH}" height="300" dataProvider="{client.countries}" labelField="name" >
-			<s:layout>
-				<layouts:FlowLayout gap="4" />
-			</s:layout>
-			<s:itemRenderer>
+		<controls:ListWithAutoComplete  allowMultipleSelection="true" id="countryList" width="{FIELD_WIDTH}" height="300"  
+		select="countryList_selectHandler(event)" 
+		dataProvider="{client.countries}" labelField="name" skinClass="com.pentagram.view.skins.CountryListSkin" >
+			<controls:itemRenderer>
 				<fx:Component>
-					<renderers:ClientCountriesRenderer countries="{outerDocument.countries}" /> 
+					<renderers:ClientCountriesRenderer  /> 
 				</fx:Component>
-			</s:itemRenderer>
-		</s:List>	
+			</controls:itemRenderer>
+		</controls:ListWithAutoComplete>	
 		<s:Group width="150" height="300">
 			<s:Rect left="0" right="0" top="0" bottom="0">
 				<s:fill>

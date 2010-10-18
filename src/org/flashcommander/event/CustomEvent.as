@@ -12,7 +12,7 @@ package org.flashcommander.event{
 		
 		public var data:Object;
 
-		public function CustomEvent(type:String, mydata:Object, bubbles:Boolean = false, cancelable:Boolean = false){
+		public function CustomEvent(type:String, mydata:Object, bubbles:Boolean = true, cancelable:Boolean = false){
 			
 			super(type, bubbles,cancelable);
 			

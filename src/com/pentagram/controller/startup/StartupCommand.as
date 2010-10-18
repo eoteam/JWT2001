@@ -55,7 +55,7 @@ package com.pentagram.controller.startup
 		private function handleCountries(event:ResultEvent):void
 		{
 			counter++;
-			var countries:Array = event.result as Array;
+			var countries:Array = event.token.results as Array;
 			var continent:Continent = event.token.continent;
 			continent.countries = new ArrayList(countries);
 			for each(var country:Country in countries)

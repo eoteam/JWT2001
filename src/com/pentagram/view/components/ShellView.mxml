@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*" xmlns:primatives="ws.tink.spark.primatives.*" xmlns:graphics="ws.tink.spark.graphics.*" xmlns:modules="ws.tink.spark.modules.*" xmlns:vo="com.pentagram.model.vo.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="com.pentagram.view.components.*" xmlns:primatives="ws.tink.spark.primatives.*" xmlns:graphics="ws.tink.spark.graphics.*" xmlns:modules="ws.tink.spark.modules.*" xmlns:vo="com.pentagram.model.vo.*" xmlns:editor="com.pentagram.view.components.editor.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -135,7 +135,7 @@
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
 <!--			<mx:ModuleLoader width="100%" height="100%"  id="editorLoader"  
 			url="com/pentagram/view/modules/editor/EditorModule.swf" ready="moduleloader1_readyHandler(event)" /> 	-->
-			<components:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview"  id="editorView" client="{client}" />
+			<editor:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview"  id="editorView" client="{client}" />
 		</s:NavigatorContent>
 	</mx:ViewStack>
 	<components:ClientBarView width="100%" id="clientBar" client="{client}"/>

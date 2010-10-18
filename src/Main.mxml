@@ -3,11 +3,11 @@
 						xmlns:s="library://ns.adobe.com/flex/spark" 
 					   	xmlns:mx="library://ns.adobe.com/flex/mx"
  						xmlns:samples="samples.*"
-						nativeDragEnter="onDragIn(event)"
-						nativeDragDrop="onDragDrop(event)"
+
 						creationComplete="handleCreationComplete()" 
 						applicationComplete="init()" xmlns:graphics="com.pentagram.view.graphics.*" xmlns:view="com.pentagram.view.*">
-	
+	<!--						nativeDragEnter="onDragIn(event)"
+	nativeDragDrop="onDragDrop(event)" -->
 	<fx:Style source="assets/main.css" />
 	<fx:Script>
 		<![CDATA[

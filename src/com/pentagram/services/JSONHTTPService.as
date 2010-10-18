@@ -20,14 +20,16 @@ package com.pentagram.services
 		public var decodeClass:Class;
 		public var token:AsyncToken;
 		public var params:Object;
-		public function JSONHTTPService(url:String,params:Object,responseType:String,decodeClass:Class=null) {
-					
+		public var responseType:String;
+		
+		public function JSONHTTPService(url:String,params:Object,responseType:String,decodeClass:Class=null) {			
 			service = new HTTPService();
 			service.method = URLRequestMethod.POST;
 			service.url = url;
 			service.showBusyCursor = false;
 			service.resultFormat = HTTPService.RESULT_FORMAT_TEXT;
 			service.concurrency = Concurrency.MULTIPLE;
+			this.responseType = responseType;
 			//service.addEventListener(ResultEvent.RESULT,handleResults);
 			//service.xmlDecode = (responseType == ResponseType.DATA) ? decodeData:decodeStatus;
 			this.params = params;
@@ -44,8 +46,7 @@ package com.pentagram.services
 			token.params = params;
 		}
 		
-		public function decode(event:ResultEvent):void
-		{
+		public function decodeData(event:ResultEvent):void {
 			var temp:Array = ArrayUtil.toArray(JSON.decode(String(event.result)));
 			var results:Array = [];
 			for each(var item:Object in temp) 
@@ -56,34 +57,8 @@ package com.pentagram.services
 			}
 			token.results = results;
 		}
-//		protected function decodeData(xml:XMLDocument):Array {
-//			var children:Array = [];
-//			var xmlDecoder:SimpleXMLDecoder = new SimpleXMLDecoder();
-//			if (xml.firstChild.childNodes.length > 0) {
-//				var objectTree:Object = xmlDecoder.decodeXML(xml.firstChild);
-//				var results:Array;
-//				
-//				if (objectTree.result is Array) 
-//					results = objectTree.result;
-//				else if(objectTree.result is Object)
-//					results = [objectTree.result];
-//				for (var i:int=0; i < results.length; i++) { 
-//					var item:Object = ObjectTranslator.objectToInstance(results[i], decodeClass);
-//					children.push(item);
-//				}
-//			}
-//			return children;
-//		}
-//		protected function decodeStatus(xml:XMLDocument):StatusResult {
-//			var children:Array = [];
-//			var xmlDecoder:SimpleXMLDecoder = new SimpleXMLDecoder();
-//			if (xml.firstChild.childNodes.length > 0) {
-//				var objectTree:Object = xmlDecoder.decodeXML(xml.firstChild);
-//				var result:StatusResult = new StatusResult();
-//				for(var prop:String in objectTree)
-//					result[prop] = objectTree[prop];
-//			}
-//			return result;
-//		}
+		public function decodeStatus(event:ResultEvent):void {
+			event.token.results = ObjectTranslator.objectToInstance(JSON.decode(event.result.toString()), StatusResult);
+		}
 	}
 }

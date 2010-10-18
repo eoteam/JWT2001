@@ -18,32 +18,28 @@ package com.pentagram.services
 		public function AppService() {
 			super();
 		}
-		public function loadClients():void
-		{
+		public function loadClients():void {
 			var params:Object = new  Object();
 			params.action = "getContent";
 			params.verbosity = 4;
 			params.parentid = 2;
 			this.createService(params,ResponseType.DATA,Client);
 		}		
-		public function loadContinents():void
-		{
+		public function loadContinents():void {
 			var params:Object = new  Object();
 			params.action = "getContent";
 			params.verbosity = 2;
 			params.parentid = 3;
 			this.createService(params,ResponseType.DATA,Continent);
 		}
-		public function loadCountries(continent:Continent):void
-		{
+		public function loadCountries(continent:Continent):void {
 			var params:Object = new  Object();
 			params.action = "getContent";
 			params.verbosity = 3;
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-		public function loadClientDatasets(client:Client):void
-		{
+		public function loadClientDatasets(client:Client):void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "datasets";
@@ -51,32 +47,46 @@ package com.pentagram.services
 			params.deleted = 0;
 			this.createService(params,ResponseType.DATA,Dataset);	
 		}
-		public function loadClientCountries(client:Client):void
-		{
+		public function loadClientCountries(client:Client):void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "client_countries";
 			params.countryid = client.id;
 			this.createService(params,ResponseType.DATA);	
 		}
-		public function loadDataSet(dataset:Dataset):void
-		{
+		public function loadDataSet(dataset:Dataset):void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = dataset.tablename;
 			this.createService(params,ResponseType.DATA,Dataset);				
 		}
-		public function authenticateUser(username:String, password:String):void
-		{
+		public function authenticateUser(username:String, password:String):void {
 			var params:Object = new Object();
 			params.username = username;
 			params.password = password;
 			params.action = "validateUser";	
 			this.createService(params,ResponseType.DATA,User);
 		}
-		public function logOut():void
-		{
+		public function logOut():void {
 			
+		}
+		public function saveClientInfo(client:Client):void {
+			var params:Object = new Object();
+			for each(var prop:String in client.modifiedProps) {
+				params[prop] = client[prop];
+			}
+			params.action = "updateRecord";
+			params.tablename = "content";
+			params.id = client.id;
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function addClientCountry(client:Client,country:Country):void {
+			var params:Object = new Object();
+			params.action = "insertRecord";
+			params.tablename = "client_countries";
+			params.clientid = client.id;
+			params.countryid = country.id;
+			this.createService(params,ResponseType.STATUS);
 		}
 	}
 }
