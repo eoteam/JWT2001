@@ -6,6 +6,7 @@ package com.pentagram.view.event
 	{
 		public static const CLIENT_SELECTED:String = "clientSelected";
 		public static const SHELL_LOADED:String = "shellLoaded";
+		public static const DATASET_CREATOR_COMPLETE:String = "datasetCreatorComplete";
 		
 		public var args:Array;
 		public function ViewEvent(type:String,...args)

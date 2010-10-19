@@ -30,6 +30,7 @@ package com.pentagram.view.mediators.editor
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientDataUpdated,EditorEvent);
 			view.overviewEditor.client = view.client;
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
+			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true);
 		}
 		
 		private function handleSaveChanges(event:MouseEvent):void {
@@ -39,6 +40,9 @@ package com.pentagram.view.mediators.editor
 			else {
 				
 			}
+		}
+		private function handleCancelChange(event:MouseEvent):void {
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CANCEL));
 		}
 		private function handleClientDataUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Client Data Updated");

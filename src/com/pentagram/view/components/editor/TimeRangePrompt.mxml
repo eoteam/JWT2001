@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx"  
+		 width="100%" height="100%" styleName="promptContainer" creationComplete="init()">
+	<fx:Script>
+		<![CDATA[
+			import mx.validators.Validator;
+			import mx.controls.Alert;
+			import com.pentagram.view.event.DataPromptEvent;
+			
+			private var _validators:Array;
+			
+			private function init():void
+			{
+				_validators = [startValidator, endValidator];
+			}
+			
+			private function nextHandler():void
+			{
+				dispatchEvent(new DataPromptEvent("timeRangeNext", true));
+			}
+			private function backHandler(event:Event):void
+			{
+				dispatchEvent(new DataPromptEvent("timeRangeBack", true));
+			}
+			private function runValidators():void
+			{
+				var results:Array = Validator.validateAll(_validators);
+				var message:String;
+				
+				startYear = startInput.text;
+				endYear = endInput.text;
+				
+				if(results.length > 0){
+					message  = "Please enter 4 digits for each year \n(e.g. 1984).\n";					
+					Alert.show(message);
+				}else{
+					
+					if(Number(endYear) >= Number(startYear)){
+						nextHandler();
+					}else{
+						message  = "The start year must be before the end year.\n";					
+						Alert.show(message);
+					}
+					
+				}  
+			}
+		]]>
+	</fx:Script>
+	<fx:Metadata>
+        [Event(name="timeRangeNext", type="com.pentagram.view.event.DataPromptEvent")]
+        [Event(name="timeRangeBack", type="com.pentagram.view.event.DataPromptEvent")]
+    </fx:Metadata>
+	<fx:Declarations>
+		<fx:String id="startYear"  />
+		<fx:String id="endYear" />	
+		
+		<mx:StringValidator id="startValidator" source="{startInput}" property="text" required="true" minLength="4" maxLength="4"/>
+		<mx:StringValidator id="endValidator" source="{endInput}" property="text"  required="true" minLength="4"  maxLength="4"/>
+		
+	</fx:Declarations>
+
+    
+        
+	<s:VGroup width="100%" height="100%" >
+		<s:Label text="Enter the time period of the data." styleName="promptTitle" />
+	
+		<s:HGroup>
+			<s:Label text="Start Year" />
+			<s:TextInput id="startInput" text="YYYY" width="70" focusIn="event.target.text = ''" styleName="formInput"  />	
+			
+			<s:Label text="End Year" />
+			<s:TextInput id="endInput" width="70" styleName="formInput" enter="runValidators()" />
+			
+		</s:HGroup>
+		
+		<s:Button label="Next" click="runValidators()" />
+	</s:VGroup>
+	
+	<s:Button label="Back" click="backHandler(event)" styleName="promptBackButton" />
+
+</s:HGroup>

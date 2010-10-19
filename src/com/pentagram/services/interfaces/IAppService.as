@@ -14,9 +14,9 @@ package com.pentagram.services.interfaces
 		
 		function loadClients():void;
 		
-		function loadClientDatasets(client:Client):void;
+		function loadClientDatasets():void;
 		
-		function loadClientCountries(client:Client):void;
+		function loadClientCountries():void;
 		
 		function loadDataSet(dataset:Dataset):void;
 		
@@ -24,10 +24,12 @@ package com.pentagram.services.interfaces
 		
 		function logOut():void;
 		
-		function saveClientInfo(client:Client):void;
+		function saveClientInfo():void;
 		
-		function addClientCountry(client:Client,country:Country):void;
+		function addClientCountry(country:Country):void;
 		
-		function removeClientCountry(client:Client,country:Country):void;
+		function removeClientCountry(country:Country):void;
+		
+		function createDataset(dataset:Dataset):void;
 	}
 }

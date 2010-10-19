@@ -6,12 +6,14 @@ package com.pentagram.controller.configuration
 	import com.pentagram.view.components.ClientBarView;
 	import com.pentagram.view.components.SearchView;
 	import com.pentagram.view.components.ShellView;
+	import com.pentagram.view.components.editor.DatasetCreator;
 	import com.pentagram.view.components.editor.EditorMainView;
 	import com.pentagram.view.components.editor.OverviewEditor;
 	import com.pentagram.view.mediators.BottomBarMediator;
 	import com.pentagram.view.mediators.MainViewMediator;
 	import com.pentagram.view.mediators.SearchViewMediator;
 	import com.pentagram.view.mediators.ShellMediator;
+	import com.pentagram.view.mediators.editor.DatasetCreatorMediator;
 	import com.pentagram.view.mediators.editor.EditorMediator;
 	import com.pentagram.view.mediators.editor.OverviewEditorMediator;
 	
@@ -30,6 +32,8 @@ package com.pentagram.controller.configuration
 			
 			mediatorMap.mapView(EditorMainView,EditorMediator); 
 			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator);
+			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator);
+			
 			trace("Configure: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));
 		}

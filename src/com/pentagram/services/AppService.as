@@ -15,6 +15,9 @@ package com.pentagram.services
 	
 	public class AppService extends AbstractService implements IAppService
 	{
+		[Inject]
+		public var appModel:AppModel;
+		
 		public function AppService() {
 			super();
 		}
@@ -39,19 +42,19 @@ package com.pentagram.services
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-		public function loadClientDatasets(client:Client):void {
+		public function loadClientDatasets():void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "datasets";
-			params.contentid = client.id;
+			params.contentid = appModel.selectedClient.id;
 			params.deleted = 0;
 			this.createService(params,ResponseType.DATA,Dataset);	
 		}
-		public function loadClientCountries(client:Client):void {
+		public function loadClientCountries():void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "client_countries";
-			params.clientid = client.id;
+			params.clientid = appModel.selectedClient.id;
 			this.createService(params,ResponseType.DATA);	
 		}
 		public function loadDataSet(dataset:Dataset):void {
@@ -70,31 +73,53 @@ package com.pentagram.services
 		public function logOut():void {
 			
 		}
-		public function saveClientInfo(client:Client):void {
+		public function saveClientInfo():void {
 			var params:Object = new Object();
-			for each(var prop:String in client.modifiedProps) {
-				params[prop] = client[prop];
+			for each(var prop:String in appModel.selectedClient.modifiedProps) {
+				params[prop] = appModel.selectedClient[prop];
 			}
 			params.action = "updateRecord";
 			params.tablename = "content";
-			params.id = client.id;
+			params.id = appModel.selectedClient.id;
 			this.createService(params,ResponseType.STATUS);
 		}
-		public function addClientCountry(client:Client,country:Country):void {
+		public function addClientCountry(country:Country):void {
 			var params:Object = new Object();
 			params.action = "insertRecord";
 			params.tablename = "client_countries";
-			params.clientid = client.id;
+			params.clientid = appModel.selectedClient.id;
 			params.countryid = country.id;
 			this.createService(params,ResponseType.STATUS);
 		}
-		public function removeClientCountry(client:Client,country:Country):void {
+		public function removeClientCountry(country:Country):void {
 			var params:Object = new Object();
 			params.action = "removeRecord";
 			params.tablename = "client_countries";
-			params.clientid = client.id;
+			params.clientid = appModel.selectedClient.id;
 			params.countryid = country.id;
 			this.createService(params,ResponseType.STATUS);
 		}
+		public function createDataset(dataset:Dataset):void {
+			var params:Object = new Object();
+			params.action = "insertTable";
+			params.contentid = appModel.selectedClient.id;
+			params.tablename = appModel.selectedClient.shortname+'_'+dataset.name;
+			params.name = dataset.name;
+			var countryids:String = '';
+			for each(var country:Country in appModel.selectedClient.countries.source) {
+				countryids += country.id.toString()+',';
+			}
+			countryids = countryids.substring(0,countryids.length-1);
+			params.countryids = countryids;
+			params.time = dataset.time;
+			params.type = dataset.type;
+			params.unit = dataset.unit;
+			params.multiplier = dataset.multiplier;
+			params.createdby = appModel.user.id;
+			params.modifiedby = appModel.user.id;
+			if(dataset.time == 1)
+				params.years = dataset.years[0]+','+dataset.years[1];
+			this.createService(params,ResponseType.STATUS);			
+		}	
 	}
 }

@@ -22,31 +22,28 @@ package com.pentagram.controller
 		
 		[Inject]
 		public var appModel:AppModel;
-		
-		private var client:Client;
+
 		private var counter:int;
 		override public function execute():void
 		{
- 			client = event.args[0] as Client;
-			appService.loadClientDatasets(client);
+			appService.loadClientDatasets();
 			appService.addHandlers(handleClientDatasets);
-			appService.loadClientCountries(client);
-			appService.addHandlers(handleClientCountries);
-			
+			appService.loadClientCountries();
+			appService.addHandlers(handleClientCountries);	
 		}
 		private function handleClientDatasets(event:ResultEvent):void
 		{
 			var sets:Array = event.token.results as Array;
-			client.datasets = new ArrayList(sets);
+			appModel.selectedClient.datasets = new ArrayList(sets);
 			if(sets.length > 0) {
-				for each(var dataset:Dataset in client.datasets.source) {
+				for each(var dataset:Dataset in appModel.selectedClient.datasets.source) {
 					appService.loadDataSet(dataset);
 					appService.addHandlers(handleDatasetLoaded);
 					appService.addProperties("dataset",dataset);
 				}
 			}
 			else {
-					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,client));
+					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,appModel.selectedClient));
 			}
 			
 		}
@@ -56,7 +53,7 @@ package com.pentagram.controller
 			for each(var country:Country in appModel.countries.source) {
 				for each(var relatedId:Object in relatedIds) {
 					if(country.id.toString() == relatedId.countryid) {
-						client.countries.addItem(country);
+						appModel.selectedClient.countries.addItem(country);
 						break;
 					}
 				}
@@ -68,9 +65,9 @@ package com.pentagram.controller
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.loaded = true;
 			dataset.data = event.result.toString();
-			if(counter == client.datasets.length) {
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,client));
-				appModel.selectedClient = client;
+			if(counter == appModel.selectedClient.datasets.length) {
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				//appModel.selectedClient = client;
 			}
 		}
 		

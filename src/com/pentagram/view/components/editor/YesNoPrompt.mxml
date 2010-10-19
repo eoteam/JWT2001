@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  width="100%" height="100%" styleName="promptContainer">
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.view.event.DataPromptEvent;
+			
+			private function nextHandler(event:Event):void
+			{
+				selectedAnswer = event.target.name.toString();
+				dispatchEvent(new DataPromptEvent("timeTypeNext", true));
+			}
+			private function backHandler(event:Event):void
+			{
+				
+				dispatchEvent(new DataPromptEvent("timeTypeBack", true));
+			}
+		]]>
+	</fx:Script>
+	<fx:Metadata>
+        [Event(name="timeTypeNext", type="com.pentagram.view.event.DataPromptEvent")]
+        [Event(name="timeTypeBack", type="com.pentagram.view.event.DataPromptEvent")]
+    </fx:Metadata>
+	<fx:Declarations>
+		<fx:String id="prompt" />
+		<fx:String id="selectedAnswer" />
+	</fx:Declarations>
+
+	
+	<s:VGroup width="100%" height="100%" >
+		<s:Label text="{prompt}" styleName="promptTitle" />
+	
+		<s:HGroup>
+			<s:Button name="true" label="Yes" click="nextHandler(event)" />
+			<s:Button name="false" label="No" click="nextHandler(event)" />			
+		</s:HGroup>
+	</s:VGroup>
+	
+	<s:Button label="Back" click="backHandler(event)" styleName="promptBackButton"  />
+	
+</s:HGroup>
