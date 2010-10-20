@@ -6,7 +6,8 @@ package com.pentagram.event
 	{
 		public static const UPDATE_CLIENT_DATA:String = "updateClientData";
 		public static const CLIENT_DATA_UPDATED:String = "clientDataUpdated";
-		public static const CREATE_DATA_SET:String = "createDataset";
+		public static const CREATE_DATASET:String = "createDataset";
+		public static const DATASET_CREATED:String = "createDataset";
 		
 		public static const CANCEL:String = "cancelEditor";
 		

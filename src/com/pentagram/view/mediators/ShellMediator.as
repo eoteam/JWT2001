@@ -35,9 +35,7 @@ package com.pentagram.view.mediators
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
-			var client:Client = event.args[0] as Client;
-			view.client = client;
-			trace(Constants.FILES_URL+client.thumbs);
+			view.client = appModel.selectedClient;
 		}
 		private function handleLoadSearchView(event:VisualizerEvent):void
 		{
