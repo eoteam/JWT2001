@@ -61,7 +61,7 @@ package com.pentagram.services
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = dataset.tablename;
-			this.createService(params,ResponseType.DATA,Dataset);				
+			this.createService(params,ResponseType.DATA,Object);				
 		}
 		public function authenticateUser(username:String, password:String):void {
 			var params:Object = new Object();
@@ -101,7 +101,7 @@ package com.pentagram.services
 		}
 		public function createDataset(dataset:Dataset):void {
 			var params:Object = new Object();
-			params.action = "insertTable";
+			params.action = "createDataset";
 			params.contentid = appModel.selectedClient.id;
 			params.tablename = appModel.selectedClient.shortname+'_'+dataset.name;
 			params.name = dataset.name;
@@ -121,5 +121,12 @@ package com.pentagram.services
 				params.years = dataset.years[0]+','+dataset.years[1];
 			this.createService(params,ResponseType.STATUS);			
 		}	
+		public function deleteDataset(dataset:Dataset):void {
+			var params:Object = new Object();
+			params.action = "deleteDataset";
+			params.tablename = dataset.tablename;
+			params.id = dataset.id;
+			this.createService(params,ResponseType.STATUS);			
+		}
 	}
 }

@@ -12,7 +12,7 @@
 			private function nextHandler():void
 			{
 				selectedScaleFactor = factorsCombo.selectedItem;
-				selectedUnit = unitsCombo.selectedItem.toString();
+				selectedUnit = unitsCombo.selectedItem ? unitsCombo.selectedItem.toString() : '';
 				
 				dispatchEvent(new DataPromptEvent("unitsNext", true));
 			}
@@ -20,7 +20,7 @@
 			{
 				dispatchEvent(new DataPromptEvent("unitsBack", true));
 			}
-			public var selectedScaleFactor:Object;
+			
 			[Bindable] private var scaleFactors:ArrayList = new ArrayList( [{label:'None',value:1},{label:'Thousands',value:1000},
 														  {label:'Millions',value:1000000},{label:'Billions',value:1000000000},	 
 														  {label:'Trillions',value:1000000000*100}]);
@@ -46,7 +46,7 @@
 				<fx:String>None</fx:String>
 			</fx:Array>				
 		</s:ArrayList>
-	
+		<fx:Object id="selectedScaleFactor"/>
 		<fx:String id="selectedUnit" />
 	</fx:Declarations>    
 

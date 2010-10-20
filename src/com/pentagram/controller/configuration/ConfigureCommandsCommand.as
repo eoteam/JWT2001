@@ -3,6 +3,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.AppConfigStateConstants;
 	import com.pentagram.controller.AuthenticateUserCommand;
 	import com.pentagram.controller.CreateDatasetCommand;
+	import com.pentagram.controller.DeleteDatasetCommand;
 	import com.pentagram.controller.LoadClientCommand;
 	import com.pentagram.controller.UpdateClientCommand;
 	import com.pentagram.controller.startup.StartupCommand;
@@ -24,8 +25,10 @@ package com.pentagram.controller.configuration
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
 			
 			commandMap.mapEvent(VisualizerEvent.CLIENT_SELECTED,LoadClientCommand,VisualizerEvent);
+			
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.CREATE_DATASET,CreateDatasetCommand,EditorEvent);
+			commandMap.mapEvent(EditorEvent.DELETE_DATASET,DeleteDatasetCommand,EditorEvent);
 			//commandMap.mapEvent(EditorEvent.CREATE_DATA_SET,
 			trace("Configure: Commands Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_COMMANDS_COMPLETE));

@@ -30,8 +30,10 @@ package com.pentagram.view.mediators
 		}
 		private function handleSelect(event:CustomEvent):void
 		{
-			appModel.selectedClient = event.data as Client;
-			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
+			if(appModel.selectedClient != event.data as Client) {
+				appModel.selectedClient = event.data as Client;
+				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
+			}
 			view.searchInput.text = '';
 		}
 	}

@@ -140,7 +140,7 @@
     <s:Scroller left="0" top="0" right="0" bottom="0" id="scroller" minViewportInset="1" hasFocusableChildren="false"
 				 horizontalScrollPolicy="off">
         <!--- @copy spark.components.SkinnableDataContainer#dataGroup -->
-			<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer" >
+			<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer">
 				<s:layout>
 					<!--- The default layout is vertical and measures at least for 5 rows.  
 					When switching to a different layout, HorizontalLayout for example,

@@ -6,6 +6,7 @@ package com.pentagram.controller
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.util.DataParser;
 	
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
@@ -26,10 +27,16 @@ package com.pentagram.controller
 		private var counter:int;
 		override public function execute():void
 		{
-			appService.loadClientDatasets();
-			appService.addHandlers(handleClientDatasets);
-			appService.loadClientCountries();
-			appService.addHandlers(handleClientCountries);	
+			counter = 0;
+			if(!appModel.selectedClient.loaded) {
+				appService.loadClientDatasets();
+				appService.addHandlers(handleClientDatasets);
+				appService.loadClientCountries();
+				appService.addHandlers(handleClientCountries);	
+			}
+			else {
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+			}
 		}
 		private function handleClientDatasets(event:ResultEvent):void
 		{
@@ -37,18 +44,21 @@ package com.pentagram.controller
 			appModel.selectedClient.datasets = new ArrayList(sets);
 			if(sets.length > 0) {
 				for each(var dataset:Dataset in appModel.selectedClient.datasets.source) {
+					if(dataset.time == 1)
+						dataset.years = dataset.range.split(',');
 					appService.loadDataSet(dataset);
 					appService.addHandlers(handleDatasetLoaded);
 					appService.addProperties("dataset",dataset);
 				}
 			}
 			else {
-					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED,appModel.selectedClient));
+				appModel.selectedClient.loaded = true;
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 			}
 			
 		}
 		private function handleClientCountries(event:ResultEvent):void
-		{
+		{	
 			var relatedIds:Array = event.token.results as Array;
 			for each(var country:Country in appModel.countries.source) {
 				for each(var relatedId:Object in relatedIds) {
@@ -64,8 +74,9 @@ package com.pentagram.controller
 			counter++;
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.loaded = true;
-			dataset.data = event.result.toString();
+			DataParser.parseData(event.token.results as Array,dataset,appModel.selectedClient);
 			if(counter == appModel.selectedClient.datasets.length) {
+				appModel.selectedClient.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 				//appModel.selectedClient = client;
 			}

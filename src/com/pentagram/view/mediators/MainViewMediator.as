@@ -24,7 +24,7 @@ package com.pentagram.view.mediators
 		public var appModel:AppModel;
 		
 		private var loginWindow:LoginWindow;
-		private var selectedClient:Client;
+		//private var selectedClient:Client;
 		public override function onRegister():void
 		{
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
@@ -40,11 +40,11 @@ package com.pentagram.view.mediators
 		private function handleClientSelected(event:ViewEvent):void
 		{
 			view.currentState = view.visualizerAndLoadingState.name;	
-			selectedClient = event.args[0] as Client;
+			//selectedClient = event.args[0] as Client;
 		}
 		private function handleShellLoaded(event:ViewEvent):void
 		{
-			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED,selectedClient));
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void
 		{

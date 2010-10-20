@@ -24,9 +24,9 @@
 		]]>
 	</fx:Script>
 	<s:states>
-		<s:State name="overview" />
-		<s:State name="dataset" />
-		<s:State name="create" />
+		<s:State name="overview" id="overviewState" />
+		<s:State name="dataset" id="datasetState" />
+		<s:State name="create" id="createState" />
 	</s:states>
 	<s:VGroup width="200" gap="0">
 		<s:Button width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)" />
@@ -49,7 +49,7 @@
 			</s:stroke>
 		</s:Rect>
 		
-		<editor:DatasetEditor width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset" />
+		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset" dataset="{this.dataSetList.selectedItem}" />
 		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="overview"  />
 		<editor:DatasetCreator width="100%" top="15" left="8" right="8" bottom="40" includeIn="create" />
 		
@@ -62,7 +62,7 @@
 			<s:Button label="Save Changes" id="saveBtn" />
 			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
 			<editor:StatusModule id="statusModule" width="100%" />
-			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" />
+			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" id="deleteBtn" creationComplete="this.dispatchEvent(new Event('datasetState'))" />
 		</s:HGroup>			
 	</s:Group>
 </s:HGroup>

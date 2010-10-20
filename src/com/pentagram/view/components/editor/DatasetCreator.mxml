@@ -116,7 +116,7 @@
 			dataset.name = this._sheetName;
 			if(dataset.time == 1)
 				dataset.years = _yearRange;
-			dataset.multiplier = _unitsPrompt.selectedScaleFactor.value;
+			dataset.multiplier = _unitsPrompt.selectedScaleFactor? _unitsPrompt.selectedScaleFactor.value : 0;
 			dataset.unit = _unitsPrompt.selectedUnit;
 			this.dispatchEvent(new ViewEvent(ViewEvent.DATASET_CREATOR_COMPLETE,dataset));								
 		}

@@ -1,6 +1,7 @@
 package com.pentagram.view.mediators.editor
 {
 	import com.pentagram.event.EditorEvent;
+	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.view.components.editor.DatasetCreator;
 	import com.pentagram.view.event.ViewEvent;
@@ -14,10 +15,14 @@ package com.pentagram.view.mediators.editor
 		[Inject]
 		public var view:DatasetCreator;
 		
+		[Inject]
+		public var appModel:AppModel;
+		
 		override public function onRegister():void {
 			eventMap.mapListener(view,ViewEvent.DATASET_CREATOR_COMPLETE,handleDatasetCreatorComplete,ViewEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
+			view.titlePrompt.sets = appModel.selectedClient.datasets.source;
 		}
 		private function handleCancel(event:Event):void {
 			view.reset();

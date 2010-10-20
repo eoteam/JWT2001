@@ -31,5 +31,7 @@ package com.pentagram.services.interfaces
 		function removeClientCountry(country:Country):void;
 		
 		function createDataset(dataset:Dataset):void;
+		
+		function deleteDataset(dataset:Dataset):void;
 	}
 }

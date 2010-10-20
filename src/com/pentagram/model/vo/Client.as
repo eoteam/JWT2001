@@ -16,8 +16,11 @@ package com.pentagram.model.vo
 		
 		public var datasets:ArrayList;
 		public var countries:ArrayList = new ArrayList();
+		
 		public var newCountries:Array = [];
 		public var deletedCountries:Array = [];
+		
+		public var loaded:Boolean = false;
 		
 		public var tags:String='';
 		public var relatedcontent:String;

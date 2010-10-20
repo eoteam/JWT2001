@@ -1,0 +1,65 @@
+package com.pentagram.util
+{
+	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataCell;
+	import com.pentagram.model.vo.DataColumn;
+	import com.pentagram.model.vo.DataRow;
+	import com.pentagram.model.vo.Dataset;
+
+	public class DataParser
+	{
+
+		public static function parseData(data:Array,dataset:Dataset,client:Client):void {
+			var prop:String;
+			var item:Object;
+			var row:DataRow;
+			var rowCell:DataCell;
+			var colCell:DataCell;
+			
+			if(dataset.time == 1) {
+				for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+					var col:DataColumn = new DataColumn();
+					col.year = i;
+					dataset.columns.addItem(col);
+				}
+				
+				for each(item in data) {
+					row = new DataRow();
+					row.id = item.id;
+					row.countryid = item.countryid;
+					dataset.rows.addItem(row);
+					for(prop in item) {
+						if(prop != 'id' && prop != 'countryid') {
+							rowCell = new DataCell();
+							rowCell.year = Number(prop);
+							rowCell.value =item[prop] 
+							row.points.push(cell);
+						}
+						else if(prop == "countryid") {
+							collCell = new DataCell();
+							colCell.countryid = prop;
+							colCell.year = item[prop];
+							dataset.columns.getItemAt(Number(prop) - dataset.years[0]);
+						}
+					}
+				}
+			}
+			
+			else {
+				row = new DataRow();
+				dataset.rows.addItem(row);
+			}
+		}
+		public static function getCountryById(client:Client,countryid:int):Country {
+			var res:Country;
+			for each(var country:Country in client.countries.source) {
+				if(country.id == countryid) {
+					res = country;
+					break;
+				}
+			}
+			return res;
+		}
+	}
+}

@@ -10,7 +10,7 @@ package com.pentagram.controller
 	
 	import org.robotlegs.mvcs.Command;
 	
-	public class CreateDatasetCommand extends Command
+	public class DeleteDatasetCommand extends Command
 	{
 		[Inject]
 		public var appModel:AppModel;
@@ -23,21 +23,15 @@ package com.pentagram.controller
 		
 		override public function execute():void {
 			var dataset:Dataset = event.args[0] as Dataset;
-			appService.createDataset(dataset);
-			appService.addHandlers(handleDatasetCreated);
+			appService.deleteDataset(dataset);
+			appService.addHandlers(handleDatasetDeleted);
 		}
-		private function handleDatasetCreated(event:ResultEvent):void {
+		private function handleDatasetDeleted(event:ResultEvent):void {
 			var result:StatusResult = event.token.results as StatusResult;
 			if(result.success) {
-				var msg:Array = result.message.split(',');
 				var dataset:Dataset = this.event.args[0] as Dataset;
-				dataset.contentid = appModel.selectedClient.id;
-				dataset.createdby = dataset.modifiedby = appModel.user.id;
-				dataset.tablename = msg[1];
-				dataset.id = msg[0];
-				dataset.loaded = true;
-				appModel.selectedClient.datasets.addItem(dataset);
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_CREATED,dataset));
+				appModel.selectedClient.datasets.removeItem(dataset);
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_DELETED));
 			}
 		}
 	}

@@ -25,14 +25,6 @@
 				hideInfoPanelEffect.play();
 				setInfoBtn.selected = false;
 			}
-		
-
-
-//			protected function moduleloader1_readyHandler(event:ModuleEvent):void
-//			{
-// 				if(editorLoader.child is IEditorModule)
-//					IEditorModule(editorLoader.child).client = this.client; 
-//			}
 			protected function mainStack_changeHandler(event:IndexChangedEvent):void
 			{
 				if(mainStack.selectedIndex == 1) 

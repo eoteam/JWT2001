@@ -122,7 +122,7 @@
 		<s:Label width="{LABEL_WIDTH}" text="Countries" />
 		<s:Rect width="8" />
 		<controls:ListWithAutoComplete  allowMultipleSelection="true" id="countryList" width="{FIELD_WIDTH}" height="300"  
-		select="countryList_selectHandler(event)" 
+		select="countryList_selectHandler(event)"  
 		dataProvider="{client.countries}" labelField="name" skinClass="com.pentagram.view.skins.CountryListSkin" >
 			<controls:itemRenderer>
 				<fx:Component>
