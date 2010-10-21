@@ -19,8 +19,10 @@
 			import spark.events.TextOperationEvent;
 
 			protected function countryList_selectHandler(event:CustomEvent):void {
-				client.countries.addItem(event.data);
-				client.newCountries.push(event.data);
+				if(client.countries.getItemIndex(event.data) == -1) {
+					client.countries.addItem(event.data);
+					client.newCountries.push(event.data);
+				}
 			}
 			protected function handlePropChange(event:Event,prop:String):void {
 				if(client.modifiedProps.indexOf(prop) == -1) {

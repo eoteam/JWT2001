@@ -32,20 +32,18 @@ package com.pentagram.util
 					for(prop in item) {
 						if(prop != 'id' && prop != 'countryid') {
 							rowCell = new DataCell();
-							rowCell.year = Number(prop);
-							rowCell.value =item[prop] 
-							row.points.push(cell);
-						}
-						else if(prop == "countryid") {
-							collCell = new DataCell();
-							colCell.countryid = prop;
-							colCell.year = item[prop];
-							dataset.columns.getItemAt(Number(prop) - dataset.years[0]);
+							rowCell.key = Number(prop);
+							rowCell.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+							row.points.push(rowCell);
+
+							colCell = new DataCell();
+							colCell.key = item.countryid;
+							colCell.value = dataset.type == 1 ? Number(item[prop]) : item[prop];
+							DataColumn(dataset.columns.getItemAt(Number(prop) - dataset.years[0])).points.push(colCell);
 						}
 					}
 				}
 			}
-			
 			else {
 				row = new DataRow();
 				dataset.rows.addItem(row);

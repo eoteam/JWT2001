@@ -17,8 +17,8 @@ package com.pentagram.model.vo
 		public var options:String; //for qualitative type
 		
 		//public var data:String; //content of table
-		public var rows:ArrayCollection;
-		public var columns:ArrayCollection;
+		public var rows:ArrayCollection = new ArrayCollection();
+		public var columns:ArrayCollection = new ArrayCollection();
 		
 		public var loaded:Boolean = false;
 		
