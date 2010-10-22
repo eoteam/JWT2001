@@ -82,7 +82,7 @@ package com.pentagram.view.layouts{
 
                 //update the current pos, and add the gap
                 x += elementWidth + _gap;
-				trace(x,y);
+				//trace(x,y);
             }
 			runningHeight = maxHeight;
 			
@@ -94,7 +94,7 @@ package com.pentagram.view.layouts{
 					autoCompleteX = _border;
 				}
 			}
-			trace(autoCompleteX,autoCompleteY);
+			//trace(autoCompleteX,autoCompleteY);
             //set final content size (needed for scrolling)
             layoutTarget.setContentSize(maxWidth + _border, maxHeight + _border);
         }

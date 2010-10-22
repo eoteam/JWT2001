@@ -12,6 +12,8 @@ package com.pentagram.model.vo
 		public var continent:Continent;
 
 		
+		//session info,
+		public var isNew:Boolean = true;
 
 	}
 }

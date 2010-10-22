@@ -140,7 +140,8 @@
     <s:Scroller left="0" top="0" right="0" bottom="0" id="scroller" minViewportInset="1" hasFocusableChildren="false"
 				 horizontalScrollPolicy="off">
         <!--- @copy spark.components.SkinnableDataContainer#dataGroup -->
-			<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer">
+		<s:Group left="0" right="0" top="0">
+			<s:DataGroup left="0" right="0" id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer">
 				<s:layout>
 					<!--- The default layout is vertical and measures at least for 5 rows.  
 					When switching to a different layout, HorizontalLayout for example,
@@ -149,6 +150,9 @@
 				</s:layout>
 				
 			</s:DataGroup>
+			<components:AutoComplete x="{flowLayout.autoCompleteX}" y="{flowLayout.autoCompleteY}" id="autoComplete" width="160" height="30" />
+		</s:Group>
+		
     </s:Scroller>
-	<components:AutoComplete x="{flowLayout.autoCompleteX}" y="{flowLayout.autoCompleteY}" id="autoComplete" width="160" height="30" />			
+				
 </s:SparkSkin>

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="hgroup1_creationCompleteHandler(event)"  
 		 xmlns:editor="com.pentagram.view.components.editor.*">
 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
+			
+			import mx.events.FlexEvent;
 			
 			import spark.events.IndexChangeEvent;
 			[Bindable] public var client:Client;
@@ -19,6 +21,29 @@
 			{
 				dataSetList.selectedIndex = -1
 				this.currentState = "overview";	
+			}
+
+
+			protected function hgroup1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if (NativeApplication.supportsMenu)
+				{
+					var m:NativeMenu = NativeApplication.nativeApplication.menu;
+					var file:NativeMenuItem = m.items[1] as NativeMenuItem;
+					var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+					exportSp.enabled = false;
+					file.submenu.addItemAt(exportSp,0);	
+					var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
+					importSp.enabled = false;
+					file.submenu.addItemAt(importSp,0);			
+
+					//importSp.addEventListener(Event.SELECT,onItemSelect);				
+				}
+				else if (NativeWindow.supportsMenu)
+				{
+					
+					
+				}
 			}
 
 		]]>
@@ -49,7 +74,7 @@
 			</s:stroke>
 		</s:Rect>
 		
-		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset" dataset="{this.dataSetList.selectedItem}" />
+		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset"  />
 		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="overview"  />
 		<editor:DatasetCreator width="100%" top="15" left="8" right="8" bottom="40" includeIn="create" />
 		

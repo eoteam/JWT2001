@@ -3,7 +3,6 @@ package com.pentagram.model.vo
 	[Bindable]
 	public class User extends BaseVO
 	{
-
 		public var email:String;
 		public var active:int;
 		public var username:String;

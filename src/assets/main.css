@@ -26,10 +26,18 @@
 	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 } 
-
+@font-face {
+	src: url("/assets/FlamaBook.ttf");
+	font-family: "FlamaBookMx";
+	embedAsCFF: false;
+	advancedAntiAliasing: true;      
+}
 s|WindowedApplication{
 	backgroundColor: #FAFCFB;
 	fontFamily: FlamaBook;
 	fontSize: 14;
 	color: #111111;
+}
+mx|TextInput {
+	fontFamily: FlamaBookMx;
 }

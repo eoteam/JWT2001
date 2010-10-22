@@ -16,6 +16,8 @@ package com.pentagram.view.mediators.editor
 	
 	import org.robotlegs.mvcs.Mediator;
 	
+	import spark.events.IndexChangeEvent;
+	
 	public class EditorMediator extends Mediator
 	{
 		[Inject]
@@ -35,7 +37,9 @@ package com.pentagram.view.mediators.editor
 			eventMap.mapListener(view,'datasetState',handleDatasetState,Event,false,0,true);
 		
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
-			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true);			
+			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true);	
+			
+			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange);
 		}
 		
 		private function handleSaveChanges(event:MouseEvent):void {
@@ -73,6 +77,8 @@ package com.pentagram.view.mediators.editor
 			else
 				view.dataSetList.selectedIndex = 0;
 		}
-		
+		private function handleDatasetChange(event:IndexChangeEvent):void {
+			appModel.selectedSet = view.dataSetList.selectedItem as Dataset;
+		}
 	}
 }

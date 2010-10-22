@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TextInput  xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" 
+			   change="handleValueChange()" text="{_value}" restrict="0-9,.-"
+			   contentBackgroundAlpha="0" borderVisible="false"
+			   implements="mx.controls.listClasses.IDropInListItemRenderer">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.controls.dataGridClasses.DataGridListData;
+			import mx.controls.listClasses.BaseListData;
+			
+			private var _listData:BaseListData;
+			private var field:String;
+			[Bindable] private var _value:String;  	
+			override public function get listData():BaseListData
+			{
+				return _listData;
+			}
+			
+			// Define the setter method,
+			override public function set listData(value:BaseListData):void
+			{
+				_listData = value;
+				field = DataGridListData(this.listData).dataField;
+			}						
+			override public function get data():Object
+			{
+				return super.data;
+			}    
+			override public function set data(value:Object):void 
+			{  
+				super.data = value;    
+				if(value != null)  
+				{
+/* 					
+					if(field == "value" || field == "numValue")
+						_value = data.value;	
+					else */
+						_value = data.points[field];	
+				}   
+			} 
+			private function handleValueChange():void
+			{
+				if(field == "value" || field == "numValue")
+				{
+					data.value = this.text;
+				}
+				else
+				{
+					data.points[DataGridListData(this.listData).dataField] = this.text;
+					//data.points[DataGridListData(this.listData).dataField].changed = true;
+				}
+				data.changed = true;
+			}  
+		]]>
+	</mx:Script>
+<!--	<mx:NumberValidator  id="numberValidator" 
+						 source="{this}"
+						 property="text"
+						 trigger="{this}" required="true"
+						 triggerEvent="change"
+						 allowNegative="true" decimalSeparator="." thousandsSeparator="," />-->
+	
+</mx:TextInput> 

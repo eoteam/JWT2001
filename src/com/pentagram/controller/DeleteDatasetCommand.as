@@ -5,6 +5,7 @@ package com.pentagram.controller
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.services.interfaces.IDatasetService;
 	
 	import mx.rpc.events.ResultEvent;
 	
@@ -16,15 +17,15 @@ package com.pentagram.controller
 		public var appModel:AppModel;
 		
 		[Inject]
-		public var appService:IAppService;
+		public var service:IDatasetService;
 		
 		[Inject]
 		public var event:EditorEvent;
 		
 		override public function execute():void {
 			var dataset:Dataset = event.args[0] as Dataset;
-			appService.deleteDataset(dataset);
-			appService.addHandlers(handleDatasetDeleted);
+			service.deleteDataset(dataset);
+			service.addHandlers(handleDatasetDeleted);
 		}
 		private function handleDatasetDeleted(event:ResultEvent):void {
 			var result:StatusResult = event.token.results as StatusResult;

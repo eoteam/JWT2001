@@ -26,6 +26,7 @@
 			import flashx.textLayout.compose.TextLineRecycler;
 			
 			import mx.controls.Alert;
+			import mx.controls.Menu;
 			import mx.events.AIREvent;
 			import mx.events.FlexEvent;
 			import mx.events.StyleEvent;
@@ -49,7 +50,7 @@
 			
 			protected function init():void
 			{
-
+				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				// Request to be notified when this application is activated (brought forward as the active window)
 				// or deactivated
 				addEventListener(AIREvent.APPLICATION_ACTIVATE, onAppActivate);
@@ -90,26 +91,21 @@
 				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, errorHandler);
 
 				// Create a native menu with two items in the top-level application menu. 
-				var item1:NativeMenuItem;
+				
 				if (NativeApplication.supportsMenu)
 				{
-					var nativeMenu:NativeMenu = new NativeMenu();
-					item1 = new NativeMenuItem("File");
-					var item2:NativeMenuItem = new NativeMenuItem("Window");
-					nativeMenu.addItem(item1);
-					nativeMenu.addItem(item2);
-
-					var menuItem:NativeMenuItem = new NativeMenuItem("My App Menu");
-					menuItem.submenu = nativeMenu;
-					NativeApplication.nativeApplication.menu.addItem(menuItem);
-					item1.addEventListener(Event.SELECT,onItemSelect);
+					var m:NativeMenu = NativeApplication.nativeApplication.menu;
+					var win:NativeMenuItem = m.items[3] as NativeMenuItem;
+					var fs:NativeMenuItem = new NativeMenuItem("Full Screen");
+					win.submenu.addItem(fs);			
+					fs.addEventListener(Event.SELECT,onItemSelect);				
 				}
 				else if (NativeWindow.supportsMenu)
 				{
-					var menu:NativeMenu = new NativeMenu();
-					nativeWindow.menu = menu;
-					item1 = stage.nativeWindow.menu.addItem(new NativeMenuItem("My App Menu"));
-					item1.addEventListener(Event.SELECT,onItemSelect);
+//					var menu:NativeMenu = new NativeMenu();
+//					nativeWindow.menu = menu;
+//					item1 = stage.nativeWindow.menu.addItem(new NativeMenuItem("My App Menu"));
+//					item1.addEventListener(Event.SELECT,onItemSelect);
 				}
 
 				// Manually close all open Windows when app closes.
@@ -219,7 +215,14 @@
 			// Handle Menu item selection
 			protected function onItemSelect(e:Event):void
 			{
-    			trace("Menu item selected");
+				if( stage.displayState == StageDisplayState.NORMAL ) {
+						stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+						this.showStatusBar = false;
+				} 
+				else {
+						stage.displayState = StageDisplayState.NORMAL;
+						this.showStatusBar = true;
+				}
 			}
 
 			// Called when application window closes

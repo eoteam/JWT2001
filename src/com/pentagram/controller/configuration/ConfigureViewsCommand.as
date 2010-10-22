@@ -35,7 +35,7 @@ package com.pentagram.controller.configuration
 			mediatorMap.mapView(EditorMainView,EditorMediator); 
 			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator);
 			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator);
-			//mediatorMap.mapView(DatasetEditor,DatasetEditorMediator); 
+			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator); 
 			
 			trace("Configure: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));

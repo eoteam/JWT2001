@@ -21,7 +21,7 @@
 			protected function countryList_selectHandler(event:CustomEvent):void {
 				if(client.countries.getItemIndex(event.data) == -1) {
 					client.countries.addItem(event.data);
-					client.newCountries.push(event.data);
+					client.newCountries.addItem(event.data);
 				}
 			}
 			protected function handlePropChange(event:Event,prop:String):void {
@@ -98,7 +98,7 @@
 					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 				</s:stroke>
 			</s:Rect>
-			<s:Button label="Delete All" />
+			<!--<s:Button label="Delete All" />-->
 		</s:Group>
 	</s:HGroup>		
 	
@@ -147,7 +147,7 @@
 			<s:VGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
 				<s:Label text="Total: {client.countries.length}" />
 				<s:DropDownList width="100%" id="continentList" labelField="name" prompt="Add a Region" />
-				<s:Button label="Delete All" />
+				<s:Button label="Delete Selected" id="deleteBtn" />
 			</s:VGroup>
 		</s:Group>
 	</s:HGroup>

@@ -64,7 +64,7 @@ package com.pentagram.controller
 			var country:Country = event.token.client as Country;
 			var result:StatusResult = event.token.results as StatusResult;
 			if(result.success) {
-				appModel.selectedClient.newCountries.splice(appModel.selectedClient.newCountries.indexOf(country),1);
+				appModel.selectedClient.newCountries.removeItem(country);
 				counter++;
 				checkCount();
 			}
@@ -73,7 +73,7 @@ package com.pentagram.controller
 			var country:Country = event.token.client as Country;
 			var result:StatusResult = event.token.results as StatusResult;
 			if(result.success) {
-				appModel.selectedClient.deletedCountries.splice(appModel.selectedClient.deletedCountries.indexOf(country),1);
+				appModel.selectedClient.deletedCountries.removeItem(country);
 				appModel.selectedClient.countries.removeItem(country);
 				counter++;
 				checkCount();
