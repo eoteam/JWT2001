@@ -33,11 +33,11 @@
 				super.data = value;    
 				if(value != null)  
 				{
-/* 					
+					/* 					
 					if(field == "value" || field == "numValue")
-						_value = data.value;	
+					_value = data.value;	
 					else */
-						_value = data.points[field];	
+					_value = data.points[field];	
 				}   
 			} 
 			private function handleValueChange():void
@@ -55,11 +55,11 @@
 			}  
 		]]>
 	</mx:Script>
-<!--	<mx:NumberValidator  id="numberValidator" 
-						 source="{this}"
-						 property="text"
-						 trigger="{this}" required="true"
-						 triggerEvent="change"
-						 allowNegative="true" decimalSeparator="." thousandsSeparator="," />-->
+	<!--	<mx:NumberValidator  id="numberValidator" 
+	source="{this}"
+	property="text"
+	trigger="{this}" required="true"
+	triggerEvent="change"
+	allowNegative="true" decimalSeparator="." thousandsSeparator="," />-->
 	
 </mx:TextInput> 

@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:vo="com.pentagram.model.vo.*"
-		 creationComplete="vgroup1_creationCompleteHandler(event)">
+		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:controls="com.pentagram.view.controls.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -61,10 +61,11 @@
 	
 <!--			<s:Scroller width="100%" height="100%">
 				<s:Group clipAndEnableScrolling="true">-->
-					<mx:DataGrid maxWidth="1000" width="100%"  height="100%" id="grid"  editable="true">
+		
+					<controls:BetterDataGrid minWidth="500"  width="100%"  height="100%" id="grid"  editable="true" horizontalScrollPolicy="on">
 						<mx:DataGridColumn  resizable="true"   headerText="Countries" id="countries" editable="false" dataField="name" sortable="true">
 						</mx:DataGridColumn>
-					</mx:DataGrid>	
+					</controls:BetterDataGrid>	
 <!--				</s:Group>	
 			</s:Scroller>-->
 		
