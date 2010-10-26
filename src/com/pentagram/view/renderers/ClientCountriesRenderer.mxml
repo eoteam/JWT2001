@@ -11,5 +11,5 @@
 		</s:stroke>
 	</s:Rect>
 	<s:Label text="{data.name}" paddingLeft="4" paddingRight="4" verticalCenter="0"  />
-	
+
 </s:ItemRenderer>

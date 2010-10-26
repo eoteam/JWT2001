@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renderers:DGDefaultRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+						   xmlns:s="library://ns.adobe.com/flex/spark" label="{value.toString()}" 
+						   mouseDown="defaultgriditemrenderer1_mouseDownHandler(event)" 
+						   creationComplete="defaultgriditemrenderer1_creationCompleteHandler(event)"
+						   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:renderers="com.pentagram.view.renderers.*">
+	<fx:Declarations>
+		
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.core.UIFTETextField;
+			import mx.events.FlexEvent;
+			import mx.events.FlexMouseEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.TextInput;
+			//private var wrapper:UIFTETextField;
+			
+			[Bindable] public var value:String;
+			override public function set data(row:Object):void 
+			{      
+				if(row != null)  
+				{
+					this.value = row.points[this.column.dataField].toString();
+				}   
+				super.data = this.value;
+				if(labelDisplay)
+					labelDisplay.text = value;
+			} 
+			override public function get data():Object {
+				return value;
+			}
+			protected function defaultgriditemrenderer1_creationCompleteHandler(event:FlexEvent):void
+			{
+				if(value)
+					labelDisplay.text = value;
+
+			}
+
+			private var create:Boolean = false;
+			private var input:TextInput;
+			protected function defaultgriditemrenderer1_mouseDownHandler(event:MouseEvent):void
+			{
+				create = true;
+				//this.invalidateDisplayList();
+				if(!input) {
+				 	input = new TextInput();
+					input.width = this.width;
+					input.height = this.height;
+					input.text = value;
+					input.setStyle("contentBackgroundColor",0xff0000);
+					input.addEventListener(FocusEvent.FOCUS_OUT,handleFocusOut,false,0,true);
+					var pt:Point = this.owner.localToGlobal(new Point(x,y));
+					input.x = pt.x; input.y = pt.y;
+				}
+				PopUpManager.addPopUp(input,this,false);
+			}
+			/* override protected function createLabelDisplay():void {
+				super.createLabelDisplay();
+				if(create) {
+					var input:TextInput = new TextInput();
+					input.width = 50;
+					input.height = 22;
+					input.text = value;
+					input.setStyle("contentBackgroundColor",0xff0000);
+					create = false;
+					this.addChildAt(input,1);
+				}
+			} */
+
+			protected function handleFocusOut(event:FocusEvent):void
+			{
+				if(input) {
+					PopUpManager.removePopUp(input);
+					input = null;
+				}
+			}
+
+		]]>
+	</fx:Script>
+</renderers:DGDefaultRenderer>

@@ -3,29 +3,32 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:vo="com.pentagram.model.vo.*"
-		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:controls="com.pentagram.view.controls.*">
+		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:controls="com.pentagram.view.controls.*" xmlns:renderers="com.pentagram.view.renderers.*">
 	
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.view.renderers.QuantityEditor;
-			//import com.pentagram.view.renderers.QuantityRenderer;
+			import com.pentagram.view.renderers.DGDefaultEditor;
 			
-			import mx.controls.dataGridClasses.DataGridColumn;
+			import mx.core.UIFTETextField;
 			import mx.events.FlexEvent;
+			
+			import spark.skins.spark.DefaultGridItemRenderer;
 			public function generateDataset():void {
  				if(dataset.time == 1) {
-					var columns:Array = [];
-					columns.push(countries);
+					var columns:ArrayList = new ArrayList();
+					columns.addItem(countries);
 					var years:Array = dataset.range.split(',');
 					for(var i:int=years[0];i<=years[1];i++) {
-						var column:DataGridColumn = new DataGridColumn(i.toString());
-						column.itemRenderer = new ClassFactory(QuantityEditor);
-						column.itemEditor = new ClassFactory(QuantityEditor);
+						var column:GridColumn = new GridColumn();
+						column.headerText = i.toString();
+						column.itemRenderer = new ClassFactory(DGDefaultEditor);
+				
+						//column.itemEditor = new ClassFactory(QuantityRenderer);
 						column.dataField = i.toString();
 						column.width = 75;
-						column.editable = true;
+						//column.editable = true;
 						column.sortable = true;
-						columns.push(column);
+						columns.addItem(column);
 					}
 				}
 				else {
@@ -38,6 +41,12 @@
 			protected function vgroup1_creationCompleteHandler(event:FlexEvent):void
 			{
 				trace("Dataset Editor Complete");
+			}
+
+
+			protected function grid_clickHandler(event:MouseEvent):void
+			{
+				//var f:UIFTETextField; f.
 			}
 
 		]]>
@@ -61,11 +70,24 @@
 	
 <!--			<s:Scroller width="100%" height="100%">
 				<s:Group clipAndEnableScrolling="true">-->
+				<s:DataGrid  width="100%"  height="100%" id="grid" click="grid_clickHandler(event)" >
+					<s:columns>
+						<s:ArrayList>
+							<s:GridColumn  minWidth="120" resizable="true" headerText="Countries" dataField="name" sortable="true" id="countries">
+								<s:itemRenderer>
+									<fx:Component>
+										<renderers:DGDefaultRenderer singleLine="true" width="100%" />
+									</fx:Component>
+								</s:itemRenderer>
+							</s:GridColumn>
+						</s:ArrayList>
+					</s:columns>
+				</s:DataGrid>
 		
-					<controls:BetterDataGrid minWidth="500"  width="100%"  height="100%" id="grid"  editable="true" horizontalScrollPolicy="on">
+<!--					<controls:BetterDataGrid minWidth="500"  width="100%"  height="100%" id="grid"  editable="true" horizontalScrollPolicy="on">
 						<mx:DataGridColumn  resizable="true"   headerText="Countries" id="countries" editable="false" dataField="name" sortable="true">
 						</mx:DataGridColumn>
-					</controls:BetterDataGrid>	
+					</controls:BetterDataGrid>	-->
 <!--				</s:Group>	
 			</s:Scroller>-->
 		
