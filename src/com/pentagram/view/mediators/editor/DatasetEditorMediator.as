@@ -16,9 +16,9 @@ package com.pentagram.view.mediators.editor
 		public override function onRegister():void {
 			//eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleDatasetCreated,EditorEvent);
 			//eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
-			view.dataset = appModel.selectedSet;
+			//view.dataset = appModel.selectedSet;
 			view.client = appModel.selectedClient;
-			view.generateDataset();
+			//view.generateDataset();
 		}
 		
 		

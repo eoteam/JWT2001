@@ -10,6 +10,13 @@ package com.pentagram.services
 		[Inject]
 		public var appModel:AppModel;
 		
+		public function loadDataSet(dataset:Dataset):void {
+			var params:Object = new Object();
+			params.action = "getData";
+			params.tablename = dataset.tablename;
+			this.createService(params,ResponseType.DATA,Object);				
+		}
+		
 		public function createDataset(dataset:Dataset):void {
 			var params:Object = new Object();
 			params.action = "createDataset";

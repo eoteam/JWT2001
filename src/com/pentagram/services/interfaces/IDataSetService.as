@@ -4,6 +4,8 @@ package com.pentagram.services.interfaces
 	
 	public interface IDatasetService extends IService
 	{
+		function loadDataSet(dataset:Dataset):void;
+		
 		function createDataset(dataset:Dataset):void;
 		
 		function deleteDataset(dataset:Dataset):void;

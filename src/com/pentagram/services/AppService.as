@@ -57,12 +57,7 @@ package com.pentagram.services
 			params.clientid = appModel.selectedClient.id;
 			this.createService(params,ResponseType.DATA);	
 		}
-		public function loadDataSet(dataset:Dataset):void {
-			var params:Object = new Object();
-			params.action = "getData";
-			params.tablename = dataset.tablename;
-			this.createService(params,ResponseType.DATA,Object);				
-		}
+
 		public function authenticateUser(username:String, password:String):void {
 			var params:Object = new Object();
 			params.username = username;

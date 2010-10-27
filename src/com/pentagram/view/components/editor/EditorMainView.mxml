@@ -26,8 +26,7 @@
 
 			protected function hgroup1_creationCompleteHandler(event:FlexEvent):void
 			{
-				if (NativeApplication.supportsMenu)
-				{
+				if (NativeApplication.supportsMenu) {
 					var m:NativeMenu = NativeApplication.nativeApplication.menu;
 					var file:NativeMenuItem = m.items[1] as NativeMenuItem;
 					var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
@@ -35,9 +34,7 @@
 					file.submenu.addItemAt(exportSp,0);	
 					var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
 					importSp.enabled = false;
-					file.submenu.addItemAt(importSp,0);			
-
-					//importSp.addEventListener(Event.SELECT,onItemSelect);				
+					file.submenu.addItemAt(importSp,0);					
 				}
 				else if (NativeWindow.supportsMenu)
 				{

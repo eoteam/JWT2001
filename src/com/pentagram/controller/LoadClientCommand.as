@@ -6,6 +6,7 @@ package com.pentagram.controller
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.services.interfaces.IDatasetService;
 	import com.pentagram.util.DataParser;
 	
 	import mx.collections.ArrayList;
@@ -17,6 +18,9 @@ package com.pentagram.controller
 	{
 		[Inject]
 		public var appService:IAppService;
+		
+		[Inject]
+		public var datasetService:IDatasetService;
 		
 		[Inject]
 		public var event:VisualizerEvent;
@@ -46,9 +50,9 @@ package com.pentagram.controller
 				for each(var dataset:Dataset in appModel.selectedClient.datasets.source) {
 					if(dataset.time == 1)
 						dataset.years = dataset.range.split(',');
-					appService.loadDataSet(dataset);
-					appService.addHandlers(handleDatasetLoaded);
-					appService.addProperties("dataset",dataset);
+					datasetService.loadDataSet(dataset);
+					datasetService.addHandlers(handleDatasetLoaded);
+					datasetService.addProperties("dataset",dataset);
 				}
 			}
 			else {

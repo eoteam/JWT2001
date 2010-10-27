@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="sparkskin1_creationCompleteHandler(event)"
+			 alpha.disabled="0.5" xmlns:controls="com.pentagram.view.controls.*">
+	
+	<fx:Metadata>
+		[HostComponent("com.pentagram.view.controls.MiGList")]
+	</fx:Metadata>
+	<fx:Declarations>
+		<fx:Number id="headerHeight">26</fx:Number>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+
+			protected function sparkskin1_creationCompleteHandler(event:FlexEvent):void
+			{
+				scroller.verticalScrollBar.width = 0;
+			}
+
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="disabled" />
+	</s:states>
+	
+	<!-- border -->
+	<s:Rect width="0.25"  right="0" top="{headerHeight-1}" bottom="0">
+		<s:stroke>
+			<s:SolidColorStroke color="0xcccccc" weight="0.25"/>
+		</s:stroke>
+	</s:Rect>
+	
+	<!-- fill -->
+	<!--- Defines the background appearance of the list-based component. -->
+	<s:Rect id="background" left="1" right="1" top="28" bottom="1">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Scroller id="scroller"
+				left="0" minWidth="50"
+				top="{headerHeight-1}"
+				right="0"
+				bottom="0" 
+				minViewportInset="1"
+				focusEnabled="false">
+		
+		<!--The container for the data items.-->
+		<s:DataGroup left="0"  
+					 top="0"
+					 right="0" 
+ 					 itemRenderer="com.pentagram.view.renderers.CountryListRenderer"
+					 bottom="0" id="dataGroup">
+			<s:layout>
+				<s:VerticalLayout gap="0" horizontalAlign="contentJustify" />
+			</s:layout>
+		</s:DataGroup>
+	</s:Scroller>
+	
+	<controls:ResizeButton  skinClass="com.pentagram.view.skins.ResizeButtonSkin"  minWidth="50" maxHeight="{headerHeight}" minHeight="{headerHeight}"
+	id="header" label="{this.hostComponent.headerText}" left="0" right="0" height="{headerHeight}" cornerRadius="0"  />
+	
+</s:SparkSkin>

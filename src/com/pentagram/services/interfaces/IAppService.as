@@ -17,9 +17,7 @@ package com.pentagram.services.interfaces
 		function loadClientDatasets():void;
 		
 		function loadClientCountries():void;
-		
-		function loadDataSet(dataset:Dataset):void;
-		
+				
 		function authenticateUser(username:String,password:String):void;
 		
 		function logOut():void;

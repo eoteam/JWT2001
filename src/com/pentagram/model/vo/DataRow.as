@@ -2,6 +2,7 @@ package com.pentagram.model.vo
 {
 	import flash.utils.Dictionary;
 	
+	import mx.collections.ArrayList;
 	import mx.utils.ObjectProxy;
 	
 	[Bindable]
@@ -10,6 +11,7 @@ package com.pentagram.model.vo
 		public var name:String;
 		public var id:int;
 		public var modified:Boolean = false;
-		public var points:Dictionary = new Dictionary();
+		public var value:*;
+		//public var points:Dictionary = new Dictionary();
 	}
 }

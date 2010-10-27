@@ -25,10 +25,9 @@ package com.pentagram.util
 						row.id = Number(item.id);
 						for(prop in item) { 
 							if(prop != 'id' && prop != 'countryid') {
-								//var point:DataCell = new DataCell();
-								//point.key = Number(prop);
-								//point.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
-								row.points[prop] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+								if(dataset.time == 1)
+									row[prop] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+								else row.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
 							}
 						}
 						dataset.rows.addItem(row);
@@ -36,38 +35,6 @@ package com.pentagram.util
 					}
 				}
 			}
-				
-//			if(dataset.time == 1) {
-//				for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-//					var col:DataColumn = new DataColumn();
-//					col.year = i;
-//					dataset.columns.addItem(col);
-//				}
-//				
-//				for each(item in data) {
-//					row = new DataRow();
-//					row.id = item.id;
-//					row.countryid = item.countryid;
-//					dataset.rows.addItem(row);
-//					for(prop in item) {
-//						if(prop != 'id' && prop != 'countryid') {
-//							rowCell = new DataCell();
-//							rowCell.key = Number(prop);
-//							rowCell.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
-//							row.points.push(rowCell);
-//
-//							colCell = new DataCell();
-//							colCell.key = item.countryid;
-//							colCell.value = dataset.type == 1 ? Number(item[prop]) : item[prop];
-//							DataColumn(dataset.columns.getItemAt(Number(prop) - dataset.years[0])).points.push(colCell);
-//						}
-//					}
-//				}
-//			}
-//			else {
-//				row = new DataRow();
-//				dataset.rows.addItem(row);
-//			}
 		}
 		public static function getCountryById(client:Client,countryid:int):Country {
 			var res:Country;

@@ -79,6 +79,9 @@ package com.pentagram.view.mediators.editor
 		}
 		private function handleDatasetChange(event:IndexChangeEvent):void {
 			appModel.selectedSet = view.dataSetList.selectedItem as Dataset;
+			if(view.currentState == view.datasetState.name && view.datasetEditor)
+				view.datasetEditor.dataset = view.dataSetList.selectedItem as Dataset;
+				view.datasetEditor.generateDataset();
 		}
 	}
 }

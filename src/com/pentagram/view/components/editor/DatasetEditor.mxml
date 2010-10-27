@@ -3,95 +3,134 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:vo="com.pentagram.model.vo.*"
-		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:controls="com.pentagram.view.controls.*" xmlns:renderers="com.pentagram.view.renderers.*">
+		 xmlns:controls="com.pentagram.view.controls.*" 
+		 xmlns:renderers="com.pentagram.view.renderers.*"
+		 xmlns:datagrid="com.newtriks.display.datagrid.*"
+		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:vo1="com.newtriks.display.datagrid.vo.*">
 	
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.view.renderers.DGDefaultEditor;
+			import com.pentagram.view.renderers.BlankRenderer;
+			import com.pentagram.view.renderers.CellEditor;
+			import com.pentagram.view.renderers.DGDefaultRenderer;
+			import com.pentagram.view.renderers.TimeCellEditor;
 			
-			import mx.core.UIFTETextField;
+			import mx.collections.ArrayList;
+			import mx.collections.Sort;
+			import mx.collections.SortField;
 			import mx.events.FlexEvent;
 			
+			import spark.components.supportClasses.DefaultColumnHeaderRenderer;
+			import spark.components.supportClasses.GridColumn;
 			import spark.components.supportClasses.GridSelectionMode;
-			import spark.skins.spark.DefaultGridItemRenderer;
+			import spark.events.GridEvent;
+
 			public function generateDataset():void {
- 				if(dataset.time == 1) {
-					var columns:ArrayList = new ArrayList();
-					columns.addItem(countries);
+				var column:GridColumn;
+				columns.removeAll();
+				//columns.addItem(countryCol);
+				
+				if(dataset.time == 1) {
 					var years:Array = dataset.range.split(',');
 					for(var i:int=years[0];i<=years[1];i++) {
-						var column:GridColumn = new GridColumn();
+						column  = new GridColumn();
 						column.headerText = i.toString();
-						column.itemRenderer = new ClassFactory(DGDefaultEditor);
-				
-						//column.itemEditor = new ClassFactory(QuantityRenderer);
+						column.itemRenderer = new ClassFactory(TimeCellEditor);
 						column.dataField = i.toString();
-						column.width = 75;
-						//column.editable = true;
+						column.width = 75;	
+						column.resizable = true;
 						column.sortable = true;
 						columns.addItem(column);
 					}
 				}
 				else {
+					column = new GridColumn();
+					column.headerText = "Value";
+					column.itemRenderer = new ClassFactory(CellEditor);
+					column.dataField = "value";
+					column.width = 75;	
+					column.sortable = true;
+					columns.addItem(column);
 					
-				} 
-				grid.columns = columns;
-				grid.dataProvider = dataset.rows;	
+					column = new GridColumn();
+					column.headerText = '';
+					column.itemRenderer = new ClassFactory(BlankRenderer);
+					columns.addItem(column);
+				}
+				currentState = "showgrid";
+				grid.dataProvider = dataset.rows;
+				countryList.dataProvider = dataset.rows;
 			}
 
 			protected function vgroup1_creationCompleteHandler(event:FlexEvent):void
 			{
 				trace("Dataset Editor Complete");
+				grid.scroller.verticalScrollBar.addEventListener(Event.CHANGE,handleGridScroll);
+				//grid.scroller.verticalScrollBar.p
 			}
-
-
-			protected function grid_clickHandler(event:MouseEvent):void
+			private function handleGridScroll(event:Event):void {
+				countryList.scroller.verticalScrollBar.value = grid.scroller.verticalScrollBar.value;
+				countryList.scroller.horizontalScrollBar.y += 15;
+			}
+			protected function grid_gridClickHandler(event:GridEvent):void
 			{
-				//var f:UIFTETextField; f.
+				if(event.itemRenderer is DefaultColumnHeaderRenderer) {
+ 					//var dp:ICollectionView = dataset.rows;
+					var sort:Sort = new Sort();
+					sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.itemRenderer).data.dataField,false,false,true)];  		
+				
+					if (dataset.rows != null)
+					{
+						dataset.rows.sort = sort;
+						dataset.rows.refresh();
+					}
+				}
 			}
 
 		]]>
 	</fx:Script>
+	<s:states>
+		<s:State name="prep" />
+		<s:State name="showgrid" />
+	</s:states>
 	<fx:Declarations>
 		<vo:Dataset id="dataset" />
 		<vo:Client id="client" />
 	</fx:Declarations>
 
-		<s:HGroup verticalAlign="top" width="90%">
-			<s:Label text="Data Set Title" width="100" />
-			<s:TextInput width="100%" text="{dataset.name}"  />
-		</s:HGroup>
-		<s:HGroup verticalAlign="top" width="90%">
-			<s:Label text="Description" width="100" />
-			<s:TextArea heightInLines="6" width="100%" text="{dataset.description}"  />
-		</s:HGroup>		
-	
-	<s:HGroup verticalAlign="top" width="90%" height="100%">
-		<s:Label text="Data Set" width="100" />
-	
-<!--			<s:Scroller width="100%" height="100%">
-				<s:Group clipAndEnableScrolling="true">-->
-				<s:DataGrid selectionMode="{GridSelectionMode.SINGLE_CELL}"  width="100%"  height="100%" id="grid" click="grid_clickHandler(event)" >
-					<s:columns>
-						<s:ArrayList>
-							<s:GridColumn  minWidth="120" resizable="true" headerText="Countries" dataField="name" sortable="true" id="countries">
-								<s:itemRenderer>
-									<fx:Component>
-										<renderers:DGDefaultRenderer singleLine="true" width="100%" />
-									</fx:Component>
-								</s:itemRenderer>
-							</s:GridColumn>
-						</s:ArrayList>
-					</s:columns>
-				</s:DataGrid>
-		
-<!--					<controls:BetterDataGrid minWidth="500"  width="100%"  height="100%" id="grid"  editable="true" horizontalScrollPolicy="on">
-						<mx:DataGridColumn  resizable="true"   headerText="Countries" id="countries" editable="false" dataField="name" sortable="true">
-						</mx:DataGridColumn>
-					</controls:BetterDataGrid>	-->
-<!--				</s:Group>	
-			</s:Scroller>-->
-		
+	<s:HGroup verticalAlign="top" width="90%">
+		<s:Label text="Data Set Title" width="100" />
+		<s:TextInput width="100%" text="{dataset.name}"  />
 	</s:HGroup>
+	<s:HGroup verticalAlign="top" width="90%">
+		<s:Label text="Description" width="100" />
+		<s:TextArea heightInLines="6" width="100%" text="{dataset.description}"  />
+	</s:HGroup>		
 	
+	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
+		<s:Label text="Data Set" width="100" />
+		<s:Rect width="5" />
+		<s:Group width="100%" height="100%">
+			<s:Rect top="0" left="0" right="0" bottom="0">
+				<s:stroke>
+					<s:SolidColorStroke color="0xcccccc" weight="0.5"/>
+				</s:stroke>
+			</s:Rect>
+			<controls:MiGList minWidth="50" sortField="name" contentBackgroundColor="0xffffff" height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
+			<s:DataGrid left="{countryList.width}" borderVisible="false"  selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" width="100%"  height="100%" id="grid" gridClick="grid_gridClickHandler(event)">
+				<s:columns>
+					<s:ArrayList id="columns">
+						<!--<s:GridColumn id="countryCol"  width="120"  minWidth="120" resizable="true" headerText="Countries" dataField="name" sortable="true">
+						<s:itemRenderer>
+						<fx:Component>
+						<renderers:DGDefaultRenderer singleLine="true" width="100%"  />
+						</fx:Component>
+						</s:itemRenderer>
+						</s:GridColumn>-->
+					</s:ArrayList>
+				</s:columns>
+			</s:DataGrid>				
+		</s:Group>
+			
+	</s:HGroup>
 </s:VGroup>
