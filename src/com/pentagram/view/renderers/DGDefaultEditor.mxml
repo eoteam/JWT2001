@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <renderers:DGDefaultRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 						   xmlns:s="library://ns.adobe.com/flex/spark" label="{value.toString()}" 
-						   mouseDown="defaultgriditemrenderer1_mouseDownHandler(event)" 
+						   focusIn="defaultgriditemrenderer1_mouseDownHandler(event)"    
 						   creationComplete="defaultgriditemrenderer1_creationCompleteHandler(event)"
 						   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:renderers="com.pentagram.view.renderers.*">
-	<fx:Declarations>
-		
-	</fx:Declarations>
+
+
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.DataRow;
+			
 			import mx.core.UIFTETextField;
 			import mx.events.FlexEvent;
 			import mx.events.FlexMouseEvent;
 			import mx.managers.PopUpManager;
 			
 			import spark.components.TextInput;
+			import spark.events.TextOperationEvent;
 			//private var wrapper:UIFTETextField;
-			
+		
 			[Bindable] public var value:String;
+			private var row:DataRow
 			override public function set data(row:Object):void 
 			{      
 				if(row != null)  
 				{
 					this.value = row.points[this.column.dataField].toString();
+					this.row = row as DataRow;
 				}   
 				super.data = this.value;
 				if(labelDisplay)
@@ -40,7 +44,7 @@
 
 			private var create:Boolean = false;
 			private var input:TextInput;
-			protected function defaultgriditemrenderer1_mouseDownHandler(event:MouseEvent):void
+			protected function defaultgriditemrenderer1_mouseDownHandler(event:Event):void
 			{
 				create = true;
 				//this.invalidateDisplayList();
@@ -50,7 +54,9 @@
 					input.height = this.height;
 					input.text = value;
 					input.setStyle("contentBackgroundColor",0xff0000);
-					input.addEventListener(FocusEvent.FOCUS_OUT,handleFocusOut,false,0,true);
+					//input.addEventListener(FocusEvent.FOCUS_OUT,handleFocusOut,false,0,true);
+					input.addEventListener(MouseEvent.ROLL_OUT,handleFocusOut,false,0,true);
+					//input.addEventListener(TextOperationEvent.CHANGE,textinput1_changeHandler);
 					var pt:Point = this.owner.localToGlobal(new Point(x,y));
 					input.x = pt.x; input.y = pt.y;
 				}
@@ -69,14 +75,21 @@
 				}
 			} */
 
-			protected function handleFocusOut(event:FocusEvent):void
+			protected function handleFocusOut(event:Event):void
 			{
 				if(input) {
+					value = row.points[this.column.dataField] = input.text;
 					PopUpManager.removePopUp(input);
 					input = null;
 				}
 			}
+			protected function textinput1_changeHandler(event:TextOperationEvent):void
+			{
+				//89if(DataRow(data).
+				
+			}
 
 		]]>
 	</fx:Script>
+	
 </renderers:DGDefaultRenderer>
