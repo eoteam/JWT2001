@@ -62,6 +62,6 @@
 	</s:Scroller>
 	
 	<controls:ResizeButton  skinClass="com.pentagram.view.skins.ResizeButtonSkin"  minWidth="50" maxHeight="{headerHeight}" minHeight="{headerHeight}"
-	id="header" label="{this.hostComponent.headerText}" left="0" right="0" height="{headerHeight}" cornerRadius="0"  />
+	id="header" label="{this.hostComponent.headerText}" left="0" right="0" height="{headerHeight}" cornerRadius="0"	  />
 	
 </s:SparkSkin>

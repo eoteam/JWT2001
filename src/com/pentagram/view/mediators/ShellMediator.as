@@ -1,8 +1,8 @@
 package com.pentagram.view.mediators
 {
 	import com.pentagram.controller.Constants;
-	import com.pentagram.event.AppEvent;
-	import com.pentagram.event.VisualizerEvent;
+	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.view.components.ClientBarView;

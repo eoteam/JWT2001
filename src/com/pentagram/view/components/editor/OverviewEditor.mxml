@@ -33,7 +33,10 @@
 			}
 			private function onDragIn(event:NativeDragEvent):void {
 				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					NativeDragManager.acceptDragDrop(logoHolder);
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
+						NativeDragManager.acceptDragDrop(logoHolder);
+					}
 				}
 			}
 			private function onDragDrop(event:NativeDragEvent):void {

@@ -1,4 +1,4 @@
-package com.pentagram.event
+package com.pentagram.events
 {
 	import flash.events.Event;
 	
@@ -8,7 +8,6 @@ package com.pentagram.event
 		public static const STARTUP_COMPLETE:String = "startupComplete";
 		public static const STARTUP_PROGRESS:String = "startupProgress";
 		
-		public static const SHOW_LOGIN_WINDOW:String = "showLoginWindow"
 		public static const LOGIN:String = "login";
 		public static const LOGGEDIN:String = "loggedin";
 		public static const LOGGEDOUT:String = "loggedout";

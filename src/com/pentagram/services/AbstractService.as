@@ -2,7 +2,7 @@ package com.pentagram.services
 {
 	import com.darronschall.serialization.ObjectTranslator;
 	import com.pentagram.controller.Constants;
-	import com.pentagram.event.AlertEvent;
+	import com.pentagram.events.AlertEvent;
 	
 	import flash.errors.IllegalOperationError;
 	import flash.net.URLRequestMethod;

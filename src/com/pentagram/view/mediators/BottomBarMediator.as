@@ -1,9 +1,11 @@
 package com.pentagram.view.mediators
 {
 	import com.pentagram.controller.Constants;
-	import com.pentagram.event.AppEvent;
-	import com.pentagram.event.VisualizerEvent;
+	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.BaseWindowEvent;
+	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.view.components.BottomBarView;
 	import com.pentagram.view.event.ViewEvent;
@@ -23,6 +25,9 @@ package com.pentagram.view.mediators
 		[Inject]
 		public var appModel:AppModel;
 		
+		[Inject]
+		public var windowModel:OpenWindowsProxy;
+		
 		override public function onRegister():void
 		{
 			view.searchInput.dataProvider = appModel.clients.source;
@@ -36,7 +41,7 @@ package com.pentagram.view.mediators
 		}
 		private function handleUserButton(event:MouseEvent):void
 		{
-			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.SHOW_LOGIN_WINDOW));
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,windowModel.LOGIN_WINDOW)); 
 		}
 		private function handleSelect(event:CustomEvent):void
 		{

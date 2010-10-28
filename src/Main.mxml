@@ -317,19 +317,20 @@
 	<!--<main:MainView width="100%" height="100%"  id="mainView"/>  -->
 	
 	<view:MainView width="100%" height="100%" verticalCenter="0" horizontalCenter="0"/>
-	
-	<!--<s:Label fontSize="14" text='LaunchPad'/>
-	<mx:TabNavigator width="100%" height="100%">
-		<samples:SampleOpenWithDefault/>
-		<samples:SampleDatabase/>
-		<samples:SampleClipboard/>
-		<samples:SampleDragDrop/>
-		<samples:SampleNativeProcess/>
-		<samples:SampleHTML/>
+<!--	
+	<s:Label fontSize="14" text='LaunchPad'/>
+	<mx:ViewStack width="100%" height="100%" id="stack" top="25">
+		<samples:SampleOpenWithDefault width="100%" height="100%" />
+		<samples:SampleDatabase width="100%" height="100%" />
+		<samples:SampleClipboard width="100%" height="100%" />
+		<samples:SampleDragDrop width="100%" height="100%" />
+		<samples:SampleNativeProcess width="100%" height="100%" />
+		<samples:SampleHTML width="100%" height="100%" />
 		<samples:SampleSocketClient/>
 		<samples:SampleSocketServer/>
 		<samples:SamplePDFContent/>
 		<samples:SampleDetectStorageDevice/>
-		<samples:SampleNativeWindows/>
-	</mx:TabNavigator>-->
+		<samples:SampleNativeWindows width="100%" height="100%" />
+	</mx:ViewStack>
+	<s:TabBar dataProvider="{stack}" />-->
 </s:WindowedApplication>

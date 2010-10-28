@@ -1,7 +1,7 @@
 package com.pentagram.view.mediators.editor
 {
-	import com.pentagram.event.EditorEvent;
-	import com.pentagram.event.VisualizerEvent;
+	import com.pentagram.events.EditorEvent;
+	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Continent;
 	import com.pentagram.model.vo.Country;

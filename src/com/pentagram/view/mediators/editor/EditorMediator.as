@@ -1,7 +1,9 @@
 package com.pentagram.view.mediators.editor
 {
-	import com.pentagram.event.EditorEvent;
+	import com.pentagram.events.BaseWindowEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
@@ -9,6 +11,10 @@ package com.pentagram.view.mediators.editor
 	import com.pentagram.view.components.editor.OverviewEditor;
 	import com.pentagram.view.event.ViewEvent;
 	
+	import flash.desktop.NativeApplication;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
+	import flash.display.NativeWindow;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -25,6 +31,9 @@ package com.pentagram.view.mediators.editor
 		
 		[Inject]
 		public var appModel:AppModel;
+
+		[Inject]
+		public var windowModel:OpenWindowsProxy;
 		
 		[Inject]
 		public var appService:IAppService;
@@ -40,6 +49,23 @@ package com.pentagram.view.mediators.editor
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true);	
 			
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange);
+			
+			if (NativeApplication.supportsMenu) {
+				var m:NativeMenu = NativeApplication.nativeApplication.menu;
+				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
+				var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+				exportSp.addEventListener(Event.SELECT,handleExportSp);
+				//exportSp.enabled = false;
+				file.submenu.addItemAt(exportSp,0);	
+				var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
+				importSp.enabled = false;
+				file.submenu.addItemAt(importSp,0);					
+			}
+			else if (NativeWindow.supportsMenu)
+			{
+				
+				
+			}
 		}
 		
 		private function handleSaveChanges(event:MouseEvent):void {
@@ -82,6 +108,9 @@ package com.pentagram.view.mediators.editor
 			if(view.currentState == view.datasetState.name && view.datasetEditor)
 				view.datasetEditor.dataset = view.dataSetList.selectedItem as Dataset;
 				view.datasetEditor.generateDataset();
+		}
+		private function handleExportSp(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,windowModel.SPREADSHEET_WINDOW)); 
 		}
 	}
 }

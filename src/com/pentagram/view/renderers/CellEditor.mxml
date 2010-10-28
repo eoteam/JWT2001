@@ -59,7 +59,7 @@
 			}
 			protected function handleFocusOut(event:Event):void {
 				if(input) {
-					value = row.points[this.column.dataField] = input.text;
+					value = row.value = input.text;
 					PopUpManager.removePopUp(input);
 					input = null;
 				}

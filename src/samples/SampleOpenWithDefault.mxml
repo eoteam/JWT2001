@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent  xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					 xmlns:s="library://ns.adobe.com/flex/spark" 
-					 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" 
+					 xmlns:mx="library://ns.adobe.com/flex/mx" 
 					 label="Open with Default Application Sample">
 	
 	<fx:Script>
@@ -25,7 +25,7 @@
 				 text="The Open With Default Application support allows you to open any file with its associated default 
 application. Locate a file item in the file system grid and double-click it to see it in action:"/>
 		<s:Button label="Up" click="fileGrid.navigateUp();" enabled="{fileGrid.canNavigateUp}"/>
-		<mx:FileSystemDataGrid id="fileGrid" directory="{File.desktopDirectory}" width="90%" height="150" doubleClickEnabled="true" 
+		<mx:FileSystemDataGrid id="fileGrid" directory="{File.desktopDirectory}" width="90%" height="100%" doubleClickEnabled="true" 
 							   doubleClick="onGridDoubleClick(event)"/>
 	</s:Panel>
 	

@@ -1,6 +1,6 @@
 package com.pentagram.controller
 {
-	import com.pentagram.event.EditorEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;

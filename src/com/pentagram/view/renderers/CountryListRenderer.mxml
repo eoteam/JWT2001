@@ -11,6 +11,6 @@
 			<s:SolidColorStroke color="0xcccccc" weight="0.25" caps="square"/>
 		</s:stroke>
 	</s:Rect>	
-	<s:RichText text="{data.name}" maxDisplayedLines="1" verticalCenter="0"  minWidth="50"/>
+	<s:Label left="4" text="{data.name}" verticalCenter="0"/>
 
 </s:ItemRenderer>

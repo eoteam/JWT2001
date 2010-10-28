@@ -32,9 +32,27 @@
 	embedAsCFF: false;
 	advancedAntiAliasing: true;      
 }
+mx|Label {
+	fontFamily: FlamaBookMx;
+}
+mx|Button {
+	fontFamily: FlamaBookMx;
+}
+mx|TextInput {
+	fontFamily: FlamaBookMx;
+}
+mx|FileSystemDataGrid {
+	fontFamily: FlamaBookMx;
+}
 s|WindowedApplication{
 	backgroundColor: #FAFCFB;
 	fontFamily: FlamaBook;
 	fontSize: 14;
 	color: #111111;
+}
+s|Window {
+	backgroundColor: #FAFCFB;
+	fontFamily: FlamaBook;
+	fontSize: 14;
+	color: #111111;	
 }

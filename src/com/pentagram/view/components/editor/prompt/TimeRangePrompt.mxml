@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		  xmlns:s="library://ns.adobe.com/flex/spark" 
 		  xmlns:mx="library://ns.adobe.com/flex/mx"  
-		 width="100%" height="100%" styleName="promptContainer" creationComplete="init()">
+		 width="100%" height="100" creationComplete="init()">
 	<fx:Script>
 		<![CDATA[
 			import mx.validators.Validator;
@@ -55,29 +55,30 @@
 	<fx:Declarations>
 		<fx:String id="startYear"  />
 		<fx:String id="endYear" />	
-		
 		<mx:StringValidator id="startValidator" source="{startInput}" property="text" required="true" minLength="4" maxLength="4"/>
 		<mx:StringValidator id="endValidator" source="{endInput}" property="text"  required="true" minLength="4"  maxLength="4"/>
-		
 	</fx:Declarations>
 
-    
+	<s:Rect id="background" left="0" right="0" top="0" bottom="0" radiusX="6" radiusY="6">
+		<s:fill>
+			<s:SolidColor color="#cccccc" />
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke weight="0.25" caps="square" color="#cccccc"  />
+		</s:stroke>		
+	</s:Rect>   
         
-	<s:VGroup width="100%" height="100%" >
+	<s:VGroup width="100%" height="100%" left="8">
 		<s:Label text="Enter the time period of the data." styleName="promptTitle" />
-	
 		<s:HGroup>
 			<s:Label text="Start Year" />
 			<s:TextInput id="startInput" text="YYYY" width="70" focusIn="event.target.text = ''" styleName="formInput"  />	
-			
 			<s:Label text="End Year" />
-			<s:TextInput id="endInput" width="70" styleName="formInput" enter="runValidators()" />
-			
-		</s:HGroup>
-		
+			<s:TextInput id="endInput" width="70" styleName="formInput" enter="runValidators()" />		
+		</s:HGroup>	
 		<s:Button label="Next" click="runValidators()" />
 	</s:VGroup>
 	
-	<s:Button label="Back" click="backHandler(event)" styleName="promptBackButton" />
+	<s:Button label="Back" click="backHandler(event)" styleName="promptBackButton" top="5" right="5" />
 
-</s:HGroup>
+</s:Group>

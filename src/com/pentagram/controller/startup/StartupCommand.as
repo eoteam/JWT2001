@@ -1,6 +1,6 @@
 package com.pentagram.controller.startup
 {
-	import com.pentagram.event.AppEvent;
+	import com.pentagram.events.AppEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Continent;
 	import com.pentagram.model.vo.Country;

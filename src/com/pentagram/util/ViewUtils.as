@@ -7,7 +7,9 @@ package com.pentagram.util
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 
-	public class DataParser
+	import flash.utils.getDefinitionByName;  
+	
+	public class ViewUtils
 	{
 
 		public static function parseData(data:Array,dataset:Dataset,client:Client):void {
@@ -46,5 +48,20 @@ package com.pentagram.util
 			}
 			return res;
 		}
+		public static function instantiateClass(className:String):*
+		{
+			var instance:*;
+			
+			try
+			{
+				instance = getDefinitionByName(className);
+			}
+			catch (e:Error)
+			{
+				throw new Error("Could not find class for className: " + className);
+			}
+			
+			return new instance();
+		}  
 	}
 }

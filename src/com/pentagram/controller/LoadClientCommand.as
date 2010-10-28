@@ -1,13 +1,13 @@
 package com.pentagram.controller
 {
-	import com.pentagram.event.VisualizerEvent;
+	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
-	import com.pentagram.util.DataParser;
+	import com.pentagram.util.ViewUtils;
 	
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
@@ -78,7 +78,7 @@ package com.pentagram.controller
 			counter++;
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.loaded = true;
-			DataParser.parseData(event.token.results as Array,dataset,appModel.selectedClient);
+			ViewUtils.parseData(event.token.results as Array,dataset,appModel.selectedClient);
 			if(counter == appModel.selectedClient.datasets.length) {
 				appModel.selectedClient.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));

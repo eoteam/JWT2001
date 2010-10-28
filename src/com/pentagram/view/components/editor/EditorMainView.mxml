@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="hgroup1_creationCompleteHandler(event)"  
-		 xmlns:editor="com.pentagram.view.components.editor.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:editor="com.pentagram.view.components.editor.*"  
+		 nativeDragOver="onDragIn(event)"
+		 nativeDragDrop="onDragDrop(event)"
+		 nativeDragComplete="onDragComplete(event)" >
 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
+			import com.pentagram.model.vo.MimeType;
 			
 			import mx.events.FlexEvent;
 			
@@ -22,41 +26,66 @@
 				dataSetList.selectedIndex = -1
 				this.currentState = "overview";	
 			}
-
-
-			protected function hgroup1_creationCompleteHandler(event:FlexEvent):void
-			{
-				if (NativeApplication.supportsMenu) {
-					var m:NativeMenu = NativeApplication.nativeApplication.menu;
-					var file:NativeMenuItem = m.items[1] as NativeMenuItem;
-					var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
-					exportSp.enabled = false;
-					file.submenu.addItemAt(exportSp,0);	
-					var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
-					importSp.enabled = false;
-					file.submenu.addItemAt(importSp,0);					
-				}
-				else if (NativeWindow.supportsMenu)
-				{
+			private function onDragIn(event:NativeDragEvent):void {
+				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 					
-					
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					if(MimeType.getMimetype(File(files[0]).extension) == MimeType.FILE && File(files[0]).extension == "csv") {
+						NativeDragManager.acceptDragDrop(dataSetList); 
+						createSetPrompt.visible = true;
+						if(currentState == "dataset") {
+							datasetEditor.populateSetPrompt.visible = true;
+							NativeDragManager.acceptDragDrop(datasetEditor); 
+						}
+					}
 				}
+			}
+			private function onDragDrop(event:NativeDragEvent):void {
+				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					trace("file:///" + File(files[0]).nativePath);
+					createSetPrompt.visible = false;
+					if(currentState == "dataset")
+						datasetEditor.populateSetPrompt.visible = false;
+				}
+			}
+			private function onDragComplete(event:NativeDragEvent):void {
+				createSetPrompt.visible = false;
+				if(currentState == "dataset")
+					datasetEditor.populateSetPrompt.visible = false;
 			}
 
 		]]>
 	</fx:Script>
+	<fx:Declarations>
+		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
+		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
+	</fx:Declarations>
 	<s:states>
 		<s:State name="overview" id="overviewState" />
 		<s:State name="dataset" id="datasetState" />
 		<s:State name="create" id="createState" />
 	</s:states>
+	
 	<s:VGroup width="200" gap="0">
 		<s:Button width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)" />
 		<s:Rect height="8" />
 		<s:Label text="Data Sets" />
 		<s:Rect height="4"/>
-		<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  
-		alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />
+		<s:Group width="100%">
+			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  
+			alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />			
+			<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+				<s:Rect top="0" bottom="0" left="0" right="0" >
+					<s:fill>
+						<s:SolidColor color="0" alpha="0.8"/>
+					</s:fill>
+				</s:Rect>
+				<s:Label textAlign="center" color="0xffffff" left="0" right="0" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to create a new set"  />
+			</s:Group>
+			
+		</s:Group>
+
 		<s:HGroup width="100%" gap="0">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" />
 			<s:Button width="100%" label="- Delete" />

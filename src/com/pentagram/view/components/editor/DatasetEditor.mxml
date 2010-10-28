@@ -6,7 +6,7 @@
 		 xmlns:controls="com.pentagram.view.controls.*" 
 		 xmlns:renderers="com.pentagram.view.renderers.*"
 		 xmlns:datagrid="com.newtriks.display.datagrid.*"
-		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:vo1="com.newtriks.display.datagrid.vo.*">
+		 creationComplete="vgroup1_creationCompleteHandler(event)" xmlns:vo1="com.newtriks.display.datagrid.vo.*" xmlns:spark="flex.utils.spark.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -61,6 +61,9 @@
 				grid.dataProvider = dataset.rows;
 				countryList.dataProvider = dataset.rows;
 			}
+			//public function acceptDragFile():void {
+				
+			//}
 
 			protected function vgroup1_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -96,6 +99,9 @@
 	<fx:Declarations>
 		<vo:Dataset id="dataset" />
 		<vo:Client id="client" />
+		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>
+		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
+		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
 	</fx:Declarations>
 
 	<s:HGroup verticalAlign="top" width="90%">
@@ -104,7 +110,7 @@
 	</s:HGroup>
 	<s:HGroup verticalAlign="top" width="90%">
 		<s:Label text="Description" width="100" />
-		<s:TextArea heightInLines="6" width="100%" text="{dataset.description}"  />
+		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}"  />
 	</s:HGroup>		
 	
 	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
@@ -113,7 +119,7 @@
 		<s:Group width="100%" height="100%">
 			<s:Rect top="0" left="0" right="0" bottom="0">
 				<s:stroke>
-					<s:SolidColorStroke color="0xcccccc" weight="0.5"/>
+					<s:SolidColorStroke color="0xcccccc" weight="1"/>
 				</s:stroke>
 			</s:Rect>
 			<controls:MiGList minWidth="50" sortField="name" contentBackgroundColor="0xffffff" height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
@@ -129,8 +135,15 @@
 						</s:GridColumn>-->
 					</s:ArrayList>
 				</s:columns>
-			</s:DataGrid>				
-		</s:Group>
-			
+			</s:DataGrid>
+			<s:Group id="populateSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+				<s:Rect top="0" bottom="0" left="0" right="0" >
+					<s:fill>
+						<s:SolidColor color="0" alpha="0.8"/>
+					</s:fill>
+				</s:Rect>
+				<s:Label color="#ffffff" textAlign="center" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to populate the Data Set"  />
+			</s:Group>			
+		</s:Group>			
 	</s:HGroup>
 </s:VGroup>
