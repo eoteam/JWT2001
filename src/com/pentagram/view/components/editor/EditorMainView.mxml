@@ -2,9 +2,7 @@
 <s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:editor="com.pentagram.view.components.editor.*"  
-		 nativeDragOver="onDragIn(event)"
-		 nativeDragComplete="onDragComplete(event)" >
+		 xmlns:editor="com.pentagram.view.components.editor.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -26,87 +24,6 @@
 				dataSetList.selectedIndex = -1
 				this.currentState = "overview";	
 			}
-			private function onDragIn(event:NativeDragEvent):void {
-				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					
-					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-					if(MimeType.getMimetype(File(files[0]).extension) == MimeType.FILE && File(files[0]).extension == "csv") {
-						NativeDragManager.acceptDragDrop(dataSetList); 
-						//createSetPrompt.visible = true;
-						if(currentState == "dataset") {
-							//datasetEditor.populateSetPrompt.visible = true;
-							//NativeDragManager.acceptDragDrop(datasetEditor); 
-						}
-					}
-				}
-			}
-			private function onDragDrop(event:NativeDragEvent):void {
-				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-					//trace("file:///" + File(files[0]).nativePath);
-					//createSetPrompt.visible = false;
-					//if(currentState == "dataset")
-					//	datasetEditor.populateSetPrompt.visible = false;
-				}
-			}
-			private function onDragComplete(event:NativeDragEvent):void {
-				//createSetPrompt.visible = false;
-				//if(currentState == "dataset")
-				//	datasetEditor.populateSetPrompt.visible = false;
-			}
-
-
-			protected function dataSetList_nativeDragDropHandler(event:NativeDragEvent):void
-			{
-				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-					// Load the CSV file
-					var fs:FileStream = new FileStream();
-					fs.open(files[0] as File, FileMode.READ);
-					var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
-					fs.close();
-					// Choose the line ending to split the lines based on which one yields more than one line
-					var endings:Array = [File.lineEnding, "\n", "\r"];
-					var i:uint = 1;
-					var lines:Array = csvFile.split(endings[0]);
-					 while(lines.length == 1 && i < endings.length) {
-						lines = csvFile.split(endings[i++]);
-					}
-					//Figure out the number of columns and split each line
-					var numCols:uint = 0;
-					//check line 0
-					var dataset:Dataset = new Dataset();
-					var fields:Array = lines[0].split(',');
-					if(fields.length > 2) { //time based
-						
-						for (var j:int=1;j<fields.length;j++) {
-							var year:int = Number(fields[j]);
-							if(year == 0)  { //fail
-								
-							}
-						}
-						dataset.time = 1;
-						dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
-						dataset.range = fields[1]+','+fields[fields.length-1];
-					}
-					else {
-						dataset.time = 0;
-					}
-					for(j=1;j<lines.length;j++) {
-						var arr:Array = lines[j].toString().split('",');
-						var countryName:String = arr[0].toString().substr(1,arr[0].toString().length);
-						
-					}
-					
-					for(var n:uint = 0; n < lines.length; n++) {
-						//csvText.text += lines[n]+"\n";
-						lines[n] = lines[n].split(",");
-						numCols = Math.max(numCols, lines[n].length);
-					}
-				}					
-			}
-			
-
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -125,7 +42,7 @@
 		<s:Label text="Data Sets" />
 		<s:Rect height="4"/>
 		<!--<s:Group width="100%">-->
-			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  nativeDragDrop="dataSetList_nativeDragDropHandler(event)" 
+			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"
 			alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />			
 			<!--<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
 				<s:Rect top="0" bottom="0" left="0" right="0" >

@@ -2,6 +2,8 @@
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace coren "com.hillelcoren.components.*";
+@namespace controls "com.pentagram.view.controls.*";
+
 @font-face {
 	src: url("/assets/FlamaBook.ttf");
     font-family: "FlamaBook";
@@ -31,18 +33,10 @@
 	font-family: "FlamaBookMx";
 	embedAsCFF: false;
 	advancedAntiAliasing: true;      
-}
-mx|Label {
+} 
+mx|UIComponent {
 	fontFamily: FlamaBookMx;
-}
-mx|Button {
-	fontFamily: FlamaBookMx;
-}
-mx|TextInput {
-	fontFamily: FlamaBookMx;
-}
-mx|FileSystemDataGrid {
-	fontFamily: FlamaBookMx;
+	embedFonts:true;
 }
 s|WindowedApplication{
 	backgroundColor: #FAFCFB;

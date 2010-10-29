@@ -6,11 +6,11 @@ package com.pentagram.model.vo
 	public class Dataset extends BaseVO
 	{
 
-		public var contentid:int;
+		public var contentid:uint;
 		public var unit:String='';
 		public var multiplier:Number=0;
-		public var time:int;
-		public var type:int;
+		public var time:uint;
+		public var type:uint;
 		public var tablename:String; //name of table
 		public var description:String;
 		

@@ -14,6 +14,7 @@ package com.pentagram.view.controls
 		[SkinPart(required="true")]
 		public var resizeHandle:UIComponent;
 		
+		public var host:UIComponent;
 		
 		public function ResizeButton() {
 			super();
@@ -25,7 +26,7 @@ package com.pentagram.view.controls
 		override protected function partAdded(partName:String, instance:Object):void {
 			super.partAdded(partName,instance);
 			if(instance == resizeHandle) {
-				resizeManager = new ResizeManager(this,resizeHandle,"horizontal");
+				resizeManager = new ResizeManager(host,resizeHandle,"horizontal");
 				resizeManager.constrainToParentBounds = false;
 			}		
 		}

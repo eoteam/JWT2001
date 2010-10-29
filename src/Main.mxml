@@ -3,11 +3,10 @@
 						xmlns:s="library://ns.adobe.com/flex/spark" 
 					   	xmlns:mx="library://ns.adobe.com/flex/mx"
  						xmlns:samples="samples.*"
-
+						xmlns:view="com.pentagram.view.*"
 						creationComplete="handleCreationComplete()" 
-						applicationComplete="init()" xmlns:graphics="com.pentagram.view.graphics.*" xmlns:view="com.pentagram.view.*">
-	<!--						nativeDragEnter="onDragIn(event)"
-	nativeDragDrop="onDragDrop(event)" -->
+						applicationComplete="init()" >
+
 	<fx:Style source="assets/main.css" />
 	<fx:Script>
 		<![CDATA[
@@ -114,7 +113,7 @@
 				// Create a file for storing preferences in the application storage directory
 				file = File.applicationStorageDirectory;
 				file = file.resolvePath("Preferences/version.txt");
-				trace("Preferences file location: " + file.nativePath);
+				//trace("Preferences file location: " + file.nativePath);
 				if (file.exists)
 					checkVersion();
 				else firstRun();
@@ -123,18 +122,18 @@
 
 			// The application is now in the foreground and active
 			protected function onAppActivate(event:Event):void {
-				trace("Handling application activate event");
+				//trace("Handling application activate event");
 			}
 
 			// Handle the application being sent to the background
 			protected function onAppDeactivate(event:Event):void {
-				trace("Handling application deactivate event");
+				//trace("Handling application deactivate event");
 			}
 
 			// Called when application is first invoked
 			protected function onInvoke(invokeEvt:InvokeEvent):void 
 			{
-				trace("Handling invoke event");
+				//trace("Handling invoke event");
 			}
 
 			// Handles when the HTTP Network status has changed.
@@ -179,30 +178,30 @@
 			// The network status has changed
 			protected function onNetworkChange(e:Event):void
 			{
-				trace("Network State Changed");
+				//trace("Network State Changed");
 			}
 
 			// Called when the user is idle 
 			protected function onUserIdle(event:Event):void {
-				trace("Handling user idle event");
+				//trace("Handling user idle event");
 			}
 
 			// Called when the user is active again - status will change if idle for more than 5 seconds
 			protected function onUserPresent(event:Event):void
 			{
-				trace("Handling user present event");
+				//trace("Handling user present event");
 			}
 
 			// Handles when the app is minimized/maximized
 			protected function onDisplayStateChange(e:NativeWindowDisplayStateEvent):void
 			{
-				trace("Display State Changed from " + e.beforeDisplayState + " to " + e.afterDisplayState);
+				//trace("Display State Changed from " + e.beforeDisplayState + " to " + e.afterDisplayState);
 			}
 
 			// Called when window is resized
 			protected function onWindowResize(event:NativeWindowBoundsEvent):void
 			{
-				trace("Window resizing");
+				//trace("Window resizing");
 			}
 
 			// Handle Global Errors
@@ -228,7 +227,7 @@
 			// Called when application window closes
 			protected function onAppWinClose(e:Event):void
 			{
-				trace("Handling application window close event");
+				//trace("Handling application window close event");
 				closeOpenWindows(e);
 			}
 
@@ -252,7 +251,7 @@
 				var prevVersion:String = stream.readUTFBytes(stream.bytesAvailable);
 				stream.close();
 				if (prevVersion == currentVersion) {
-					trace("Current version running");
+					//trace("Current version running");
 				}
 				else
 				{
@@ -277,39 +276,6 @@
 			private function onDragIn(event:NativeDragEvent):void {
 				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 					NativeDragManager.acceptDragDrop(this);
-				}
-			}
-			
-			private function onDragDrop(event:NativeDragEvent):void {
-				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-					for(var n:uint = 0; n < files.length; n++) {
-						convertFile(files[n] as File);
-					}
-				}
-			}
-			
-			private function convertFile(f:File):void {
-				// Load the CSV file
-				var fs:FileStream = new FileStream();
-				fs.open(f, FileMode.READ);
-				var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
-				fs.close();
-				
-				// Choose the line ending to split the lines based on which one yields more than one line
-				var endings:Array = [File.lineEnding, "\n", "\r"];
-				var i:uint = 1;
-				var lines:Array = csvFile.split(endings[0]);
-				while(lines.length == 1 && i < endings.length) {
-					lines = csvFile.split(endings[i++]);
-				}
-				
-				// Figure out the number of columns and split each line
-				var numCols:uint = 0;
-				for(var n:uint = 0; n < lines.length; n++) {
-					//csvText.text += lines[n]+"\n";
-					lines[n] = lines[n].split(",");
-					numCols = Math.max(numCols, lines[n].length);
 				}
 			}
 		]]>

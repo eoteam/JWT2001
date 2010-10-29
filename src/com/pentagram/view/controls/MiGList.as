@@ -7,7 +7,9 @@ package com.pentagram.view.controls
 	import mx.collections.Sort;
 	import mx.collections.SortField;
 	import mx.core.DragSource;
+	import mx.core.FlexVersion;
 	import mx.core.IFlexDisplayObject;
+	import mx.events.ResizeEvent;
 	
 	import spark.components.Button;
 	import spark.components.List;
@@ -105,6 +107,7 @@ package com.pentagram.view.controls
 			if (instance == header)
 			{
 				header.addEventListener(MouseEvent.CLICK, header_clickHandler);
+				//header.addEventListener(ResizeEvent.RESIZE,handleButtonResize);
 			}
 		}
 		
@@ -123,21 +126,14 @@ package com.pentagram.view.controls
 				header.removeEventListener(MouseEvent.CLICK, header_clickHandler);
 			}
 		}
-		
-		/**
-		 * 
-		 * @param event
-		 * 
-		 */		
+
+
 		protected function header_clickHandler(event:MouseEvent):void
 		{
 			sortList();
 		}
 		
-		/**
-		 * 
-		 * 
-		 */		
+		
 		private function sortList():void 
 		{
 			var dp:ICollectionView = this.dataProvider as ICollectionView;
