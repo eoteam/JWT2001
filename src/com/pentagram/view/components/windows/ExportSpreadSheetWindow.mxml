@@ -10,9 +10,9 @@
 		<s:Fade id="fadeOut" alphaFrom="1" alphaTo="0" duration="250" effectEnd="fadeOut_effectEndHandler(event)" />
 		<s:Fade id="fadeNext" alphaFrom="0" alphaTo="1" duration="250" />
 		<s:Move id="moveDownEffect" easer="{easer}" duration="500" startDelay="250" target="{promptsContainer}"  
-				yTo="{promptsContainer.y-PROMPT_MOVE_INTERVAL}"   />
+		yTo="{promptsContainer.y-PROMPT_MOVE_INTERVAL}"   />
 		<s:Move id="moveUpEffect" easer="{easer}" duration="500" target="{promptsContainer}"  
-				yTo="{promptsContainer.y+PROMPT_MOVE_INTERVAL}"   />
+		yTo="{promptsContainer.y+PROMPT_MOVE_INTERVAL}"   />
 		<s:Power exponent="2" easeInFraction="0.75" id="easer" />
 	</fx:Declarations>
 	
@@ -76,7 +76,13 @@
 					animateNext(_timeRangePrompt);					
 				}
 				else {
-					_timeType = "static";					
+					_timeType = "static";
+					dataset = new Dataset();
+					dataset.time = _timeType == "time" ? 1:0;
+					dataset.type = 1; //because of unit
+					dataset.name = this._sheetName;
+					this.dispatchEvent(new ViewEvent(ViewEvent.DATASET_CREATOR_COMPLETE,dataset));
+					
 					_dataTypePrompt = new DataTypePrompt();
 					_dataTypePrompt.addEventListener(DataPromptEvent.DATA_TYPE_NEXT,dataTypeNextHandler,false,0,true);
 					_dataTypePrompt.addEventListener(DataPromptEvent.DATA_TYPE_BACK,backHandler,false,0,true);
@@ -87,12 +93,20 @@
 			private function timeRangeNextHandler(event:DataPromptEvent):void {
 				event.target.enabled = false;			
 				_yearRange[0] = _timeRangePrompt.startYear;
-				_yearRange[1] = _timeRangePrompt.endYear;			
-				_dataTypePrompt = new DataTypePrompt();
+				_yearRange[1] = _timeRangePrompt.endYear;
+				dataset = new Dataset();
+				dataset.time = _timeType == "time" ? 1:0;
+				dataset.type = 1; //because of unit
+				dataset.name = this._sheetName;
+				if(dataset.time == 1)
+					dataset.years = _yearRange;
+				this.dispatchEvent(new ViewEvent(ViewEvent.DATASET_CREATOR_COMPLETE,dataset));
+
+				/* _dataTypePrompt = new DataTypePrompt();
 				_dataTypePrompt.addEventListener(DataPromptEvent.DATA_TYPE_NEXT,dataTypeNextHandler);
 				_dataTypePrompt.addEventListener(DataPromptEvent.DATA_TYPE_BACK,backHandler);
 				promptsContainer.addElement(_dataTypePrompt);
-				animateNext(_dataTypePrompt);
+				animateNext(_dataTypePrompt); */
 			}
 			private function dataTypeNextHandler(event:DataPromptEvent):void {
 				event.target.enabled = false;

@@ -122,8 +122,8 @@
 					<s:SolidColorStroke color="0xcccccc" weight="1"/>
 				</s:stroke>
 			</s:Rect>
-			<controls:MiGList minWidth="50" sortField="name" contentBackgroundColor="0xffffff" height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
-			<s:DataGrid left="{countryList.width}" borderVisible="false"  selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" width="100%"  height="100%" id="grid" gridClick="grid_gridClickHandler(event)">
+			<controls:MiGList left="1" top="1" bottom="1"  sortField="name" contentBackgroundColor="0xffffff" height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
+			<s:DataGrid left="{countryList.width}" borderVisible="false"  selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="1" bottom="1"  height="100%" id="grid" gridClick="grid_gridClickHandler(event)">
 				<s:columns>
 					<s:ArrayList id="columns">
 						<!--<s:GridColumn id="countryCol"  width="120"  minWidth="120" resizable="true" headerText="Countries" dataField="name" sortable="true">
@@ -136,14 +136,14 @@
 					</s:ArrayList>
 				</s:columns>
 			</s:DataGrid>
-			<s:Group id="populateSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+<!--			<s:Group id="populateSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
 				<s:Rect top="0" bottom="0" left="0" right="0" >
 					<s:fill>
 						<s:SolidColor color="0" alpha="0.8"/>
 					</s:fill>
 				</s:Rect>
 				<s:Label color="#ffffff" textAlign="center" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to populate the Data Set"  />
-			</s:Group>			
+			</s:Group>	-->		
 		</s:Group>			
 	</s:HGroup>
 </s:VGroup>

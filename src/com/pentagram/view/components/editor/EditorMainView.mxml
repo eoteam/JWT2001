@@ -4,12 +4,12 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:editor="com.pentagram.view.components.editor.*"  
 		 nativeDragOver="onDragIn(event)"
-		 nativeDragDrop="onDragDrop(event)"
 		 nativeDragComplete="onDragComplete(event)" >
 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
+			import com.pentagram.model.vo.Dataset;
 			import com.pentagram.model.vo.MimeType;
 			
 			import mx.events.FlexEvent;
@@ -32,10 +32,10 @@
 					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 					if(MimeType.getMimetype(File(files[0]).extension) == MimeType.FILE && File(files[0]).extension == "csv") {
 						NativeDragManager.acceptDragDrop(dataSetList); 
-						createSetPrompt.visible = true;
+						//createSetPrompt.visible = true;
 						if(currentState == "dataset") {
-							datasetEditor.populateSetPrompt.visible = true;
-							NativeDragManager.acceptDragDrop(datasetEditor); 
+							//datasetEditor.populateSetPrompt.visible = true;
+							//NativeDragManager.acceptDragDrop(datasetEditor); 
 						}
 					}
 				}
@@ -43,17 +43,63 @@
 			private function onDragDrop(event:NativeDragEvent):void {
 				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-					trace("file:///" + File(files[0]).nativePath);
-					createSetPrompt.visible = false;
-					if(currentState == "dataset")
-						datasetEditor.populateSetPrompt.visible = false;
+					//trace("file:///" + File(files[0]).nativePath);
+					//createSetPrompt.visible = false;
+					//if(currentState == "dataset")
+					//	datasetEditor.populateSetPrompt.visible = false;
 				}
 			}
 			private function onDragComplete(event:NativeDragEvent):void {
-				createSetPrompt.visible = false;
-				if(currentState == "dataset")
-					datasetEditor.populateSetPrompt.visible = false;
+				//createSetPrompt.visible = false;
+				//if(currentState == "dataset")
+				//	datasetEditor.populateSetPrompt.visible = false;
 			}
+
+
+			protected function dataSetList_nativeDragDropHandler(event:NativeDragEvent):void
+			{
+				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
+					var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+					// Load the CSV file
+					var fs:FileStream = new FileStream();
+					fs.open(files[0] as File, FileMode.READ);
+					var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
+					fs.close();
+					// Choose the line ending to split the lines based on which one yields more than one line
+					var endings:Array = [File.lineEnding, "\n", "\r"];
+					var i:uint = 1;
+					var lines:Array = csvFile.split(endings[0]);
+					 while(lines.length == 1 && i < endings.length) {
+						lines = csvFile.split(endings[i++]);
+					}
+					//Figure out the number of columns and split each line
+					var numCols:uint = 0;
+					//check line 0
+					var dataset:Dataset = new Dataset();
+					var fields:Array = lines[0].split(',');
+					if(fields.length > 2) { //time based
+						
+						for (var j:int=1;j<fields.length;j++) {
+							var year:int = Number(fields[j]);
+							if(year == 0)  { //fail
+								
+							}
+						}
+						dataset.time = 1;
+						dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
+						dataset.range = fields[1]+','+fields[fields.length-1];
+					}
+					else {
+						dataset.time = 0;
+					}
+					for(var n:uint = 0; n < lines.length; n++) {
+						//csvText.text += lines[n]+"\n";
+						lines[n] = lines[n].split(",");
+						numCols = Math.max(numCols, lines[n].length);
+					}
+				}					
+			}
+			
 
 		]]>
 	</fx:Script>
@@ -72,10 +118,10 @@
 		<s:Rect height="8" />
 		<s:Label text="Data Sets" />
 		<s:Rect height="4"/>
-		<s:Group width="100%">
-			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  
+		<!--<s:Group width="100%">-->
+			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"  nativeDragDrop="dataSetList_nativeDragDropHandler(event)" 
 			alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />			
-			<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+			<!--<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
 				<s:Rect top="0" bottom="0" left="0" right="0" >
 					<s:fill>
 						<s:SolidColor color="0" alpha="0.8"/>
@@ -84,7 +130,7 @@
 				<s:Label textAlign="center" color="0xffffff" left="0" right="0" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to create a new set"  />
 			</s:Group>
 			
-		</s:Group>
+		</s:Group>-->
 
 		<s:HGroup width="100%" gap="0">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" />
