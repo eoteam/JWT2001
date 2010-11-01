@@ -19,6 +19,7 @@
 			import mx.collections.Sort;
 			import mx.collections.SortField;
 			import mx.events.FlexEvent;
+			import mx.utils.UIDUtil;
 			
 			import spark.components.Button;
 			import spark.components.DataGroup;
@@ -26,7 +27,9 @@
 			import spark.components.supportClasses.GridColumn;
 			import spark.components.supportClasses.GridSelectionMode;
 			import spark.events.GridEvent;
+			import spark.events.RendererExistenceEvent;
 
+			
 			public function generateDataset():void {
 				var column:GridColumn;
 				columns.removeAll();
@@ -64,41 +67,47 @@
 				countryList.dataProvider = dataset.rows;
 				
 			}
-			//public function acceptDragFile():void {
-				
-			//}
-			protected function grid_gridClickHandler(event:GridEvent):void
-			{
-				if(event.itemRenderer is DefaultColumnHeaderRenderer) {
- 					//var dp:ICollectionView = dataset.rows;
-					var sort:Sort = new Sort();
-					sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.itemRenderer).data.dataField,false,false,true)];  		
-					if (dataset.rows != null)
-					{
-						dataset.rows.sort = sort;
-						dataset.rows.refresh();
-					}
-				}
-			}
-
 			protected function handler(event:Event):void
 			{
+				var group:DataGroup = grid.columnHeaderBar.dataGroup;
+				group.addEventListener(RendererExistenceEvent.RENDERER_ADD,handleColumnButtonAdd);
+				group.addEventListener(RendererExistenceEvent.RENDERER_REMOVE,handleColumnButtonRemove);				
+			}
+			protected function handleDG(event:Event):void {
 				var group:DataGroup = grid.columnHeaderBar.dataGroup;	
 				for (var i:int=0;i<group.numElements;i++) {
 					var b:Button = group.getElementAt(i) as Button;
 					if(b) {
-						trace(i);
 						b.mouseEnabled = true;
+						b.addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
 					}
 				}
-				
+				//grid.columnHeaderBar.layout.useVirtualLayout = false;
+				//grid.columnHeaderBar.addEventListener(MouseEvent.MOUSE_OVER,handleGridMouseOver)
+				//grid.scroller.horizontalScrollBar.addEventListener(Event.CHANGE, handler, false, 0, true);
+				//grid.scroller.horizontalScrollBar.addEventListener(FlexEvent.VALUE_COMMIT, handler, false, 0, true);
 			}
-			protected function handleDG(event:Event):void {
-				grid.scroller.horizontalScrollBar.addEventListener(Event.CHANGE, handler, false, 0, true);
-				// the value commit is needed to handle the programmatic changes of the scroll position
-				grid.scroller.horizontalScrollBar.addEventListener(FlexEvent.VALUE_COMMIT, handler, false, 0, true);
+			protected function handleColumnButtonAdd(event:RendererExistenceEvent):void {
+				//Button(event.renderer).setStyle('skinClass',com.pentagram.view.skins.ColumnHeaderSkin);
+				Button(event.renderer).mouseEnabled = true;
+				Button(event.renderer).addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
 			}
-
+			protected function handleColumnButtonRemove(event:RendererExistenceEvent):void {
+				Button(event.renderer).removeEventListener(MouseEvent.CLICK,handleColumnButtonClick);
+			}
+			protected function handleColumnButtonClick(event:MouseEvent):void {
+				hscrollValue = grid.scroller.horizontalScrollBar.value;
+				vscrollValue = grid.scroller.verticalScrollBar.value;
+				var sort:Sort = new Sort();
+				sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.target).data.dataField,false,false,true)];  		
+				if (dataset.rows != null)
+				{
+					dataset.rows.sort = sort;
+					dataset.rows.refresh();
+				}
+				grid.scroller.horizontalScrollBar.value = hscrollValue;
+				grid.scroller.verticalScrollBar.value = vscrollValue;
+			}
 		]]>
 	</fx:Script>
 	<s:states>
@@ -106,6 +115,8 @@
 		<s:State name="showgrid" />
 	</s:states>
 	<fx:Declarations>
+		<fx:Number id="hscrollValue" />
+		<fx:Number id="vscrollValue" />
 		<vo:Dataset id="dataset" />
 		<vo:Client id="client" />
 		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>
@@ -131,13 +142,15 @@
 					<s:SolidColorStroke color="0xcccccc" weight="2"/>
 				</s:stroke>
 			</s:Rect>
-			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff" height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
-			<s:DataGrid updateComplete="handler(event)" left="{countryList.width+.5}" borderVisible="false"  
+			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff"  
+			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
+			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"
+			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
+			<s:DataGrid updateComplete="handler(event)" left="{countryList.width+.5}" borderVisible="false" 
 			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  creationComplete="handleDG(event)"
-			height="100%" id="grid" gridClick="grid_gridClickHandler(event)">
+			height="100%" id="grid">
 				<s:columns>
-					<s:ArrayList id="columns">
-					</s:ArrayList>
+					<s:ArrayList id="columns" />
 				</s:columns>
 			</s:DataGrid>
 		</s:Group>			

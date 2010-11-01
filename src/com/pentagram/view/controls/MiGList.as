@@ -1,5 +1,6 @@
 package com.pentagram.view.controls
 {
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	
@@ -16,6 +17,8 @@ package com.pentagram.view.controls
 	
 	[SkinState("normal")]
 	[SkinState("disabled")]
+	[Event(name="sortStarted",type="flash.events.Event")]
+	[Event(name="sortComplete",type="flash.events.Event")]
 	
 	public class MiGList extends List
 	{
@@ -130,6 +133,7 @@ package com.pentagram.view.controls
 
 		protected function header_clickHandler(event:MouseEvent):void
 		{
+			this.dispatchEvent(new Event("sortStarted"));
 			sortList();
 		}
 		
@@ -154,6 +158,7 @@ package com.pentagram.view.controls
 				
 				dp.sort = this._sort;
 				dp.refresh();
+				this.dispatchEvent(new Event("sortComplete"));
 			}
 		}                 
 	}
