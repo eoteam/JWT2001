@@ -39,13 +39,13 @@
         <title>View</title>
 
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
-        <systemChrome>standard</systemChrome>
+        <systemChrome>none</systemChrome>
 
         <!-- Whether the window is transparent. Only applicable when systemChrome is none. Optional. Default false. -->
         <transparent>false</transparent>
 
         <!-- Whether the window is initially visible. Optional. Default false. -->
-        <!-- <visible></visible> -->
+        <visible>false</visible>
 
         <!-- Whether the user can minimize the window. Optional. Default true. -->
         <minimizable>false</minimizable>
@@ -57,10 +57,10 @@
         <resizable>true</resizable>
 
         <!-- The windows initial width in pixels. Optional. -->
-        <width>1280</width>
+        <width>0</width>
 
         <!-- The windows initial height in pixels. Optional. -->
-        <height>1024</height>
+        <height>0</height>
 
 		<!-- The window's initial x position. Optional. -->
 		<x>150</x>

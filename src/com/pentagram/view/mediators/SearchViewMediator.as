@@ -20,14 +20,12 @@ package com.pentagram.view.mediators
 		
 		public override function onRegister():void
 		{
-			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
+			//eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
 			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect,false,0,true);
-		}
-		private function handleStartUp(event:AppEvent):void
-		{
 			view.searchInput.visible = true;
 			view.searchInput.dataProvider = appModel.clients.source;
 		}
+
 		private function handleSelect(event:CustomEvent):void
 		{
 			if(appModel.selectedClient != event.data as Client) {

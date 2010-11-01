@@ -67,6 +67,17 @@
 				countryList.dataProvider = dataset.rows;
 				
 			}
+			protected function handlePropChange(event:Event,prop:String):void {
+				if(dataset.modifiedProps.indexOf(prop) == -1) {
+					dataset.modifiedProps.push(prop);
+				}
+				dataset[prop] = event.target.text;
+				dataset.modified = true;
+			}
+			
+			
+			
+			//DG functions
 			protected function handler(event:Event):void
 			{
 				var group:DataGroup = grid.columnHeaderBar.dataGroup;
@@ -126,11 +137,11 @@
 
 	<s:HGroup verticalAlign="top" width="90%">
 		<s:Label text="Data Set Title" width="100" />
-		<s:TextInput width="100%" text="{dataset.name}"  />
+		<s:TextInput width="100%" text="{dataset.name}"  change="handlePropChange(event,'name')" />
 	</s:HGroup>
 	<s:HGroup verticalAlign="top" width="90%">
 		<s:Label text="Description" width="100" />
-		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}"  />	
+		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}"  change="handlePropChange(event,'description')"/>	
 	</s:HGroup>		
 	
 	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
@@ -143,9 +154,10 @@
 				</s:stroke>
 			</s:Rect>
 			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff"  
+			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
-			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"
-			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  />
+			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>
+			
 			<s:DataGrid updateComplete="handler(event)" left="{countryList.width+.5}" borderVisible="false" 
 			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  creationComplete="handleDG(event)"
 			height="100%" id="grid">

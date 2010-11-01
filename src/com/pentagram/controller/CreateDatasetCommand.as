@@ -2,6 +2,8 @@ package com.pentagram.controller
 {
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
@@ -37,6 +39,27 @@ package com.pentagram.controller
 				dataset.tablename = msg[1];
 				dataset.id = msg[0];
 				dataset.loaded = true;
+				var country:Country;
+				var row:DataRow;
+				if(dataset.time == 1) {
+					for each(country in appModel.selectedClient.countries.source) {
+						row = new DataRow();
+						row.name = country.name;
+						for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+							row[i.toString()] = dataset.type == 1 ? 0:'';
+						}
+						dataset.rows.addItem(row);
+					}
+				}
+				
+				else {
+					for each(country in appModel.selectedClient.countries.source) {
+						row = new DataRow();
+						row.name = country.name;
+						row.value = dataset.type == 1 ? 0:'';
+						dataset.rows.addItem(row);
+					}
+				}
 				appModel.selectedClient.datasets.addItem(dataset);
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_CREATED,dataset));
 			}

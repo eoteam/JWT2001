@@ -18,6 +18,7 @@ package com.pentagram.model
 	 */
 	public class OpenWindowsProxy extends Actor
 	{
+		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		/**

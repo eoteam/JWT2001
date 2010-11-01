@@ -6,7 +6,7 @@ package com.pentagram.view.mediators
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
-	import com.pentagram.view.MainView;
+	import com.pentagram.view.components.MainWindow;
 	import com.pentagram.view.components.windows.LoginWindow;
 	import com.pentagram.view.event.ViewEvent;
 	
@@ -17,10 +17,10 @@ package com.pentagram.view.mediators
 	
 	import org.robotlegs.mvcs.Mediator;
 	
-	public class MainViewMediator extends Mediator
+	public class MainWindowMediator extends Mediator
 	{
 		[Inject]
-		public var view:MainView;
+		public var view:MainWindow;
 		
 		[Inject]
 		public var appModel:AppModel;

@@ -8,7 +8,8 @@ package com.pentagram.model.vo
 	[Bindable]
 	public dynamic class DataRow	
 	{
-		public var name:String;
+		public var dataset:Dataset;
+		public var nameR:String;
 		public var id:int;
 		public var modified:Boolean = false;
 		public var value:*;
