@@ -5,7 +5,7 @@
  						xmlns:samples="samples.*"
 						xmlns:view="com.pentagram.view.*" showStatusBar="false" visible="false"
 						creationComplete="handleCreationComplete()" 
-						applicationComplete="init()" >
+						applicationComplete="init()" xmlns:modules="ws.tink.spark.modules.*" xmlns:instance="com.pentagram.instance.*" >
 
 	<fx:Style source="assets/main.css" />
 	<fx:Script>
@@ -38,10 +38,14 @@
 
 
 			
-			protected var context:ViewContext;
-
-			private function handleCreationComplete(): void {
-				this.createDeferredContent();
+			public var context:ViewContext;
+			
+			public function get applicationEventDispatcher():IEventDispatcher
+			{
+				return context.eventDispatcher;
+			} 
+			
+			private function handleCreationComplete(): void {		
 				context = new ViewContext();
 				context.contextView = this;		
 				TextLineRecycler.textLineRecyclerEnabled = false;
@@ -91,24 +95,7 @@
 
 				// Create a native menu with two items in the top-level application menu. 
 				
-				if (NativeApplication.supportsMenu)
-				{
-					var m:NativeMenu = NativeApplication.nativeApplication.menu;
-					var win:NativeMenuItem = m.items[3] as NativeMenuItem;
-					var fs:NativeMenuItem = new NativeMenuItem("Full Screen");
-					win.submenu.addItem(fs);			
-					fs.addEventListener(Event.SELECT,onItemSelect);				
-				}
-				else if (NativeWindow.supportsMenu)
-				{
-//					var menu:NativeMenu = new NativeMenu();
-//					nativeWindow.menu = menu;
-//					item1 = stage.nativeWindow.menu.addItem(new NativeMenuItem("My App Menu"));
-//					item1.addEventListener(Event.SELECT,onItemSelect);
-				}
 
-				// Manually close all open Windows when app closes.
-				this.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
 
 				// Create a file for storing preferences in the application storage directory
 				file = File.applicationStorageDirectory;
@@ -211,37 +198,7 @@
     			Alert.show("An error has occurred and been caught by the global error handler: " + e.error.toString(), "My Global Error Handler");
 			}
 
-			// Handle Menu item selection
-			protected function onItemSelect(e:Event):void
-			{
-				if( stage.displayState == StageDisplayState.NORMAL ) {
-						stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
-						this.showStatusBar = false;
-				} 
-				else {
-						stage.displayState = StageDisplayState.NORMAL;
-						this.showStatusBar = true;
-				}
-			}
 
-			// Called when application window closes
-			protected function onAppWinClose(e:Event):void
-			{
-				//trace("Handling application window close event");
-				closeOpenWindows(e);
-			}
-
-			// Closes all open windows
-			protected function closeOpenWindows(e:Event):void
-			{
-				// This code can be uncommented to prevent the default close action from occurringand first call the close method on each open window to
-				// perform any actions needed. Closes each from most recently opened to oldest.
-				//e.preventDefault();
-				//for (var i:int = NativeApplication.nativeApplication.openedWindows.length - 1; i>= 0; --i)
-				//{
-					//NativeWindow(NativeApplication.nativeApplication.openedWindows[i]).close();
-				//}
-			}
 
 			// Check for current version from saved prefs file. If no file exists, this is the first time run
 			protected function checkVersion():void
@@ -271,12 +228,6 @@
 				stream.open(file, FileMode.WRITE);
 				stream.writeUTFBytes(currentVersion);
 				stream.close();
-			}
-			import flash.filesystem.FileMode;
-			private function onDragIn(event:NativeDragEvent):void {
-				if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-					NativeDragManager.acceptDragDrop(this);
-				}
 			}
 		]]>
 	</fx:Script>

@@ -1,8 +1,8 @@
 /* CSS file */
 @namespace s "library://ns.adobe.com/flex/spark";
 @namespace mx "library://ns.adobe.com/flex/mx";
-@namespace coren "com.hillelcoren.components.*";
 @namespace controls "com.pentagram.view.controls.*";
+@namespace wscontainers "ws.tink.spark.containers.*";
 
 @font-face {
 	src: url("/assets/FlamaBook.ttf");
@@ -49,4 +49,7 @@ s|Window {
 	fontFamily: FlamaBook;
 	fontSize: 14;
 	color: #111111;	
+}
+wscontainers|Navigator {
+	skinClass: ClassReference("ws.tink.spark.skins.containers.NavigatorSkin");
 }

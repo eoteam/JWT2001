@@ -2,6 +2,7 @@ package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.OpenWindowsProxy;
 	
 	import org.robotlegs.mvcs.Command;
@@ -13,6 +14,8 @@ package com.pentagram.controller.configuration
 		{
 			injector.mapSingleton(AppModel);
 			injector.mapSingleton(OpenWindowsProxy);
+			injector.mapSingleton(InstanceWindowsProxy);
+			
 			trace("Configure: Models Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_MODELS_COMPLETE));
 		}

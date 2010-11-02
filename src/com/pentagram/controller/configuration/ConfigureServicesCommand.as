@@ -17,7 +17,7 @@ package com.pentagram.controller.configuration
 			//services
 			trace("Configure: Services Complete");
 			injector.mapSingletonOf(IAppService, AppService); 
-			injector.mapSingletonOf(IDatasetService, DatasetService); 
+			
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_SERVICES_COMPLETE));
 		}
 	}

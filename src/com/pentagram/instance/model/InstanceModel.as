@@ -1,4 +1,4 @@
-package com.pentagram.model
+package com.pentagram.instance.model
 {
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Dataset;
@@ -8,13 +8,8 @@ package com.pentagram.model
 	
 	import org.robotlegs.mvcs.Actor;
 
-	public class AppModel extends Actor
+	public class InstanceModel extends Actor
 	{
-		public function AppModel()
-		{
-		
-		}
-		
 		[Bindable]
 		public var continents:ArrayList;
 		
@@ -24,14 +19,12 @@ package com.pentagram.model
 		[Bindable]
 		public var clients:ArrayList;
 		
-		
-		public var loggedIn:Boolean = false;
+		public var client:Client;
+		public var selectedSet:Dataset;
 		
 		public var user:User;
 		
-
-		
-		//global ref
-		//public var
+		public const LOGIN_WINDOW:String = "loginWindow";
+		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 	}
 }

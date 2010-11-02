@@ -33,7 +33,7 @@ SOFTWARE.
 		xmlns:s="library://ns.adobe.com/flex/spark" 
 		xmlns:fb="http://ns.adobe.com/flashbuilder/2009"
 		xmlns:st="library://ns.tink.ws/flex/spark"
-		alpha.disabled="0.5">
+		alpha.disabled="0.5" xmlns:containers="ws.tink.spark.containers.*">
 	
 	<fx:Metadata>
 		<![CDATA[ 
@@ -92,6 +92,6 @@ SOFTWARE.
 	more about it here: http://bugs.adobe.com/jira/browse/SDK-21143
 	-->
 	<!--- @copy ws.tink.spark.containers.Navigator#contentGroup -->
-	<st:NavigatorGroup id="contentGroup" left="0" right="0" top="0" bottom="0" minWidth="0" minHeight="0"/>
+	<containers:NavigatorGroup id="contentGroup" left="0" right="0" top="0" bottom="0" minWidth="0" minHeight="0"/>
 	
 </s:Skin>

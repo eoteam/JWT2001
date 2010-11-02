@@ -2,37 +2,25 @@ package com.pentagram.model
 {
 	import com.ericfeminella.collections.HashMap;
 	import com.ericfeminella.collections.IMap;
-	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.util.ViewUtils;
-	import com.pentagram.view.windows.BaseWindow;
+	import com.pentagram.events.InstanceWindowEvent;
+	import com.pentagram.instance.InstanceWindow;
 	
 	import mx.collections.ArrayCollection;
 	import mx.utils.UIDUtil;
 	
 	import org.robotlegs.mvcs.Actor;
 	
-	/**
-	 * Proxy to keep track of current open <code>BaseWindow</code> objects
-	 * @author joel
-	 *
-	 */
-	public class OpenWindowsProxy extends Actor
+	public class InstanceWindowsProxy extends Actor
 	{
+		[Inject]
+		public var appModel:AppModel;
 		
-		public const LOGIN_WINDOW:String = "loginWindow";
-		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
-		/**
-		 * Hash of currently open windows
-		 */
 		protected var windowMap:IMap;
-		protected var viewsMap:IMap;
+		public var currentWindow:InstanceWindow;
 		
-		public function OpenWindowsProxy()
+		public function InstanceWindowsProxy()
 		{
 			windowMap = new HashMap();
-			viewsMap = new HashMap();
-			viewsMap.put(LOGIN_WINDOW,"com.pentagram.view.windows.LoginWindow");
-			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.view.windows.ExportSpreadSheetWindow");
 		}
 		
 		/**
@@ -44,25 +32,30 @@ package com.pentagram.model
 		 * @return
 		 *
 		 */
-		public function createWindow(uid:String = null):BaseWindow
+		public function createWindow():InstanceWindow
 		{
-			var infoWindow:BaseWindow;
+			var instanceWindow:InstanceWindow;
 			
 			if (this.hasWindowUID(uid))
 			{
-				infoWindow = this.getWindowFromUID(uid);
-				return infoWindow
+				instanceWindow = this.getWindowFromUID(uid);
+				return instanceWindow;
 			}
 			
-			if (!uid) {
-				throw new Error("Class is Not Defined");
-				//uid = UIDUtil.createUID();
-			}
-			infoWindow = ViewUtils.instantiateClass(viewsMap.getValue(uid));
-			infoWindow.id = uid;
-			this.windowMap.put(infoWindow.id, infoWindow);
-			dispatch(new BaseWindowEvent(BaseWindowEvent.WINDOW_ADDED, uid));
-			return infoWindow;
+			//if (!uid) {
+			//	throw new Error("Class is Not Defined");
+			var uid:String = UIDUtil.createUID();
+			//}
+			
+			instanceWindow = new InstanceWindow();
+			instanceWindow.clients = appModel.clients;
+			instanceWindow.countries = appModel.countries;
+			instanceWindow.continents = appModel.continents;
+			
+			instanceWindow.id = uid;
+			this.windowMap.put(instanceWindow.id, instanceWindow);
+			//dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_ADDED, uid));
+			return instanceWindow;
 		}
 		
 		/**
@@ -72,9 +65,9 @@ package com.pentagram.model
 		 * @return
 		 *
 		 */
-		public function getWindowFromUID(uid:String):BaseWindow
+		public function getWindowFromUID(uid:String):InstanceWindow
 		{
-			return this.windowMap.getValue(uid) as BaseWindow;
+			return this.windowMap.getValue(uid) as InstanceWindow;
 		}
 		
 		/**
@@ -87,7 +80,7 @@ package com.pentagram.model
 		public function removeWindowByUID(uid:String):void
 		{
 			this.windowMap.remove(uid);
-			dispatch(new BaseWindowEvent(BaseWindowEvent.WINDOW_REMOVED, uid));
+			dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_REMOVED));
 		}
 		
 		/**
@@ -106,7 +99,7 @@ package com.pentagram.model
 		public function updateCollection(collection:ArrayCollection):void
 		{
 			var windows:Array = this.windowMap.getValues();
-			var infoWindow:BaseWindow;
+			var infoWindow:InstanceWindow;
 			trace("currently registered:", windows);
 			for each (infoWindow in windows)
 			{

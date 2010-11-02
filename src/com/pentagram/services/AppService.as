@@ -42,21 +42,7 @@ package com.pentagram.services
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-		public function loadClientDatasets():void {
-			var params:Object = new Object();
-			params.action = "getData";
-			params.tablename = "datasets";
-			params.contentid = appModel.selectedClient.id;
-			params.deleted = 0;
-			this.createService(params,ResponseType.DATA,Dataset);	
-		}
-		public function loadClientCountries():void {
-			var params:Object = new Object();
-			params.action = "getData";
-			params.tablename = "client_countries";
-			params.clientid = appModel.selectedClient.id;
-			this.createService(params,ResponseType.DATA);	
-		}
+		
 
 		public function authenticateUser(username:String, password:String):void {
 			var params:Object = new Object();
@@ -68,31 +54,6 @@ package com.pentagram.services
 		public function logOut():void {
 			
 		}
-		public function saveClientInfo():void {
-			var params:Object = new Object();
-			for each(var prop:String in appModel.selectedClient.modifiedProps) {
-				params[prop] = appModel.selectedClient[prop];
-			}
-			params.action = "updateRecord";
-			params.tablename = "content";
-			params.id = appModel.selectedClient.id;
-			this.createService(params,ResponseType.STATUS);
-		}
-		public function addClientCountry(country:Country):void {
-			var params:Object = new Object();
-			params.action = "insertRecord";
-			params.tablename = "client_countries";
-			params.clientid = appModel.selectedClient.id;
-			params.countryid = country.id;
-			this.createService(params,ResponseType.STATUS);
-		}
-		public function removeClientCountry(country:Country):void {
-			var params:Object = new Object();
-			params.action = "removeRecord";
-			params.tablename = "client_countries";
-			params.clientid = appModel.selectedClient.id;
-			params.countryid = country.id;
-			this.createService(params,ResponseType.STATUS);
-		}
+		
 	}
 }

@@ -1,5 +1,6 @@
 package com.pentagram.services
 {
+	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
@@ -8,7 +9,7 @@ package com.pentagram.services
 	public class DatasetService extends AbstractService implements IDatasetService
 	{
 		[Inject]
-		public var appModel:AppModel;
+		public var model:InstanceModel;
 		
 		public function loadDataSet(dataset:Dataset):void {
 			var params:Object = new Object();
@@ -20,11 +21,11 @@ package com.pentagram.services
 		public function createDataset(dataset:Dataset):void {
 			var params:Object = new Object();
 			params.action = "createDataset";
-			params.contentid = appModel.selectedClient.id;
-			params.tablename = appModel.selectedClient.shortname+'_'+dataset.name;
+			params.contentid = model.client.id;
+			params.tablename = model.client.shortname+'_'+dataset.name;
 			params.name = dataset.name;
 			var countryids:String = '';
-			for each(var country:Country in appModel.selectedClient.countries.source) {
+			for each(var country:Country in model.client.countries.source) {
 				countryids += country.id.toString()+',';
 			}
 			countryids = countryids.substring(0,countryids.length-1);
@@ -33,8 +34,8 @@ package com.pentagram.services
 			params.type = dataset.type;
 			params.unit = dataset.unit;
 			params.multiplier = dataset.multiplier;
-			params.createdby = appModel.user.id;
-			params.modifiedby = appModel.user.id;
+			params.createdby = model.user.id;
+			params.modifiedby = model.user.id;
 			if(dataset.time == 1)
 				params.years = dataset.years[0]+','+dataset.years[1];
 			this.createService(params,ResponseType.STATUS);			

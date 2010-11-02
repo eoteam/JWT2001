@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:editor="com.pentagram.instance.view.editor.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.Client;
+			import com.pentagram.model.vo.Dataset;
+			import com.pentagram.model.vo.MimeType;
+			
+			import mx.events.FlexEvent;
+			
+			import spark.events.IndexChangeEvent;
+			[Bindable] public var client:Client;
+
+			protected function dataSetList_changeHandler(event:IndexChangeEvent):void
+			{
+				this.currentState = "dataset";
+			}
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				dataSetList.selectedIndex = -1
+				this.currentState = "overview";	
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
+		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
+	</fx:Declarations>
+	<s:states>
+		<s:State name="overview" id="overviewState" />
+		<s:State name="dataset" id="datasetState" />
+		<s:State name="create" id="createState" />
+	</s:states>
+	
+	<s:VGroup width="200" gap="0">
+		<s:Button width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)" />
+		<s:Rect height="8" />
+		<s:Label text="Data Sets" />
+		<s:Rect height="4"/>
+		<!--<s:Group width="100%">-->
+			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"
+			alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />			
+			<!--<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
+				<s:Rect top="0" bottom="0" left="0" right="0" >
+					<s:fill>
+						<s:SolidColor color="0" alpha="0.8"/>
+					</s:fill>
+				</s:Rect>
+				<s:Label textAlign="center" color="0xffffff" left="0" right="0" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to create a new set"  />
+			</s:Group>
+			
+		</s:Group>-->
+
+		<s:HGroup width="100%" gap="0">
+			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" />
+			<s:Button width="100%" label="- Delete" />
+		</s:HGroup>
+	</s:VGroup>
+	<s:Rect width="20" />
+	
+	<s:Group width="100%" height="100%">
+		<s:Rect left="0" right="0" top="0" bottom="0">
+			<s:stroke>
+				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
+			</s:stroke>
+		</s:Rect>
+		
+		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset"  />
+		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="overview"  />
+		<editor:DatasetCreator id="datasetCreator" width="100%" top="15" left="8" right="8" bottom="40" includeIn="create" />
+		
+		<s:Rect left="0" right="0"  bottom="40">
+			<s:stroke>
+				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
+			</s:stroke>
+		</s:Rect>
+		<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
+			<s:Button label="Save Changes" id="saveBtn" />
+			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
+			<editor:StatusModule id="statusModule" width="100%" />
+			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" id="deleteBtn" creationComplete="this.dispatchEvent(new Event('datasetState'))" />
+		</s:HGroup>			
+	</s:Group>
+</s:HGroup>
+

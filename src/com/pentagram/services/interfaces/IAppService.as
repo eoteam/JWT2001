@@ -13,20 +13,11 @@ package com.pentagram.services.interfaces
 		function loadContinents():void;
 		
 		function loadClients():void;
-		
-		function loadClientDatasets():void;
-		
-		function loadClientCountries():void;
 				
 		function authenticateUser(username:String,password:String):void;
 		
 		function logOut():void;
 		
-		function saveClientInfo():void;
-		
-		function addClientCountry(country:Country):void;
-		
-		function removeClientCountry(country:Country):void;
 		
 	}
 }
