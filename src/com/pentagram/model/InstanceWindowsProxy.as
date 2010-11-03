@@ -4,9 +4,11 @@ package com.pentagram.model
 	import com.ericfeminella.collections.IMap;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.util.RectInterpolator;
 	
 	import flash.display.NativeWindowDisplayState;
 	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	
 	import mx.collections.ArrayCollection;
@@ -21,6 +23,7 @@ package com.pentagram.model
 	import spark.effects.Resize;
 	import spark.effects.animation.MotionPath;
 	import spark.effects.animation.SimpleMotionPath;
+	import spark.effects.interpolation.IInterpolator;
 	
 	public class InstanceWindowsProxy extends Actor
 	{
@@ -59,11 +62,7 @@ package com.pentagram.model
 			var uid:String = UIDUtil.createUID();
 			//}
 			
-			instanceWindow = new InstanceWindow();
-			instanceWindow.clients = appModel.clients;
-			instanceWindow.countries = appModel.countries;
-			instanceWindow.continents = appModel.continents;
-			
+			instanceWindow = new InstanceWindow();			
 			instanceWindow.id = uid;
 			this.windowMap.put(instanceWindow.id, instanceWindow);
 			//dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_ADDED, uid));
@@ -172,49 +171,41 @@ package com.pentagram.model
 				
 				var effectItems:Array = [];
 				var eff:Parallel = new Parallel();
+				var interpolator:IInterpolator = new RectInterpolator();
 				for(var i:int = 0; i < openWinList.length; i++)
 				{
 					
-					var win:InstanceWindow = openWinList[i] as InstanceWindow;
+					var win:InstanceWindow = openWinList[i] as InstanceWindow;					
+					win.orderToFront();
+ 
+
+					var rect:Rectangle = new Rectangle();
+					rect.width = targetWidth;
+					rect.height = targetHeight;
 					
-					win.orderToBack();
-					var temp:Array = [];
-					
-					
-					var resize:Resize = new Resize();
-					resize.target = win;
-					resize.widthTo = targetWidth;
-					resize.heightTo = targetHeight;
-					temp.push(resize);
-					eff.addChild(resize);
-					
-					if(i % numCols == 0 && i > 0)
-					{
+					if(i % numCols == 0 && i > 0) {
 						row++;
 						col = 0;
 					}
 					else if(i > 0)
-					{
 						col++;
-					}
-					var move:Animate = new Animate();
-					move.target = win.nativeWindow;
-					var xPath:SimpleMotionPath = new  SimpleMotionPath('x',win.nativeWindow.x,col * targetWidth);
-					var yPath:SimpleMotionPath = new  SimpleMotionPath('y',win.nativeWindow.y,row * targetHeight);
-				
+					rect.x = col * targetWidth;
+					rect.y = row * targetHeight;			
 					//pushing out by gap
 					if(col > 0) 
-						xPath.valueTo += gap * col;
+						rect.x += gap * col;
 					
 					if(row > 0) 
-						yPath.valueTo += gap * row;
+						rect.y += gap * row;
 					
-					move.motionPaths = new Vector.<MotionPath>(2);
-					move.motionPaths[0] = xPath;
-					move.motionPaths[1] = yPath;
-					temp.push(move);
-					eff.addChild(move);
-					effectItems.push(temp);
+
+					var animate:Animate = new Animate(win);
+					var path:SimpleMotionPath = new SimpleMotionPath("nativeBounds",win.nativeBounds,rect);
+					path.interpolator = interpolator;
+					animate.motionPaths = new Vector.<MotionPath>(1);
+					animate.motionPaths[0] = path;
+					eff.addChild(animate);
+					effectItems.push(animate);
 				}
 				
 				
@@ -227,14 +218,14 @@ package com.pentagram.model
 					for(var j:int = numWindows - numOrphans; j < numWindows; j++)
 					{
 						//var orphan:MDIWindow = openWinList[j];
-						var orphan:Array = effectItems[j] as Array;
+						var orphan:Animate = effectItems[j] as Animate;
 						
-						Resize(orphan[0]).widthTo = orphanWidth;
+						SimpleMotionPath(orphan.motionPaths[0]).valueTo.width = orphanWidth;
 						//orphan.window.width = orphanWidth;
 						
-						SimpleMotionPath(Animate(orphan[1]).motionPaths[0]).valueTo = (j - (numWindows - numOrphans)) * orphanWidth;
+						SimpleMotionPath(orphan.motionPaths[0]).valueTo.width = (j - (numWindows - numOrphans)) * orphanWidth;
 						if(orphanCount > 0) 
-							SimpleMotionPath(Animate(orphan[1]).motionPaths[0]).valueTo  += gap * orphanCount;
+							SimpleMotionPath(orphan.motionPaths[0]).valueTo.width  += gap * orphanCount;
 						orphanCount++;
 					}
 				} 
@@ -249,45 +240,34 @@ package com.pentagram.model
 			var windows:Array = getOpenWindowList();
 			var xIndex:int = 0;
 			var yIndex:int = -1;
-			
+			var interpolator:IInterpolator = new RectInterpolator();
 			for(var i:int = 0; i < windows.length; i++)
 			{
 				var win:InstanceWindow = windows[i] as InstanceWindow;
+				win.orderToFront();			
 				
-				win.orderToBack();			
 				
-				var resize:Resize = new Resize();
-				resize.target = win;
-				resize.widthFrom = win.width;
-				resize.widthTo = Capabilities.screenResolutionX * .5;
-				resize.heightFrom = win.height;
-				resize.heightTo = Capabilities.screenResolutionY * .5;
-				eff.addChild(resize);
+				var rect:Rectangle = new Rectangle();
+				rect.width = Capabilities.screenResolutionX * .5;;
+				rect.height = Capabilities.screenResolutionY * .5;;
 				
-				if(yIndex * 40 + resize.heightTo + 25 >= Capabilities.screenResolutionY)
-				{
+				if(yIndex * 40 + rect.height + 25 >= Capabilities.screenResolutionY) {
 					yIndex = 0;
 					xIndex++;
 				}
 				else
-				{
 					yIndex++;
-				}
+				rect.x = xIndex * 40 + yIndex * 20;
+				rect.y = yIndex * 40;
 				
-				var destX:int = xIndex * 40 + yIndex * 20;
-				var destY:int = yIndex * 40;
-				
-				var move:Animate = new Animate();
-				move.target = win.nativeWindow;
-				var xPath:SimpleMotionPath = new  SimpleMotionPath('x',win.nativeWindow.x,destX);
-				var yPath:SimpleMotionPath = new  SimpleMotionPath('y',win.nativeWindow.y,destY);
-				move.motionPaths = new Vector.<MotionPath>(2);
-				move.motionPaths[0] = xPath;
-				move.motionPaths[1] = yPath;
-				eff.addChild(resize);
-				
-				
-				
+				var animate:Animate = new Animate(win);
+				var path:SimpleMotionPath = new SimpleMotionPath("nativeBounds",win.nativeBounds,rect);
+				path.interpolator = interpolator;
+				animate.motionPaths = new Vector.<MotionPath>(1);
+				animate.motionPaths[0] = path;
+				eff.addChild(animate);
+				effectItems.push(animate);
+
 			}
 			eff.play();
 			//dispatchEvent(new MDIManagerEvent(MDIManagerEvent.CASCADE, null, this, null, effectItems));

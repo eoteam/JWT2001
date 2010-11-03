@@ -16,7 +16,7 @@ package com.pentagram.model
 		}
 		
 		[Bindable]
-		public var continents:ArrayList;
+		public var regions:ArrayList;
 		
 		[Bindable]
 		public var countries:ArrayList;

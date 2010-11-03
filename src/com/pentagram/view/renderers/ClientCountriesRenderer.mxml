@@ -3,13 +3,12 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" height="30" 
 				autoDrawBackground="true" xmlns:components="org.flashcommander.components.*">
+	<fx:Script>
+		<![CDATA[
+			import spark.skins.spark.ButtonSkin;
+		]]>
+	</fx:Script>
 
-
-	<s:Rect top="0" bottom="0" right="0" left="0">
-		<s:stroke>
-			<s:SolidColorStroke weight="0.5" caps="square" />
-		</s:stroke>
-	</s:Rect>
-	<s:Label text="{data.name}" paddingLeft="4" paddingRight="4" verticalCenter="0"  />
+	<s:ToggleButton label="{data.name}"  verticalCenter="0"  />
 
 </s:ItemRenderer>

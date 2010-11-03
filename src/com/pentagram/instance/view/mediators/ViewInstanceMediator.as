@@ -61,19 +61,23 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
 			
-			model.clients = view.clients;
-			model.countries = view.countries;
-			model.continents = view.continents;
-		
+			
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
+			
 
+
+			//mediatorMap.createMediator(view.searchView);
+			
+		} 
+		public function handleInit(...args):void {
+			model.clients = args[0];
+			model.regions = args[1];66
+			model.countries = args[2];
+			model.user = args[3];
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
-			//mediatorMap.createMediator(view.searchView);
-			//appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.parent.id));
-			//eventMap.mapListener(appEventDispatcher, DisplayTimestampModuleEvents.DISPLAY_GENERATED_TIMESTAMP, displayTimestamp);       	
-			
-		} 
+		}
 		//
 		private function handleWindowFocus(event:AIREvent):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
@@ -81,6 +85,7 @@ package com.pentagram.instance.view.mediators
 		private function handleClientSelected(event:ViewEvent):void
 		{
 			view.currentState = view.visualizerAndLoadingState.name;
+			view.client = model.client;
 			//mediatorMap.createMediator(view.shellView);
 			//selectedClient = event.args[0] as Client;
 		}

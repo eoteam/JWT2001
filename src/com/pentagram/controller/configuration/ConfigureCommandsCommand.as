@@ -4,6 +4,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.AuthenticateUserCommand;
 	import com.pentagram.controller.CreateInstanceWindowCommand;
 	import com.pentagram.controller.CreateWindowCommand;
+	import com.pentagram.controller.InitInstanceCommand;
 	import com.pentagram.controller.RemoveInstanceWindowCommand;
 	import com.pentagram.controller.RemoveWindowCommand;
 	import com.pentagram.controller.startup.StartupCommand;
@@ -29,7 +30,7 @@ package com.pentagram.controller.configuration
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
 			
 			//instance commands
-
+			commandMap.mapEvent(InstanceWindowEvent.INIT_INSTANCE, InitInstanceCommand , InstanceWindowEvent );
 			
 			//window commands
 			commandMap.mapEvent(InstanceWindowEvent.CREATE_WINDOW, CreateInstanceWindowCommand , InstanceWindowEvent );

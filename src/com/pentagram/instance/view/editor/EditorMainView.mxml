@@ -69,9 +69,9 @@
 			</s:stroke>
 		</s:Rect>
 		
-		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="dataset"  />
-		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="8" right="8" bottom="40" includeIn="overview"  />
-		<editor:DatasetCreator id="datasetCreator" width="100%" top="15" left="8" right="8" bottom="40" includeIn="create" />
+		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="16" right="16" bottom="52" includeIn="dataset"  />
+		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="16" right="16" bottom="52" includeIn="overview"  />
+		<editor:DatasetCreator id="datasetCreator" width="100%" top="15" left="16" right="16" bottom="52" includeIn="create" />
 		
 		<s:Rect left="0" right="0"  bottom="40">
 			<s:stroke>

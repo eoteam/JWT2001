@@ -4,10 +4,11 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.OverviewEditor;
+	import com.pentagram.instance.view.editor.RegionDrawer;
 	import com.pentagram.model.AppModel;
-	import com.pentagram.model.vo.Continent;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.view.event.ViewEvent;
 	
 	import flash.desktop.ClipboardFormats;
@@ -18,6 +19,7 @@ package com.pentagram.instance.view.mediators.editor
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.DropDownEvent;
+	import spark.events.IndexChangeEvent;
 	
 	public class OverviewEditorMediator extends Mediator
 	{
@@ -32,11 +34,21 @@ package com.pentagram.instance.view.mediators.editor
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientSelected,VisualizerEvent);
 			view.client = model.client;
-			view.countryList.autoCompleteDataProvider = model.countries.source;
-			view.continentList.dataProvider = model.continents;	
+			
+			view.countryInput.dataProvider = model.countries.source;
+			
+			view.continentList.dataProvider = model.regions;	
 			view.continentList.addEventListener(DropDownEvent.CLOSE,handleContinentSelection,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDeleteCountries,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
+			
+			for each(var region:Region in model.client.regions.source) {
+				var drawer:RegionDrawer = new RegionDrawer();
+				drawer.region = region;
+				drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+				view.regionHolder.addElement(drawer);
+			}
+			
 		}
 		private function handleCancel(event:EditorEvent):void {
 			
@@ -45,7 +57,7 @@ package com.pentagram.instance.view.mediators.editor
 			view.client = model.client;
 		}
 		private function handleContinentSelection(event:DropDownEvent):void {
-			var continent:Continent = view.continentList.selectedItem as Continent;
+			var continent:Region = view.continentList.selectedItem as Region;
 			if(continent) {
 				for each(var country:Country in continent.countries.source) {
 					if(model.client.countries.getItemIndex(country) == -1) 
@@ -56,12 +68,24 @@ package com.pentagram.instance.view.mediators.editor
 				}
 			}
 		}
+		private function handleListSelection(event:IndexChangeEvent):void {
+			
+		}
 		private function handleDeleteCountries(event:MouseEvent):void {
-			for each(var country:Country in view.countryList.selectedItems) {
+			for(var i:int=0;i<view.regionHolder.numElements;i++) {
+				var drawer:RegionDrawer = view.regionHolder.getElementAt(i) as RegionDrawer;
+				for each(var country:Country in drawer.countryList.selectedItems) {
 					model.client.countries.removeItem(country);
+					for each(var region:Region in model.client.regions.source) {
+						if(region.id ==country.region.id) {
+							region.countries.removeItem(country);
+							break;
+						}
+					}
 					if(model.client.deletedCountries.getItemIndex(country) == -1) 
 						model.client.deletedCountries.addItem(country);
-			}	
+				}
+			}
 		}
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {

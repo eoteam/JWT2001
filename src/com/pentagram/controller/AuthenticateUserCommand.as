@@ -28,7 +28,7 @@ package com.pentagram.controller
 			var results:Array = event.token.results as Array;
 			if(results.length > 0) {
 				appModel.user = results[0];
-				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN));		
+				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));		
 				//update last login
 //				var today:Date = new Date();
 //				var params:Object = new Object();

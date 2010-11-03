@@ -16,6 +16,7 @@ package com.pentagram.model.vo
 		
 		public var datasets:ArrayList;
 		public var countries:ArrayList = new ArrayList();
+		public var regions:ArrayList = new ArrayList();
 		
 		public var newCountries:ArrayList = new ArrayList();
 		public var deletedCountries:ArrayList = new ArrayList();
@@ -25,8 +26,6 @@ package com.pentagram.model.vo
 		
 		public var tags:String='';
 		public var relatedcontent:String;
-		
-
 		
 	}
 }

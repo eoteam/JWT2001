@@ -14,7 +14,17 @@
   </compiler>
   <applications>
     <application path="Main.mxml">
-      <airExcludes/>
+      <airExcludes>
+        <airExclude path="data"/>
+        <airExclude path="assets/FlamaBookIta.ttf"/>
+        <airExclude path="server"/>
+        <airExclude path="com"/>
+        <airExclude path="flex"/>
+        <airExclude path="assets/FlamaBlack.ttf"/>
+        <airExclude path="assets/.DS_Store"/>
+        <airExclude path="ws"/>
+        <airExclude path=".DS_Store"/>
+      </airExcludes>
     </application>
   </applications>
   <modules/>

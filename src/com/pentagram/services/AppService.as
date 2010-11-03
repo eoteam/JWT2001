@@ -2,7 +2,7 @@ package com.pentagram.services
 {
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
-	import com.pentagram.model.vo.Continent;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.User;
@@ -33,9 +33,9 @@ package com.pentagram.services
 			params.action = "getContent";
 			params.verbosity = 2;
 			params.parentid = 3;
-			this.createService(params,ResponseType.DATA,Continent);
+			this.createService(params,ResponseType.DATA,Region);
 		}
-		public function loadCountries(continent:Continent):void {
+		public function loadCountries(continent:Region):void {
 			var params:Object = new  Object();
 			params.action = "getContent";
 			params.verbosity = 3;

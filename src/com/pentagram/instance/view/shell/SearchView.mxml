@@ -58,8 +58,8 @@
 		</s:Ellipse>
 		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260" 
 		 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
-		 enter="searchInput_enterHandler(event)" includeIn="search" visible="false"
-		 labelField="name" />
+		 enter="searchInput_enterHandler(event)" includeIn="search" visible="false" 
+		 labelField="name" creationComplete="this.setFocus();searchInput.inputTxt.prompt='Search for a client...'" />
 		
 		<s:VGroup id="errorMessageHolder"  horizontalCenter="0" verticalCenter="120" 
 				  gap="12" showEffect="{fadeIn}" includeIn="notfound" alpha="0" alpha.notfound="1">

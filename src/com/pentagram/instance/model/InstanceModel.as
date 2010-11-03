@@ -11,7 +11,7 @@ package com.pentagram.instance.model
 	public class InstanceModel extends Actor
 	{
 		[Bindable]
-		public var continents:ArrayList;
+		public var regions:ArrayList;
 		
 		[Bindable]
 		public var countries:ArrayList;

@@ -7,9 +7,8 @@ package com.pentagram.model.vo
 		public var xcoord:Number;
 		public var ycoord:Number;
 		public var descriptiom:String;
-		
 		public var thumb:String;
-		public var continent:Continent;
+		public var region:Region;
 
 		
 		//session info,

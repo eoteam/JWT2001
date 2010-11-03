@@ -13,16 +13,18 @@ package com.pentagram.events
 		
 		public static const WINDOW_FOCUS:String = "windowFocus";
 		public var uid:String;
+		public var args:Array;
 		
-		public function InstanceWindowEvent(type:String, uid:String = null)
+		public function InstanceWindowEvent(type:String, uid:String = null, ...args)
 		{
 			this.uid = uid;
+			this.args = args;
 			super(type, true, true);
 		}
 		
 		override public function clone():Event
 		{
-			return new InstanceWindowEvent(this.type, this.uid);
+			return new InstanceWindowEvent(this.type, this.uid, this.args);
 		}
 	}
 }

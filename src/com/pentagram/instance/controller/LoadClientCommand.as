@@ -6,6 +6,7 @@ package com.pentagram.instance.controller
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
 	import com.pentagram.services.interfaces.IInstanceService;
@@ -70,6 +71,12 @@ package com.pentagram.instance.controller
 				for each(var relatedId:Object in relatedIds) {
 					if(country.id.toString() == relatedId.countryid) {
 						model.client.countries.addItem(country);
+						for each(var region:Region in model.client.regions.source) {
+							if(country.region.id == region.id) {
+								region.countries.addItem(country);
+								break;
+							}
+						}
 						break;
 					}
 				}

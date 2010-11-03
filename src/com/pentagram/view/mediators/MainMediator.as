@@ -14,6 +14,7 @@ package com.pentagram.view.mediators
 	import flash.display.NativeWindow;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.ui.Keyboard;
 	
 	import mx.events.FlexEvent;
 	
@@ -46,11 +47,15 @@ package com.pentagram.view.mediators
 				var m:NativeMenu = NativeApplication.nativeApplication.menu;
 				var win:NativeMenuItem = m.items[3] as NativeMenuItem;
 				var fs:NativeMenuItem = new NativeMenuItem("Full Screen");
+				fs.keyEquivalent = "f";
+				fs.keyEquivalentModifiers = [Keyboard.COMMAND];
 				win.submenu.addItem(fs);			
 				fs.addEventListener(Event.SELECT,onItemSelect);	
 				
 				var newWindow:NativeMenuItem = new NativeMenuItem("New Window");
 				win.submenu.addItem(newWindow);			
+				newWindow.keyEquivalent = "n";
+				newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
 				newWindow.addEventListener(Event.SELECT,handleStartUp);	
 				
 				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
@@ -97,7 +102,7 @@ package com.pentagram.view.mediators
 		// Handle Menu item selection
 		protected function onItemSelect(e:Event):void
 		{
-			if(view.stage.displayState == StageDisplayState.NORMAL ) {
+			if(instanceWindowModel.currentWindow.stage.displayState == StageDisplayState.NORMAL ) {
 				instanceWindowModel.currentWindow.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				instanceWindowModel.currentWindow.showStatusBar = false;
 			} 

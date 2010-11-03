@@ -53,3 +53,10 @@ s|Window {
 wscontainers|Navigator {
 	skinClass: ClassReference("ws.tink.spark.skins.containers.NavigatorSkin");
 }
+controls|PromptingTextInput {
+	skinClass:ClassReference('com.pentagram.view.skins.PromptingTextInputSkin');  
+
+}
+controls|Drawer {
+	skinClass:ClassReference('com.pentagram.view.skins.DrawerSkin');  
+}

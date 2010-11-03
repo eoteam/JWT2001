@@ -4,7 +4,9 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:editor="com.pentagram.instance.view.editor.*" 
 		 xmlns:shell="com.pentagram.instance.view.shell.*" 
-		 xmlns:vo="com.pentagram.model.vo.*" xmlns:primatives="ws.tink.spark.primatives.*" xmlns:graphics="ws.tink.spark.graphics.*"> 
+		 xmlns:vo="com.pentagram.model.vo.*"
+		 xmlns:primatives="ws.tink.spark.primatives.*"
+		 xmlns:graphics="ws.tink.spark.graphics.*"> 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
@@ -126,10 +128,10 @@
 			</s:HGroup>
 		</s:NavigatorContent>
 	
-		<s:NavigatorContent width="100%" height="100%" label="Data Editor"><!-- includeIn="loggedIn" -->
+		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
 <!--			<mx:ModuleLoader width="100%" height="100%"  id="editorLoader"  
 			url="com/pentagram/view/modules/editor/EditorModule.swf" ready="moduleloader1_readyHandler(event)" /> 	-->
-			<editor:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview"  id="editorView" client="{client}" />
+			<editor:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview"   id="editorView" client="{client}" />
 		</s:NavigatorContent>
 	</mx:ViewStack>
 	<shell:ClientBarView width="100%" id="clientBar" client="{client}"/>
@@ -138,7 +140,7 @@
 	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin" id="bottomPanelContainer">	
 		<shell:BottomBarView width="100%" height="40" bottom="10" id="bottomBarView"  />
 		
-		<s:TabBar right="150" height="22" bottom="28" dataProvider="{mainStack}" /><!-- includeIn="loggedIn" -->
+		<s:TabBar right="150" height="22" bottom="28" dataProvider="{mainStack}"  includeIn="loggedIn" />
 	</s:SkinnableContainer> 
 	
 

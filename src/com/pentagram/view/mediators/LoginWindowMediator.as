@@ -43,7 +43,7 @@ package com.pentagram.view.mediators
 		{
 			view.didLogout();
 			appModel.user = null;
-			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDOUT ));
+			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDOUT));
 		}
 		protected function handleWindowClose(event:Event):void
 		{

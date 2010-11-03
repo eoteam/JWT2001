@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:assets="com.pentagram.view.assets.*" 
-				width="1280" height="1024" showStatusBar="true"
+				width="1024" height="768" showStatusBar="true"
 				preinitialize="preinit(event)" creationPolicy="none"
 				xmlns:shell="com.pentagram.instance.view.shell.*" xmlns:vo="com.pentagram.model.vo.*" >
 	<fx:Script>
@@ -14,14 +14,34 @@
 			{
 				context = new InstanceContext(this);
 			}
+			public function get nativeX():Number
+			{
+				return nativeWindow.x;
+			}
+			public function get nativeY():Number
+			{
+				return nativeWindow.y;
+			}
+			public function get nativeW():Number
+			{
+				return nativeWindow.width;
+			}
+			public function get nativeH():Number
+			{
+				return nativeWindow.height;
+			}
+			public function get nativeBounds():Rectangle
+			{
+				return nativeWindow.bounds;
+			}
+			public function set nativeBounds(value:Rectangle):void
+			{
+				nativeWindow.bounds = value;
+			}  			
 			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<fx:String id="uid" />
-		<s:ArrayList id="continents" />
-		<s:ArrayList id="countries" />
-		<s:ArrayList id="clients" />
 		<vo:Client id="client" />
 	</fx:Declarations>
 	<s:states>

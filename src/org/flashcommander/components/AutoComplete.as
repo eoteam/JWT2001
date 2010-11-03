@@ -1,6 +1,8 @@
 package org.flashcommander.components
 {
 
+	import com.pentagram.view.controls.PromptingTextInput;
+	
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -57,8 +59,8 @@ package org.flashcommander.components
 		public var popUp:PopUpAnchor;
 		[SkinPart(required="true",type="spark.components.List")]
 		public var list:List;
-		[SkinPart(required="true",type="spark.components.TextInput")]
-		public var inputTxt:TextInput;
+		[SkinPart(required="true",type="com.pentagram.view.controls.PromptingTextInputt")]
+		public var inputTxt:PromptingTextInput;
 		
 		override protected function partAdded(partName:String, instance:Object) : void{
 			super.partAdded(partName, instance)
@@ -68,10 +70,12 @@ package org.flashcommander.components
 				inputTxt.addEventListener(FocusEvent.FOCUS_IN, _focusInHandler)
 				inputTxt.addEventListener(TextOperationEvent.CHANGE, onChange);
 				inputTxt.addEventListener("keyDown", onKeyDown);
-				inputTxt.addEventListener(FlexEvent.ENTER, enter)
-				inputTxt.text = _text;
+				inputTxt.addEventListener(FlexEvent.ENTER, enter);
+				inputTxt.invalidateSkinState();
+				//inputTxt.text = _text;
 			}
 			if (instance==list){
+				list.minHeight = 200;
 				list.dataProvider = collection;
 				list.labelField = labelField;
 				list.labelFunction = labelFunction
