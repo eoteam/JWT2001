@@ -8,6 +8,8 @@
 						applicationComplete="init()" xmlns:modules="ws.tink.spark.modules.*" xmlns:instance="com.pentagram.instance.*" >
 
 	<fx:Style source="assets/main.css" />
+	<fx:Declarations>
+	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
 			import air.net.URLMonitor;

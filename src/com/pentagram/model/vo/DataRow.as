@@ -9,7 +9,7 @@ package com.pentagram.model.vo
 	public dynamic class DataRow	
 	{
 		public var dataset:Dataset;
-		public var nameR:String;
+		public var name:String;
 		public var id:int;
 		public var modified:Boolean = false;
 		public var value:*;

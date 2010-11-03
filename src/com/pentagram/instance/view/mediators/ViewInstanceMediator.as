@@ -6,22 +6,6 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.OpenWindowsProxy;
-	import com.pentagram.model.vo.Client;
-	import com.pentagram.view.event.ViewEvent;
-	import com.pentagram.view.windows.LoginWindow;
-	
-	import flash.events.Event;
-	import flash.events.EventDispatcher;
-	import flash.events.MouseEvent;
-	
-	import mx.core.FlexGlobals;
-	import mx.events.FlexEvent;
-	
-	import org.robotlegs.mvcs.Mediator;
-	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
-	
 	import com.pentagram.instance.view.editor.DatasetCreator;
 	import com.pentagram.instance.view.editor.DatasetEditor;
 	import com.pentagram.instance.view.editor.EditorMainView;
@@ -37,6 +21,23 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.shell.BottomBarView;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.model.AppModel;
+	import com.pentagram.model.OpenWindowsProxy;
+	import com.pentagram.model.vo.Client;
+	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.view.windows.LoginWindow;
+	
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.FocusEvent;
+	import flash.events.MouseEvent;
+	
+	import mx.core.FlexGlobals;
+	import mx.events.AIREvent;
+	import mx.events.FlexEvent;
+	
+	import org.robotlegs.mvcs.Mediator;
+	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
 	
 	public class ViewInstanceMediator extends Mediator
 	{
@@ -62,22 +63,25 @@ package com.pentagram.instance.view.mediators
 			
 			model.clients = view.clients;
 			model.countries = view.countries;
-			model.continents = view.countries;
+			model.continents = view.continents;
 		
 
 			view.createDeferredContent();
-			
+			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
+			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
 			//mediatorMap.createMediator(view.searchView);
 			//appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.parent.id));
 			//eventMap.mapListener(appEventDispatcher, DisplayTimestampModuleEvents.DISPLAY_GENERATED_TIMESTAMP, displayTimestamp);       	
 			
-		}
+		} 
 		//
-		
+		private function handleWindowFocus(event:AIREvent):void {
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
+		}
 		private function handleClientSelected(event:ViewEvent):void
 		{
 			view.currentState = view.visualizerAndLoadingState.name;
-			mediatorMap.createMediator(view.shellView);
+			//mediatorMap.createMediator(view.shellView);
 			//selectedClient = event.args[0] as Client;
 		}
 		private function handleShellLoaded(event:ViewEvent):void
@@ -100,6 +104,9 @@ package com.pentagram.instance.view.mediators
 			mediatorMap.removeMediatorByView(view.searchView);
 			mediatorMap.removeMediatorByView(view.shellView);
 			super.onRemove();
+		}
+		public function handleCloseWindow(event:Event):void {
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_CLOSED, view.id));
 		}
 	}
 }

@@ -32,7 +32,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange);
 			
-			mediatorMap.createMediator(view.bottomBarView);
+			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 			}
@@ -44,7 +44,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleStackChange(event:IndexChangedEvent):void {
 			if(event.newIndex == 1 && !editorMapped) {
 				editorMapped = true;
-				mediatorMap.createMediator(view.editorView);	
+				//mediatorMap.createMediator(view.editorView);	
 			}
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void

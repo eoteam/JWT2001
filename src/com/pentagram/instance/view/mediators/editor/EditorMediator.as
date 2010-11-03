@@ -62,25 +62,10 @@ package com.pentagram.instance.view.mediators.editor
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
 			view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,dataSetList_nativeDragDropHandler,false,0,true);
 			
-			mediatorMap.createMediator(view.overviewEditor);
-			mediatorMap.createMediator(view.datasetEditor);
-			mediatorMap.createMediator(view.datasetCreator);
-			
-			if (NativeApplication.supportsMenu) {
-				var m:NativeMenu = NativeApplication.nativeApplication.menu;
-				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
-				var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
-				exportSp.addEventListener(Event.SELECT,handleExportSp);
-				//exportSp.enabled = false;
-				file.submenu.addItemAt(exportSp,0);	
-				var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
-				importSp.enabled = false;
-				file.submenu.addItemAt(importSp,0);					
-			}
-			else if (NativeWindow.supportsMenu) {
-				
-				
-			}
+			//mediatorMap.createMediator(view.overviewEditor);
+			//mediatorMap.createMediator(view.datasetEditor);
+			//mediatorMap.createMediator(view.datasetCreator);
+
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
@@ -122,9 +107,6 @@ package com.pentagram.instance.view.mediators.editor
 			if(view.currentState == view.datasetState.name && view.datasetEditor)
 				view.datasetEditor.dataset = view.dataSetList.selectedItem as Dataset;
 				view.datasetEditor.generateDataset();
-		}
-		private function handleExportSp(event:Event):void {
-			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,model.SPREADSHEET_WINDOW)); 
 		}
 		private function onDragIn(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {	

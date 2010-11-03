@@ -1,9 +1,12 @@
 package com.pentagram.view.mediators
 {
 	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.InstanceWindowsProxy;
+	import com.pentagram.model.OpenWindowsProxy;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
@@ -26,9 +29,18 @@ package com.pentagram.view.mediators
 		[Inject]
 		public var appModel:AppModel;
 		
+		[Inject]
+		public var instanceWindowModel:InstanceWindowsProxy;
+
+		[Inject]
+		public var windowModel:OpenWindowsProxy;
+		
 		public override function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
+			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
+		
+			
 			if (NativeApplication.supportsMenu)
 			{
 				var m:NativeMenu = NativeApplication.nativeApplication.menu;
@@ -40,31 +52,63 @@ package com.pentagram.view.mediators
 				var newWindow:NativeMenuItem = new NativeMenuItem("New Window");
 				win.submenu.addItem(newWindow);			
 				newWindow.addEventListener(Event.SELECT,handleStartUp);	
+				
+				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
+				var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+				exportSp.addEventListener(Event.SELECT,handleExportSp);
+				exportSp.enabled = false;
+				file.submenu.addItemAt(exportSp,0);	
+				var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
+				importSp.enabled = false;
+				file.submenu.addItemAt(importSp,0);
+				
+				var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
+				m.addItem(arrange);
+				var tile:NativeMenuItem = new NativeMenuItem("Tile");
+				tile.addEventListener(Event.SELECT,handleArrange);
+				arrange.submenu = new NativeMenu();
+				arrange.submenu.addItem(tile);
+				var tile2:NativeMenuItem = new NativeMenuItem("Tile w Fill");
+				arrange.submenu.addItem(tile2); 
+				tile2.addEventListener(Event.SELECT,handleArrange);
+				var cascade:NativeMenuItem = new NativeMenuItem("Cascade");
+				arrange.submenu.addItem(cascade);
+				cascade.addEventListener(Event.SELECT,handleArrange);
 			}
 			else if (NativeWindow.supportsMenu)
 			{
-				//					var menu:NativeMenu = new NativeMenu();
-				//					nativeWindow.menu = menu;
-				//					item1 = stage.nativeWindow.menu.addItem(new NativeMenuItem("My App Menu"));
-				//					item1.addEventListener(Event.SELECT,onItemSelect);
-			}
-			
+
+			}			
 			// Manually close all open Windows when app closes.
 			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
+		}
+		protected function handleArrange(event:Event):void {
+			if(event.target.label == "Tile")
+				instanceWindowModel.tile(false,10);
+			else if(event.target.label == "Tile w Fill")
+				instanceWindowModel.tile(true,4);
+			else
+				instanceWindowModel.cascade();
+		}
+		protected function handleWindowFocus(event:InstanceWindowEvent):void {
+			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
+			instanceWindowModel.currentWindow = window;
 		}
 		// Handle Menu item selection
 		protected function onItemSelect(e:Event):void
 		{
 			if(view.stage.displayState == StageDisplayState.NORMAL ) {
-				view.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
-				view.showStatusBar = false;
+				instanceWindowModel.currentWindow.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				instanceWindowModel.currentWindow.showStatusBar = false;
 			} 
 			else {
-				view.stage.displayState = StageDisplayState.NORMAL;
-				view.showStatusBar = true;
+				instanceWindowModel.currentWindow.stage.displayState = StageDisplayState.NORMAL;
+				instanceWindowModel.currentWindow.showStatusBar = true;
 			}
 		}
-		
+		private function handleExportSp(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,windowModel.SPREADSHEET_WINDOW));
+		}
 		// Called when application window closes
 		protected function onAppWinClose(e:Event):void
 		{

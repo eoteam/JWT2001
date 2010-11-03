@@ -54,7 +54,7 @@ package com.pentagram.view.mediators
 				line = ',';
 			}
 			content += "\r\n";
-			var client:Client;// =  instanceWindows.currentWindow.instance.client.countries.source
+			var client:Client = instanceWindows.currentWindow.client;
 			for each(var country:Country in client.countries.source) {
 				content += '"'+country.name+'"'+line+'\r\n';
 			}

@@ -5,7 +5,7 @@
 				xmlns:assets="com.pentagram.view.assets.*" 
 				width="1280" height="1024" showStatusBar="true"
 				preinitialize="preinit(event)" creationPolicy="none"
-				xmlns:shell="com.pentagram.instance.view.shell.*" >
+				xmlns:shell="com.pentagram.instance.view.shell.*" xmlns:vo="com.pentagram.model.vo.*" >
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
@@ -22,6 +22,7 @@
 		<s:ArrayList id="continents" />
 		<s:ArrayList id="countries" />
 		<s:ArrayList id="clients" />
+		<vo:Client id="client" />
 	</fx:Declarations>
 	<s:states>
 		<s:State name="search" id="searchState" />

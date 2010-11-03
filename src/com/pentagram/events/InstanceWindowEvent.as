@@ -11,6 +11,7 @@ package com.pentagram.events
 		
 		public static const INIT_INSTANCE:String = "initInstance";
 		
+		public static const WINDOW_FOCUS:String = "windowFocus";
 		public var uid:String;
 		
 		public function InstanceWindowEvent(type:String, uid:String = null)

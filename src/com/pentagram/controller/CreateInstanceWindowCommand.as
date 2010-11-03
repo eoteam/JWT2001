@@ -28,7 +28,7 @@ package com.pentagram.controller
 			else
 			{
 				window = windowProxy.createWindow();
-				mediatorMap.createMediator(window);
+				//mediatorMap.createMediator(window);
 			}
 			
 			window.open();
