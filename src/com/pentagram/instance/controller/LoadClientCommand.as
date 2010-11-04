@@ -86,6 +86,7 @@ package com.pentagram.instance.controller
 		{
 			counter++;
 			var dataset:Dataset = event.token.dataset as Dataset;
+			dataset.data = event.result.toString();
 			dataset.loaded = true;
 			ViewUtils.parseData(event.token.results as Array,dataset,model.client);
 			if(counter == model.client.datasets.length) {
