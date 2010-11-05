@@ -25,9 +25,9 @@
 			
 			private function group1_creationCompleteHandler(event:FlexEvent):void
 			{
-				var conv:IDataConverter = Converters.lookup("json");
-				var ds:DataSet = conv.read(dataset.data);
-				visualize(Data.fromDataSet(ds));
+//				var conv:IDataConverter = Converters.lookup("json");
+//				var ds:DataSet = conv.read(dataset.data);
+//				visualize(Data.fromDataSet(ds));
 			}
 			 
 			private function visualize(data:Data):void

@@ -107,24 +107,60 @@
 				</s:fill>
 			</s:Rect> 
 			<s:HGroup width="100%" verticalAlign="middle" height="60"  bottom="0" paddingLeft="10" paddingRight="10	">
+				<s:ButtonBar>
+					<s:layout>
+						<s:HorizontalLayout gap="0"/>
+					</s:layout>
+					<s:dataProvider>
+						<s:ArrayList>
+							<fx:Object label="cluster" />
+							<fx:Object label="graph" />
+							<fx:Object label="map" />
+						</s:ArrayList>
+					</s:dataProvider>
+				</s:ButtonBar>
+				<s:Rect width="10" />
+				
+				<s:Label text="x:"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="10" />
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				<s:Rect width="5" />
+				
+				<s:Label text="y:"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="5" />
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				<s:Rect width="5" />
+				
 				<s:Label text="size by:"/>
-				<s:DropDownList width="260" dataProvider="{client.datasets}" labelField="name"/>
-				<s:Rect width="10" />
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="5" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
 						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 					</primatives:stroke>
 				</primatives:Line>
-				<s:Rect width="10" />
-				<s:Label text="group by:"/>
-				<s:DropDownList width="260" dataProvider="{client.datasets}" labelField="name"/>
-				<s:Rect width="10" />
+				<s:Rect width="5" />
+
+				<s:Label text="color by:"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="5" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
 						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 					</primatives:stroke>
 				</primatives:Line>
-				<s:Rect width="10" />
+				<s:Rect width="5" />
+				
 				<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle"   />
 			</s:HGroup>
 		</s:NavigatorContent>
