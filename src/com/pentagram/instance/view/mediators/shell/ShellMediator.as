@@ -11,8 +11,13 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.model.vo.User;
 	import com.pentagram.view.event.ViewEvent;
 	
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
+	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
+	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -29,6 +34,8 @@ package com.pentagram.instance.view.mediators.shell
 		public var appEventDispatcher:EventDispatcher;  
 		
 		private var editorMapped:Boolean = false;
+		private var yearTimer:Timer;
+		
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
@@ -45,6 +52,16 @@ package com.pentagram.instance.view.mediators.shell
 			else
 				view.currentState = view.loggedOutState.name;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
+			
+			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton);
+			
+			var years:ArrayList = new ArrayList();
+			for (var i:int=1980;i<=2010;i++) {
+				years.addItem(i);;
+			}
+			view.yearSlider.dataProvider = years;
+			yearTimer = new Timer(500);
+			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			if(event.newIndex == 1 && !editorMapped) {
@@ -72,5 +89,24 @@ package com.pentagram.instance.view.mediators.shell
 			model.user = null;
 			view.currentState = view.loggedOutState.name;
 		}	
+		private function handlePlayButton(event:Event):void {
+			if(view.playBtn.selected) {
+				if(view.yearSlider.selectedIndex == view.yearSlider.dataProvider.length-1)
+						view.yearSlider.selectedIndex = 0;
+				yearTimer.start();
+				view.playBtn.label = "Stop";
+			}
+			else {
+				yearTimer.stop();
+				view.playBtn.label = "Play";
+			}
+		}
+		private function handleTimer(event:TimerEvent):void {
+			view.yearSlider.selectedIndex++;
+			if(view.yearSlider.selectedIndex == view.yearSlider.dataProvider.length-1) {
+				yearTimer.stop();
+			}
+		}
+			
 	}
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				autoDrawBackground="false"
+				depth="0" depth.hovered="1" depth.selected="2"
+				width="8" height="45" xmlns:mx="library://ns.adobe.com/flex/mx" >
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.geom.Point;
+		]]>
+	</fx:Script>
+	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="hovered" stateGroups="popupState" />
+		<s:State name="selected" stateGroups="popupState" />
+	</s:states>
+	
+
+	
+	<!--       Transitions          -->
+	<s:transitions>
+		<s:Transition toState="hovered" autoReverse="true">
+			<s:Animate target="{tOffsets}" duration="350">
+				<s:SimpleMotionPath property="scaleY" />
+			</s:Animate>
+		</s:Transition>
+		<s:Transition fromState="hovered" autoReverse="true">
+			<s:Animate target="{tOffsets}" duration="350">
+				<s:SimpleMotionPath property="scaleY" />
+			</s:Animate>
+		</s:Transition>
+	</s:transitions>
+
+
+	<s:PopUpAnchor id="popUp"  displayPopUp.normal="false" displayPopUp.popupState="true" includeIn="popupState"
+   itemDestructionPolicy="auto" x="-35" y="-5"
+   popUpPosition="above" popUpWidthMatchesAnchorWidth="true">
+		<s:Group top="0" right="0" bottom="0" left="0">
+			<s:Group id="allContent" width="60" height="30">
+				<s:Rect id="bg" top="0" right="0" bottom="0" left="0" radiusX="3" radiusY="3" >
+					<s:fill>
+						<s:SolidColor id="bgColor" color="0x121212" />
+					</s:fill>
+				</s:Rect>
+				<s:Label text="{this.data.toString()}" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
+			</s:Group>
+			<s:Path id="arrow" x="25" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
+				<s:fill>
+					<s:SolidColor id="arrowColor" color="0xff0000"/>
+				</s:fill>
+			</s:Path>
+		</s:Group>
+		
+		<s:filters>
+			<s:DropShadowFilter quality="1" strength=".75" color="0" />
+		</s:filters>		
+	</s:PopUpAnchor>
+	
+	<s:Rect width="8" height="30"  radiusX="4" radiusY="4" rotation="180" verticalCenter="0">
+		<s:fill>
+			<s:SolidColor 
+				color.normal="0x808080"
+				color.hovered="{getStyle('rollOverColor')}"    
+				color.selected="{getStyle('selectionColor')}"/>
+		</s:fill>
+		<!--       The Zoom effect      -->
+		<s:postLayoutTransformOffsets>
+			<s:TransformOffsets id="tOffsets"
+								scaleX="1" scaleY="1" 
+								scaleY.hovered="1.3" 
+								scaleY.selected="1.1" />
+		</s:postLayoutTransformOffsets>
+	</s:Rect>
+	
+</s:ItemRenderer>

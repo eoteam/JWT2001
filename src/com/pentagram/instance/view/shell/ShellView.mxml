@@ -6,14 +6,17 @@
 		 xmlns:shell="com.pentagram.instance.view.shell.*" 
 		 xmlns:vo="com.pentagram.model.vo.*"
 		 xmlns:primatives="ws.tink.spark.primatives.*"
-		 xmlns:graphics="ws.tink.spark.graphics.*" xmlns:visualizer="com.pentagram.instance.view.visualizer.*"> 
+		 xmlns:graphics="ws.tink.spark.graphics.*" 
+		 xmlns:visualizer="com.pentagram.instance.view.visualizer.*"
+		  creationComplete="group1_creationCompleteHandler(event)"> 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
 			import com.pentagram.model.vo.Dataset;
+			import com.pentagram.view.skins.YearListSkin;
 			
+			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
-			import mx.events.ModuleEvent;
 			protected function setInfoBtn_clickHandler(event:MouseEvent):void
 			{
 				if(setInfoBtn.selected) {
@@ -37,6 +40,12 @@
 					this.clientBar.currentState = this.clientBar.closedState.name;		
 					this.clientBar.infoBtn.selected = false;
 				}
+			}
+
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+	
 			}
 
 		]]>
@@ -100,13 +109,41 @@
 					<s:SolidColor color="0xB3B1AC" />
 				</s:fill>
 			</s:Rect> 
-
+			
+			<s:HGroup width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
+				<s:ToggleButton label="Play"  id="playBtn"/>
+				
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				
+				
+				<s:List id="yearSlider"  borderVisible="false" allowMultipleSelection="true"
+						itemRenderer="com.pentagram.view.renderers.YearsListRenderer" 
+						 skinClass="com.pentagram.view.skins.YearListSkin" requireSelection="true"
+						rollOverColor="#C50E24" selectionColor="#C50E24">
+					<s:layout>
+						<s:HorizontalLayout gap="8" verticalAlign="middle" />
+					</s:layout>
+				</s:List>
+				
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				
+				
+			</s:HGroup>
+				
 			<s:Rect width="100%" height="1" bottom="60">
 				<s:fill>
 					<s:SolidColor color="0xB3B1AC" />
 				</s:fill>
 			</s:Rect> 
-			<s:HGroup width="100%" verticalAlign="middle" height="60"  bottom="0" paddingLeft="10" paddingRight="10	">
+			<s:HGroup width="100%" verticalAlign="middle" height="60" gap="0"  bottom="0" paddingLeft="10" paddingRight="10">
 				<s:ButtonBar>
 					<s:layout>
 						<s:HorizontalLayout gap="0"/>
@@ -121,7 +158,17 @@
 				</s:ButtonBar>
 				<s:Rect width="10" />
 				
-				<s:Label text="x:"/>
+				<s:Label text="x:  "/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:Rect width="10" />
+				<primatives:Line width="1" height="40">
+					<primatives:stroke>
+						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+					</primatives:stroke>
+				</primatives:Line>
+				<s:Rect width="10" />
+				
+				<s:Label text="y:  "/>
 				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
 				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
@@ -131,35 +178,25 @@
 				</primatives:Line>
 				<s:Rect width="5" />
 				
-				<s:Label text="y:"/>
+				<s:Label text="size by:  "/>
 				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
-				<s:Rect width="5" />
+				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
 						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 					</primatives:stroke>
 				</primatives:Line>
-				<s:Rect width="5" />
-				
-				<s:Label text="size by:"/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
-				<s:Rect width="5" />
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				<s:Rect width="5" />
+				<s:Rect width="10" />
 
-				<s:Label text="color by:"/>
+				<s:Label text="color by:  "/>
 				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
-				<s:Rect width="5" />
+				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
 						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 					</primatives:stroke>
 				</primatives:Line>
-				<s:Rect width="5" />
+				<s:Rect width="10" />
 				
 				<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle"   />
 			</s:HGroup>
