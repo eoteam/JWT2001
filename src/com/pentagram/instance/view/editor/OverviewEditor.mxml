@@ -64,31 +64,33 @@
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Logo" />
 		<s:Rect width="8" />
-		<s:Group width="{FIELD_WIDTH}" id="logoHolder" height="60">
-			<s:Rect left="0" top="0" bottom="0" right="0">
-				<s:fill>
-					<s:SolidColor  color="#F2F2F2" />
-				</s:fill>
-				<s:stroke>
-					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
-				</s:stroke>
-			</s:Rect>	
-			<mx:Image id="logo"  left="1" right="1" top="1" bottom="1" scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+client.thumbs}" />
-		</s:Group>
-		<s:Group width="150" height="100%">
+		<s:Group width="{FIELD_WIDTH}" id="logoHolder">
 			<s:Rect left="0" right="0" top="0" bottom="0">
-				<s:fill>
-					<s:LinearGradient>
-						<s:GradientEntry color="#FFFFFF" />
-						<s:GradientEntry color="#F5F6F6" />
-					</s:LinearGradient>
-				</s:fill>
 				<s:stroke>
 					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 				</s:stroke>
 			</s:Rect>
-			<!--<s:Button label="Delete All" />-->
+			<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+client.thumbs}" />
+			<s:Group left="1" right="1" top="1" height="30">
+				<s:Rect left="0" right="0" top="0" bottom="0">
+					<s:fill>
+						<s:LinearGradient>
+							<s:GradientEntry color="#FFFFFF" />
+							<s:GradientEntry color="#F5F6F6" />
+						</s:LinearGradient>
+					</s:fill>
+					<s:stroke>
+						<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+					</s:stroke>
+				</s:Rect>
+				<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
+					<s:Button label="Change Logo" />
+					<s:Button label="Download Logo" />
+				</s:HGroup>
+				
+			</s:Group>		
 		</s:Group>
+		
 	</s:HGroup>		
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  

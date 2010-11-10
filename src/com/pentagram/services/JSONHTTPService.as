@@ -56,6 +56,7 @@ package com.pentagram.services
 				
 			}
 			token.results = results;
+			//token.raw = temp;
 		}
 		public function decodeStatus(event:ResultEvent):void {
 			event.token.results = ObjectTranslator.objectToInstance(JSON.decode(event.result.toString()), StatusResult);

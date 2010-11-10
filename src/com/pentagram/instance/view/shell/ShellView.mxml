@@ -8,7 +8,7 @@
 		 xmlns:primatives="ws.tink.spark.primatives.*"
 		 xmlns:graphics="ws.tink.spark.graphics.*" 
 		 xmlns:visualizer="com.pentagram.instance.view.visualizer.*"
-		  creationComplete="group1_creationCompleteHandler(event)"> 
+		  creationComplete="group1_creationCompleteHandler(event)" xmlns:assets="assets.*"> 
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Client;
@@ -17,6 +17,8 @@
 			
 			import mx.events.FlexEvent;
 			import mx.events.IndexChangedEvent;
+			
+			import spark.events.IndexChangeEvent;
 			protected function setInfoBtn_clickHandler(event:MouseEvent):void
 			{
 				if(setInfoBtn.selected) {
@@ -48,6 +50,28 @@
 	
 			}
 
+
+			protected function yearSlider_changeHandler(event:IndexChangeEvent):void
+			{
+//				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
+//					yearSlider.dataProvider.getItemAt(i).selection = 1;
+//				}
+//				var index:int = event.newIndex;
+//				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
+//				if(index-1 >= 0) 
+//					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
+//				
+//				if(index-2 >= 0) 
+//					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
+//				
+//				if(index+1 < yearSlider.dataProvider.length) 
+//					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
+//				
+//				if(index+2 < yearSlider.dataProvider.length) 
+//					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
+				//yearSlider.invalidateSkinState();
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -75,10 +99,11 @@
 			
 			<!-- viewing area -->
 			<s:Group width="100%" top="61" bottom="119" id="visualizerArea">
+				<!--<assets:colors width="100%" height="100%"  />-->
 				<mx:Image scaleContent="true" maintainAspectRatio="true" width="100%" height="100%" 
 			  	showEffect="{fadeIn}" hideEffect="{fadeOut}"		
 			  	source="assets/map.png" visible="{mapToggle.selected}" />
-				<visualizer:GraphView dataset="{client.datasets.getItemAt(0) as Dataset}" />
+				<visualizer:GraphView dataset="{client.datasets.getItemAt(0) as Dataset}" id="graphView" />
 			</s:Group>
 			
 			<s:HGroup verticalAlign="middle" height="60" left="5" right="5">
@@ -123,7 +148,7 @@
 				<s:List id="yearSlider"  borderVisible="false" allowMultipleSelection="true"
 						itemRenderer="com.pentagram.view.renderers.YearsListRenderer" 
 						 skinClass="com.pentagram.view.skins.YearListSkin" requireSelection="true"
-						rollOverColor="#C50E24" selectionColor="#C50E24">
+						rollOverColor="#C50E24" selectionColor="#C50E24" changing="yearSlider_changeHandler(event)">
 					<s:layout>
 						<s:HorizontalLayout gap="8" verticalAlign="middle" />
 					</s:layout>
@@ -159,7 +184,7 @@
 				<s:Rect width="10" />
 				
 				<s:Label text="x:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet"/>
 				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
@@ -169,7 +194,7 @@
 				<s:Rect width="10" />
 				
 				<s:Label text="y:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet"/>
 				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>
@@ -179,7 +204,7 @@
 				<s:Rect width="5" />
 				
 				<s:Label text="size by:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet"/>
 				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>

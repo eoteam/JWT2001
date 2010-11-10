@@ -2,12 +2,105 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				autoDrawBackground="false"
-				depth="0" depth.hovered="1" depth.selected="2"
-				width="8" height="45" xmlns:mx="library://ns.adobe.com/flex/mx" >
+				depth="0" depth.hovered="1" depth.selected="2" 
+				width="8" height="45" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:interpolate="flare.animate.interpolate.*" 
+				xmlns:util="com.pentagram.util.*"
+				rollOver="itemrenderer1_rollOverHandler(event)" 
+				rollOut="itemrenderer1_rollOutHandler(event)"
+				 click="itemrenderer1_clickHandler(event)">
 	
 	<fx:Script>
 		<![CDATA[
 			import flash.geom.Point;
+			
+			import mx.events.EffectEvent;
+			import mx.events.FlexEvent;
+			
+			import spark.components.List;
+
+
+
+			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
+			{
+				var yearSlider:List = this.owner as List;
+				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
+					yearSlider.dataProvider.getItemAt(i).selection = 1;
+				}
+				var index:int =  this.itemIndex;
+				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
+				if(index-1 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
+				
+				if(index-2 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
+				
+				if(index+1 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
+				
+				if(index+2 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
+				
+				index =  yearSlider.selectedIndex;
+				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
+				if(index-1 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
+				
+				if(index-2 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
+				
+				if(index+1 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
+				
+				if(index+2 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
+			}
+
+
+			protected function itemrenderer1_rollOutHandler(event:MouseEvent):void
+			{
+				var yearSlider:List = this.owner as List;
+				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
+					yearSlider.dataProvider.getItemAt(i).selection = 1;
+				}
+				var index:int =  yearSlider.selectedIndex;
+				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
+				if(index-1 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
+				
+				if(index-2 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
+				
+				if(index+1 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
+				
+				if(index+2 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
+			}
+
+
+			protected function itemrenderer1_clickHandler(event:MouseEvent):void
+			{
+				var yearSlider:List = this.owner as List;
+				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
+					yearSlider.dataProvider.getItemAt(i).selection = 1;
+				}
+				var index:int =  yearSlider.dataProvider.getItemIndex(data);
+				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
+				if(index-1 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
+				
+				if(index-2 >= 0) 
+					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
+				
+				if(index+1 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
+				
+				if(index+2 < yearSlider.dataProvider.length) 
+					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -17,20 +110,35 @@
 		<s:State name="selected" stateGroups="popupState" />
 	</s:states>
 	
-
+	<fx:Declarations>
+		<util:RectInterpolator id="interpolator" />
+	</fx:Declarations>
 	
 	<!--       Transitions          -->
 	<s:transitions>
-		<s:Transition toState="hovered" autoReverse="true">
+		<s:Transition autoReverse="true">
+				<s:Animate target="{tOffsets}" duration="350">
+					<s:SimpleMotionPath property="scaleY"  />
+				</s:Animate>
+		</s:Transition>
+		<!--
+		<s:Transition fromState="hovered" toState="normal" autoReverse="true" >
 			<s:Animate target="{tOffsets}" duration="350">
-				<s:SimpleMotionPath property="scaleY" />
+				<s:SimpleMotionPath property="scaleY" valueFrom="1.3" valueTo="{data.selection}" valueBy="0.01"   />
 			</s:Animate>
 		</s:Transition>
-		<s:Transition fromState="hovered" autoReverse="true">
+		
+		<s:Transition fromState="hovered" toState="selected" autoReverse="true">
 			<s:Animate target="{tOffsets}" duration="350">
-				<s:SimpleMotionPath property="scaleY" />
+				<s:SimpleMotionPath property="scaleY"  valueFrom="1.3" valueTo="1.5" valueBy="0.01"  />
 			</s:Animate>
-		</s:Transition>
+		</s:Transition>	
+		
+		<s:Transition fromState="selected" toState="normal" autoReverse="true">
+			<s:Animate target="{tOffsets}" duration="350">
+				<s:SimpleMotionPath property="scaleY"  valueFrom="1.5" valueTo="{data.selection}" valueBy="0.01"  />
+			</s:Animate>
+		</s:Transition>	-->
 	</s:transitions>
 
 
@@ -44,7 +152,7 @@
 						<s:SolidColor id="bgColor" color="0x121212" />
 					</s:fill>
 				</s:Rect>
-				<s:Label text="{this.data.toString()}" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
+				<s:Label text="{this.data.year}" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
 			</s:Group>
 			<s:Path id="arrow" x="25" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
 				<s:fill>
@@ -58,7 +166,7 @@
 		</s:filters>		
 	</s:PopUpAnchor>
 	
-	<s:Rect width="8" height="30"  radiusX="4" radiusY="4" rotation="180" verticalCenter="0">
+	<s:Rect width="8" height="30"  radiusX="4" radiusY="4" rotation="180" verticalCenter="0" id="bar">
 		<s:fill>
 			<s:SolidColor 
 				color.normal="0x808080"
@@ -67,10 +175,7 @@
 		</s:fill>
 		<!--       The Zoom effect      -->
 		<s:postLayoutTransformOffsets>
-			<s:TransformOffsets id="tOffsets"
-								scaleX="1" scaleY="1" 
-								scaleY.hovered="1.3" 
-								scaleY.selected="1.1" />
+			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="{data.selection}" scaleY.hovered="1.5" scaleY.selected="1.5"   />
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
 	

@@ -70,6 +70,8 @@ package com.pentagram.view.mediators
 				var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
 				m.addItem(arrange);
 				var tile:NativeMenuItem = new NativeMenuItem("Tile");
+				tile.keyEquivalent = "t";
+				tile.keyEquivalentModifiers = [Keyboard.COMMAND];			
 				tile.addEventListener(Event.SELECT,handleArrange);
 				arrange.submenu = new NativeMenu();
 				arrange.submenu.addItem(tile);

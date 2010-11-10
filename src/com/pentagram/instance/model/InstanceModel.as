@@ -1,8 +1,12 @@
 package com.pentagram.instance.model
 {
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.User;
+	
+	import flare.vis.data.Data;
+	import flare.vis.data.NodeSprite;
 	
 	import mx.collections.ArrayList;
 	
@@ -26,5 +30,47 @@ package com.pentagram.instance.model
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
+		
+		
+		public function normalizeData(ds1:Dataset,ds2:Dataset,ds3:Dataset=null,ds4:Dataset=null):Array {
+			var data:Array = [];
+			for (var i:int=0;i<ds1.rows.length;i++) {
+				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
+				var obj:Object = new Object(); 
+				obj.name = row.name;
+				if(ds1.time == 1) 
+					obj[ds1.name] = Number(ds1.rows.getItemAt(i)[ds1.years[0]]);
+				else
+					obj[ds1.name] = Number(ds1.rows.getItemAt(i).value);
+				
+				if(ds2.time == 1) 
+					obj[ds2.name] = Number(ds2.rows.getItemAt(i)[ds2.years[0]]);
+				else
+					obj[ds2.name] = Number(ds2.rows.getItemAt(i).value);
+				if(ds3) {
+					if(ds3.time == 1) 
+						obj[ds3.name] = Number(ds3.rows.getItemAt(i)[ds3.years[0]]);
+					else
+						obj[ds3.name] = Number(ds3.rows.getItemAt(i).value);
+				}
+				obj.color = ds1.rows.getItemAt(i).color;
+				trace(obj[ds1.name],obj[ds2.name],obj.color);
+				data.push(obj);
+			}
+			return data;
+		}
+		public function updateData(data:Data,year:int,...datasets):void {
+			for each(var ds:Dataset in datasets) {
+				if(ds.time == 1) {
+					for(var i:int=0;i<ds.rows.length;i++) {
+						if(i < data.nodes.length) {
+							var node:NodeSprite = data.nodes[i] as NodeSprite;
+							node.data[ds.name] = ds.rows.getItemAt(i)[year];
+							node.dirty();
+						}
+					}
+				}
+			}
+		}
 	}
 }

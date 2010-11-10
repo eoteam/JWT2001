@@ -4,12 +4,16 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
+	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.ClientBarView;
 	import com.pentagram.instance.view.shell.ShellView;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
+	import com.pentagram.util.ViewUtils;
 	import com.pentagram.view.event.ViewEvent;
+	
+	import flare.vis.data.Data;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -21,6 +25,8 @@ package com.pentagram.instance.view.mediators.shell
 	import mx.events.IndexChangedEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
+	
+	import spark.events.DropDownEvent;
 	
 	public class ShellMediator extends Mediator
 	{
@@ -45,7 +51,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			
 			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange);
-			
+			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user)
 				view.currentState = view.loggedInState.name;
@@ -57,7 +63,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			var years:ArrayList = new ArrayList();
 			for (var i:int=1980;i<=2010;i++) {
-				years.addItem(i);;
+				years.addItem(new Year(i,1));
 			}
 			view.yearSlider.dataProvider = years;
 			yearTimer = new Timer(500);
@@ -95,6 +101,8 @@ package com.pentagram.instance.view.mediators.shell
 						view.yearSlider.selectedIndex = 0;
 				yearTimer.start();
 				view.playBtn.label = "Stop";
+				model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(0).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+				view.graphView.update();
 			}
 			else {
 				yearTimer.stop();
@@ -106,6 +114,14 @@ package com.pentagram.instance.view.mediators.shell
 			if(view.yearSlider.selectedIndex == view.yearSlider.dataProvider.length-1) {
 				yearTimer.stop();
 			}
+			else {
+				model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+			}
+		}
+		
+		private function handleSecondSet(event:Event):void {
+			var d:Array = model.normalizeData(view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);	
+			view.graphView.visualize(d,view.firstSet.selectedItem.name,view.secondSet.selectedItem.name,view.thirdSet.selectedItem.name);
 		}
 			
 	}

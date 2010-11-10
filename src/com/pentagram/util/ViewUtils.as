@@ -3,11 +3,10 @@ package com.pentagram.util
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataCell;
-	import com.pentagram.model.vo.DataColumn;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
-
-	import flash.utils.getDefinitionByName;  
+	
+	import flash.utils.getDefinitionByName;
 	
 	public class ViewUtils
 	{
@@ -25,6 +24,7 @@ package com.pentagram.util
 						row = new DataRow();
 						row.name = country.name;	
 						row.id = Number(item.id);
+						row.color = country.region.color;
 						for(prop in item) { 
 							if(prop != 'id' && prop != 'countryid') {
 								if(dataset.time == 1)
