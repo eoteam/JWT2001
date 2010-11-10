@@ -27,6 +27,7 @@ package com.pentagram.instance.view.mediators.shell
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.DropDownEvent;
+	import spark.events.IndexChangeEvent;
 	
 	public class ShellMediator extends Mediator
 	{
@@ -52,6 +53,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange);
 			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
+			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection);
 			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user)
 				view.currentState = view.loggedInState.name;
@@ -66,7 +68,7 @@ package com.pentagram.instance.view.mediators.shell
 				years.addItem(new Year(i,1));
 			}
 			view.yearSlider.dataProvider = years;
-			yearTimer = new Timer(500);
+			yearTimer = new Timer(5000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
@@ -118,7 +120,11 @@ package com.pentagram.instance.view.mediators.shell
 				model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
 			}
 		}
-		
+		private function handleYearSelection(event:IndexChangeEvent):void {
+			model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
+			view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+			view.graphView.update();
+		}
 		private function handleSecondSet(event:Event):void {
 			var d:Array = model.normalizeData(view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);	
 			view.graphView.visualize(d,view.firstSet.selectedItem.name,view.secondSet.selectedItem.name,view.thirdSet.selectedItem.name);

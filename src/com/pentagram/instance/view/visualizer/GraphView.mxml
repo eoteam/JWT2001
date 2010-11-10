@@ -90,7 +90,7 @@
 				this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
 			}
 			public function update():void {
-				vis.update(2000);
+				vis.update(new Transitioner(1)).play();
 			}
 			protected function group1_resizeHandler(event:ResizeEvent):void
 			{
