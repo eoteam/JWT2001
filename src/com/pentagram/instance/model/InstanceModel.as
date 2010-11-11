@@ -6,6 +6,7 @@ package com.pentagram.instance.model
 	import com.pentagram.model.vo.User;
 	
 	import flare.vis.data.Data;
+	import flare.vis.data.DataSprite;
 	import flare.vis.data.NodeSprite;
 	
 	import mx.collections.ArrayList;
@@ -38,6 +39,7 @@ package com.pentagram.instance.model
 				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
 				var obj:Object = new Object(); 
 				obj.name = row.name;
+				obj.index = i;
 				if(ds1.time == 1) 
 					obj[ds1.name] = Number(ds1.rows.getItemAt(i)[ds1.years[0]]);
 				else
@@ -60,17 +62,28 @@ package com.pentagram.instance.model
 			return data;
 		}
 		public function updateData(data:Data,year:int,...datasets):void {
-			for each(var ds:Dataset in datasets) {
-				if(ds.time == 1) {
-					for(var i:int=0;i<ds.rows.length;i++) {
-						if(i < data.nodes.length) {
-							var node:NodeSprite = data.nodes[i] as NodeSprite;
-							node.data[ds.name] = ds.rows.getItemAt(i)[year];
-							node.dirty();
-						}
+			
+			data.nodes.visit(function(d:DataSprite):void {
+				for each(var ds:Dataset in datasets) {
+					if(ds.time == 1) {
+						d.data[ds.name] = ds.rows.getItemAt(d.data.index)[year];
 					}
 				}
-			}
+			});
+//			
+//			for each(var ds:Dataset in datasets) {
+//				if(ds.time == 1) {
+//					for(var i:int=0;i<ds.rows.length;i++) {
+//						if(i < data.nodes.length) {
+//							var node:NodeSprite = data.nodes[i] as NodeSprite;
+//							
+//							//node.dirty();
+//						}
+//					}
+//				}
+//			}
+			
+			
 		}
 	}
 }

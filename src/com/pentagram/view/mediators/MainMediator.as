@@ -22,6 +22,8 @@ package com.pentagram.view.mediators
 	import org.robotlegs.mvcs.Mediator;
 	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
 	
+	import flash.system.System;
+	
 	public class MainMediator extends Mediator
 	{
 		[Inject]
@@ -40,7 +42,7 @@ package com.pentagram.view.mediators
 		{
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
-		
+			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_CLOSED,handleWindowClosed);
 			
 			if (NativeApplication.supportsMenu)
 			{
@@ -138,6 +140,24 @@ package com.pentagram.view.mediators
 		{
 			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
 		
+		}
+		private function handleWindowClosed(event:Event):void {
+			startGCCycle();
+		}
+		private var gcCount:int;
+		private function startGCCycle():void{
+			gcCount = 0;
+			view.addEventListener(Event.ENTER_FRAME, doGC);
+		}
+		private function doGC(evt:Event):void{
+			flash.system.System.gc();
+			if(++gcCount > 1){
+				view.removeEventListener(Event.ENTER_FRAME, doGC);
+				view.callLater(lastGC);
+			}
+		}
+		private function lastGC():void{
+			System.gc();
 		}
 	}
 }

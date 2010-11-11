@@ -7,20 +7,16 @@ package com.pentagram.model
 	import com.pentagram.util.RectInterpolator;
 	
 	import flash.display.NativeWindowDisplayState;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
 	
 	import mx.collections.ArrayCollection;
 	import mx.effects.Parallel;
-	import mx.events.EffectEvent;
 	import mx.utils.UIDUtil;
 	
 	import org.robotlegs.mvcs.Actor;
 	
 	import spark.effects.Animate;
-	import spark.effects.Move;
-	import spark.effects.Resize;
 	import spark.effects.animation.MotionPath;
 	import spark.effects.animation.SimpleMotionPath;
 	import spark.effects.interpolation.IInterpolator;
@@ -90,8 +86,11 @@ package com.pentagram.model
 		 */
 		public function removeWindowByUID(uid:String):void
 		{
+			var w:InstanceWindow = windowMap.getValue(uid) as InstanceWindow;
 			this.windowMap.remove(uid);
+			w = null;
 			dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_REMOVED));
+			currentWindow = null;
 		}
 		
 		/**

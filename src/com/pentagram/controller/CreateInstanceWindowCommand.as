@@ -21,7 +21,7 @@ package com.pentagram.controller
 		{
 			var window:InstanceWindow;
 			
-			if (event.uid && windowProxy.hasWindowUID(event.uid))
+/*			if (event.uid && windowProxy.hasWindowUID(event.uid))
 			{
 				window = windowProxy.getWindowFromUID(event.uid);
 			}
@@ -29,8 +29,8 @@ package com.pentagram.controller
 			{
 				window = windowProxy.createWindow();
 				//mediatorMap.createMediator(window);
-			}
-			
+			}*/
+			window = new InstanceWindow();
 			window.open();
 			window.orderToFront();
 		}

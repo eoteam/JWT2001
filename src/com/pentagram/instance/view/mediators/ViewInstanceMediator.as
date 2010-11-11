@@ -63,9 +63,6 @@ package com.pentagram.instance.view.mediators
 			
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
-			
-
-
 			//mediatorMap.createMediator(view.searchView);
 			
 		} 

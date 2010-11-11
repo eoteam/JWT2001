@@ -69,5 +69,11 @@ package com.pentagram.instance
 			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator); 
 
 		}
+		override public function shutdown():void {
+			injector.unmap(EventDispatcher,"ApplicationEventDispatcher");
+			mediatorMap.enabled = false;
+			commandMap.unmapEvents();
+			super.shutdown();
+		}
 	}
 }

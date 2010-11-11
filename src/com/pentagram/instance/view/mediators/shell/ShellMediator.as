@@ -48,10 +48,10 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);
 			
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
-			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange);
+			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
 			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection);
 			//mediatorMap.createMediator(view.bottomBarView);
@@ -61,7 +61,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.currentState = view.loggedOutState.name;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 			
-			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton);
+			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			
 			var years:ArrayList = new ArrayList();
 			for (var i:int=1980;i<=2010;i++) {
@@ -70,6 +70,8 @@ package com.pentagram.instance.view.mediators.shell
 			view.yearSlider.dataProvider = years;
 			yearTimer = new Timer(5000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
+			
+			
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			if(event.newIndex == 1 && !editorMapped) {
@@ -103,7 +105,7 @@ package com.pentagram.instance.view.mediators.shell
 						view.yearSlider.selectedIndex = 0;
 				yearTimer.start();
 				view.playBtn.label = "Stop";
-				model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(0).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(0).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
 				view.graphView.update();
 			}
 			else {
@@ -117,11 +119,11 @@ package com.pentagram.instance.view.mediators.shell
 				yearTimer.stop();
 			}
 			else {
-				model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
 			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent):void {
-			model.updateData(view.graphView.data,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
+			model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
 			view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
 			view.graphView.update();
 		}

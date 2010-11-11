@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				 xmlns:s="library://ns.adobe.com/flex/spark" 
-				 xmlns:mx="library://ns.adobe.com/flex/mx"   creationComplete="group1_creationCompleteHandler(event)"
-				 xmlns:vis="flare.flex.vis.*" width="100%" height="100%" xmlns:vo="com.pentagram.model.vo.*"  
-				 >
+				 xmlns:mx="library://ns.adobe.com/flex/mx"
+				 xmlns:vis="flare.flex.vis.*"
+				 xmlns:vo="com.pentagram.model.vo.*"
+				 implements="com.pentagram.instance.view.visualizer.IGraphView"
+				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*">
 	<fx:Script>
 		<![CDATA[
 			import flare.analytics.optimization.AspectRatioBanker;
@@ -28,14 +30,14 @@
 			
 			private var vis:Visualization;
 		
-			public var data:Data;
-			private function group1_creationCompleteHandler(event:FlexEvent):void
-			{
-//				var conv:IDataConverter = Converters.lookup("json");
-//				var ds:DataSet = conv.read(dataset.data);
-//				visualize(Data.fromDataSet(ds));
+			private var _visdata:Data;
+			public function set visdata(d:Data):void {
+				_visdata = d;
 			}
-			 private var banker:AspectRatioBanker;
+			public function get visdata():Data {
+				return _visdata;
+			}
+			private var banker:AspectRatioBanker;
 			public function visualize(arr:Array,prop1:String,prop2:String,prop3:String):void
 			{
 				var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
@@ -55,9 +57,9 @@
 //				);
 //				timeline[1].xScale.flush = true; // tight margins on timeline
 
-				data = Data.fromArray(arr);
+				visdata = Data.fromArray(arr);
 
-				vis = new Visualization(data);
+				vis = new Visualization(visdata);
 				vis.continuousUpdates = true;
 				
 				var axisLayout:AxisLayout = new AxisLayout( "data."+prop1, "data."+prop2);
@@ -90,19 +92,18 @@
 				this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
 			}
 			public function update():void {
-				vis.update(new Transitioner(1)).play();
+				vis.update(new Transitioner(2)).play();
 			}
-			protected function group1_resizeHandler(event:ResizeEvent):void
-			{
-				
+			protected function group1_resizeHandler(event:ResizeEvent):void {
 				vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
 				vis.update();
 			}
-
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<vo:Dataset id="dataset" />
 	</fx:Declarations>
-	<s:SpriteVisualElement id="holder"  width="100%" height="100%"  />
-</s:Group>
+	<s:Group width="100%" height="100%">
+		<s:SpriteVisualElement id="holder" width="100%" height="100%"/>	
+	</s:Group>
+	
+</modules:Module>
