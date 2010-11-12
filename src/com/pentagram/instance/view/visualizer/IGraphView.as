@@ -14,5 +14,6 @@ package com.pentagram.instance.view.visualizer
 		
 		function get visdata():Data;
 		
+		function updateMaxRadius(value:Number):void;
 	}
 }

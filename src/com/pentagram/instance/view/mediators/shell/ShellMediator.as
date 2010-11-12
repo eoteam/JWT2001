@@ -28,6 +28,7 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import spark.events.DropDownEvent;
 	import spark.events.IndexChangeEvent;
+	import spark.events.TrackBaseEvent;
 	
 	public class ShellMediator extends Mediator
 	{
@@ -53,7 +54,8 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
 			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection);
+			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
+			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius);
 			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user)
 				view.currentState = view.loggedInState.name;
@@ -68,7 +70,7 @@ package com.pentagram.instance.view.mediators.shell
 				years.addItem(new Year(i,1));
 			}
 			view.yearSlider.dataProvider = years;
-			yearTimer = new Timer(5000);
+			yearTimer = new Timer(2000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
@@ -118,6 +120,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			else {
 				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+				view.graphView.update();
 			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent):void {
@@ -128,6 +131,9 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleSecondSet(event:Event):void {
 			var d:Array = model.normalizeData(view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);	
 			view.graphView.visualize(d,view.firstSet.selectedItem.name,view.secondSet.selectedItem.name,view.thirdSet.selectedItem.name);
+		}
+		private function handleMaxRadius(event:Event):void {
+			view.graphView.updateMaxRadius(view.maxRadiusSlider.value);
 		}
 			
 	}
