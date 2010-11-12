@@ -36,15 +36,16 @@ package com.pentagram.instance
 		
 	public class InstanceContext extends Context
 	{
-		public function InstanceContext(contextView:DisplayObjectContainer=null, autoStartup:Boolean=true)
+		public var appEventDispatcher:EventDispatcher;
+		public function InstanceContext(appEventDispatcher:EventDispatcher,contextView:DisplayObjectContainer=null, autoStartup:Boolean=true)
 		{
 			super(contextView, autoStartup);
+			this.appEventDispatcher = appEventDispatcher;
 		}
 		
 		override public function startup():void
 		{  
-			
-			injector.mapValue(EventDispatcher, FlexGlobals.topLevelApplication.applicationEventDispatcher, "ApplicationEventDispatcher"); 
+			injector.mapValue(EventDispatcher, appEventDispatcher, "ApplicationEventDispatcher"); 
 			
 			commandMap.mapEvent(VisualizerEvent.CLIENT_SELECTED,LoadClientCommand,VisualizerEvent);
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
@@ -71,8 +72,8 @@ package com.pentagram.instance
 		}
 		override public function shutdown():void {
 			injector.unmap(EventDispatcher,"ApplicationEventDispatcher");
-			mediatorMap.enabled = false;
-			commandMap.unmapEvents();
+			//mediatorMap.enabled = false;
+			//commandMap.unmapEvents();
 			super.shutdown();
 		}
 	}

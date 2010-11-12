@@ -70,8 +70,6 @@ package com.pentagram.instance.view.mediators.shell
 			view.yearSlider.dataProvider = years;
 			yearTimer = new Timer(5000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
-			
-			
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			if(event.newIndex == 1 && !editorMapped) {

@@ -14,15 +14,16 @@ package com.pentagram.view.mediators
 	import flash.display.NativeWindow;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.system.System;
 	import flash.ui.Keyboard;
+	import flash.utils.Timer;
 	
 	import mx.events.FlexEvent;
 	
 	import org.robotlegs.core.IMediator;
 	import org.robotlegs.mvcs.Mediator;
 	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
-	
-	import flash.system.System;
 	
 	public class MainMediator extends Mediator
 	{
@@ -153,10 +154,12 @@ package com.pentagram.view.mediators
 			flash.system.System.gc();
 			if(++gcCount > 1){
 				view.removeEventListener(Event.ENTER_FRAME, doGC);
-				view.callLater(lastGC);
+				var timer:Timer = new Timer(40,1);
+				timer.addEventListener(TimerEvent.TIMER_COMPLETE,lastGC);
+				timer.start();
 			}
 		}
-		private function lastGC():void{
+		private function lastGC(event:TimerEvent):void{
 			System.gc();
 		}
 	}

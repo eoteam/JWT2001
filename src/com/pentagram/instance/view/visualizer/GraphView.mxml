@@ -5,7 +5,7 @@
 				 xmlns:vis="flare.flex.vis.*"
 				 xmlns:vo="com.pentagram.model.vo.*"
 				 implements="com.pentagram.instance.view.visualizer.IGraphView"
-				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*">
+				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" contentBackgroundAlpha="0">
 	<fx:Script>
 		<![CDATA[
 			import flare.analytics.optimization.AspectRatioBanker;
@@ -40,56 +40,67 @@
 			private var banker:AspectRatioBanker;
 			public function visualize(arr:Array,prop1:String,prop2:String,prop3:String):void
 			{
-				var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
-//				var timeline:OperatorList = new OperatorList(
-//					// the banker automatically selects the visualization
-//					// bounds to optimize the perception of trends in the chart
-//					banker = new AspectRatioBanker("data."+prop1, true,
-//						bounds.width, bounds.height),
-//					new AxisLayout("data."+prop1, "data."+prop2),
-//					new ColorEncoder("data.color", Data.NODES,
-//						"fillColor", ScaleType.CATEGORIES),
-//					new PropertyEncoder({
-//						lineAlpha: 1, alpha: 0.8, buttonMode: true,
-//						scaleX: 1, scaleY: 1, size: 1
-//					}),
-//					new PropertyEncoder({lineWidth:2}, Data.EDGES)
-//				);
-//				timeline[1].xScale.flush = true; // tight margins on timeline
-
-				visdata = Data.fromArray(arr);
-
-				vis = new Visualization(visdata);
-				vis.continuousUpdates = true;
 				
-				var axisLayout:AxisLayout = new AxisLayout( "data."+prop1, "data."+prop2);
-				var colorEncode:ColorEncoder = new ColorEncoder("data.color", Data.NODES,"fillColor", ScaleType.CATEGORIES);
-				var propEncoder:PropertyEncoder	= new PropertyEncoder({lineAlpha: 1, alpha: 1, buttonMode: true,scaleX: 1, scaleY: 1, size: 1});
-				var sizeEncoder:SizeEncoder = new SizeEncoder("data."+prop3, Data.NODES);
-				
-				vis.operators.add(axisLayout);
-				vis.operators.add(colorEncode);
-				vis.operators.add(propEncoder);
-				vis.operators.add(sizeEncoder);
-				vis.x = 50; 
-				vis.y = 20;
-				vis.bounds = bounds;
-				
-				holder.addChild(vis);
-				
-				
-				//effectively only hides top and right borders
-				vis.xyAxes.showBorder = false;
-				// show bottom border
-				vis.xyAxes.showXLine = true;
-				// show left border
-				vis.xyAxes.showYLine = true;
-				// hide vertical grid lines (along x axis)
-				vis.xyAxes.xAxis.showLines = false;
-				// hide horizontal grid lines (along y axis)
-				vis.xyAxes.yAxis.showLines = false;
-				vis.update();
-				this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
+					var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
+	//				var timeline:OperatorList = new OperatorList(
+	//					// the banker automatically selects the visualization
+	//					// bounds to optimize the perception of trends in the chart
+	//					banker = new AspectRatioBanker("data."+prop1, true,
+	//						bounds.width, bounds.height),
+	//					new AxisLayout("data."+prop1, "data."+prop2),
+	//					new ColorEncoder("data.color", Data.NODES,
+	//						"fillColor", ScaleType.CATEGORIES),
+	//					new PropertyEncoder({
+	//						lineAlpha: 1, alpha: 0.8, buttonMode: true,
+	//						scaleX: 1, scaleY: 1, size: 1
+	//					}),
+	//					new PropertyEncoder({lineWidth:2}, Data.EDGES)
+	//				);
+	//				timeline[1].xScale.flush = true; // tight margins on timeline
+	
+					visdata = Data.fromArray(arr);
+					var axisLayout:AxisLayout = new AxisLayout( "data."+prop1, "data."+prop2);
+					var colorEncode:ColorEncoder = new ColorEncoder("data.color", Data.NODES,"fillColor", ScaleType.CATEGORIES);
+					var propEncoder:PropertyEncoder	= new PropertyEncoder({lineAlpha: 1, alpha: 1, buttonMode: true,scaleX: 1, scaleY: 1, size: 1});
+					var sizeEncoder:SizeEncoder = new SizeEncoder("data."+prop3, Data.NODES);
+					
+				if(!vis) {
+					vis = new Visualization(visdata);
+					vis.continuousUpdates = true;
+					vis.operators.add(axisLayout);
+					vis.operators.add(colorEncode);
+					vis.operators.add(propEncoder);
+					vis.operators.add(sizeEncoder);
+					vis.x = 50; 
+					vis.y = 20;
+					vis.bounds = bounds;
+					
+					holder.addChild(vis);
+					//effectively only hides top and right borders
+					vis.xyAxes.showBorder = false;
+					// show bottom border
+					vis.xyAxes.showXLine = true;
+					// show left border
+					vis.xyAxes.showYLine = true;
+					// hide vertical grid lines (along x axis)
+					vis.xyAxes.xAxis.showLines = false;
+					// hide horizontal grid lines (along y axis)
+					vis.xyAxes.yAxis.showLines = false;
+					vis.update();
+					this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
+				}
+				else {
+					vis.data = visdata;
+					vis.operators.removeOperatorAt(0);
+					vis.operators.removeOperatorAt(1);
+					vis.operators.removeOperatorAt(2);
+					vis.operators.removeOperatorAt(3);
+					vis.operators.add(axisLayout);
+					vis.operators.add(colorEncode);
+					vis.operators.add(propEncoder);
+					vis.operators.add(sizeEncoder);
+					vis.update(new Transitioner(2)).play();
+				}
 			}
 			public function update():void {
 				vis.update(new Transitioner(2)).play();

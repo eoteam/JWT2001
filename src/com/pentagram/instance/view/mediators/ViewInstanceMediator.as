@@ -68,7 +68,7 @@ package com.pentagram.instance.view.mediators
 		} 
 		public function handleInit(...args):void {
 			model.clients = args[0];
-			model.regions = args[1];66
+			model.regions = args[1];
 			model.countries = args[2];
 			model.user = args[3];
 			view.createDeferredContent();
@@ -109,6 +109,7 @@ package com.pentagram.instance.view.mediators
 		}
 		public function handleCloseWindow(event:Event):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_CLOSED, view.id));
+			view.cleanup();
 		}
 	}
 }

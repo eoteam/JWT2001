@@ -7,6 +7,8 @@ package com.pentagram.controller
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.view.windows.BaseWindow;
 	
+	import mx.core.FlexGlobals;
+	
 	import org.robotlegs.mvcs.Command;
 	
 	public class CreateInstanceWindowCommand extends Command
@@ -21,7 +23,7 @@ package com.pentagram.controller
 		{
 			var window:InstanceWindow;
 			
-/*			if (event.uid && windowProxy.hasWindowUID(event.uid))
+			if (event.uid && windowProxy.hasWindowUID(event.uid))
 			{
 				window = windowProxy.getWindowFromUID(event.uid);
 			}
@@ -29,8 +31,8 @@ package com.pentagram.controller
 			{
 				window = windowProxy.createWindow();
 				//mediatorMap.createMediator(window);
-			}*/
-			window = new InstanceWindow();
+			}
+			window.appEventDispatcher = FlexGlobals.topLevelApplication.applicationEventDispatcher;
 			window.open();
 			window.orderToFront();
 		}

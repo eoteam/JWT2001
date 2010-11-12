@@ -30,6 +30,7 @@
   </applications>
   <modules>
     <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/GraphView.swf" optimize="false" sourcePath="src/com/pentagram/instance/view/visualizer/GraphView.mxml"/>
+    <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/MapView.swf" optimize="false" sourcePath="src/com/pentagram/instance/view/visualizer/MapView.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>

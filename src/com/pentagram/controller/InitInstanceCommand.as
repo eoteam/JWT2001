@@ -7,6 +7,8 @@ package com.pentagram.controller
 	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.OpenWindowsProxy;
 	
+	import mx.core.FlexGlobals;
+	
 	import org.robotlegs.mvcs.Command;
 	
 	public class InitInstanceCommand extends Command
