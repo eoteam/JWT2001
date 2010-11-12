@@ -145,7 +145,7 @@
 				<s:Rect width="10" />
 
 				<s:Label text="color by:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"/>
+				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet"/>
 				<s:Rect width="10" />
 				<primatives:Line width="1" height="40">
 					<primatives:stroke>

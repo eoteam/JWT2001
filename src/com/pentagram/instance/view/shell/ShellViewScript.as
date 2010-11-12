@@ -66,4 +66,7 @@ private function handleMapLoaded(event:Event):void {
 		this.mapHolder.addElement(util.view as Group);
 	}
 }
+public function unload():void {
+	graphView.unload();
+}
 

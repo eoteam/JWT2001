@@ -46,7 +46,7 @@
 			{
 				context.shutdown();
 				if(shellView) {
-					//shellView.unloadModule();
+					shellView.unload();
 					appEventDispatcher = null;
 				}
 			}

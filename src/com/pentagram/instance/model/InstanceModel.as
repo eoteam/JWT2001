@@ -55,6 +55,14 @@ package com.pentagram.instance.model
 					else
 						obj[ds3.name] = Number(ds3.rows.getItemAt(i).value);
 				}
+				else
+					obj.size = 1;
+				if(ds4) {
+					if(ds4.time == 1) 
+						obj[ds4.name] = Number(ds4.rows.getItemAt(i)[ds4.years[0]]);
+					else
+						obj[ds4.name] = Number(ds4.rows.getItemAt(i).value);
+				}
 				obj.color = ds1.rows.getItemAt(i).color;
 				trace(obj[ds1.name],obj[ds2.name],obj.color);
 				data.push(obj);
@@ -65,7 +73,7 @@ package com.pentagram.instance.model
 			
 			data.nodes.visit(function(d:DataSprite):void {
 				for each(var ds:Dataset in datasets) {
-					if(ds.time == 1) {
+					if(ds && ds.time == 1) {
 						d.data[ds.name] = ds.rows.getItemAt(d.data.index)[year];
 					}
 				}

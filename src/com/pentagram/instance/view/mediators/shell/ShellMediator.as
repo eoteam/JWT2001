@@ -43,7 +43,7 @@ package com.pentagram.instance.view.mediators.shell
 		
 		private var editorMapped:Boolean = false;
 		private var yearTimer:Timer;
-		
+		private var firstPass:Boolean = true;
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
@@ -53,7 +53,12 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
 			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
+			
+			view.firstSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
+			view.secondSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
+			view.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
+			
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
 			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius);
 			//mediatorMap.createMediator(view.bottomBarView);
@@ -119,18 +124,34 @@ package com.pentagram.instance.view.mediators.shell
 				yearTimer.stop();
 			}
 			else {
-				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
+				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
+					view.firstSet.selectedItem,
+					view.secondSet.selectedItem,
+					view.thirdSet.selectedItem,
+					view.fourthSet.selectedItem);
 				view.graphView.update();
 			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent):void {
-			model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
-			view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);
-			view.graphView.update();
+			if(!firstPass) {
+				model.updateData(view.graphView.visdata,view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int,
+				view.firstSet.selectedItem,
+				view.secondSet.selectedItem,
+				view.thirdSet.selectedItem,
+				view.fourthSet.selectedItem);
+				view.graphView.update();
+			}
 		}
 		private function handleSecondSet(event:Event):void {
-			var d:Array = model.normalizeData(view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem);	
-			view.graphView.visualize(d,view.firstSet.selectedItem.name,view.secondSet.selectedItem.name,view.thirdSet.selectedItem.name);
+			if(view.firstSet.selectedItem && view.secondSet.selectedItem) {
+				var d:Array = model.normalizeData(view.firstSet.selectedItem,view.secondSet.selectedItem,view.thirdSet.selectedItem,view.fourthSet.selectedItem);	
+				view.graphView.visualize(d,
+					view.firstSet.selectedItem,
+					view.secondSet.selectedItem,
+					view.thirdSet.selectedItem,
+					view.fourthSet.selectedItem);
+				firstPass = false;
+			}
 		}
 		private function handleMaxRadius(event:Event):void {
 			view.graphView.updateMaxRadius(view.maxRadiusSlider.value);

@@ -22,8 +22,8 @@
         <airExclude path="com"/>
         <airExclude path="flex"/>
         <airExclude path="assets/FlamaBlack.ttf"/>
-        <airExclude path="ws"/>
         <airExclude path="assets/.DS_Store"/>
+        <airExclude path="ws"/>
         <airExclude path=".DS_Store"/>
       </airExcludes>
     </application>

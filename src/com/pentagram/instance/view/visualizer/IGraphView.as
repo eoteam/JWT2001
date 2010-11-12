@@ -6,7 +6,7 @@ package com.pentagram.instance.view.visualizer
 
 	public interface IGraphView extends IUIComponent
 	{
-		function visualize(arr:Array,prop1:String,prop2:String,prop3:String):void;
+		function visualize(arr:Array,...props):void;
 		
 		function update():void;
 		
@@ -15,5 +15,7 @@ package com.pentagram.instance.view.visualizer
 		function get visdata():Data;
 		
 		function updateMaxRadius(value:Number):void;
+		
+		function unload():void;
 	}
 }
