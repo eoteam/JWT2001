@@ -4,8 +4,8 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:assets="com.pentagram.view.assets.*" 
 				width="1024" height="768" showStatusBar="true"
-				preinitialize="preinit(event)"
-				xmlns:shell="com.pentagram.instance.view.shell.*" 
+				preinitialize="preinit(event)"   skinClass="com.pentagram.view.renderers.WindowSKin"
+				xmlns:shell="com.pentagram.instance.view.shell.*"  minWidth="800" minHeight="600"
 				xmlns:vo="com.pentagram.model.vo.*" creationPolicy="none"
 				xmlns:events="flash.events.*">
 				<!--    -->
@@ -48,6 +48,7 @@
 				if(shellView) {
 					shellView.unload();
 					appEventDispatcher = null;
+					
 				}
 			}
 

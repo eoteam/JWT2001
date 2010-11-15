@@ -55,12 +55,10 @@ package com.pentagram.instance.view.mediators
 		{
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
-		
-			eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
-			
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
 			
+			eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 			//mediatorMap.createMediator(view.searchView);
@@ -74,34 +72,36 @@ package com.pentagram.instance.view.mediators
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
+			eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
+			
+			//view.nativeWindow.addEventListener(
+			
 		}
 		//
 		private function handleWindowFocus(event:AIREvent):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
 		}
-		private function handleClientSelected(event:ViewEvent):void
-		{
+		private function handleClientSelected(event:ViewEvent):void {
 			view.currentState = view.visualizerAndLoadingState.name;
 			view.client = model.client;
 			//mediatorMap.createMediator(view.shellView);
 			//selectedClient = event.args[0] as Client;
 		}
-		private function handleShellLoaded(event:ViewEvent):void
-		{
+		private function handleShellLoaded(event:ViewEvent):void {
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
 		}
-		private function handleClientDataLoaded(event:VisualizerEvent):void
-		{
+		private function handleClientDataLoaded(event:VisualizerEvent):void {
 			view.currentState = view.visualizerAndLoadedState.name;
 		}
-		private function loadSearchView(event:VisualizerEvent):void
-		{
+		private function loadSearchView(event:VisualizerEvent):void {
 			view.currentState = view.searchState.name;
 		}
-		private function handleUserButton(event:MouseEvent):void
-		{
+		private function handleUserButton(event:MouseEvent):void {
 			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,model.LOGIN_WINDOW)); 
 		}		
+		private function handleGripperButton(event:MouseEvent):void {
+			trace("WTFFFF");
+		}
 		override public function onRemove():void {
 			mediatorMap.removeMediatorByView(view.searchView);
 			mediatorMap.removeMediatorByView(view.shellView);

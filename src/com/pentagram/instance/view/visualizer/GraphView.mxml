@@ -34,7 +34,7 @@
 			import mx.events.ResizeEvent;
 			
 			private var vis:Visualization;
-		
+			public var running
 			private var _visdata:Data;
 			public function set visdata(d:Data):void {
 				_visdata = d;
@@ -76,7 +76,7 @@
 					if(prop3)
 						sizeEncoder = new SizeEncoder("data."+prop3, Data.NODES,sizePalette);
 					else 
-						sizeEncoder = new SizeEncoder("data.size");
+						sizeEncoder = new SizeEncoder("data.size",Data.NODES);
 					vis.operators.add(axisLayout);
 					vis.operators.add(propEncoder);
 					vis.operators.add(sizeEncoder);
@@ -107,6 +107,7 @@
 						colorEncoder.palette = ColorPalette.category(20,[0xff5555, 0x8888ff],1);
 					}
 					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
+					
 					var t:Transitioner = new Transitioner(2.5);
 					t.addEventListener(TransitionEvent.END,handleEnd);
 					vis.update(t).play();
@@ -116,9 +117,11 @@
 				DirtySprite.resume();
 				Scheduler.instance.play();
 				vis.resume();
-				var t:Transitioner = new Transitioner(2.5);
-				t.addEventListener(TransitionEvent.END,handleEnd);
-				vis.update(t).play();
+				this.callLater(function resumeUpdate():void {
+					var t:Transitioner = new Transitioner(2.5);
+					t.addEventListener(TransitionEvent.END,handleEnd);
+					vis.update(t).play();
+				});
 			}
 			public function updateMaxRadius(value:Number):void {
 				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
@@ -126,9 +129,11 @@
 				DirtySprite.resume();
 				Scheduler.instance.play();
 				vis.resume();
-				var t:Transitioner = new Transitioner(1);
-				t.addEventListener(TransitionEvent.END,handleEnd);
-				vis.update(t).play();
+				this.callLater(function resumeUpdate():void {
+					var t:Transitioner = new Transitioner(1);
+					t.addEventListener(TransitionEvent.END,handleEnd);
+					vis.update(t).play();
+				});
 				
 			}
 			protected function group1_resizeHandler(event:ResizeEvent):void {
@@ -137,8 +142,10 @@
 					Scheduler.instance.play();
 					vis.resume();
 					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
-					vis.update();
-					callLater(handleEnd);
+					this.callLater(function resumeUpdate():void {
+						vis.update();
+						callLater(handleEnd);
+					});
 				}
 			}
 
