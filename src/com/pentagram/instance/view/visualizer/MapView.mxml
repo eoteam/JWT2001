@@ -11,6 +11,9 @@
 				if(map)
 					map.visible = visible;
 			}
+			public function unload():void {
+				
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>

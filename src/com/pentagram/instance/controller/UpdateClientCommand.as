@@ -6,9 +6,13 @@ package com.pentagram.instance.controller
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataRow;
+	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IInstanceService;
+	
+	import flash.events.Event;
 	
 	import mx.rpc.events.ResultEvent;
 	
@@ -36,14 +40,14 @@ package com.pentagram.instance.controller
 				total++;
 			}
 			var country:Country
-			for each(country in model.client.newCountries) {
+			for each(country in model.client.newCountries.source) {
 				service.addClientCountry(country);
 				service.addHandlers(handleAddCountry);
 				//appService.addProperties("client",client);
 				service.addProperties("country",country);
 				total++;
 			}
-			for each(country in model.client.deletedCountries) {
+			for each(country in model.client.deletedCountries.source) {
 				service.removeClientCountry(country);
 				service.addHandlers(handleRemoveCountry);
 				//appService.addProperties("client",client);
@@ -81,6 +85,7 @@ package com.pentagram.instance.controller
 				checkCount();
 			}
 		}	
+
 		private function checkCount():void {
 			if(counter == total) {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CLIENT_DATA_UPDATED));

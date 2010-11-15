@@ -4,6 +4,8 @@ package com.pentagram.model
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.User;
 	
+	import flash.display.NativeMenuItem;
+	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;
@@ -30,7 +32,7 @@ package com.pentagram.model
 		public var user:User;
 		
 
-		
+		public var exportMenuItem:NativeMenuItem;
 		//global ref
 		//public var
 	}

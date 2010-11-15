@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 xmlns:vo="com.pentagram.model.vo.*"
+		 xmlns:primatives="ws.tink.spark.primatives.*" 
+		 xmlns:graphics="ws.tink.spark.graphics.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.events.IndexChangedEvent;
+			public function initTools():void {
+				visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
+			}
+			private function handleIndexChanged(event:IndexChangedEvent):void {
+				switch(visualizerArea.selectedIndex) {
+					case 0:
+						this.currentState = 'cluster';
+					break;
+					case 1:
+						this.currentState = 'map';
+					break;					
+					case 2:
+						this.currentState = 'graph';
+					break;					
+				}
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<vo:Client id="client" />
+		<mx:ViewStack id="visualizerArea" />
+	</fx:Declarations>
+	
+	<s:states>
+		<s:State name="cluster" stateGroups="groupingState"/>
+		<s:State name="graph" stateGroups="groupingState"/>
+		<s:State name="map" />
+		
+	</s:states>
+	
+	<s:Rect width="100%" height="1" bottom="120">
+		<s:fill>
+			<s:SolidColor color="0xB3B1AC" />
+		</s:fill>
+	</s:Rect> 
+	
+	<s:HGroup width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
+		<s:ToggleButton label="Play"  id="playBtn"/>
+		
+		
+		<primatives:Line width="1" height="40">
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		
+		
+		<s:List id="yearSlider"  borderVisible="false" allowMultipleSelection="true"
+				itemRenderer="com.pentagram.view.renderers.YearsListRenderer" 
+				skinClass="com.pentagram.view.skins.YearListSkin" requireSelection="true"
+				rollOverColor="#C50E24" selectionColor="#C50E24">
+			<s:layout>
+				<s:HorizontalLayout gap="8" verticalAlign="middle" />
+			</s:layout>
+		</s:List>
+		
+		<primatives:Line width="1" height="40">
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		
+		<s:HSlider minimum="1" maximum="50" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01" includeIn="graph" />
+		
+	</s:HGroup>
+	
+	<s:Rect width="100%" height="1" bottom="60">
+		<s:fill>
+			<s:SolidColor color="0xB3B1AC" />
+		</s:fill>
+	</s:Rect> 
+	<s:HGroup width="100%" verticalAlign="middle" height="60" gap="0"  bottom="0" paddingLeft="10" paddingRight="10">
+		
+		<s:TabBar dataProvider="{visualizerArea}" />
+		
+		<s:Rect width="10" />
+		
+		<s:Label text="x:  " includeIn="graph"/>
+		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet" includeIn="graph"/>
+		<s:Rect width="10" includeIn="graph"/>
+		<primatives:Line width="1" height="40" includeIn="graph">
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		<s:Rect width="10" includeIn="graph"/>
+		
+		<s:Label text="y: " includeIn="graph"/>
+		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet" includeIn="graph"/>
+		<s:Rect width="10" includeIn="graph"/>
+		<primatives:Line width="1" height="40" includeIn="graph">
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		<s:Rect width="10" includeIn="graph"/>
+		
+		<s:Label text="size by:  "/>
+		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet" />
+		<s:Rect width="10" />
+		<primatives:Line width="1" height="40" >
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		<s:Rect width="10" />
+		
+		<s:Label text.graph="color by:  " text.cluster="group by: " includeIn="groupingState"/>
+		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet" includeIn="groupingState"/>
+		<s:Rect width="10" includeIn="groupingState"/>
+		<primatives:Line width="1" height="40" includeIn="groupingState">
+			<primatives:stroke>
+				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+			</primatives:stroke>
+		</primatives:Line>
+		<s:Rect width="10" includeIn="groupingState"/>
+		
+		<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="map"   />
+	</s:HGroup>
+</s:Group>

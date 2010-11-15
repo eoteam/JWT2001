@@ -39,7 +39,7 @@
 
 			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="119" />
 			<!-- viewing area -->
-			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="61" bottom="119" id="visualizerArea" selectedIndex="2" change="visualizerArea_changeHandler(event)">
+			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="61" bottom="119" id="visualizerArea"  change="visualizerArea_changeHandler(event)">
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" />
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" />
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" />
@@ -68,94 +68,7 @@
 			</s:Group>
 			
 			<!-- filters and tools -->
-			<s:Rect width="100%" height="1" bottom="120">
-				<s:fill>
-					<s:SolidColor color="0xB3B1AC" />
-				</s:fill>
-			</s:Rect> 
-			
-			<s:HGroup width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
-				<s:ToggleButton label="Play"  id="playBtn"/>
-				
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				
-				
-				<s:List id="yearSlider"  borderVisible="false" allowMultipleSelection="true"
-						itemRenderer="com.pentagram.view.renderers.YearsListRenderer" 
-						 skinClass="com.pentagram.view.skins.YearListSkin" requireSelection="true"
-						rollOverColor="#C50E24" selectionColor="#C50E24">
-					<s:layout>
-						<s:HorizontalLayout gap="8" verticalAlign="middle" />
-					</s:layout>
-				</s:List>
-				
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				
-				<s:HSlider minimum="1" maximum="50" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01" />
-				
-			</s:HGroup>
-				
-			<s:Rect width="100%" height="1" bottom="60">
-				<s:fill>
-					<s:SolidColor color="0xB3B1AC" />
-				</s:fill>
-			</s:Rect> 
-			<s:HGroup width="100%" verticalAlign="middle" height="60" gap="0"  bottom="0" paddingLeft="10" paddingRight="10">
-				
-				<s:TabBar dataProvider="{visualizerArea}" />
-				
-				<s:Rect width="10" />
-				
-				<s:Label text="x:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet"/>
-				<s:Rect width="10" />
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				<s:Rect width="10" />
-				
-				<s:Label text="y:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet"/>
-				<s:Rect width="10" />
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				<s:Rect width="5" />
-				
-				<s:Label text="size by:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet"/>
-				<s:Rect width="10" />
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				<s:Rect width="10" />
-
-				<s:Label text="color by:  "/>
-				<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet"/>
-				<s:Rect width="10" />
-				<primatives:Line width="1" height="40">
-					<primatives:stroke>
-						<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-					</primatives:stroke>
-				</primatives:Line>
-				<s:Rect width="10" />
-				
-				<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle"   />
-			</s:HGroup>
+			<shell:VisualizerTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">

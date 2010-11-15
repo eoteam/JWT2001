@@ -34,7 +34,7 @@
 			import mx.events.ResizeEvent;
 			
 			private var vis:Visualization;
-			public var running
+
 			private var _visdata:Data;
 			public function set visdata(d:Data):void {
 				_visdata = d;
@@ -42,7 +42,25 @@
 			public function get visdata():Data {
 				return _visdata;
 			}
-			private var banker:AspectRatioBanker;
+			
+			private var _continous:Boolean = false;
+			public function set continous(value:Boolean):void{
+				_continous = value;
+				if(_continous == false) {
+					handleEnd();
+				}
+				else {
+					DirtySprite.resume();
+					Scheduler.instance.play();
+					vis.resume();
+				}
+			}
+			
+			public function get continous():Boolean{
+				return _continous;
+			}
+			
+			//private var banker;
 			private var firstPass:Boolean = true;
 			public function visualize(arr:Array,...props):void
 			{
@@ -114,14 +132,21 @@
 				}
 			}
 			public function update():void {
-				DirtySprite.resume();
-				Scheduler.instance.play();
-				vis.resume();
-				this.callLater(function resumeUpdate():void {
-					var t:Transitioner = new Transitioner(2.5);
+				if(!_continous) {
+					DirtySprite.resume();
+					Scheduler.instance.play();
+					vis.resume();
+					this.callLater(function resumeUpdate():void {
+						var t:Transitioner = new Transitioner(2.1);
+						t.addEventListener(TransitionEvent.END,handleEnd);
+						vis.update(t).play();
+					});
+				}
+				else {
+					var t:Transitioner = new Transitioner(2.1);
 					t.addEventListener(TransitionEvent.END,handleEnd);
 					vis.update(t).play();
-				});
+				}
 			}
 			public function updateMaxRadius(value:Number):void {
 				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
@@ -166,9 +191,11 @@
 				vis = null;
 			}
 			private function handleEnd(event:Event=null):void {
-				DirtySprite.pause();
-				Scheduler.instance.pause();
-				vis.pause();
+				if(!_continous) {
+					DirtySprite.pause();
+					Scheduler.instance.pause();
+					vis.pause();
+				}
 			}
 		]]>
 	</fx:Script>

@@ -9,6 +9,8 @@ package com.pentagram.instance.model
 	import flare.vis.data.DataSprite;
 	import flare.vis.data.NodeSprite;
 	
+	import flash.display.NativeMenuItem;
+	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;
@@ -28,6 +30,8 @@ package com.pentagram.instance.model
 		public var selectedSet:Dataset;
 		
 		public var user:User;
+		
+		public var exportMenuItem:NativeMenuItem;
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";

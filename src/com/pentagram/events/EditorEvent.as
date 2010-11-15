@@ -9,8 +9,12 @@ package com.pentagram.events
 		
 		public static const CREATE_DATASET:String = "createDataset";
 		public static const DATASET_CREATED:String = "datasetCreated";
+		
 		public static const DELETE_DATASET:String = "deleteDataset";
 		public static const DATASET_DELETED:String = "datasetDeleted";
+		
+		public static const UPDATE_DATASET:String = "updateDataset";
+		public static const DATASET_UPDATED:String = "datasetUpdated";
 		
 		public static const CANCEL:String = "cancelEditor";
 		

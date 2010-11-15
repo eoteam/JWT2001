@@ -17,5 +17,9 @@ package com.pentagram.instance.view.visualizer
 		function updateMaxRadius(value:Number):void;
 		
 		function unload():void;
+		
+		function set continous(value:Boolean):void;
+		
+		function get continous():Boolean;
 	}
 }

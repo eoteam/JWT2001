@@ -62,10 +62,10 @@ package com.pentagram.view.mediators
 				newWindow.addEventListener(Event.SELECT,handleStartUp);	
 				
 				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
-				var exportSp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
-				exportSp.addEventListener(Event.SELECT,handleExportSp);
-				exportSp.enabled = false;
-				file.submenu.addItemAt(exportSp,0);	
+				appModel.exportMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+				appModel.exportMenuItem.addEventListener(Event.SELECT,handleExportSp);
+				appModel.exportMenuItem.enabled = false;
+				file.submenu.addItemAt(appModel.exportMenuItem,0);	
 				var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
 				importSp.enabled = false;
 				file.submenu.addItemAt(importSp,0);

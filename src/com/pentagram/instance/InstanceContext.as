@@ -6,6 +6,7 @@ package com.pentagram.instance
 	import com.pentagram.instance.controller.DeleteDatasetCommand;
 	import com.pentagram.instance.controller.LoadClientCommand;
 	import com.pentagram.instance.controller.UpdateClientCommand;
+	import com.pentagram.instance.controller.UpdateDataset;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.DatasetCreator;
 	import com.pentagram.instance.view.editor.DatasetEditor;
@@ -50,7 +51,8 @@ package com.pentagram.instance
 			commandMap.mapEvent(VisualizerEvent.CLIENT_SELECTED,LoadClientCommand,VisualizerEvent);
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.CREATE_DATASET,CreateDatasetCommand,EditorEvent);
-			commandMap.mapEvent(EditorEvent.DELETE_DATASET,DeleteDatasetCommand,EditorEvent);  
+			commandMap.mapEvent(EditorEvent.DELETE_DATASET,DeleteDatasetCommand,EditorEvent);
+			commandMap.mapEvent(EditorEvent.UPDATE_DATASET,UpdateDataset,EditorEvent);
 			
 			
 			injector.mapSingletonOf(IDatasetService, DatasetService); 

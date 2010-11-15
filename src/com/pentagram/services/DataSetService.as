@@ -3,6 +3,7 @@ package com.pentagram.services
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IDatasetService;
 
@@ -46,6 +47,16 @@ package com.pentagram.services
 			params.tablename = dataset.tablename;
 			params.id = dataset.id;
 			this.createService(params,ResponseType.STATUS);			
+		}
+		public function updateDataRow(row:DataRow):void {
+			var params:Object = new Object();
+			params.action = "updateRecord";
+			params.tablename = row.dataset.tablename;
+			params.id = row.id;
+			for each(var prop:String in row.modifiedProps)
+				params[prop.toString()] = row[prop];
+			this.createService(params,ResponseType.STATUS);
+			
 		}
 	}
 }

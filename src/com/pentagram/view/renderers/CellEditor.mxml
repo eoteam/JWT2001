@@ -60,6 +60,9 @@
 			protected function handleFocusOut(event:Event):void {
 				if(input) {
 					value = row.value = input.text;
+					row.modified = true;
+					if(row.modifiedProps.indexOf("value") == -1)
+						row.modifiedProps.push("value");
 					PopUpManager.removePopUp(input);
 					input = null;
 				}

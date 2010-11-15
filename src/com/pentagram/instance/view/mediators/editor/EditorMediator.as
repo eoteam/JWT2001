@@ -71,8 +71,8 @@ package com.pentagram.instance.view.mediators.editor
 			if(view.currentState == "overview") {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,view.client));
 			}
-			else {
-				
+			else if(view.currentState == "dataset") {
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_DATASET));
 			}
 		}
 		private function handleCancelChange(event:MouseEvent):void {
@@ -181,8 +181,16 @@ package com.pentagram.instance.view.mediators.editor
 				}
 				for(i=1;i<lines.length;i++) {
 					if(lines[i] != '') {
+						var countryName:String
 						var arr:Array = lines[i].toString().split('",');
-						var countryName:String = arr[0].toString().substr(1,arr[0].toString().length);
+						var offset:uint = 1;
+						
+						if(arr.length == 1) {
+							arr = lines[i].toString().split(',');
+							offset = 0;
+						}
+						
+						countryName = arr[0].toString().substr(offset,arr[0].toString().length);
 						var isNumeric:uint = 1;
 						var countryFound:Boolean = false;
 						for each(var country:Country in model.countries.source) {
@@ -190,17 +198,24 @@ package com.pentagram.instance.view.mediators.editor
 								var row:DataRow = new DataRow();
 								row.name = countryName;
 								//values are now after ",	
-								var values:Array = arr[1].toString().split(',');
+								var values:Array;
+								if(offset == 1)
+									values = arr[1].toString().split(',');
+								else
+									values = arr.slice(1,arr.length);
 								if(dataset.time == 1) {
-									if(values.length == fields.length-1) {
-										for(j=1;j<fields.length;j++) {
+									if(values.length <= fields.length-1) {
+										for(j=offset;j<values.length;j++) {
 											row[fields[j].toString()] = values[j-1];
 											if(values[j-1] != '0' && Number(values[j-1]) > 0) {
 												//isNumeric = true;
 											}
 											else
 												isNumeric = 1;
-										} 
+										}
+										for(j=values.length;j<fields.length;j++) {
+											row[fields[j].toString()] = ''
+										}
 									}
 									else {
 										eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This row has more values than the set"));

@@ -38,10 +38,7 @@ private function mainStack_changeHandler(event:IndexChangedEvent):void {
 	}
 }
 private function group1_creationCompleteHandler(event:FlexEvent):void {
-	var util:ModuleUtil = new ModuleUtil();
-	util.addEventListener("moduleLoaded",handleGraphLoaded);
-	util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
-	loaders.push(util);
+
 }
 private function handleGraphLoaded(event:Event):void {
 	var util:ModuleUtil  = event.target as ModuleUtil;
@@ -52,10 +49,17 @@ private function handleGraphLoaded(event:Event):void {
 }
 protected function visualizerArea_changeHandler(event:IndexChangedEvent):void
 {
+	var util:ModuleUtil;
 	if(event.newIndex == 1 && mapView == null) {
-		var util:ModuleUtil = new ModuleUtil();
+		util = new ModuleUtil();
 		util.addEventListener("moduleLoaded",handleMapLoaded);
 		util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");	
+		loaders.push(util);
+	}
+	else if(event.newIndex == 1 && graphView == null) {
+		util = new ModuleUtil();
+		util.addEventListener("moduleLoaded",handleGraphLoaded);
+		util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
 		loaders.push(util);
 	}
 }
@@ -67,6 +71,9 @@ private function handleMapLoaded(event:Event):void {
 	}
 }
 public function unload():void {
-	graphView.unload();
+	if(graphView)
+		graphView.unload();
+	if(mapView)
+		mapView.unload();
 }
 

@@ -25,10 +25,11 @@ package com.pentagram.util
 						row.name = country.name;	
 						row.id = Number(item.id);
 						row.color = country.region.color;
+						row.dataset = dataset;
 						for(prop in item) { 
 							if(prop != 'id' && prop != 'countryid') {
 								if(dataset.time == 1)
-									row[prop] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+									row[prop.toString()] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
 								else row.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
 							}
 						}

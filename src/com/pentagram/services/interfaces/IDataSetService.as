@@ -1,5 +1,6 @@
 package com.pentagram.services.interfaces
 {
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	
 	public interface IDatasetService extends IService
@@ -9,5 +10,7 @@ package com.pentagram.services.interfaces
 		function createDataset(dataset:Dataset):void;
 		
 		function deleteDataset(dataset:Dataset):void;
+		
+		function updateDataRow(row:DataRow):void;
 	}
 }

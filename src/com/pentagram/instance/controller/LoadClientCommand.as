@@ -30,7 +30,7 @@ package com.pentagram.instance.controller
 		
 		[Inject]
 		public var model:InstanceModel;
-
+		
 		private var counter:int;
 		override public function execute():void
 		{
@@ -61,6 +61,7 @@ package com.pentagram.instance.controller
 			else {
 				model.client.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				
 			}
 			
 		}

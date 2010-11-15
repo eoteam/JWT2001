@@ -4,6 +4,8 @@ package com.pentagram.instance.view.visualizer
 
 	public interface IMapView extends IUIComponent
 	{
-		function toggleMap(visible:Boolean):void;	
+		function toggleMap(visible:Boolean):void;
+		
+		function unload():void;
 	}
 }

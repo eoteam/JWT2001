@@ -1,6 +1,7 @@
 package com.pentagram.services.interfaces
 {
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataRow;
 
 	public interface IInstanceService extends IService
 	{
@@ -13,5 +14,6 @@ package com.pentagram.services.interfaces
 		function addClientCountry(country:Country):void;
 		
 		function removeClientCountry(country:Country):void;
+	
 	}
 }
