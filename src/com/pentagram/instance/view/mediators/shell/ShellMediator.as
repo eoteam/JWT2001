@@ -1,19 +1,15 @@
 package com.pentagram.instance.view.mediators.shell
 {
-	import com.pentagram.controller.Constants;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
-	import com.pentagram.instance.view.shell.ClientBarView;
 	import com.pentagram.instance.view.shell.ShellView;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.vo.Client;
+	import com.pentagram.instance.view.visualizer.IGraphView;
+	import com.pentagram.instance.view.visualizer.IMapView;
+	import com.pentagram.instance.view.visualizer.ModuleUtil;
 	import com.pentagram.model.vo.User;
-	import com.pentagram.util.ViewUtils;
 	import com.pentagram.view.event.ViewEvent;
-	
-	import flare.vis.data.Data;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -27,9 +23,9 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import org.robotlegs.mvcs.Mediator;
 	
+	import spark.components.Group;
 	import spark.events.DropDownEvent;
 	import spark.events.IndexChangeEvent;
-	import spark.events.TrackBaseEvent;
 	
 	public class ShellMediator extends Mediator
 	{
@@ -42,9 +38,11 @@ package com.pentagram.instance.view.mediators.shell
 		[Inject(name="ApplicationEventDispatcher")]
 		public var appEventDispatcher:EventDispatcher;  
 		
-		private var editorMapped:Boolean = false;
 		private var yearTimer:Timer;
 		private var firstPass:Boolean = true;
+
+		private var loaders:Array = [];
+		
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
@@ -53,11 +51,12 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
-			view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
+			//view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
+			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
 			view.tools.initTools();
 		
 
-			
+			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
 			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
 			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
 
@@ -79,9 +78,18 @@ package com.pentagram.instance.view.mediators.shell
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
-			if(event.newIndex == 1 && !editorMapped) {
-				editorMapped = true;
-				//mediatorMap.createMediator(view.editorView);	
+			var util:ModuleUtil;
+			if(event.newIndex == 1 && view.mapView == null) {
+				util = new ModuleUtil();
+				util.addEventListener("moduleLoaded",handleMapLoaded);
+				util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");	
+				loaders.push(util);
+			}
+			else if(event.newIndex == 2 && view.graphView == null) {
+				util = new ModuleUtil();
+				util.addEventListener("moduleLoaded",handleGraphLoaded);
+				util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
+				loaders.push(util);
 			}
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
@@ -109,7 +117,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(view.tools.currentState == "graph") {
 				view.tools.firstSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 				view.tools.secondSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-				view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
+				
 				view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 				view.tools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
 			}
@@ -160,22 +168,48 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function handleSecondSet(event:Event):void {
-			if(view.tools.firstSet.selectedItem && view.tools.secondSet.selectedItem) {
-				var d:Array = model.normalizeData(view.tools.firstSet.selectedItem,
-					view.tools.secondSet.selectedItem,
-					view.tools.thirdSet.selectedItem,
-					view.tools.fourthSet.selectedItem);	
-				view.graphView.visualize(d,
-					view.tools.firstSet.selectedItem,
-					view.tools.secondSet.selectedItem,
-					view.tools.thirdSet.selectedItem,
-					view.tools.fourthSet.selectedItem);
-				firstPass = false;
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+				break;
+				case 1:
+					if(view.tools.thirdSet.selectedItem) 
+						view.mapView.visualize(view.tools.thirdSet.selectedItem);
+				break;
+				case 2:
+					if(view.tools.firstSet.selectedItem && view.tools.secondSet.selectedItem) {
+						var d:Array = model.normalizeData(view.tools.firstSet.selectedItem,
+							view.tools.secondSet.selectedItem,
+							view.tools.thirdSet.selectedItem,
+							view.tools.fourthSet.selectedItem);	
+						view.graphView.visualize(d,
+							view.tools.firstSet.selectedItem,
+							view.tools.secondSet.selectedItem,
+							view.tools.thirdSet.selectedItem,
+							view.tools.fourthSet.selectedItem);
+						firstPass = false;
+					}
+				break;
 			}
+			
 		}
 		private function handleMaxRadius(event:Event):void {
 			view.graphView.updateMaxRadius(view.tools.maxRadiusSlider.value);
 		}
+		private function handleGraphLoaded(event:Event):void {
+			var util:ModuleUtil  = event.target as ModuleUtil;
+			if(util.view is IGraphView) {
+				this.view.graphView = util.view as IGraphView;
+				view.graphHolder.addElement(util.view as Group);
+			}
+		}
+		private function handleMapLoaded(event:Event):void {
+			var util:ModuleUtil  = event.target as ModuleUtil;
+			if(util.view is IMapView) {
+				this.view.mapView = util.view as IMapView;
+				view.mapHolder.addElement(util.view as Group);
+			}
+		}
+
 			
 	}
 }

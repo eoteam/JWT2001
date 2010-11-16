@@ -10,7 +10,11 @@ package com.pentagram.model.vo
 	{
 		public var dataset:Dataset;
 		public var value:*;
-
+		
+		public var country:Country;
+		public var xcoord:Number;
+		public var ycoord:Number;
+		
 		//public var points:Dictionary = new Dictionary();
 	}
 }

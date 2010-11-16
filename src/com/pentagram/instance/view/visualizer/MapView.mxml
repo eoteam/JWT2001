@@ -7,12 +7,174 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.Dataset;
+			
+			import flare.animate.Scheduler;
+			import flare.animate.TransitionEvent;
+			import flare.animate.Transitioner;
+			import flare.display.DirtySprite;
+			import flare.scale.ScaleType;
+			import flare.util.palette.SizePalette;
+			import flare.vis.Visualization;
+			import flare.vis.data.Data;
+			import flare.vis.operator.encoder.ColorEncoder;
+			import flare.vis.operator.encoder.PropertyEncoder;
+			import flare.vis.operator.encoder.SizeEncoder;
+			import flare.vis.operator.layout.AxisLayout;
+			
+			import mx.events.ResizeEvent;
+			
+			private var vis:Visualization;
+
+			
 			public function toggleMap(visible:Boolean):void {
 				if(map)
 					map.visible = visible;
 			}
-			public function unload():void {
+			private var firstPass:Boolean = true;
+			public function visualize(dataset:Dataset):void {
 				
+				var axisLayout:AxisLayout;
+				var colorEncoder:ColorEncoder;
+				var propEncoder:PropertyEncoder;
+				var sizeEncoder:SizeEncoder;
+				var sizePalette:SizePalette = new SizePalette(1,20);
+				visdata = Data.fromArray(dataset.rows.source);
+				
+				if(firstPass) {
+					axisLayout = new AxisLayout("data.xcoord", "data.ycoord");	
+					propEncoder = new PropertyEncoder({lineAlpha: 1, alpha:0.75, buttonMode: true, size: 1});
+					colorEncoder = new ColorEncoder("data.country.region.color", Data.NODES,"fillColor", ScaleType.CATEGORIES);
+					sizeEncoder = new SizeEncoder("data.2006", Data.NODES,sizePalette);
+					var bounds:Rectangle =  new Rectangle(this.width*.2, 0, this.width, this.height);
+					
+					vis = new Visualization();
+					vis.continuousUpdates = true;
+					vis.x = 0; 
+					vis.y = 0;
+					vis.bounds = bounds;
+					
+					holder.rawChildren.addChild(vis);
+					this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
+					
+					vis.data = _visdata;
+					firstPass = false;
+					
+					vis.operators.add(axisLayout);
+					vis.operators.add(propEncoder);
+					vis.operators.add(sizeEncoder);
+					vis.operators.add(colorEncoder);
+					
+					vis.xyAxes.visible = false;	
+					vis.axes.visible = false;
+					vis.xyAxes.showBorder = false;
+					vis.xyAxes.showXLine = false;
+					vis.xyAxes.showYLine = false;
+					vis.xyAxes.xAxis.showLines = false;
+					vis.xyAxes.yAxis.showLines = false;
+					vis.xyAxes.yAxis.showLabels = false;
+					
+				}
+				else {
+					resume();
+					vis.data = _visdata;
+					this.callLater(resumeUpdate);
+					function resumeUpdate():void {
+						vis.data = visdata;						
+						var t:Transitioner = new Transitioner(2.5);
+						t.addEventListener(TransitionEvent.END,handleEnd);
+						vis.update(t).play();
+					}
+				}
+//				for each(var row:DataRow in dataset.rows) {
+//					var node:DataSprite = new DataSprite();
+//					node.x = row.country.xcoord/849*map.contentWidth;
+//					node.y = row.country.ycoord/337*map.contentHeight;
+//					node.shape = Shapes.CIRCLE;
+//					node.fillColor = row.country.region.color;
+//					node.fillAlpha = 0.75;
+//					spriteContainer.addChild(node);
+//					node.size = 2;
+//					spriteContainer.addChild(node);
+				
+			}
+			private var _visdata:Data;
+			public function set visdata(d:Data):void {
+				_visdata = d;
+			}
+			public function get visdata():Data {
+				return _visdata;
+			}
+			
+			private var _continous:Boolean = false;
+			public function get continous():Boolean{
+				return _continous;
+			}			
+			public function set continous(value:Boolean):void{
+				_continous = value;
+				if(_continous == false) {
+					pause();
+				}
+				else {
+					resume();
+				}
+			}
+			public function unload():void {
+				if(vis) {
+					Scheduler.instance.remove(vis.rec);
+					vis = null;
+				}
+			}			
+			public function resume():void {
+				DirtySprite.resume();
+				Scheduler.instance.play();
+				vis.resume();
+			}
+			public function pause():void {
+				DirtySprite.pause();
+				Scheduler.instance.pause();
+				vis.pause();				
+			}
+			public function updateMaxRadius(value:Number):void {
+//				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
+//				SizePalette(sizeEncoder.palette).maximumSize = value;
+//				resume();
+//				this.callLater(function resumeUpdate():void {
+//					var t:Transitioner = new Transitioner(1);
+//					t.addEventListener(TransitionEvent.END,handleEnd);
+//					vis.update(t).play();
+//				});
+//				
+			}
+			public function update():void {
+				if(!_continous) {
+					resume();
+					this.callLater(function resumeUpdate():void {
+						var t:Transitioner = new Transitioner(2.1);
+						t.addEventListener(TransitionEvent.END,handleEnd);
+						vis.update(t).play();
+					});
+				}	
+				else {
+					var t:Transitioner = new Transitioner(2.1);
+					t.addEventListener(TransitionEvent.END,handleEnd);
+					vis.update(t).play();
+				}
+			}
+			private function handleEnd(event:Event=null):void {
+				if(!_continous) {
+					pause();
+				}
+			}
+			private function group1_resizeHandler(event:ResizeEvent):void {
+				if(!firstPass) {
+					resume();
+					vis.bounds = new Rectangle(this.width*.1, this.height*.005, this.width, this.height);
+					this.callLater(function resumeUpdate():void {
+						vis.update();
+						callLater(handleEnd);
+					});
+				}
 			}
 		]]>
 	</fx:Script>
@@ -22,8 +184,10 @@
 	</fx:Declarations>
 	
 	
-	<mx:Image scaleContent="true" maintainAspectRatio="true" width="100%" height="100%" 
+	<mx:Image scaleContent="true" maintainAspectRatio="false" width="100%" height="100%" 
 			  showEffect="{fadeIn}" hideEffect="{fadeOut}" id="map"	 alpha="0.8"	
-			  source="assets/map.png"  />
+			  source="assets/map.png"   />
+	
+	<mx:Canvas id="holder" width="100%" height="100%" />
 </modules:Module>
 	

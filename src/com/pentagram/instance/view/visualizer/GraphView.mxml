@@ -3,7 +3,7 @@
 				 xmlns:s="library://ns.adobe.com/flex/spark" 
 				 xmlns:mx="library://ns.adobe.com/flex/mx"
 				 xmlns:vis="flare.flex.vis.*"
-				 xmlns:vo="com.pentagram.model.vo.*" creationComplete="module1_creationCompleteHandler(event)"
+				 xmlns:vo="com.pentagram.model.vo.*"
 				 implements="com.pentagram.instance.view.visualizer.IGraphView" 
 				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" contentBackgroundAlpha="0">
 	<fx:Script>
@@ -47,12 +47,10 @@
 			public function set continous(value:Boolean):void{
 				_continous = value;
 				if(_continous == false) {
-					handleEnd();
+					pause();
 				}
 				else {
-					DirtySprite.resume();
-					Scheduler.instance.play();
-					vis.resume();
+					resume();
 				}
 			}
 			
@@ -119,9 +117,7 @@
 					vis.xyAxes.yAxis.showLines = false;
 				}
 				else {
-					DirtySprite.resume();
-					Scheduler.instance.play();
-					vis.resume();
+					resume();
 					vis.data = _visdata;
 					this.callLater(resumeUpdate);
 					function resumeUpdate():void {
@@ -150,9 +146,7 @@
 			}
 			public function update():void {
 				if(!_continous) {
-					DirtySprite.resume();
-					Scheduler.instance.play();
-					vis.resume();
+					resume();
 					this.callLater(function resumeUpdate():void {
 						var t:Transitioner = new Transitioner(2.1);
 						t.addEventListener(TransitionEvent.END,handleEnd);
@@ -168,9 +162,7 @@
 			public function updateMaxRadius(value:Number):void {
 				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
 				SizePalette(sizeEncoder.palette).maximumSize = value;
-				DirtySprite.resume();
-				Scheduler.instance.play();
-				vis.resume();
+				resume();
 				this.callLater(function resumeUpdate():void {
 					var t:Transitioner = new Transitioner(1);
 					t.addEventListener(TransitionEvent.END,handleEnd);
@@ -180,9 +172,7 @@
 			}
 			protected function group1_resizeHandler(event:ResizeEvent):void {
 				if(!firstPass) {
-					DirtySprite.resume();
-					Scheduler.instance.play();
-					vis.resume();
+					resume();
 					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
 					this.callLater(function resumeUpdate():void {
 						vis.update();
@@ -190,23 +180,27 @@
 					});
 				}
 			}
-
-			protected function module1_creationCompleteHandler(event:FlexEvent):void
-			{
-
+			private function handleEnd(event:Event=null):void {
+				if(!_continous) {
+					pause();
+				}
 			}
+			
 			public function unload():void {
 				if(vis) {
 					Scheduler.instance.remove(vis.rec);
 					vis = null;
 				}
 			}
-			private function handleEnd(event:Event=null):void {
-				if(!_continous) {
-					DirtySprite.pause();
-					Scheduler.instance.pause();
-					vis.pause();
-				}
+			public function resume():void {
+				DirtySprite.resume();
+				Scheduler.instance.play();
+				vis.resume();
+			}
+			public function pause():void {
+				DirtySprite.pause();
+				Scheduler.instance.pause();
+				vis.pause();				
 			}
 		]]>
 	</fx:Script>

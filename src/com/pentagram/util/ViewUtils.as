@@ -22,7 +22,10 @@ package com.pentagram.util
 				for each(item in data) {
 					if(item.countryid == country.id.toString()) {
 						row = new DataRow();
-						row.name = country.name;	
+						row.name = country.name;
+						row.xcoord = country.xcoord/849;
+						row.ycoord = -country.ycoord/337;
+						row.country = country;
 						row.id = Number(item.id);
 						row.color = country.region.color;
 						row.dataset = dataset;
