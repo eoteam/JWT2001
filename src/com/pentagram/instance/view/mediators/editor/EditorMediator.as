@@ -50,6 +50,7 @@ package com.pentagram.instance.view.mediators.editor
 		public override function onRegister():void {	
 		
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientDataUpdated,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_UPDATED,handleClientDataUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleDatasetCreated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
 			eventMap.mapListener(view,'datasetState',handleDatasetState,Event,false,0,true);
@@ -91,7 +92,12 @@ package com.pentagram.instance.view.mediators.editor
 			var dataset:Dataset = event.args[0] as Dataset;
 			view.currentState = view.datasetState.name;
 			view.dataSetList.selectedItem = dataset;
+			model.selectedSet = view.dataSetList.selectedItem as Dataset;
 			view.statusModule.updateStatus("Data Set Created");
+			if(view.datasetEditor) {
+				view.datasetEditor.dataset = dataset;
+				view.datasetEditor.generateDataset();
+			}
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");

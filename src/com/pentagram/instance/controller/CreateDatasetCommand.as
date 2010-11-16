@@ -40,12 +40,15 @@ package com.pentagram.instance.controller
 				dataset.tablename = msg[1];
 				dataset.id = msg[0];
 				dataset.loaded = true;
+				if(dataset.time)
+					dataset.range = dataset.years[0].toString()+','+dataset.years[1].toString();
 				var country:Country;
 				var row:DataRow;
 				if(dataset.time == 1) {
 					for each(country in model.client.countries.source) {
 						row = new DataRow();
 						row.name = country.name;
+						row.dataset = dataset;
 						for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
 							row[i.toString()] = dataset.type == 1 ? 0:'';
 						}
@@ -58,6 +61,7 @@ package com.pentagram.instance.controller
 						row = new DataRow();
 						row.name = country.name;
 						row.value = dataset.type == 1 ? 0:'';
+						row.dataset = dataset;
 						dataset.rows.addItem(row);
 					}
 				}

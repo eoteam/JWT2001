@@ -56,7 +56,7 @@ protected function visualizerArea_changeHandler(event:IndexChangedEvent):void
 		util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");	
 		loaders.push(util);
 	}
-	else if(event.newIndex == 1 && graphView == null) {
+	else if(event.newIndex == 2 && graphView == null) {
 		util = new ModuleUtil();
 		util.addEventListener("moduleLoaded",handleGraphLoaded);
 		util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");

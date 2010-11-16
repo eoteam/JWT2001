@@ -64,10 +64,9 @@
 			private var firstPass:Boolean = true;
 			public function visualize(arr:Array,...props):void
 			{
+				
 				visdata = Data.fromArray(arr);
-				vis.continuousUpdates = true;
-				vis.data = _visdata;	
-			
+				
 				var axisLayout:AxisLayout;
 				var colorEncoder:ColorEncoder;
 				var propEncoder:PropertyEncoder;
@@ -80,6 +79,18 @@
 				var prop4:String = props[3] ? props[3].name : null;
 				
 				if(firstPass) {
+					var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
+					
+					vis = new Visualization();
+					vis.continuousUpdates = true;
+					vis.x = 50; 
+					vis.y = 20;
+					vis.bounds = bounds;
+					
+					holder.rawChildren.addChild(vis);
+					this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
+					
+					vis.data = _visdata;
 					firstPass = false;
 					axisLayout = new AxisLayout("data."+prop1, "data."+prop2);	
 					propEncoder = new PropertyEncoder({lineAlpha: 1, alpha:0.75, buttonMode: true,scaleX: 1, scaleY: 1, size: 1});
@@ -108,27 +119,33 @@
 					vis.xyAxes.yAxis.showLines = false;
 				}
 				else {
-					
-					vis.data = visdata;
-					axisLayout = vis.operators.getOperatorAt(0) as AxisLayout;
-					axisLayout.xField  = "data."+prop1; axisLayout.yField = "data."+prop2;
-					
-					if(prop3) {
-						sizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
-						sizeEncoder.source = "data."+prop3;
+					DirtySprite.resume();
+					Scheduler.instance.play();
+					vis.resume();
+					vis.data = _visdata;
+					this.callLater(resumeUpdate);
+					function resumeUpdate():void {
+						vis.data = visdata;
+						axisLayout = vis.operators.getOperatorAt(0) as AxisLayout;
+						axisLayout.xField  = "data."+prop1; axisLayout.yField = "data."+prop2;
+						
+						if(prop3) {
+							sizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
+							sizeEncoder.source = "data."+prop3;
+						}
+						if(prop4) {
+							colorEncoder = vis.operators.getOperatorAt(3) as ColorEncoder;
+							//colorPalette = new ColorPalette([0xff5555, 0x8888ff]);
+							//colorEncoder.palette = colorPalette;
+							colorEncoder.source = "data."+prop4;
+							colorEncoder.palette = ColorPalette.category(20,[0xff5555, 0x8888ff],1);
+						}
+						vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
+						
+						var t:Transitioner = new Transitioner(2.5);
+						t.addEventListener(TransitionEvent.END,handleEnd);
+						vis.update(t).play();
 					}
-					if(prop4) {
-						colorEncoder = vis.operators.getOperatorAt(3) as ColorEncoder;
-						//colorPalette = new ColorPalette([0xff5555, 0x8888ff]);
-						//colorEncoder.palette = colorPalette;
-						colorEncoder.source = "data."+prop4;
-						colorEncoder.palette = ColorPalette.category(20,[0xff5555, 0x8888ff],1);
-					}
-					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
-					
-					var t:Transitioner = new Transitioner(2.5);
-					t.addEventListener(TransitionEvent.END,handleEnd);
-					vis.update(t).play();
 				}
 			}
 			public function update():void {
@@ -176,19 +193,13 @@
 
 			protected function module1_creationCompleteHandler(event:FlexEvent):void
 			{
-				var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
-				
-				vis = new Visualization();
-				vis.x = 50; 
-				vis.y = 20;
-				vis.bounds = bounds;
-				
-				holder.rawChildren.addChild(vis);
-				this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
+
 			}
 			public function unload():void {
-				Scheduler.instance.remove(vis.rec);
-				vis = null;
+				if(vis) {
+					Scheduler.instance.remove(vis.rec);
+					vis = null;
+				}
 			}
 			private function handleEnd(event:Event=null):void {
 				if(!_continous) {

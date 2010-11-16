@@ -1,4 +1,4 @@
-package com.pentagram.instance.controller
+	package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.instance.model.InstanceModel;

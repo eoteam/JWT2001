@@ -56,7 +56,7 @@ if (hasReqestedVersion) {
 		'name','badge',
 		'allowscriptaccess','all',
 		'pluginspage','http://www.macromedia.com/go/getflashplayer',
-		'flashvars','appname=Viewn&appurl=http://migdev.mig.pentagram.com/view/Main.air&airversion=2.5&buttoncolor=FF0000&messagecolor=000000&imageurl=test.jpg',
+		'flashvars','appname=My%20Application&appurl=myapp.air&airversion=2.0&imageurl=badgeImage.jpg',
 		'movie','badge' ); //end AC code
 
 } else {  // Flash Player is too old or we can't detect the plugin

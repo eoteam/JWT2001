@@ -23,7 +23,7 @@ package com.pentagram.services
 			var params:Object = new Object();
 			params.action = "createDataset";
 			params.contentid = model.client.id;
-			params.tablename = model.client.shortname+'_'+dataset.name;
+			params.tablename = String(model.client.shortname+'_'+dataset.name).toLowerCase();
 			params.name = dataset.name;
 			var countryids:String = '';
 			for each(var country:Country in model.client.countries.source) {
