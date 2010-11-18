@@ -39,13 +39,13 @@
         <title>View</title>
 
         <!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
-        <systemChrome>none</systemChrome>
+        <systemChrome>standard</systemChrome>
 
         <!-- Whether the window is transparent. Only applicable when systemChrome is none. Optional. Default false. -->
         <transparent>false</transparent>
 
         <!-- Whether the window is initially visible. Optional. Default false. -->
-        <visible>false</visible>
+        <visible>true</visible>
 
         <!-- Whether the user can minimize the window. Optional. Default true. -->
         <minimizable>false</minimizable>

@@ -8,6 +8,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.visualizer.IGraphView;
 	import com.pentagram.instance.view.visualizer.IMapView;
 	import com.pentagram.instance.view.visualizer.ModuleUtil;
+	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.User;
 	import com.pentagram.view.event.ViewEvent;
 	
@@ -39,8 +40,6 @@ package com.pentagram.instance.view.mediators.shell
 		public var appEventDispatcher:EventDispatcher;  
 		
 		private var yearTimer:Timer;
-		private var firstPass:Boolean = true;
-
 		private var loaders:Array = [];
 		
 		override public function onRegister():void
@@ -69,11 +68,6 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			
-			var years:ArrayList = new ArrayList();
-			for (var i:int=1980;i<=2010;i++) {
-				years.addItem(new Year(i,1));
-			}
-			view.tools.yearSlider.dataProvider = years;
 			yearTimer = new Timer(2000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
@@ -85,11 +79,15 @@ package com.pentagram.instance.view.mediators.shell
 				util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");	
 				loaders.push(util);
 			}
-			else if(event.newIndex == 2 && view.graphView == null) {
-				util = new ModuleUtil();
-				util.addEventListener("moduleLoaded",handleGraphLoaded);
-				util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
-				loaders.push(util);
+			else if(event.newIndex == 2){
+				view.tools.thirdSet.selectedIndex = -1;
+			 	if(view.graphView == null) {
+					view.tools.thirdSet.selectedIndex = -1;
+					util = new ModuleUtil();
+					util.addEventListener("moduleLoaded",handleGraphLoaded);
+					util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
+					loaders.push(util);
+				}
 			}
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
@@ -124,28 +122,39 @@ package com.pentagram.instance.view.mediators.shell
 		}
 			
 		private function handlePlayButton(event:Event):void {
-			view.graphView.continous = view.tools.playBtn.selected;
-			if(view.tools.playBtn.selected) {
-				if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1)
-						view.tools.yearSlider.selectedIndex = 0;
-				yearTimer.start();
-				view.tools.playBtn.label = "Stop";
-				model.updateData(view.graphView.visdata,
-								 view.tools.yearSlider.dataProvider.getItemAt(0).year as int,
-								 view.tools.firstSet.selectedItem,
-								 view.tools.secondSet.selectedItem,
-								 view.tools.thirdSet.selectedItem);
-				view.graphView.update();
-			}
-			else {
-				yearTimer.stop();
-				view.tools.playBtn.label = "Play";
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+				break;
+				case 1:
+				break;
+				case 2:
+					view.graphView.continous = view.tools.playBtn.selected;
+					if(view.tools.playBtn.selected) {
+						if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1)
+							view.tools.yearSlider.selectedIndex = 0;
+						yearTimer.start();
+						view.tools.playBtn.label = "Stop";
+						model.updateData(view.graphView.visdata,
+							view.tools.yearSlider.dataProvider.getItemAt(0).year as int,
+							view.tools.firstSet.selectedItem,
+							view.tools.secondSet.selectedItem,
+							view.tools.thirdSet.selectedItem);
+						view.graphView.update();
+					}
+					else {
+						yearTimer.stop();
+						view.tools.playBtn.label = "Play";
+					}					
+				break;
 			}
 		}
 		private function handleTimer(event:TimerEvent):void {
 			view.tools.yearSlider.selectedIndex++;
 			if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1) {
 				yearTimer.stop();
+				view.graphView.continous = view.tools.playBtn.selected = false;
+				view.tools.playBtn.label = "Play";
+				view.graphView.pause();
 			}
 			else {
 				model.updateData(view.graphView.visdata,
@@ -158,35 +167,96 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent):void {
-			if(!firstPass) {
-				model.updateData(view.graphView.visdata,view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int,
-				view.tools.firstSet.selectedItem,
-				view.tools.secondSet.selectedItem,
-				view.tools.thirdSet.selectedItem,
-				view.tools.fourthSet.selectedItem);
-				view.graphView.update();
-			}
-		}
-		private function handleSecondSet(event:Event):void {
+			var ds1:Dataset;
+			var ds2:Dataset;
+			var ds3:Dataset;
+			var ds4:Dataset;
+			
+			ds3 = view.tools.thirdSet.selectedItem as Dataset;
 			switch(view.visualizerArea.selectedIndex) {
 				case 0:
 				break;
 				case 1:
-					if(view.tools.thirdSet.selectedItem) 
-						view.mapView.visualize(view.tools.thirdSet.selectedItem);
+					view.mapView.updateYear(view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int);
+				break;
+				case 2:	
+					ds1 = view.tools.firstSet.selectedItem as Dataset;
+					ds2 = view.tools.secondSet.selectedItem as Dataset;
+					
+					ds4 = view.tools.fourthSet.selectedItem as Dataset;
+					model.updateData(view.graphView.visdata,view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int,ds1,ds2,ds3,ds4);
+					view.graphView.update();
+				break;
+			}
+		}
+		private function handleSecondSet(event:Event):void {
+			var years:ArrayList = new ArrayList();
+			var i:int;
+			var dataset:Dataset;
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+				break;
+				case 1:
+					if(view.tools.thirdSet.selectedItem) {
+						dataset = view.tools.thirdSet.selectedItem as Dataset;
+						view.mapView.visualize(dataset);
+						
+						if(dataset.time == 1) {
+							view.tools.timelineContainer.visible = true;
+							
+							for (i=dataset.years[0];i<=dataset.years[1];i++) {
+								years.addItem(new Year(i,1));
+							}
+							view.tools.yearSlider.dataProvider = years;
+						}
+						else view.tools.timelineContainer.visible = false;
+					}
 				break;
 				case 2:
 					if(view.tools.firstSet.selectedItem && view.tools.secondSet.selectedItem) {
-						var d:Array = model.normalizeData(view.tools.firstSet.selectedItem,
-							view.tools.secondSet.selectedItem,
-							view.tools.thirdSet.selectedItem,
-							view.tools.fourthSet.selectedItem);	
-						view.graphView.visualize(d,
-							view.tools.firstSet.selectedItem,
-							view.tools.secondSet.selectedItem,
-							view.tools.thirdSet.selectedItem,
-							view.tools.fourthSet.selectedItem);
-						firstPass = false;
+						
+						var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
+						var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
+						var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
+						var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
+						
+						var d:Array = model.normalizeData(ds1,ds2,ds3,ds4);	
+						view.graphView.visualize(d,ds1,ds2,ds3,ds4);
+
+						var minYear:int; var maxYear:int; var showTime:Boolean = false;		
+						if(ds1.time == 1) {
+							showTime = true;
+							minYear = ds1.years[0];
+							maxYear = ds1.years[1];
+						}
+						if(ds2.time == 1) {
+							showTime = true;
+							if(ds2.years[0] < minYear)
+								minYear = ds2.years[0];
+							if(ds2.years[1] > maxYear)
+								maxYear = ds2.years[1];	
+						} 
+						if(ds3 && ds3.time == 1) {
+							showTime = true;
+							if(ds3.years[0] < minYear)
+								minYear = ds3.years[0];
+							if(ds3.years[1] > maxYear)
+								maxYear = ds3.years[1];	
+						}
+						if(ds4 && ds4.time ==1) {
+							showTime = true;
+							if(ds4.years[0] < minYear)
+								minYear = ds4.years[0];
+							if(ds4.years[1] > maxYear)
+								maxYear = ds4.years[1];	
+						}
+						view.tools.yearSlider.visible = showTime;
+						if(showTime) {
+							for (i=minYear;i<=maxYear;i++) {
+								years.addItem(new Year(i,1));
+							}
+							view.tools.yearSlider.dataProvider = years;					
+						}
 					}
 				break;
 			}

@@ -26,7 +26,8 @@ package com.pentagram.controller
 		{
 			var window:InstanceWindow = windowModel.getWindowFromUID(event.uid);
 			var callback:Function = event.args[0]; 
-			callback.call(null,appModel.clients,appModel.regions,appModel.countries,appModel.user,appModel.exportMenuItem);
+			callback.call(null,appModel.clients,appModel.regions,appModel.countries,appModel.user,
+				appModel.exportMenuItem,appModel.importMenuItem,appModel.fileMenu,appModel.windowMenu);
 		}
 	}
 }

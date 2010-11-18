@@ -32,6 +32,10 @@ package com.pentagram.instance.model
 		public var user:User;
 		
 		public var exportMenuItem:NativeMenuItem;
+		public var importMenuItem:NativeMenuItem;
+		
+		public var windowMenu:NativeMenuItem;
+		public var fileMenu:NativeMenuItem;
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";

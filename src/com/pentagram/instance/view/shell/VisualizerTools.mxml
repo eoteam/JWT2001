@@ -25,6 +25,9 @@
 					break;					
 				}
 			}
+			public function hideTimeline():void {
+				timelineContainer.visible = false;
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -45,7 +48,7 @@
 		</s:fill>
 	</s:Rect> 
 	
-	<s:HGroup width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
+	<s:HGroup id="timelineContainer" visible="false" width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
 		<s:ToggleButton label="Play"  id="playBtn"/>
 		
 		

@@ -67,5 +67,10 @@ package com.pentagram.util
 			
 			return new instance();
 		}  
+		public static function executeLater(fc:Function,args:Array=null,time:int=1000):CallTimer {
+			var timer:CallTimer = new CallTimer(fc,args,time);
+			timer.start();
+			return timer;
+		}
 	}
 }

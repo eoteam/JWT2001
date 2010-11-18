@@ -45,80 +45,15 @@ package com.pentagram.view.mediators
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_CLOSED,handleWindowClosed);
 			
-			if (NativeApplication.supportsMenu)
-			{
-				var m:NativeMenu = NativeApplication.nativeApplication.menu;
-				var win:NativeMenuItem = m.items[3] as NativeMenuItem;
-				var fs:NativeMenuItem = new NativeMenuItem("Full Screen");
-				fs.keyEquivalent = "f";
-				fs.keyEquivalentModifiers = [Keyboard.COMMAND];
-				win.submenu.addItem(fs);			
-				fs.addEventListener(Event.SELECT,onItemSelect);	
-				
-				var newWindow:NativeMenuItem = new NativeMenuItem("New Window");
-				win.submenu.addItem(newWindow);			
-				newWindow.keyEquivalent = "n";
-				newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
-				newWindow.addEventListener(Event.SELECT,handleStartUp);	
-				
-				var file:NativeMenuItem = m.items[1] as NativeMenuItem;
-				appModel.exportMenuItem = new NativeMenuItem("Export SpreadSheet File...");
-				appModel.exportMenuItem.addEventListener(Event.SELECT,handleExportSp);
-				appModel.exportMenuItem.enabled = false;
-				file.submenu.addItemAt(appModel.exportMenuItem,0);	
-				var importSp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
-				importSp.enabled = false;
-				file.submenu.addItemAt(importSp,0);
-				
-				var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
-				m.addItem(arrange);
-				var tile:NativeMenuItem = new NativeMenuItem("Tile");
-				tile.keyEquivalent = "t";
-				tile.keyEquivalentModifiers = [Keyboard.COMMAND];			
-				tile.addEventListener(Event.SELECT,handleArrange);
-				arrange.submenu = new NativeMenu();
-				arrange.submenu.addItem(tile);
-				var tile2:NativeMenuItem = new NativeMenuItem("Tile w Fill");
-				arrange.submenu.addItem(tile2); 
-				tile2.addEventListener(Event.SELECT,handleArrange);
-				var cascade:NativeMenuItem = new NativeMenuItem("Cascade");
-				arrange.submenu.addItem(cascade);
-				cascade.addEventListener(Event.SELECT,handleArrange);
-			}
-			else if (NativeWindow.supportsMenu)
-			{
-
-			}			
+			
+			
 			// Manually close all open Windows when app closes.
 			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
 		}
-		protected function handleArrange(event:Event):void {
-			if(event.target.label == "Tile")
-				instanceWindowModel.tile(false,10);
-			else if(event.target.label == "Tile w Fill")
-				instanceWindowModel.tile(true,4);
-			else
-				instanceWindowModel.cascade();
-		}
-		protected function handleWindowFocus(event:InstanceWindowEvent):void {
-			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
-			instanceWindowModel.currentWindow = window;
-		}
+
 		// Handle Menu item selection
-		protected function onItemSelect(e:Event):void
-		{
-			if(instanceWindowModel.currentWindow.stage.displayState == StageDisplayState.NORMAL ) {
-				instanceWindowModel.currentWindow.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
-				instanceWindowModel.currentWindow.showStatusBar = false;
-			} 
-			else {
-				instanceWindowModel.currentWindow.stage.displayState = StageDisplayState.NORMAL;
-				instanceWindowModel.currentWindow.showStatusBar = true;
-			}
-		}
-		private function handleExportSp(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,windowModel.SPREADSHEET_WINDOW));
-		}
+
+
 		// Called when application window closes
 		protected function onAppWinClose(e:Event):void
 		{
@@ -137,11 +72,7 @@ package com.pentagram.view.mediators
 			//NativeWindow(NativeApplication.nativeApplication.openedWindows[i]).close();
 			//}
 		}
-		private function handleStartUp(event:Event):void
-		{
-			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
-		
-		}
+
 		private function handleWindowClosed(event:Event):void {
 			startGCCycle();
 		}

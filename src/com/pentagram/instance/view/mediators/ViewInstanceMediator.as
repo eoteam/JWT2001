@@ -27,6 +27,9 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.view.event.ViewEvent;
 	import com.pentagram.view.windows.LoginWindow;
 	
+	import flash.desktop.NativeApplication;
+	import flash.display.NativeMenu;
+	import flash.display.NativeWindow;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.FocusEvent;
@@ -61,8 +64,9 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
-			//mediatorMap.createMediator(view.searchView);
 			
+			
+			//mediatorMap.createMediator(view.searchView);
 		} 
 		public function handleInit(...args):void {
 			model.clients = args[0];
@@ -70,11 +74,25 @@ package com.pentagram.instance.view.mediators
 			model.countries = args[2];
 			model.user = args[3];
 			model.exportMenuItem = args[4];
+			model.importMenuItem = args[5];
+			model.windowMenu = args[6];	
+			model.fileMenu = args[7];	
+			
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
 			eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
 			
+			if(NativeWindow.supportsMenu) {
+				var menu:NativeMenu = new NativeMenu();
+				view.nativeWindow.menu = menu;
+				view.stage.nativeWindow.menu.addItem(model.windowMenu);
+				view.stage.nativeWindow.menu.addItem(model.fileMenu);
+				view.showStatusBar = false;
+			}
+			else {
+				view.showStatusBar = true;
+			}
 			//view.nativeWindow.addEventListener(
 			
 		}

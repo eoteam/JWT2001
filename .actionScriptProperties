@@ -17,8 +17,8 @@
     <application path="Main.mxml">
       <airExcludes>
         <airExclude path="data"/>
-        <airExclude path="com/ericfeminella"/>
         <airExclude path="com/pentagram/view"/>
+        <airExclude path="com/ericfeminella"/>
         <airExclude path="assets/FlamaBookIta.ttf"/>
         <airExclude path="com/pentagram/instance/view/.DS_Store"/>
         <airExclude path="com/adobe"/>

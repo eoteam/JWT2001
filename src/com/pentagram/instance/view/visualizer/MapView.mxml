@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
-				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:s="library://ns.adobe.com/flex/spark"  width="100%" height="100%"
+				xmlns:mx="library://ns.adobe.com/flex/mx"  clipAndEnableScrolling="true"
 				xmlns:modules="ws.tink.spark.modules.*" contentBackgroundColor="0xff0000"
 				implements="com.pentagram.instance.view.visualizer.IMapView">
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
+			import com.pentagram.util.ViewUtils;
 			
 			import flare.animate.Scheduler;
 			import flare.animate.TransitionEvent;
@@ -17,6 +19,8 @@
 			import flare.util.palette.SizePalette;
 			import flare.vis.Visualization;
 			import flare.vis.data.Data;
+			import flare.vis.data.DataSprite;
+			import flare.vis.events.TooltipEvent;
 			import flare.vis.operator.encoder.ColorEncoder;
 			import flare.vis.operator.encoder.PropertyEncoder;
 			import flare.vis.operator.encoder.SizeEncoder;
@@ -39,13 +43,20 @@
 				var propEncoder:PropertyEncoder;
 				var sizeEncoder:SizeEncoder;
 				var sizePalette:SizePalette = new SizePalette(1,20);
+				var sizeSource:String;
 				visdata = Data.fromArray(dataset.rows.source);
 				
 				if(firstPass) {
 					axisLayout = new AxisLayout("data.xcoord", "data.ycoord");	
 					propEncoder = new PropertyEncoder({lineAlpha: 1, alpha:0.75, buttonMode: true, size: 1});
 					colorEncoder = new ColorEncoder("data.country.region.color", Data.NODES,"fillColor", ScaleType.CATEGORIES);
-					sizeEncoder = new SizeEncoder("data.2006", Data.NODES,sizePalette);
+					
+					if(dataset.time) 
+						sizeSource = "data."+dataset.years[0].toString();
+					else
+						sizeSource = "data.value";
+						
+					sizeEncoder = new SizeEncoder(sizeSource, Data.NODES,sizePalette);
 					var bounds:Rectangle =  new Rectangle(this.width*.2, 0, this.width, this.height);
 					
 					vis = new Visualization();
@@ -65,6 +76,16 @@
 					vis.operators.add(sizeEncoder);
 					vis.operators.add(colorEncoder);
 					
+					// add tooltip showing data values
+					vis.controls.add(new  ViewTooltipControl(DataSprite, null,
+						function(evt:TooltipEvent):void {
+							var d:DataSprite = evt.node;
+							DataTooltip(evt.tooltip).row = d.data as DataRow;
+							//TextSprite(evt.tooltip).htmlText = 
+							//Strings.format(_tipText, d.data.s, d.data.y, d.data.x);
+						}
+					));
+					
 					vis.xyAxes.visible = false;	
 					vis.axes.visible = false;
 					vis.xyAxes.showBorder = false;
@@ -72,31 +93,24 @@
 					vis.xyAxes.showYLine = false;
 					vis.xyAxes.xAxis.showLines = false;
 					vis.xyAxes.yAxis.showLines = false;
-					vis.xyAxes.yAxis.showLabels = false;
-					
+					vis.xyAxes.yAxis.showLabels = false;		
+					vis.xyAxes.xAxis.showLabels = false;		
+					ViewUtils.executeLater(pause);
 				}
 				else {
-					resume();
+					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
+					sizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
+					if(dataset.time)
+						sizeSource = "data."+dataset.years[0].toString();
+					else
+						sizeSource = "data.value";
+					sizeEncoder.scale.data = _visdata;
+					sizeEncoder.source = sizeSource;
 					vis.data = _visdata;
-					this.callLater(resumeUpdate);
-					function resumeUpdate():void {
-						vis.data = visdata;						
-						var t:Transitioner = new Transitioner(2.5);
-						t.addEventListener(TransitionEvent.END,handleEnd);
-						vis.update(t).play();
-					}
+					resume();
+					resumeUpdate();
+					
 				}
-//				for each(var row:DataRow in dataset.rows) {
-//					var node:DataSprite = new DataSprite();
-//					node.x = row.country.xcoord/849*map.contentWidth;
-//					node.y = row.country.ycoord/337*map.contentHeight;
-//					node.shape = Shapes.CIRCLE;
-//					node.fillColor = row.country.region.color;
-//					node.fillAlpha = 0.75;
-//					spriteContainer.addChild(node);
-//					node.size = 2;
-//					spriteContainer.addChild(node);
-				
 			}
 			private var _visdata:Data;
 			public function set visdata(d:Data):void {
@@ -146,36 +160,40 @@
 //				});
 //				
 			}
+			public function updateYear(year:int):void {
+				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
+				sizeEncoder.source = "data."+year.toString();
+				update();
+			}
 			public function update():void {
-				if(!_continous) {
+				if(!_continous)
 					resume();
-					this.callLater(function resumeUpdate():void {
-						var t:Transitioner = new Transitioner(2.1);
-						t.addEventListener(TransitionEvent.END,handleEnd);
-						vis.update(t).play();
-					});
-				}	
-				else {
-					var t:Transitioner = new Transitioner(2.1);
-					t.addEventListener(TransitionEvent.END,handleEnd);
-					vis.update(t).play();
-				}
+				resumeUpdate();
 			}
 			private function handleEnd(event:Event=null):void {
 				if(!_continous) {
-					pause();
+					ViewUtils.executeLater(pause,null,2500);
 				}
 			}
 			private function group1_resizeHandler(event:ResizeEvent):void {
 				if(!firstPass) {
-					resume();
 					vis.bounds = new Rectangle(this.width*.1, this.height*.005, this.width, this.height);
-					this.callLater(function resumeUpdate():void {
-						vis.update();
-						callLater(handleEnd);
-					});
+					resume();
+					ViewUtils.executeLater(coldUpdate).addEventListener("executed",handleUpdateComplete); 
 				}
 			}
+			private function resumeUpdate():void {		
+				var t:Transitioner = new Transitioner(2.5);
+				t.addEventListener(TransitionEvent.END,handleEnd);
+				vis.update(t).play();
+			}
+			private function coldUpdate():void {
+				vis.update();
+			}
+			private function handleUpdateComplete(event:Event):void {
+				ViewUtils.executeLater(handleEnd);
+			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
