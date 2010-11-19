@@ -11,9 +11,11 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.view.renderers.BlankRenderer;
-			import com.pentagram.view.renderers.CellEditor;
 			import com.pentagram.view.renderers.DGDefaultRenderer;
-			import com.pentagram.view.renderers.TimeCellEditor;
+			import com.pentagram.view.renderers.QualityEditor;
+			import com.pentagram.view.renderers.QuantityEditor;
+			import com.pentagram.view.renderers.TimeQualityEditor;
+			import com.pentagram.view.renderers.TimeQuantityEditor;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.Sort;
@@ -40,7 +42,10 @@
 					for(var i:int=years[0];i<=years[1];i++) {
 						column  = new GridColumn();
 						column.headerText = i.toString();
-						column.itemRenderer = new ClassFactory(TimeCellEditor);
+						if(dataset.type == 1)
+							column.itemRenderer = new ClassFactory(TimeQuantityEditor);
+						else
+							column.itemRenderer = new ClassFactory(TimeQualityEditor);
 						column.dataField = i.toString();
 						column.width = 75;	
 						column.resizable = true;
@@ -51,7 +56,10 @@
 				else {
 					column = new GridColumn();
 					column.headerText = "Value";
-					column.itemRenderer = new ClassFactory(CellEditor);
+					if(dataset.type == 1)
+						column.itemRenderer = new ClassFactory(QuantityEditor);
+					else
+						column.itemRenderer = new ClassFactory(QualityEditor);
 					column.dataField = "value";
 					column.width = 75;	
 					column.sortable = true;

@@ -60,10 +60,16 @@ package com.pentagram.instance.view.mediators.shell
 			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
 
 			//mediatorMap.createMediator(view.bottomBarView);
-			if(model.user)
+			if(model.user) {
 				view.currentState = view.loggedInState.name;
-			else
+				model.exportMenuItem.enabled = true;
+				model.importMenuItem.enabled = true;
+			}
+			else {
+				model.exportMenuItem.enabled = false;
+				model.importMenuItem.enabled = false;
 				view.currentState = view.loggedOutState.name;
+			}
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 			
 			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
@@ -104,6 +110,7 @@ package com.pentagram.instance.view.mediators.shell
 		{
 			model.user = event.args[0] as User;
 			model.exportMenuItem.enabled = true;
+			model.importMenuItem.enabled = true;
 			view.currentState = view.loggedInState.name;
 		}
 		private function handleLogout(event:AppEvent):void

@@ -45,12 +45,19 @@ package com.pentagram.view.mediators
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_CLOSED,handleWindowClosed);
 			
-			
-			
+			if(NativeApplication.supportsMenu) {
+				instanceWindowModel.buildMenu();
+			}
 			// Manually close all open Windows when app closes.
 			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
 		}
-
+		protected function handleWindowFocus(event:InstanceWindowEvent):void {
+			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
+			instanceWindowModel.currentWindow = window;
+		}
+		protected function handleStartUp(event:Event):void {
+			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
+		}
 		// Handle Menu item selection
 
 

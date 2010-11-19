@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renderers:DGDefaultRenderer
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns:renderers="com.pentagram.view.renderers.*" label="{value.toString()}" 
+	mouseDown="defaultgriditemrenderer1_mouseDownHandler(event)"
+	keyDown="dgdefaultrenderer1_keyDownHandler(event)"    height="25"
+	creationComplete="defaultgriditemrenderer1_creationCompleteHandler(event)">
+
+
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.DataRow;
+			
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.components.TextInput;
+
+		
+			[Bindable] public var value:String;
+			private var row:DataRow;
+			private var create:Boolean = false;
+			private var input:TextInput;
+			
+			override public function set data(row:Object):void {      
+				if(row != null) {
+					this.value = row[this.column.dataField].toString();
+					this.row = row as DataRow;
+				}   
+				super.data = this.value;
+				if(labelDisplay)
+					labelDisplay.text = value;
+			} 
+			override public function get data():Object {
+				return value;
+			}
+			protected function defaultgriditemrenderer1_creationCompleteHandler(event:FlexEvent):void {
+				if(value)
+					labelDisplay.text = value;
+
+			}
+			protected function defaultgriditemrenderer1_mouseDownHandler(event:Event):void {
+				create = true;
+				if(!input) {
+				 	input = new TextInput();
+					input.width = (labelDisplay.textWidth > this.width) ? labelDisplay.textWidth+5:this.width;
+					input.height = this.height;
+					input.text = value;
+					//input.setStyle("contentBackgroundColor",0xff0000);
+					input.addEventListener(FlexEvent.CREATION_COMPLETE,handleInputCreated);
+					
+					input.addEventListener(FocusEvent.FOCUS_OUT,handleFocusOut,false,0,true);
+					input.addEventListener(FlexEvent.ENTER,handleFocusOut,false,0,true);
+					
+					var pt:Point = this.owner.localToGlobal(new Point(x,y));
+					input.x = pt.x; input.y = pt.y;
+				}
+				PopUpManager.addPopUp(input,this,false);
+			}
+			protected function handleFocusOut(event:Event):void {
+				if(input) {
+					value = row[this.column.dataField] = input.text;
+					row.modified = true;
+					if(row.modifiedProps.indexOf(this.column.dataField) == -1)
+						row.modifiedProps.push(this.column.dataField);
+					PopUpManager.removePopUp(input);
+					input = null;
+				}
+			}
+			protected function handleInputCreated(event:FlexEvent):void {
+				input.setFocus();
+				input.selectRange(input.selectionActivePosition,input.selectionActivePosition);
+				
+			}
+			protected function dgdefaultrenderer1_keyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode == Keyboard.ENTER) {
+					defaultgriditemrenderer1_mouseDownHandler(event);
+				}
+			}
+
+		]]>
+	</fx:Script>
+</renderers:DGDefaultRenderer>

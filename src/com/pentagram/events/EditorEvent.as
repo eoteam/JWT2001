@@ -19,6 +19,7 @@ package com.pentagram.events
 		public static const CANCEL:String = "cancelEditor";
 		
 		public static const IMPORT_FAILED:String = "importFailed";
+		public static const START_IMPORT:String = "startImport";
 		
 		public var args:Array;
 		public function EditorEvent(type:String,...args)

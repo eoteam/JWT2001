@@ -31,10 +31,8 @@
 		popUpWidthMatchesAnchorWidth="true"
         popUpPosition="below" >
         
-        <s:Group id="dropDown" minHeight="22" width="100%">
-        
-			<components:ListAutoComplete id="list" width="100%" minWidth="22" />
-			
+        <s:Group id="dropDown" width="100%">
+			<components:ListAutoComplete id="list" width="100%"/>
         </s:Group>
 		
     </s:PopUpAnchor>

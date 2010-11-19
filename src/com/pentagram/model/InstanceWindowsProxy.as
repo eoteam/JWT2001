@@ -2,13 +2,22 @@ package com.pentagram.model
 {
 	import com.ericfeminella.collections.HashMap;
 	import com.ericfeminella.collections.IMap;
+	import com.pentagram.events.BaseWindowEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.util.RectInterpolator;
 	
+	import flash.desktop.NativeApplication;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
+	import flash.display.NativeWindow;
 	import flash.display.NativeWindowDisplayState;
+	import flash.display.StageDisplayState;
+	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.system.Capabilities;
+	import flash.ui.Keyboard;
 	
 	import mx.collections.ArrayCollection;
 	import mx.effects.Parallel;
@@ -16,10 +25,12 @@ package com.pentagram.model
 	
 	import org.robotlegs.mvcs.Actor;
 	
+	import spark.components.Window;
 	import spark.effects.Animate;
 	import spark.effects.animation.MotionPath;
 	import spark.effects.animation.SimpleMotionPath;
 	import spark.effects.interpolation.IInterpolator;
+	
 	
 	public class InstanceWindowsProxy extends Actor
 	{
@@ -28,6 +39,8 @@ package com.pentagram.model
 		
 		protected var windowMap:IMap;
 		public var currentWindow:InstanceWindow;
+		public const LOGIN_WINDOW:String = "loginWindow";
+		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		
 		public function InstanceWindowsProxy()
 		{
@@ -270,6 +283,104 @@ package com.pentagram.model
 			}
 			eff.play();
 			//dispatchEvent(new MDIManagerEvent(MDIManagerEvent.CASCADE, null, this, null, effectItems));
-		}		
+		}	
+		public var exportMenuItem:NativeMenuItem;
+		public var importMenuItem:NativeMenuItem;
+		
+		public	function buildMenu(window:Window=null):Array {
+			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
+			arrange.submenu = new NativeMenu();
+			
+			var tile:NativeMenuItem = new NativeMenuItem("Tile");
+			tile.keyEquivalent = "t";
+			tile.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			tile.addEventListener(Event.SELECT,handleArrange);
+			arrange.submenu.addItem(tile);
+			
+			var tile2:NativeMenuItem = new NativeMenuItem("Tile w Fill");
+			arrange.submenu.addItem(tile2); 
+			tile2.addEventListener(Event.SELECT,handleArrange);
+			
+			var cascade:NativeMenuItem = new NativeMenuItem("Cascade");
+			arrange.submenu.addItem(cascade);
+			cascade.addEventListener(Event.SELECT,handleArrange);
+			
+			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
+			newWindow.keyEquivalent = "n";
+			newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
+			newWindow.addEventListener(Event.SELECT,handleStartUp);				
+			
+			var fullScreen:NativeMenuItem = new NativeMenuItem("Full Screen");
+			fullScreen.keyEquivalent 	= "f";
+			fullScreen.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			fullScreen.addEventListener(Event.SELECT,onItemSelect);
+			
+			var exp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+			exp.addEventListener(Event.SELECT,handleExportMenu);
+			exp.enabled = false;
+			
+			var imp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
+			imp.enabled = false;
+			imp.addEventListener(Event.SELECT,handleImportMenu);
+			
+			var windowMenu:NativeMenuItem;
+			var fileMenu:NativeMenuItem;
+			
+			if (NativeApplication.supportsMenu) {
+				var m:NativeMenu = NativeApplication.nativeApplication.menu;
+				windowMenu = m.items[3] as NativeMenuItem;
+				fileMenu = m.items[1] as NativeMenuItem;
+				exportMenuItem = exp;
+				importMenuItem  = imp;
+				
+			}	
+			else if(NativeWindow.supportsMenu) {
+				var menu:NativeMenu = new NativeMenu();
+				window.nativeWindow.menu = menu;
+				windowMenu = new NativeMenuItem("Window");
+				windowMenu.submenu = new NativeMenu();
+				fileMenu = new NativeMenuItem("File");
+				fileMenu.submenu = new NativeMenu();
+				
+				window.stage.nativeWindow.menu.addItem(windowMenu);
+				window.stage.nativeWindow.menu.addItem(fileMenu);
+			}
+			
+			windowMenu.submenu.addItemAt(arrange,0);
+			windowMenu.submenu.addItem(fullScreen);
+			windowMenu.submenu.addItem(newWindow);		
+			
+			fileMenu.submenu.addItemAt(exp,0);	
+			fileMenu.submenu.addItemAt(imp,0);
+			
+			return [exp,imp];
+		}
+		protected function handleArrange(event:Event):void {
+			if(event.target.label == "Tile")
+				tile(false,10);
+			else if(event.target.label == "Tile w Fill")
+				tile(true,4);
+			else
+				cascade();
+		}
+		protected function handleStartUp(event:Event):void {
+			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
+		}
+		protected function onItemSelect(e:Event):void {
+			if(currentWindow.stage.displayState == StageDisplayState.NORMAL ) {
+				currentWindow.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				currentWindow.showStatusBar = false;
+			} 
+			else {
+				currentWindow.stage.displayState = StageDisplayState.NORMAL;
+				currentWindow.showStatusBar = true;
+			}
+		}
+		private function handleExportMenu(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,SPREADSHEET_WINDOW));
+		}
+		private function handleImportMenu(event:Event):void {
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT)); 
+		}
 	}
 }

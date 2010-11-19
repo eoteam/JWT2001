@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renderers:DGDefaultRenderer
+	xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns:mx="library://ns.adobe.com/flex/mx" 
+	xmlns:renderers="com.pentagram.view.renderers.*" 
+	label="{value.toString()}" height="25"
+	mouseDown="defaultgriditemrenderer1_mouseDownHandler(event)"
+	keyDown="dgdefaultrenderer1_keyDownHandler(event)"
+	mouseDownOutside="handleFocusOut(event)"
+	creationComplete="defaultgriditemrenderer1_creationCompleteHandler(event)">
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.DataRow;
+			
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import org.flashcommander.components.AutoComplete;
+			
+			import spark.components.Group;
+			import spark.components.TextInput;
+			
+			
+			[Bindable] public var value:String;
+			private var row:DataRow;
+			private var create:Boolean = false;
+			private var input:AutoComplete;
+			
+			override public function set data(row:Object):void {      
+				if(row != null) {
+					this.value = row.value.toString();
+					this.row = row as DataRow;
+				}   
+				super.data = this.value;
+				if(labelDisplay)
+					labelDisplay.text = value;
+			} 
+			override public function get data():Object {
+				return value;
+			}
+			protected function dgdefaultrenderer1_keyDownHandler(event:KeyboardEvent):void {
+				if(event.keyCode == Keyboard.ENTER)
+					defaultgriditemrenderer1_mouseDownHandler(event);
+			}
+			protected function defaultgriditemrenderer1_creationCompleteHandler(event:FlexEvent):void {
+				if(value)
+					labelDisplay.text = value;
+			}
+			protected function defaultgriditemrenderer1_mouseDownHandler(event:Event):void {
+				create = true;
+				if(!input) {
+					input = new AutoComplete();
+					input.labelField = "item";
+					input.dataProvider = row.dataset.optionsArray;
+					input.width = (labelDisplay.textWidth > this.width) ? labelDisplay.textWidth+5:this.width;
+					input.height = this.height;
+					input.text = value;
+					input.addEventListener(FlexEvent.ENTER,handleFocusOut,false,0,true);
+					input.addEventListener(FlexEvent.CREATION_COMPLETE,handleInputCreated);
+					input.x = x; input.y = 	y;
+				}
+				Group(this.owner.parent).addElement(input);
+				//PopUpManager.addPopUp(input,this,false);
+			}
+			protected function handleFocusOut(event:Event):void {
+				if(input) {
+					value = row.value = input.text;
+					var exists:Boolean = false;
+					for each(var option:Object  in row.dataset.optionsArray) {
+						if(option.item == value) {
+							exists = true;
+							break;
+						}
+					}
+					if(!exists) {
+						row.dataset.modified = true;
+						row.dataset.optionsArray.push({item:value});
+						row.dataset.options += ","+value;
+					}	
+					
+					if(row.dataset.modifiedProps.indexOf("options") == -1)	
+						row.dataset.modifiedProps.push("options");
+					
+					row.modified = true;
+					if(row.modifiedProps.indexOf("value") == -1)
+						row.modifiedProps.push("value");
+					Group(this.owner.parent).removeElement(input)
+					input = null;
+				}
+			}
+			protected function handleInputCreated(event:FlexEvent):void {
+				
+				input.inputTxt.setFocus();
+				input.inputTxt.selectRange(input.inputTxt.selectionActivePosition,input.inputTxt.selectionActivePosition);	
+			}
+			
+		]]>
+	</fx:Script>
+</renderers:DGDefaultRenderer>

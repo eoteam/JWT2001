@@ -12,9 +12,9 @@ package com.pentagram.controller.configuration
 	{
 		override public function execute():void
 		{
-			injector.mapSingleton(AppModel);
 			injector.mapSingleton(OpenWindowsProxy);
 			injector.mapSingleton(InstanceWindowsProxy);
+			injector.mapSingleton(AppModel);
 			
 			trace("Configure: Models Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_MODELS_COMPLETE));

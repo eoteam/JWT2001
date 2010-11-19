@@ -12,6 +12,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.view.event.ViewEvent;
 	
 	import flash.desktop.ClipboardFormats;
+	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
@@ -28,27 +29,26 @@ package com.pentagram.instance.view.mediators.editor
 		
 		[Inject]
 		public var model:InstanceModel;
-		
-		public override function onRegister():void
-		{
+			
+		public override function onRegister():void {
+			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientSelected,VisualizerEvent);
+						
 			view.client = model.client;
-			
 			view.countryInput.dataProvider = model.countries.source;
-			
 			view.continentList.dataProvider = model.regions;	
 			view.continentList.addEventListener(DropDownEvent.CLOSE,handleContinentSelection,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDeleteCountries,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			
+			view.regionHolder.removeAllElements();
 			for each(var region:Region in model.client.regions.source) {
 				var drawer:RegionDrawer = new RegionDrawer();
 				drawer.region = region;
 				drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
 				view.regionHolder.addElement(drawer);
 			}
-			
 		}
 		private function handleCancel(event:EditorEvent):void {
 			

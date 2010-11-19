@@ -26,6 +26,7 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.net.FileFilter;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -54,7 +55,9 @@ package com.pentagram.instance.view.mediators.editor
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleDatasetCreated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
 			eventMap.mapListener(view,'datasetState',handleDatasetState,Event,false,0,true);
-		
+
+			eventMap.mapListener(appEventDispatcher,EditorEvent.START_IMPORT,handleStartImport,EditorEvent);
+			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true); 
 			
@@ -62,11 +65,6 @@ package com.pentagram.instance.view.mediators.editor
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_COMPLETE,onDragComplete,false,0,true);
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
 			view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,dataSetList_nativeDragDropHandler,false,0,true);
-			
-			//mediatorMap.createMediator(view.overviewEditor);
-			//mediatorMap.createMediator(view.datasetEditor);
-			//mediatorMap.createMediator(view.datasetCreator);
-
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
@@ -119,137 +117,140 @@ package com.pentagram.instance.view.mediators.editor
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 				if(MimeType.getMimetype(File(files[0]).extension) == MimeType.FILE && File(files[0]).extension == "csv") {
 					NativeDragManager.acceptDragDrop(view.dataSetList); 
-					//createSetPrompt.visible = true; 
 					if(view.currentState == "dataset") {
-						//datasetEditor.populateSetPrompt.visible = true;
-						//NativeDragManager.acceptDragDrop(datasetEditor); 
+
 					}
 				}
 				else if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
 					if(view.currentState == "overview")
 						NativeDragManager.acceptDragDrop(view.overviewEditor.logoHolder);
 				}
-				//trace(event.dropAction);
 			}
 		}
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				//trace("file:///" + File(files[0]).nativePath);
-				//createSetPrompt.visible = false;
-				//if(currentState == "dataset")
-				//	datasetEditor.populateSetPrompt.visible = false;
 			}
 		}
 		private function onDragComplete(event:NativeDragEvent):void {
-			//createSetPrompt.visible = false;
-			//if(currentState == "dataset")
-			//	datasetEditor.populateSetPrompt.visible = false;
+
+		}
+		private function handleStartImport(event:EditorEvent):void {
+			var file:File = File.desktopDirectory; 
+			file.addEventListener(Event.SELECT, onFileLoad); 
+			file.browse([new FileFilter("Spreadsheet", "*.csv")]);
+		}
+		private function onFileLoad(event:Event):void {
+			readFile(event.target as File);
 		}
 		private function dataSetList_nativeDragDropHandler(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				var fs:FileStream = new FileStream();
-				fs.open(files[0] as File, FileMode.READ);
-				var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
-				fs.close();
+				readFile(files[0] as File);
+			}
+		}
+		private function readFile(file:File):void {
+			var fs:FileStream = new FileStream();
+			fs.open(file, FileMode.READ);
+			var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
+			fs.close();
+			
+			// Choose the line ending to split the lines based on which one yields more than one line
+			var endings:Array = [File.lineEnding, "\n", "\r"];
+			var i:uint = 1;
+			var lines:Array = csvFile.split(endings[0]);
+			while(lines.length == 1 && i < endings.length) {
+				lines = csvFile.split(endings[i++]);
+			}
+			for (i=0;i<lines.length;i++) {
+				lines[i] = lines[i].toString().replace(/\r/gi,'');
+			}
+			//check line 0
+			var dataset:Dataset = new Dataset();
+			dataset.name =  file.name.replace(/.csv/gi,'');
+			var fields:Array = lines[0].split(',');
+
+			if(fields.length > 2) { //time based
 				
-				// Choose the line ending to split the lines based on which one yields more than one line
-				var endings:Array = [File.lineEnding, "\n", "\r"];
-				var i:uint = 1;
-				var lines:Array = csvFile.split(endings[0]);
-				while(lines.length == 1 && i < endings.length) {
-					lines = csvFile.split(endings[i++]);
-				}
-				for (i=0;i<lines.length;i++) {
-					lines[i] = lines[i].toString().replace(/\r/gi,'');
-				}
-				//check line 0
-				var dataset:Dataset = new Dataset();
-				dataset.name =  File(files[0]).name.replace(/.csv/gi,'');
-				var fields:Array = lines[0].split(',');
-	
-				if(fields.length > 2) { //time based
-					
-					for (var j:int=1;j<fields.length;j++) {
-						var year:int = Number(fields[j]);
-						if(year == 0)  { //fail
-							eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Header Column doesnt container proper years"));
-							return;
-						}
+				for (var j:int=1;j<fields.length;j++) {
+					var year:int = Number(fields[j]);
+					if(year == 0)  { //fail
+						eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Header Column doesnt container proper years"));
+						return;
 					}
-					dataset.time = 1;
-					dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
-					dataset.range = fields[1]+','+fields[fields.length-1];
 				}
-				else {
-					dataset.time = 0;
-				}
-				for(i=1;i<lines.length;i++) {
-					if(lines[i] != '') {
-						var countryName:String
-						var arr:Array = lines[i].toString().split('",');
-						var offset:uint = 1;
-						
-						if(arr.length == 1) {
-							arr = lines[i].toString().split(',');
-							offset = 0;
-						}
-						
-						countryName = arr[0].toString().substr(offset,arr[0].toString().length);
-						var isNumeric:uint = 1;
-						var countryFound:Boolean = false;
-						for each(var country:Country in model.countries.source) {
-							if(countryName == country.name) {
-								var row:DataRow = new DataRow();
-								row.name = countryName;
-								//values are now after ",	
-								var values:Array;
-								if(offset == 1)
-									values = arr[1].toString().split(',');
-								else
-									values = arr.slice(1,arr.length);
-								if(dataset.time == 1) {
-									if(values.length <= fields.length-1) {
-										for(j=offset;j<values.length;j++) {
-											row[fields[j].toString()] = values[j-1];
-											if(values[j-1] != '0' && Number(values[j-1]) > 0) {
-												//isNumeric = true;
-											}
-											else
-												isNumeric = 1;
+				dataset.time = 1;
+				dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
+				dataset.range = fields[1]+','+fields[fields.length-1];
+			}
+			else {
+				dataset.time = 0;
+			}
+			for(i=1;i<lines.length;i++) {
+				if(lines[i] != '') {
+					var countryName:String
+					var arr:Array = lines[i].toString().split('",');
+					var offset:uint = 1;
+					
+					if(arr.length == 1) {
+						arr = lines[i].toString().split(',');
+						offset = 0;
+					}
+					
+					countryName = arr[0].toString().substr(offset,arr[0].toString().length);
+					var isNumeric:uint = 1;
+					var countryFound:Boolean = false;
+					for each(var country:Country in model.countries.source) {
+						if(countryName == country.name) {
+							var row:DataRow = new DataRow();
+							row.name = countryName;
+							//values are now after ",	
+							var values:Array;
+							if(offset == 1)
+								values = arr[1].toString().split(',');
+							else
+								values = arr.slice(1,arr.length);
+							if(dataset.time == 1) {
+								if(values.length <= fields.length-1) {
+									for(j=offset;j<values.length;j++) {
+										row[fields[j].toString()] = values[j-1];
+										if(values[j-1] != '0' && Number(values[j-1]) > 0) {
+											//isNumeric = true;
 										}
-										for(j=values.length;j<fields.length;j++) {
-											row[fields[j].toString()] = ''
-										}
+										else
+											isNumeric = 1;
 									}
-									else {
-										eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This row has more values than the set"));
-										return;
+									for(j=values.length;j<fields.length;j++) {
+										row[fields[j].toString()] = ''
 									}
 								}
 								else {
-									if(arr[1] != '0' && Number(arr[1]) > 0) {
-										//isNumeric = true;
-									}
-									else
-										isNumeric = 1;
-									row.value = arr[1];
+									eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This row has more values than the set"));
+									return;
 								}
-								dataset.rows.addItem(row);
-								countryFound = true;
-								break;	
 							}
-						}
-						if(!countryFound) {
-							eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Country Not Found"));
-							return;
+							else {
+								if(arr[1] != '0' && Number(arr[1]) > 0) {
+									//isNumeric = true;
+								}
+								else
+									isNumeric = 1;
+								row.value = arr[1];
+							}
+							dataset.rows.addItem(row);
+							countryFound = true;
+							break;	
 						}
 					}
+					if(!countryFound) {
+						eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Country Not Found"));
+						return;
+					}
 				}
-				dataset.type = isNumeric;
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
-			}					
+			}
+			dataset.type = isNumeric;
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
+							
 		}		
 	}
 }

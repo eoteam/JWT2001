@@ -75,7 +75,6 @@ package org.flashcommander.components
 				//inputTxt.text = _text;
 			}
 			if (instance==list){
-				list.minHeight = 200;
 				list.dataProvider = collection;
 				list.labelField = labelField;
 				list.labelFunction = labelFunction

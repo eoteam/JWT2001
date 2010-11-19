@@ -53,6 +53,12 @@ package com.pentagram.instance.controller
 				for each(var dataset:Dataset in model.client.datasets.source) {
 					if(dataset.time == 1)
 						dataset.years = dataset.range.split(',');
+					if(dataset.options && dataset.options != '') {
+						var arr:Array =  dataset.options.split(',');
+						for each(var option:String in arr)
+						dataset.optionsArray.push({item:option});
+					}
+						
 					datasetService.loadDataSet(dataset);
 					datasetService.addHandlers(handleDatasetLoaded);
 					datasetService.addProperties("dataset",dataset);

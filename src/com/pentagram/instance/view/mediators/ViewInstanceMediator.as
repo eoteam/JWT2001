@@ -24,6 +24,7 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.User;
 	import com.pentagram.view.event.ViewEvent;
 	import com.pentagram.view.windows.LoginWindow;
 	
@@ -61,6 +62,8 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
 			
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
+			
 			eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
@@ -68,26 +71,24 @@ package com.pentagram.instance.view.mediators
 			
 			//mediatorMap.createMediator(view.searchView);
 		} 
+		private function handleLogin(event:AppEvent):void
+		{
+			model.user = event.args[0] as User; 
+		}
 		public function handleInit(...args):void {
 			model.clients = args[0];
 			model.regions = args[1];
 			model.countries = args[2];
-			model.user = args[3];
-			model.exportMenuItem = args[4];
-			model.importMenuItem = args[5];
-			model.windowMenu = args[6];	
-			model.fileMenu = args[7];	
-			
+			model.user = args[3];	
+			model.exportMenuItem = args[4];	
+			model.importMenuItem = args[5];	
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
-			eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
+			//eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
 			
 			if(NativeWindow.supportsMenu) {
-				var menu:NativeMenu = new NativeMenu();
-				view.nativeWindow.menu = menu;
-				view.stage.nativeWindow.menu.addItem(model.windowMenu);
-				view.stage.nativeWindow.menu.addItem(model.fileMenu);
+				
 				view.showStatusBar = false;
 			}
 			else {

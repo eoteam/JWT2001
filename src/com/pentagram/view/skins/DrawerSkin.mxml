@@ -22,11 +22,11 @@
 
 	<s:transitions>
 		<s:Transition fromState="normal" toState="opened">
-			<s:Resize target="{this}" duration="600" easer="{sineOut}" />
+			<s:Resize target="{this}" duration="250" easer="{sineOut}" />
 		</s:Transition>
 		<s:Transition fromState="opened" toState="normal">
 			<s:Sequence>
-				<s:Resize target="{this}" duration="600" easer="{sineIn}" />
+				<s:Resize target="{this}" duration="250" easer="{sineIn}" />
 				<s:RemoveAction target="{contentGroup}" />
 			</s:Sequence>
 		</s:Transition>
