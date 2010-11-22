@@ -8,6 +8,9 @@ package com.pentagram.view.event
 		public static const SHELL_LOADED:String = "shellLoaded";
 		public static const DATASET_CREATOR_COMPLETE:String = "datasetCreatorComplete";
 		
+		public static const CELL_SELECTED:String  = "cellSelected";
+		
+		public static const CLIENT_PROP_CHANGED:String = "clientPropChanged";
 		public var args:Array;
 		public function ViewEvent(type:String,...args)
 		{

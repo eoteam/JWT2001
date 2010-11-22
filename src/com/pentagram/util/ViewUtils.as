@@ -8,6 +8,8 @@ package com.pentagram.util
 	
 	import flash.utils.getDefinitionByName;
 	
+	import mx.collections.ArrayList;
+	
 	public class ViewUtils
 	{
 
@@ -41,6 +43,9 @@ package com.pentagram.util
 					}
 				}
 			}
+		}
+		public static function addRowToDataset(dataset:Dataset,item:Object,countries:ArrayList):void {
+			
 		}
 		public static function getCountryById(client:Client,countryid:int):Country {
 			var res:Country;

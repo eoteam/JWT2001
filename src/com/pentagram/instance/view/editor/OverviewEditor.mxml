@@ -11,6 +11,7 @@
 			import com.pentagram.controller.Constants;
 			import com.pentagram.model.vo.MimeType;
 			import com.pentagram.model.vo.Region;
+			import com.pentagram.view.event.ViewEvent;
 			
 			import mx.events.FlexEvent;
 			
@@ -19,24 +20,9 @@
 			
 			import spark.events.TextOperationEvent;
 
-			protected function countryList_selectHandler(event:CustomEvent):void {
-				if(client.countries.getItemIndex(event.data) == -1) {
-					client.countries.addItem(event.data);
-					client.newCountries.addItem(event.data);
-					for each(var region:Region in client.regions.source) {
-						if(region.id == event.data.region.id) {
-							region.countries.addItem(event.data);
-							break;
-						}
-					}
-				}
-			}
+
 			protected function handlePropChange(event:Event,prop:String):void {
-				if(client.modifiedProps.indexOf(prop) == -1) {
-					client.modifiedProps.push(prop);
-				}
-				client[prop] = event.target.text;
-				client.modified = true;
+				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,prop,event.target.text));
 			}
 		]]>
 	</fx:Script>
@@ -134,7 +120,7 @@
 				</s:Rect>
 				<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
 					<s:Label text="Total: {client.countries.length}" />
-					<components:AutoComplete  labelField="name" width="160" id="countryInput" select="countryList_selectHandler(event)"/>
+					<components:AutoComplete  labelField="name" width="160" id="countryInput"/>
 					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
 					<s:Rect width="100%" />
 					<s:Button label="- Delete" color="0xC61023" id="deleteBtn" />

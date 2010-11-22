@@ -5,6 +5,8 @@ package com.pentagram.services
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IInstanceService;
+	
+	import mx.collections.ArrayList;
 
 	public class InstanceService extends AbstractService implements IInstanceService
 	{
@@ -36,21 +38,57 @@ package com.pentagram.services
 			params.id = model.client.id;
 			this.createService(params,ResponseType.STATUS);
 		}
-		public function addClientCountry(country:Country):void {
+		public function addClientCountries(countries:ArrayList):void {
 			var params:Object = new Object();
-			params.action = "insertRecord";
+			params.action = "insertRecordsByKey";
 			params.tablename = "client_countries";
 			params.clientid = model.client.id;
-			params.countryid = country.id;
-			this.createService(params,ResponseType.STATUS);
+			params.manyfield = 'countryid';
+			var manyids:String = '';
+			for each(var country:Country in countries.source)
+				manyids += country.id+',';
+			manyids = manyids.substr(0,manyids.length-1);
+			params.manyids = manyids;
+			this.createService(params,ResponseType.DATA);
 		}
-		public function removeClientCountry(country:Country):void {
+		public function addDatasetCountries(dataset:Dataset,countries:ArrayList):void {
 			var params:Object = new Object();
-			params.action = "removeRecord";
+			params.action = "insertRecordsByKey";
+			params.tablename = dataset.tablename;
+			params.manyfield = 'countryid';
+			var manyids:String = '';
+			for each(var country:Country in countries.source)
+				manyids += country.id+',';
+			manyids = manyids.substr(0,manyids.length-1);
+			params.manyids = manyids;
+			this.createService(params,ResponseType.DATA);			
+		}
+
+		
+		public function removeClientCountries(countries:ArrayList):void {
+			var params:Object = new Object();
+			params.action = "deleteRecords";
 			params.tablename = "client_countries";
 			params.clientid = model.client.id;
-			params.countryid = country.id;
+			params.idfield = 'countryid';
+			var manyids:String = '';
+			for each(var country:Country in countries.source)
+				manyids += country.id+',';
+			manyids = manyids.substr(0,manyids.length-1);
+			params.idvalues = manyids;
 			this.createService(params,ResponseType.STATUS);
 		}
+		public function removeDatasetCountries(dataset:Dataset,countries:ArrayList):void {
+			var params:Object = new Object();
+			params.action = "deleteRecords";
+			params.tablename = dataset.tablename;
+			params.idfield = 'countryid';
+			var manyids:String = '';
+			for each(var country:Country in countries.source)
+				manyids += country.id+',';
+			manyids = manyids.substr(0,manyids.length-1);
+			params.idvalues = manyids;
+			this.createService(params,ResponseType.DATA);			
+		}	
 	}
 }

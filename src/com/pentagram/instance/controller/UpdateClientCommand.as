@@ -39,21 +39,29 @@ package com.pentagram.instance.controller
 				//appService.addProperties("client",client);
 				total++;
 			}
-			var country:Country
-			for each(country in model.client.newCountries.source) {
-				service.addClientCountry(country);
-				service.addHandlers(handleAddCountry);
-				//appService.addProperties("client",client);
-				service.addProperties("country",country);
+			var dataset:Dataset;
+			if(model.client.newCountries.length > 0) {
+				service.addClientCountries(model.client.newCountries);
+				service.addHandlers(handleAddClientCountry);
 				total++;
+				for each(dataset in model.client.datasets.source) {
+					service.addDatasetCountries(dataset,model.client.newCountries);
+					service.addProperties('dataset',dataset);
+					service.addHandlers(handleAddDatasetCountry);
+					total++;
+				}
 			}
-			for each(country in model.client.deletedCountries.source) {
-				service.removeClientCountry(country);
-				service.addHandlers(handleRemoveCountry);
-				//appService.addProperties("client",client);
-				service.addProperties("country",country);	
+			if(model.client.deletedCountries.length > 0) {
+				service.removeClientCountries(model.client.deletedCountries);
+				service.addHandlers(handleRemoveClientCountry);
 				total++;
-			}	
+				for each(dataset in model.client.datasets.source) {
+					service.removeDatasetCountries(dataset, model.client.deletedCountries);
+					service.addProperties('dataset',dataset);
+					service.addHandlers(handleRemoveDatasetCountry);
+					total++;
+				}
+			}
 		}
 		
 		private function handleClientSaved(event:ResultEvent):void {
@@ -66,25 +74,58 @@ package com.pentagram.instance.controller
 				//view.statusModule.updateStatus("Client Info Saved");
 			}
 		}
-		private function handleAddCountry(event:ResultEvent):void {
-			var country:Country = event.token.client as Country;
-			var result:StatusResult = event.token.results as StatusResult;
-			if(result.success) {
-				model.client.newCountries.removeItem(country);
-				counter++;
-				checkCount();
+		private function handleAddClientCountry(event:ResultEvent):void {
+			model.client.newCountries.removeAll();				
+			counter++;
+			checkCount();
+		}
+		private function handleRemoveClientCountry(event:ResultEvent):void {
+			model.client.deletedCountries.removeAll();				
+			counter++;
+			checkCount();
+		}	
+		private function handleAddDatasetCountry(event:ResultEvent):void {
+			var rows:Array = event.token.results as Array;
+			var dataset:Dataset = event.token.dataset as Dataset;
+			for each(var item:Object in rows) {
+				for each(var country:Country in model.client.countries.source) {
+					if(country.id == item.countryid) {
+						var row:DataRow = new DataRow();
+						row = new DataRow();
+						row.name = country.name;
+						row.xcoord = country.xcoord/849;
+						row.ycoord = -country.ycoord/337;
+						row.country = country;
+						row.id = Number(item.id);
+						row.color = country.region.color;
+						row.dataset = dataset;
+						if(dataset.time == 1) {
+							for(var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+								row[i] = dataset.type == 1 ? 0:'';
+							}
+						}
+						else
+							row.value = dataset.type == 1 ? 0:'';
+						dataset.rows.addItem(row);
+						break;
+					}
+				}
+			}
+			counter++;
+			checkCount();
+		}
+		private function handleRemoveDatasetCountry(event:ResultEvent):void {
+			var dataset:Dataset = event.token.dataset as Dataset;
+			var cids:Array = event.token.params.idvalues.toString().split(',');
+			for each(var id:int in cids) {
+				for each(var row:DataRow in dataset.rows) {
+					if(row.country.id == id) {
+						dataset.rows.removeItemAt(dataset.rows.getItemIndex(row));
+						break;
+					}
+				}
 			}
 		}
-		private function handleRemoveCountry(event:ResultEvent):void {
-			var country:Country = event.token.client as Country;
-			var result:StatusResult = event.token.results as StatusResult;
-			if(result.success) {
-				model.client.deletedCountries.removeItem(country);
-				model.client.countries.removeItem(country);
-				counter++;
-				checkCount();
-			}
-		}	
 
 		private function checkCount():void {
 			if(counter == total) {

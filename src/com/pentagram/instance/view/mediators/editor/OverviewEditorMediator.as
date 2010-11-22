@@ -17,6 +17,7 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
 	
+	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.DropDownEvent;
@@ -34,11 +35,14 @@ package com.pentagram.instance.view.mediators.editor
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientSelected,VisualizerEvent);
-						
+			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
+			
+			
 			view.client = model.client;
 			view.countryInput.dataProvider = model.countries.source;
+			view.countryInput.addEventListener(CustomEvent.SELECT,countryList_selectHandler,false,0,true);
 			view.continentList.dataProvider = model.regions;	
-			view.continentList.addEventListener(DropDownEvent.CLOSE,handleContinentSelection,false,0,true);
+			view.continentList.addEventListener(DropDownEvent.CLOSE,handleContinentSelection,false,0,true);		
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDeleteCountries,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			
@@ -64,7 +68,12 @@ package com.pentagram.instance.view.mediators.editor
 						model.client.countries.addItem(country);
 					if(model.client.newCountries.getItemIndex(country) == -1) 
 						model.client.newCountries.addItem(country);
-					
+					for each(var region:Region in model.client.regions.source) {
+						if(region.id == country.region.id) {
+							region.countries.addItem(country);
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -99,6 +108,27 @@ package com.pentagram.instance.view.mediators.editor
 					
 				}
 			}
+		}
+		protected function countryList_selectHandler(event:CustomEvent):void {
+			if(model.client.countries.getItemIndex(event.data) == -1) {
+				model.client.countries.addItem(event.data);
+				model.client.newCountries.addItem(event.data);
+				for each(var region:Region in model.client.regions.source) {
+					if(region.id == event.data.region.id) {
+						region.countries.addItem(event.data);
+						break;
+					}
+				}
+			}
+		}
+		protected function handlePropChange(event:ViewEvent):void {
+			var prop:String = event.args[0] as String;
+			var value:String = event.args[1] as String;
+			if(model.client.modifiedProps.indexOf(prop) == -1) {
+				model.client.modifiedProps.push(prop);
+			}
+			model.client[prop] = value;
+			model.client.modified = true;
 		}
 	}
 }

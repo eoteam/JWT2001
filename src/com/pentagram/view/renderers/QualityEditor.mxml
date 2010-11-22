@@ -14,7 +14,9 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.DataRow;
+			import com.pentagram.view.event.ViewEvent;
 			
+			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
 			
@@ -41,15 +43,15 @@
 			override public function get data():Object {
 				return value;
 			}
-			protected function dgdefaultrenderer1_keyDownHandler(event:KeyboardEvent):void {
+			private function dgdefaultrenderer1_keyDownHandler(event:KeyboardEvent):void {
 				if(event.keyCode == Keyboard.ENTER)
 					defaultgriditemrenderer1_mouseDownHandler(event);
 			}
-			protected function defaultgriditemrenderer1_creationCompleteHandler(event:FlexEvent):void {
+			private function defaultgriditemrenderer1_creationCompleteHandler(event:FlexEvent):void {
 				if(value)
 					labelDisplay.text = value;
 			}
-			protected function defaultgriditemrenderer1_mouseDownHandler(event:Event):void {
+			private function defaultgriditemrenderer1_mouseDownHandler(event:Event):void {
 				create = true;
 				if(!input) {
 					input = new AutoComplete();
@@ -61,12 +63,23 @@
 					input.addEventListener(FlexEvent.ENTER,handleFocusOut,false,0,true);
 					input.addEventListener(FlexEvent.CREATION_COMPLETE,handleInputCreated);
 					input.x = x; input.y = 	y;
+					Group(this.owner.parent).addElement(input);
+					var f:Group = this.owner.parent.parent.parent.parent.parent.parent as Group;
+					f.addEventListener(MouseEvent.CLICK,checkMouseOut,false,0,true);
+					UIComponent(this.owner).addEventListener(ViewEvent.CELL_SELECTED,handleMouseOut,false,0,true);
+					UIComponent(this.owner).dispatchEvent(new ViewEvent(ViewEvent.CELL_SELECTED,this)); 
 				}
-				Group(this.owner.parent).addElement(input);
+				
 				//PopUpManager.addPopUp(input,this,false);
 			}
-			protected function handleFocusOut(event:Event):void {
+			private function handleFocusOut(event:Event):void {
 				if(input) {
+					var f:Group = this.owner.parent.parent.parent.parent.parent.parent as Group;
+					f.removeEventListener(MouseEvent.CLICK,checkMouseOut);
+					UIComponent(this.owner).removeEventListener(ViewEvent.CELL_SELECTED,handleMouseOut);
+
+					
+					create = false;
 					value = row.value = input.text;
 					var exists:Boolean = false;
 					for each(var option:Object  in row.dataset.optionsArray) {
@@ -91,10 +104,20 @@
 					input = null;
 				}
 			}
-			protected function handleInputCreated(event:FlexEvent):void {
-				
+			private function handleInputCreated(event:FlexEvent):void {
+				input.text = value;
 				input.inputTxt.setFocus();
-				input.inputTxt.selectRange(input.inputTxt.selectionActivePosition,input.inputTxt.selectionActivePosition);	
+				input.callLater(function adjust():void {
+					input.inputTxt.selectRange(input.inputTxt.selectionActivePosition,input.inputTxt.selectionActivePosition);	
+				});
+			}
+			private function handleMouseOut(event:ViewEvent):void {
+				if(event.args[0] != this && create == true) {
+					handleFocusOut(event);
+				}
+			}
+			private function checkMouseOut(event:MouseEvent):void {
+				handleFocusOut(event);
 			}
 			
 		]]>

@@ -2,6 +2,9 @@ package com.pentagram.services.interfaces
 {
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
+	import com.pentagram.model.vo.Dataset;
+	
+	import mx.collections.ArrayList;
 
 	public interface IInstanceService extends IService
 	{
@@ -11,9 +14,12 @@ package com.pentagram.services.interfaces
 		
 		function saveClientInfo():void;
 		
-		function addClientCountry(country:Country):void;
+		function addClientCountries(countries:ArrayList):void;
+		function removeClientCountries(ountries:ArrayList):void;
 		
-		function removeClientCountry(country:Country):void;
+		function addDatasetCountries(dataset:Dataset,countries:ArrayList):void;
+		function removeDatasetCountries(dataset:Dataset,countries:ArrayList):void;
+		
 	
 	}
 }
