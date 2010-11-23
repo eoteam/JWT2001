@@ -119,7 +119,7 @@
 					</s:fill>
 				</s:Rect>
 				<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
-					<s:Label text="Total: {client.countries.length}" />
+					<s:Label id="countryTotal" text="Total: {client.countries.length}" />
 					<components:AutoComplete  labelField="name" width="160" id="countryInput"/>
 					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
 					<s:Rect width="100%" />

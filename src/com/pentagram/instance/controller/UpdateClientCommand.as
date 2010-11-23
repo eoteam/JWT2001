@@ -125,6 +125,8 @@ package com.pentagram.instance.controller
 					}
 				}
 			}
+			counter++;
+			checkCount();
 		}
 
 		private function checkCount():void {
