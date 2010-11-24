@@ -13,50 +13,7 @@ package com.pentagram.util
 	public class ViewUtils
 	{
 
-		public static function parseData(data:Array,dataset:Dataset,client:Client):void {
-			var prop:String;
-			var item:Object;
-			var row:DataRow;
-			var rowCell:DataCell;
-			var colCell:DataCell;
-			
-			for each(var country:Country in client.countries.source) {
-				for each(item in data) {
-					if(item.countryid == country.id.toString()) {
-						row = new DataRow();
-						row.name = country.name;
-						row.xcoord = country.xcoord/849;
-						row.ycoord = -country.ycoord/337;
-						row.country = country;
-						row.id = Number(item.id);
-						row.color = country.region.color;
-						row.dataset = dataset;
-						for(prop in item) { 
-							if(prop != 'id' && prop != 'countryid') {
-								if(dataset.time == 1)
-									row[prop.toString()] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
-								else row.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
-							}
-						}
-						dataset.rows.addItem(row);
-						break;
-					}
-				}
-			}
-		}
-		public static function addRowToDataset(dataset:Dataset,item:Object,countries:ArrayList):void {
-			
-		}
-		public static function getCountryById(client:Client,countryid:int):Country {
-			var res:Country;
-			for each(var country:Country in client.countries.source) {
-				if(country.id == countryid) {
-					res = country;
-					break;
-				}
-			}
-			return res;
-		}
+
 		public static function instantiateClass(className:String):*
 		{
 			var instance:*;

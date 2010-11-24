@@ -71,7 +71,7 @@ package flex.utils.spark.resize {
 
 		private var startHeight:Number;
 
-		[Embed(source="/assets/cursor_resize.gif")]
+		[Embed(source="/assets/icons/cursor_resize.gif")]
 		public var resizeCursorIcon:Class;
 
 		private var resizeCursorID:int;

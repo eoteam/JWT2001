@@ -5,31 +5,31 @@
 @namespace wscontainers "ws.tink.spark.containers.*";
 
 @font-face {
-	src: url("/assets/FlamaBook.ttf");
+	src: url("/assets/fonts/FlamaBook.ttf");
     font-family: "FlamaBook";
 	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 }
 /* @font-face {
-	src: url("/assets/FlamaBookIta.ttf");
+	src: url("/assets/fonts/FlamaBookIta.ttf");
     font-family: "FlamaBookItalic";
 	embedAsCFF: true;
 	advancedAntiAliasing: true;     	
 } */
 @font-face {
-	src: url("/assets/FlamaMedium.ttf");
+	src: url("/assets/fonts/FlamaMedium.ttf");
     font-family: "FlamaMedium";
 	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 } 
 @font-face {
-	src: url("/assets/FlamaBold.ttf");
+	src: url("/assets/fonts/FlamaBold.ttf");
     font-family: "FlamaBold";
 	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 } 
 @font-face {
-	src: url("/assets/FlamaBook.ttf");
+	src: url("/assets/fonts/FlamaBook.ttf");
 	font-family: "FlamaBookMx";
 	embedAsCFF: false;
 	advancedAntiAliasing: true;      

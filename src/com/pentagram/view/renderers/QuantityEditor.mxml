@@ -52,6 +52,7 @@
 					input.addEventListener(FlexEvent.CREATION_COMPLETE,handleInputCreated);
 					input.addEventListener(MouseEvent.ROLL_OUT,handleFocusOut,false,0,true);
 					input.addEventListener(FlexEvent.ENTER,handleFocusOut,false,0,true);
+		
 					var pt:Point = this.owner.localToGlobal(new Point(x,y));
 					input.x = pt.x; input.y = pt.y;
 				}

@@ -41,23 +41,14 @@
 		<s:Rect height="8" />
 		<s:Label text="Data Sets" />
 		<s:Rect height="4"/>
-		<!--<s:Group width="100%">-->
-			<s:List width="100%" dataProvider="{client.datasets}" labelField="name"
-			alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC"  change="dataSetList_changeHandler(event)" />			
-			<!--<s:Group id="createSetPrompt" top="0" bottom="0" left="0" right="0" visible="false" hideEffect="{fadeOut}" showEffect="{fadeIn}">
-				<s:Rect top="0" bottom="0" left="0" right="0" >
-					<s:fill>
-						<s:SolidColor color="0" alpha="0.8"/>
-					</s:fill>
-				</s:Rect>
-				<s:Label textAlign="center" color="0xffffff" left="0" right="0" horizontalCenter="0" verticalCenter="0" text="Drop CSV file here to create a new set"  />
-			</s:Group>
-			
-		</s:Group>-->
 
+		<s:List width="100%" dataProvider="{client.datasets}" labelField="name"
+		change="dataSetList_changeHandler(event)"
+		alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC" />			
+		
 		<s:HGroup width="100%" gap="0">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" />
-			<s:Button width="100%" label="- Delete" />
+			<s:Button width="100%" label="- Delete" id="deleteListBtn" />
 		</s:HGroup>
 	</s:VGroup>
 	<s:Rect width="20" />

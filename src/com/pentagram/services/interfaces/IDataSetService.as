@@ -11,6 +11,8 @@ package com.pentagram.services.interfaces
 		
 		function deleteDataset(dataset:Dataset):void;
 		
+		function updateDataset(dataset:Dataset):void;
+		
 		function updateDataRow(row:DataRow):void;
 	}
 }

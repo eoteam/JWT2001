@@ -77,8 +77,6 @@
 					var f:Group = this.owner.parent.parent.parent.parent.parent.parent as Group;
 					f.removeEventListener(MouseEvent.CLICK,checkMouseOut);
 					UIComponent(this.owner).removeEventListener(ViewEvent.CELL_SELECTED,handleMouseOut);
-
-					
 					create = false;
 					value = row.value = input.text;
 					var exists:Boolean = false;
@@ -88,10 +86,11 @@
 							break;
 						}
 					}
-					if(!exists) {
+					if(!exists && input.text != '') {
 						row.dataset.modified = true;
 						row.dataset.optionsArray.push({item:value});
 						row.dataset.options += ","+value;
+						trace(row.dataset.options);
 					}	
 					
 					if(row.dataset.modifiedProps.indexOf("options") == -1)	

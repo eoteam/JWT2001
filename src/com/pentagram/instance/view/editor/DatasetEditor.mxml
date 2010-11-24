@@ -75,24 +75,28 @@
 				countryList.dataProvider = dataset.rows;
 				
 			}
-			protected function handlePropChange(event:Event,prop:String):void {
+			private function handlePropChange(event:Event,prop:String,target:String):void {
 				if(dataset.modifiedProps.indexOf(prop) == -1) {
 					dataset.modifiedProps.push(prop);
 				}
-				dataset[prop] = event.target.text;
+				dataset[prop] = event.target[target];
 				dataset.modified = true;
 			}
-			
-			
-			
+			private function handleScaleChange(event:Event):void {
+				if(dataset.modifiedProps.indexOf('multiplier') == -1) {
+					dataset.modifiedProps.push('multiplier');
+				}
+				dataset.multiplier = scaleInput.selectedItem.value as Number;
+				dataset.modified = true;
+			}
 			//DG functions
-			protected function handler(event:Event):void
+			private function handler(event:Event):void
 			{
 				var group:DataGroup = grid.columnHeaderBar.dataGroup;
 				group.addEventListener(RendererExistenceEvent.RENDERER_ADD,handleColumnButtonAdd);
 				group.addEventListener(RendererExistenceEvent.RENDERER_REMOVE,handleColumnButtonRemove);				
 			}
-			protected function handleDG(event:Event):void {
+			private function handleDG(event:Event):void {	
 				var group:DataGroup = grid.columnHeaderBar.dataGroup;	
 				for (var i:int=0;i<group.numElements;i++) {
 					var b:Button = group.getElementAt(i) as Button;
@@ -101,20 +105,15 @@
 						b.addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
 					}
 				}
-				//grid.columnHeaderBar.layout.useVirtualLayout = false;
-				//grid.columnHeaderBar.addEventListener(MouseEvent.MOUSE_OVER,handleGridMouseOver)
-				//grid.scroller.horizontalScrollBar.addEventListener(Event.CHANGE, handler, false, 0, true);
-				//grid.scroller.horizontalScrollBar.addEventListener(FlexEvent.VALUE_COMMIT, handler, false, 0, true);
 			}
-			protected function handleColumnButtonAdd(event:RendererExistenceEvent):void {
-				//Button(event.renderer).setStyle('skinClass',com.pentagram.view.skins.ColumnHeaderSkin);
+			private function handleColumnButtonAdd(event:RendererExistenceEvent):void {
 				Button(event.renderer).mouseEnabled = true;
 				Button(event.renderer).addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
 			}
-			protected function handleColumnButtonRemove(event:RendererExistenceEvent):void {
+			private function handleColumnButtonRemove(event:RendererExistenceEvent):void {
 				Button(event.renderer).removeEventListener(MouseEvent.CLICK,handleColumnButtonClick);
 			}
-			protected function handleColumnButtonClick(event:MouseEvent):void {
+			private function handleColumnButtonClick(event:MouseEvent):void {
 				hscrollValue = grid.scroller.horizontalScrollBar.value;
 				vscrollValue = grid.scroller.verticalScrollBar.value;
 				var sort:Sort = new Sort();
@@ -127,6 +126,9 @@
 				grid.scroller.horizontalScrollBar.value = hscrollValue;
 				grid.scroller.verticalScrollBar.value = vscrollValue;
 			}
+			[Bindable] private var scaleFactors:ArrayList = new ArrayList( [{label:'None',value:1},{label:'Thousands',value:1000},
+				{label:'Millions',value:1000000},{label:'Billions',value:1000000000},	 
+				{label:'Trillions',value:1000000000*100}]);
 		]]>
 	</fx:Script>
 	<s:states>
@@ -141,16 +143,32 @@
 		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>
 		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
 		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
+		<s:ArrayList id="units">
+			<fx:Array>
+				<fx:String>US Dollars ($)</fx:String>
+				<fx:String>Euros</fx:String>
+				<fx:String>Percent (%)</fx:String>
+				<fx:String>None</fx:String>
+			</fx:Array>				
+		</s:ArrayList>
 	</fx:Declarations>
 
 	<s:HGroup verticalAlign="top" width="90%">
 		<s:Label text="Data Set Title" width="100" />
-		<s:TextInput width="100%" text="{dataset.name}"  change="handlePropChange(event,'name')" />
+		<s:TextInput width="100%" text="{dataset.name}"  change="handlePropChange(event,'name','text')" />
 	</s:HGroup>
+	
 	<s:HGroup verticalAlign="top" width="90%">
 		<s:Label text="Description" width="100" />
-		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}"  change="handlePropChange(event,'description')"/>	
+		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}" change="handlePropChange(event,'description','text')"/>	
 	</s:HGroup>		
+	
+	<s:HGroup verticalAlign="top" width="90%">
+		<s:Label text="Units" width="100" />
+		<s:DropDownList id="scaleInput" dataProvider="{scaleFactors}" labelField="label" change="handleScaleChange(event)" />
+		<s:Label text="of " />
+		<s:DropDownList selectedIndex="{units.getItemIndex(dataset.unit)}" dataProvider="{units}" labelField="label" change="handlePropChange(event,'unit','selectedItem')" />
+	</s:HGroup>	
 	
 	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
 		<s:Label text="Data Set" width="100" />

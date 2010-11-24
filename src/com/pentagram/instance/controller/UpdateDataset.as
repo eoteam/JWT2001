@@ -22,6 +22,11 @@
 		
 		override public function execute():void {
 			if(model.selectedSet) {
+				if(model.selectedSet.modified) {
+					service.updateDataset(model.selectedSet);
+					service.addHandlers(handleDatasetUpdated);
+					total++;
+				}
 				for each(var row:DataRow in model.selectedSet.rows) {
 					if(row.modified) {
 						service.updateDataRow(row);
@@ -39,6 +44,13 @@
 			counter++;
 			checkCount();
 		}
+		private function handleDatasetUpdated(event:ResultEvent):void {
+			model.selectedSet.modified = false;
+			model.selectedSet.modifiedProps = [];
+			counter++;
+			checkCount();			
+		}
+		
 		private function checkCount():void {
 			if(counter == total) {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_UPDATED)); 

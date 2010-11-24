@@ -48,6 +48,16 @@ package com.pentagram.services
 			params.id = dataset.id;
 			this.createService(params,ResponseType.STATUS);			
 		}
+		public function updateDataset(dataset:Dataset):void {
+			var params:Object = new Object();
+			params.action = "updateRecord";
+			params.tablename = "datasets";
+			for each(var prop:String in dataset.modifiedProps) {
+				params[prop] = dataset[prop];
+			}
+			params.id = dataset.id;
+			this.createService(params,ResponseType.STATUS);				
+		}
 		public function updateDataRow(row:DataRow):void {
 			var params:Object = new Object();
 			params.action = "updateRecord";
@@ -56,7 +66,6 @@ package com.pentagram.services
 			for each(var prop:String in row.modifiedProps)
 				params[prop.toString()] = row[prop];
 			this.createService(params,ResponseType.STATUS);
-			
 		}
 	}
 }

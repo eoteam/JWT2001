@@ -65,6 +65,8 @@ package com.pentagram.instance.view.mediators.editor
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_COMPLETE,onDragComplete,false,0,true);
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
 			view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,dataSetList_nativeDragDropHandler,false,0,true);
+			
+			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
@@ -100,11 +102,17 @@ package com.pentagram.instance.view.mediators.editor
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");
 			if(model.client.datasets.length == 0) {
-				view.datasetEditor.dataset = null;
+				if(view.datasetEditor)
+					view.datasetEditor.dataset = null;
 				view.currentState = view.overviewState.name;
 			}
-			else
+			else {
 				view.dataSetList.selectedIndex = 0;
+				if(view.datasetEditor) {
+					view.datasetEditor.dataset = model.client.datasets.getItemAt(0) as Dataset;
+					view.datasetEditor.generateDataset();
+				}
+			}
 		}
 		private function handleDatasetChange(event:IndexChangeEvent):void {
 			model.selectedSet = view.dataSetList.selectedItem as Dataset;
@@ -148,6 +156,9 @@ package com.pentagram.instance.view.mediators.editor
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 				readFile(files[0] as File);
 			}
+		}
+		private function deleteDatasets(event:Event):void {
+			
 		}
 		private function readFile(file:File):void {
 			var fs:FileStream = new FileStream();
@@ -249,8 +260,7 @@ package com.pentagram.instance.view.mediators.editor
 				}
 			}
 			dataset.type = isNumeric;
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
-							
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));				
 		}		
 	}
 }

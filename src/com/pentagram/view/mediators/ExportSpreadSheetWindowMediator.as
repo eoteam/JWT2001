@@ -64,7 +64,7 @@ package com.pentagram.view.mediators
 			fr.addEventListener(Event.CANCEL,onCancel);
 			fr.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			fr.save(content, view.titlePrompt.title+'.csv');
-			view.close();
+			//view.close();
 		}
 		
 		/***** File Save Event Handlers ******/
@@ -75,7 +75,8 @@ package com.pentagram.view.mediators
 			
 			trace("File Saved");
 			fr = null;
-			view.reset();
+			view.close();
+			//view.reset();
 		}
 		
 		//called if the user cancels out of the file save dialog

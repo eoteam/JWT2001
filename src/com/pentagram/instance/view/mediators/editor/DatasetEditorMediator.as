@@ -24,6 +24,7 @@ package com.pentagram.instance.view.mediators.editor
 			view.client = model.client;
 			eventMap.mapListener(eventDispatcher,EditorEvent.UPDATE_CLIENT_DATA,saveDataset,EditorEvent);
 			view.dataset = model.selectedSet;
+			
 			view.generateDataset();
 		}
 		public function saveDataset(event:Event):void {

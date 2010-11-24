@@ -104,6 +104,9 @@ package com.pentagram.model
 			w = null;
 			dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_REMOVED));
 			currentWindow = null;
+			if(NativeWindow.supportsMenu && windowMap.size() == 0 ) {
+				NativeApplication.nativeApplication.exit();
+			}
 		}
 		
 		/**

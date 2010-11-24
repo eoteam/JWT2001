@@ -7,6 +7,8 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
 				xmlns:util="com.pentagram.util.*"
+				toolTip=" " 
+				toolTipCreate="createCustomTip(event)"
 				rollOver="itemrenderer1_rollOverHandler(event)" 
 				rollOut="itemrenderer1_rollOutHandler(event)"
 				 click="itemrenderer1_clickHandler(event)">
@@ -17,10 +19,21 @@
 			
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
+			import mx.events.ToolTipEvent;
+			import mx.managers.ToolTipManager;
 			
 			import spark.components.List;
 
-
+			private function createCustomTip(event:ToolTipEvent):void {
+		
+				var ptt:YearListRendererToolTip = new YearListRendererToolTip();
+				ptt.bodyText = data.year;
+				var pt:Point = this.localToGlobal(new Point(x,y));
+				//ToolTipManager.createToolTip(-30,-30,);
+				//ptt.x=pt.x-35; ptt.y=-pt.y-height-300;
+				event.toolTip = ptt;
+				//this.addEventListener(
+			}
 
 			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
 			{
@@ -142,29 +155,6 @@
 	</s:transitions>
 
 
-	<s:PopUpAnchor id="popUp"  displayPopUp.normal="false" displayPopUp.popupState="true" includeIn="popupState"
-   itemDestructionPolicy="auto" x="-35" y="-5"
-   popUpPosition="above" popUpWidthMatchesAnchorWidth="true">
-		<s:Group top="0" right="0" bottom="0" left="0">
-			<s:Group id="allContent" width="60" height="30">
-				<s:Rect id="bg" top="0" right="0" bottom="0" left="0" radiusX="3" radiusY="3" >
-					<s:fill>
-						<s:SolidColor id="bgColor" color="0x121212" />
-					</s:fill>
-				</s:Rect>
-				<s:Label text="{this.data.year}" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
-			</s:Group>
-			<s:Path id="arrow" x="25" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
-				<s:fill>
-					<s:SolidColor id="arrowColor" color="0"/>
-				</s:fill>
-			</s:Path>
-		</s:Group>
-		
-		<s:filters>
-			<s:DropShadowFilter quality="1" strength=".75" color="0" />
-		</s:filters>		
-	</s:PopUpAnchor>
 	
 	<s:Rect width="8" height="30"  radiusX="4" radiusY="4" rotation="180" verticalCenter="0" id="bar">
 		<s:fill>
