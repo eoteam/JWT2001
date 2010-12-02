@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				xmlns:modules="ws.tink.spark.modules.*"
+				implements="com.pentagram.instance.view.visualizer.IGraphView" >
+	<fx:Declarations>
+		<mx:SeriesInterpolate id="eff" 
+		elementOffset="{eo.value}" minimumElementDuration="{med.value}" duration="{dur.value}"/>
+		
+
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import flare.vis.data.Data;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.ArrayList;
+			
+			private var _visdata:Data;
+			private var darr:Array;
+			public function set visdata(d:Data):void {
+				_visdata = d;
+			}
+			public function get visdata():Data {
+				return _visdata;
+			}
+			
+			private var _continous:Boolean = false;
+			public function set continous(value:Boolean):void{
+				_continous = value;
+				if(_continous == false) {
+					pause();
+				}
+				else {
+					resume();
+				}
+			}
+			public function get continous():Boolean{
+				return _continous;
+			}
+				
+			public function visualize(arr:Array,...props):void {	
+				darr = arr;
+				var prop1:String = props[0] ? props[0].name : null;
+				var prop2:String = props[1] ? props[1].name : null;
+				var prop3:String = props[2] ? props[2].name : null;
+				var prop4:String = props[3] ? props[3].name : null;
+				
+				bubbleSeries.xField = prop1;
+				bubbleSeries.yField = prop2;
+				if(prop3) {
+					bubbleSeries.radiusField = prop3;
+				}
+				bubbleChart.dataProvider = arr;
+			}
+			public function update():void {
+				for each(var item:Object in bubbleChart.dataProvider) {
+					item.Branches = item.Branches + Math.round(Math.random()*100-50);
+				}
+				//ArrayCollection(bubbleChart.dataProvider).refresh();
+				//bubbleChart.dataProvider = darr;
+			}
+			public function updateMaxRadius(value:Number):void {
+				
+			}
+
+			public function unload():void {
+
+			}
+			public function resume():void {
+
+			}
+			public function pause():void {
+			
+			}
+		]]>
+	</fx:Script>
+	<modules:layout>
+		<s:HorizontalLayout />
+	</modules:layout>
+	<s:VGroup paddingLeft="10">
+		<s:Button label="data size:"  click="update()"/>
+<!--		<s:HSlider width="100" minimum="0" maximum="200" value="20" snapInterval="1" liveDragging="true" id="dataCount" change="update()" />
+		<s:Label text="duration:" />
+		<s:HSlider width="100" minimum="0" maximum="5000" value="1000"  liveDragging="true" id="dur" change="update()" />
+		<s:Label text="minimum element duration:" />	
+		<s:HSlider width="100" minimum="0" maximum="500"  value="200" liveDragging="true" id="med" change="update()" />
+		<s:Label text="element offset:" />
+		<s:HSlider width="100" minimum="-500" maximum="500"  value="30" liveDragging="true" id="eo" change="update()" />
+		<s:Label text="horizontal focus:" />
+		<s:ComboBox id="hFocus" selectedIndex="1" dataProvider="{new ArrayList([ '','center','left','right'])}" change="update()" />
+		<s:Label text="vertical focus:" />
+		<s:ComboBox id="vFocus" selectedIndex="1" dataProvider="{new ArrayList([ '','center','top','bottom'])}" change="update()" />
+		<s:Label text="relative to:" />
+		<s:ComboBox id="rTo" selectedIndex="1" dataProvider="{new ArrayList([ 'chart','series'])}" change="update()" />	-->		
+		<s:HSlider width="100" minimum="0" maximum="200" value="20" snapInterval="1" liveDragging="true" id="dataCount" />
+		<s:Label text="duration:" />
+		<s:HSlider width="100" minimum="0" maximum="5000" value="1000"  liveDragging="true" id="dur" />
+		<s:Label text="minimum element duration:" />
+		<s:HSlider width="100" minimum="0" maximum="500"  value="200" liveDragging="true" id="med"/>
+		<s:Label text="element offset:" />
+		<s:HSlider width="100" minimum="-500" maximum="500"  value="30" liveDragging="true" id="eo" />
+
+	</s:VGroup>
+
+	<mx:BubbleChart width="100%" height="100%" id="bubbleChart" gutterBottom="4" gutterLeft="4" gutterRight="4" gutterTop="4">
+		<mx:series>
+			<mx:BubbleSeries id="bubbleSeries" showDataEffect="{eff}" hideDataEffect="{eff}" filterData="false"
+			itemRenderer="com.pentagram.view.renderers.BubbleChartRenderer" />
+		</mx:series>
+		<mx:horizontalAxis>
+			<mx:LinearAxis id="xAxis" />
+		</mx:horizontalAxis>
+		<mx:verticalAxis>
+			<mx:LinearAxis id="yAxis" />
+		</mx:verticalAxis>
+	</mx:BubbleChart>
+		
+</modules:Module>

@@ -51,8 +51,8 @@ package com.pentagram.instance.model
 					if(item.countryid == country.id.toString()) {
 						row = new DataRow();
 						row.name = country.name;
-						row.xcoord = country.xcoord/849;
-						row.ycoord = -country.ycoord/337;
+						row.xcoord = country.xcoord;
+						row.ycoord = country.ycoord;
 						row.country = country;
 						row.id = Number(item.id);
 						row.color = country.region.color;
