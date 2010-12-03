@@ -7,6 +7,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.shell.ShellView;
 	import com.pentagram.instance.view.visualizer.IGraphView;
 	import com.pentagram.instance.view.visualizer.IMapView;
+	import com.pentagram.instance.view.visualizer.IVisualizer;
 	import com.pentagram.instance.view.visualizer.ModuleUtil;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.User;
@@ -25,6 +26,7 @@ package com.pentagram.instance.view.mediators.shell
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.components.Group;
+	import spark.components.NavigatorContent;
 	import spark.events.DropDownEvent;
 	import spark.events.IndexChangeEvent;
 	
@@ -51,14 +53,15 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
 			//view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
-			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
+			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
 			view.tools.initTools();
 		
 
 			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
 			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
 			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
-
+			view.tools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			
 			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -122,9 +125,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(view.tools.currentState == "graph") {
 				view.tools.firstSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
 				view.tools.secondSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-				
-				view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-				view.tools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+				view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);			
 			}
 		}
 			
@@ -270,7 +271,8 @@ package com.pentagram.instance.view.mediators.shell
 			
 		}
 		private function handleMaxRadius(event:Event):void {
-			view.graphView.updateMaxRadius(view.tools.maxRadiusSlider.value);
+			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
+			viz.updateMaxRadius(view.tools.maxRadiusSlider.value);
 		}
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;

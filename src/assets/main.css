@@ -60,3 +60,9 @@ controls|PromptingTextInput {
 controls|Drawer {
 	skinClass:ClassReference('com.pentagram.view.skins.DrawerSkin');  
 }
+s|Scroller {
+	skinClass: ClassReference('com.pentagram.skins.scrollers.ScrollBarSkin');
+}
+s|TextInput {
+	skinClass: ClassReference('com.pentagram.skins.controls.TextInput');
+}

@@ -21,7 +21,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 
 		private const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		private const FILL_ALPHAS:Array = [0.5,0.5];
+		private const FILL_ALPHAS:Array = [0.8,0.8];
 		private const FILL_RATIO:Array = [0,255];
 
 		public function CircleSprite(point:DataRow,fColors:Array,radius:Number=0,x:Number=0,y:Number=0) {		
@@ -177,6 +177,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			graphics.clear();
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
+			graphics.lineStyle(_lineWidth,_lineColor,1);
 			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],FILL_ALPHAS,FILL_RATIO,matr)			
 			graphics.drawCircle(0, 0, _radius);
 			graphics.endFill();		

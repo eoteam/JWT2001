@@ -74,7 +74,7 @@
 			</primatives:stroke>
 		</primatives:Line>
 		
-		<s:HSlider minimum="1" maximum="50" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01" includeIn="graph" />
+		<s:HSlider minimum="1" maximum="50" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>
 		
 	</s:HGroup>
 	

@@ -37,23 +37,7 @@
             /**
              *  @private
              */
-            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
-            {
-                // Push backgroundColor and backgroundAlpha directly.
-                // Handle undefined backgroundColor by hiding the background object.
-                if (isNaN(getStyle("backgroundColor")))
-                {
-                    background.visible = false;
-                }
-                else
-                {
-                    background.visible = true;
-                    bgFill.color = getStyle("backgroundColor");
-                    bgFill.alpha = getStyle("backgroundAlpha");
-                }
-                
-                super.updateDisplayList(unscaledWidth, unscaledHeight);
-            }
+
         ]]>        
     </fx:Script>
     
@@ -63,12 +47,17 @@
     </s:states>
     
     <!--- Defines the appearance of the SkinnableContainer class's background. -->
-    <s:Rect id="background" left="0" right="0" top="0" bottom="0">
-        <s:fill>
-            <!--- @private -->
-            <s:SolidColor id="bgFill" color="#333333"/>
-        </s:fill>
-    </s:Rect>
+	<s:Rect id="background" left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="29.617" x="393" y="45.971">
+				<s:GradientEntry alpha="1.0" color="#585959" ratio="0.027450980392156862"/>
+				<s:GradientEntry alpha="1.0" color="#636363" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+		 	<s:DropShadowFilter alpha="0.5" angle="90" blurX="4.0" blurY="4.0" color="0x000000" distance="4.0" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Rect>
     
     <!--
         Note: setting the minimum size to 0 here so that changes to the host component's

@@ -7,6 +7,8 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenNano;
+			import com.greensock.easing.Expo;
 			import com.pentagram.instance.view.visualizer.renderers.CircleSprite;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
@@ -32,23 +34,46 @@
 			import spark.primitives.Graphic;
 			
 			protected var renderers:Array = [];
+			protected var maxRadius:Number = 25;
+			protected var dataset:Dataset;
+			protected var currentYear:int;
+			
 			public function toggleMap(visible:Boolean):void {
 				if(map)
 					map.visible = visible;
 			}
 			private var firstPass:Boolean = true;
-			public function visualize(dataset:Dataset):void {		
-				if(firstPass) {
-					
-					for each(var row:DataRow in dataset.rows) {
-						var c:CircleSprite = new CircleSprite(row,[0xff4455,0xff6677],5,row.xcoord*width/939.747,row.ycoord*height/394.863);
-						this.addElement(c);
+			public function visualize(dataset:Dataset):void {
+				this.dataset = dataset;
+				trace(dataset.max,dataset.min,"\n","=#=#=#=#===###");
+				var r:Number;
+				var c:CircleSprite;
+				var row:DataRow;
+				
+				for each(row in dataset.rows) {
+					var x:Number = row.xcoord*width/939.747;
+					var y:Number = row.ycoord*height/394.863;
+					if(dataset.type == 1) {
+						if(dataset.time == 1) {
+							r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+							currentYear = dataset.years[0];
+						}
+						else
+							r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+					}
+					if(firstPass) {
+						c = new CircleSprite(row,[row.country.region.color,row.country.region.color],r,x,y);
+						c.id = dataset.rows.getItemIndex(row).toString();
+						holder.addElement(c);
 						renderers.push(c);
 					}
+					else {
+						c = holder.getElementAt(dataset.rows.getItemIndex(row)) as CircleSprite;
+						c.data = row;
+						c.radius = r;
+					}
 				}
-				else {
-					
-				}
+				firstPass = false;
 			}
 			
 			private var _continous:Boolean = false;
@@ -58,7 +83,7 @@
 			public function set continous(value:Boolean):void{
 				_continous = value;
 				if(_continous == false) {
-					pause();
+					pause(); 
 				}
 				else {
 					resume();
@@ -74,21 +99,25 @@
 				
 			}
 			public function updateMaxRadius(value:Number):void {
-				
+				this.maxRadius = value;
+				update();
 			}
 			public function updateYear(year:int):void {
-				
+				this.currentYear = year;
+				update();
+			
 			}
 			public function update():void {
-				
+				if(dataset.time == 1 && currentYear >= Number(dataset.years[0]) && currentYear <= Number(dataset.years[1])) {
+					
+					for each(var c:CircleSprite in renderers) {
+						var r:Number = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+						//trace(r);
+						TweenNano.to(c, .5, {radius: r});
+					}
+				}
 			}
-			
-			
-			
-			
-
-			protected function module1_resizeHandler(event:ResizeEvent):void
-			{
+			protected function module1_resizeHandler(event:ResizeEvent):void {
 				for each(var c:CircleSprite in renderers) {
 					c.x = c.data.xcoord*width/939.747;
 					c.y = c.data.ycoord*height/394.863;
@@ -102,14 +131,8 @@
 		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
 	</fx:Declarations>
 	<maps:view_map_KD_2  id="map" width="100%" height="100%" />
-	<maps:coordinates width="100%" height="100%" />
-	<!--<maps:view_map_KD_coordinates_new id="map"   />-->
 
-	<!--	<mx:SWFLoader width="100%" height="100%" source="assets/maps/view_map_KD_grey_wholemap_9.swf"/>-->
-	<!--	<mx:Image scaleContent="true" maintainAspectRatio="false" width="100%" height="100%" 
-	showEffect="{fadeIn}" hideEffect="{fadeOut}" id="map"	 alpha="0.8"	
-	source="assets/map.png"   />-->
 	
-	<mx:Canvas id="holder" width="100%" height="100%" />
+	<s:Group id="holder" width="100%" height="100%" />
 	
 </modules:Module>
