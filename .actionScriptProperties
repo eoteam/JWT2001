@@ -53,7 +53,7 @@
   <modules>
     <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/GraphView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/GraphView.mxml"/>
     <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/MapView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/MapView.mxml"/>
-    <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/BubbleChartView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/BubbleChartView.mxml"/>
+    <module application="src/Main.mxml" destPath="com/pentagram/instance/view/visualizer/ClusterView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/ClusterView.mxml"/>
   </modules>
   <buildCSSFiles/>
 </actionScriptProperties>

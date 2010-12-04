@@ -197,6 +197,9 @@
 				t.addEventListener(TransitionEvent.END,handleEnd);
 				vis.update(t).play();
 			}
+			public function updateYear(year:int):void {
+				
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>

@@ -17,5 +17,7 @@ package com.pentagram.instance.view.visualizer
 		function pause():void;
 		
 		function resume():void;
+		
+		function updateYear(year:int):void;
 	}
 }

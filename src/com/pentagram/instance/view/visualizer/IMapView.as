@@ -9,7 +9,5 @@ package com.pentagram.instance.view.visualizer
 		function toggleMap(visible:Boolean):void;
 	
 		function visualize(dataset:Dataset):void;
-		
-		function updateYear(year:int):void;
 	}
 }

@@ -89,12 +89,22 @@ package com.pentagram.instance.view.mediators.shell
 				loaders.push(util);
 			}
 			else if(event.newIndex == 2){
-				view.tools.thirdSet.selectedIndex = -1;
+				//view.tools.thirdSet.selectedIndex = -1;
 			 	if(view.graphView == null) {
-					view.tools.thirdSet.selectedIndex = -1;
+					//view.tools.thirdSet.selectedIndex = -1;
 					util = new ModuleUtil();
 					util.addEventListener("moduleLoaded",handleGraphLoaded);
 					util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
+					loaders.push(util);
+				}
+			}
+			else if(event.newIndex == 0){
+				view.tools.thirdSet.selectedIndex = -1;
+				if(view.clusterView == null) {
+					//view.tools.thirdSet.selectedIndex = -1;
+					util = new ModuleUtil();
+					util.addEventListener("moduleLoaded",handleClusterLoaded);
+					util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");
 					loaders.push(util);
 				}
 			}
@@ -288,7 +298,13 @@ package com.pentagram.instance.view.mediators.shell
 				view.mapHolder.addElement(util.view as Group);
 			}
 		}
-
+		private function handleClusterLoaded(event:Event):void {
+			var util:ModuleUtil  = event.target as ModuleUtil;
+			if(util.view is IVisualizer) {
+				this.view.clusterView = util.view as IVisualizer;
+				view.clusterHolder.addElement(util.view as Group);
+			}			
+		}
 			
 	}
 }

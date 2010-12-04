@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009"  creationComplete="module1_creationCompleteHandler(event)"
+				xmlns:s="library://ns.adobe.com/flex/spark"  implements="com.pentagram.instance.view.visualizer.IVisualizer"
+				xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:modules="ws.tink.spark.modules.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.instance.view.visualizer.renderers.CircleSprite;
+			
+			import flash.display.Sprite;
+			import flash.events.Event;
+			import flash.events.MouseEvent;
+			import flash.geom.Point;
+			import flash.geom.Vector3D;
+			
+			import mx.events.FlexEvent;
+			
+			protected var _nodes:Vector.<CircleSprite> = new Vector.<CircleSprite>; 
+			private var iterationCounter:int = 0;
+			private var CENTER:Point;
+			private var v:Vector3D;
+			
+			public function update():void {
+				
+			}
+			
+			public function updateMaxRadius(value:Number):void {
+				
+			}
+			
+			public function unload():void {
+				
+			}
+						
+			private var _continous:Boolean = false;
+			public function get continous():Boolean{
+				return _continous;
+			}			
+			public function set continous(value:Boolean):void{
+				_continous = value;
+			}
+			
+			public function pause():void  {
+				
+			}
+			
+			public function resume():void {
+				
+			}
+			
+			public function updateYear(year:int):void {
+				
+			}
+
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				CENTER = new Point(stage.stageWidth/2, stage.stageHeight/2);
+	
+				
+				var maxSize:Number = 40
+				//var color:ColorHSV = new ColorHSV(0, 0.8, 1.0); new ColorH
+				
+				var currentX:int = 10;
+				var max:Number = 70;
+				for(var i:int = 0; i < max; i++)
+				{
+					var size:Number;
+					
+					if(i< 30) size = Math.random()* maxSize/10 + 5;
+					else size = Math.random()* maxSize + 5;
+					
+					//color.h = size/maxSize * 180 + 120;
+					
+					var node:CircleSprite = new CircleSprite(null,[0xff0000,0xff0000],size,i*8, 200 + Math.random())
+					this.addElement(node);
+					_nodes.push(node);
+				}
+				
+				addEventListener(Event.ENTER_FRAME, packCircles);
+			}
+			private function packCircles(e:Event):void {
+				_nodes = _nodes.sort(sortOnDistanceToCenter);
+				v = new Vector3D();
+				
+				
+				// Push them away from each other
+				for(var i:int = 0; i < _nodes.length; i++)
+				{
+					var ci:CircleSprite = _nodes[i];
+					
+					for (var j:int = i + 1; j<_nodes.length; j++)
+					{
+						var cj:CircleSprite = _nodes[j];
+						if(i == j) continue;
+						//cj.alpha = Math.random()
+						var dx:Number = cj.x - ci.x;
+						var dy:Number = cj.y - ci.y;
+						var r:Number = ci.radius + cj.radius;
+						var d:Number = (dx*dx) + (dy*dy);
+						if (d < (r * r) - 0.01 )
+						{
+							v.x = dx;
+							v.y = dy;
+							v.normalize();
+							v.scaleBy((r - Math.sqrt(d)) * 0.5);
+							
+//							if(cj != dragCircle) {
+//								cj.x += v.x;
+//								cj.y += v.y;
+//							}
+//							
+//							if(ci != dragCircle) {
+//								ci.x -= v.x;
+//								ci.y -= v.y;
+//							}
+						}
+					}
+				}
+				
+				
+				//return;
+				// push toward center
+				var damping:Number = 0.01;///Number(iterationCounter);
+				//trace(damping)
+				for(i = 0; i < _nodes.length; i++) 
+				{
+					var c:CircleSprite = _nodes[i];
+					
+					//if(c == dragCircle) continue;
+					
+					v.x = c.x - CENTER.x;
+					v.y = c.y - CENTER.y;
+					v.scaleBy(damping);
+					c.x -= v.x;
+					c.y -= v.y;
+				}
+			}
+			
+			private function sortOnRandom(a:CircleSprite, b:CircleSprite):int
+			{
+				return Math.random() < 0.5 ? -1 : 1;
+			}
+			
+			private function sortOnDistanceToCenter(a:CircleSprite, b:CircleSprite):int
+			{
+				var valueA:int = a.distanceToCenter(CENTER);
+				var valueB:int = b.distanceToCenter(CENTER);
+				var comparisonValue:int = 0;
+				
+				if(valueA > valueB) comparisonValue = -1;
+				else if(valueA < valueB) comparisonValue = 1;
+				
+				return comparisonValue;
+			}    
+		]]>
+	</fx:Script>
+</modules:Module>

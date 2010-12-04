@@ -1,12 +1,15 @@
 
 import com.pentagram.instance.view.visualizer.IGraphView;
 import com.pentagram.instance.view.visualizer.IMapView;
+import com.pentagram.instance.view.visualizer.IVisualizer;
 
 import mx.events.FlexEvent;
 import mx.events.IndexChangedEvent;
 
 public var graphView:IGraphView;
 public  var mapView:IMapView;
+public var clusterView:IVisualizer;
+
 private function setInfoBtn_clickHandler(event:MouseEvent):void {
 	if(setInfoBtn.selected) {
 		infoPanelContainer.visible = true;

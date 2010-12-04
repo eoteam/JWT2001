@@ -9,6 +9,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.display.GradientType;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	
 	import mx.core.UIComponent;
 	import mx.utils.ColorUtil;
@@ -158,7 +159,14 @@ package com.pentagram.instance.view.visualizer.renderers
 
 		
 		// -- Methods ---------------------------------------------------------
-
+		public function distanceToCenter(centerPoint:Point):Number
+		{
+			var dx:Number = x - centerPoint.x;
+			var dy:Number = y - centerPoint.y;
+			var distance:Number = dx*dx + dy*dy;
+			
+			return distance;
+		}
 		
 		/** @inheritDoc */
 		protected var dirtyFlag:Boolean = true;
