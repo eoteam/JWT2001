@@ -6,7 +6,7 @@ package com.pentagram.model
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
-	import com.pentagram.util.RectInterpolator;
+	import com.pentagram.utils.RectInterpolator;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;

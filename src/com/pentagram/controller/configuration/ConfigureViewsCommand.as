@@ -16,11 +16,11 @@ package com.pentagram.controller.configuration
 	import com.pentagram.instance.view.shell.BottomBarView;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.instance.view.shell.ShellView;
-	import com.pentagram.view.mediators.ExportSpreadSheetWindowMediator;
-	import com.pentagram.view.mediators.LoginWindowMediator;
-	import com.pentagram.view.mediators.MainMediator;
-	import com.pentagram.view.windows.ExportSpreadSheetWindow;
-	import com.pentagram.view.windows.LoginWindow;
+	import com.pentagram.main.mediators.ExportSpreadSheetWindowMediator;
+	import com.pentagram.main.mediators.LoginWindowMediator;
+	import com.pentagram.main.mediators.MainMediator;
+	import com.pentagram.main.windows.ExportSpreadSheetWindow;
+	import com.pentagram.main.windows.LoginWindow;
 	import com.pentagram.instance.InstanceWindow;
 	
 	import org.robotlegs.mvcs.Command;

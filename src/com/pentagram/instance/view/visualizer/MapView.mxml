@@ -2,45 +2,31 @@
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark"  width="100%" height="100%"
 				xmlns:mx="library://ns.adobe.com/flex/mx"  clipAndEnableScrolling="true"
-				xmlns:modules="ws.tink.spark.modules.*" contentBackgroundColor="0xff0000" resize="module1_resizeHandler(event)"
-				implements="com.pentagram.instance.view.visualizer.IMapView" xmlns:assets="assets.*" xmlns:maps="assets.maps.*">
+				xmlns:modules="ws.tink.spark.modules.*" contentBackgroundColor="0xff0000" 
+				resize="module1_resizeHandler(event)" creationComplete="module1_creationCompleteHandler(event)"
+				implements="com.pentagram.instance.view.visualizer.interfaces.IMapView" 
+				xmlns:assets="assets.*" 
+				xmlns:maps="assets.maps.*" 
+				xmlns:visualizer="com.pentagram.instance.view.visualizer.*">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.TweenNano;
-			import com.greensock.easing.Expo;
 			import com.pentagram.instance.view.visualizer.renderers.CircleSprite;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
-			import com.pentagram.util.ViewUtils;
 			
-			import flare.animate.Scheduler;
-			import flare.animate.TransitionEvent;
-			import flare.animate.Transitioner;
-			import flare.display.DirtySprite;
-			import flare.scale.ScaleType;
-			import flare.util.palette.SizePalette;
-			import flare.vis.Visualization;
-			import flare.vis.data.Data;
-			import flare.vis.data.DataSprite;
-			import flare.vis.events.TooltipEvent;
-			import flare.vis.operator.encoder.ColorEncoder;
-			import flare.vis.operator.encoder.PropertyEncoder;
-			import flare.vis.operator.encoder.SizeEncoder;
-			import flare.vis.operator.layout.AxisLayout;
-			
+			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
 			
-			import spark.primitives.Graphic;
-			
-			protected var renderers:Array = [];
+			protected var renderers:Vector.<CircleSprite> = new Vector.<CircleSprite>;
 			protected var maxRadius:Number = 25;
 			protected var dataset:Dataset;
 			protected var currentYear:int;
 			
 			public function toggleMap(visible:Boolean):void {
-				if(map)
-					map.visible = visible;
+				if(mapHolder)
+				mapHolder.visible = visible;
 			}
 			private var firstPass:Boolean = true;
 			public function visualize(dataset:Dataset):void {
@@ -117,11 +103,40 @@
 					}
 				}
 			}
+			public function toggleCategory(visible:Boolean,prop:String):void {
+				for each(var renderer:CircleSprite in renderers) {
+					if(renderer.data.country.region.id == Number(prop)) {
+						TweenNano.to(renderer, .5, {alpha: visible?1:0});
+					}
+				}
+			}
+			public function toggleOpacity(value:uint):void {
+				for each(var renderer:CircleSprite in renderers) {
+					TweenNano.to(renderer, .5, {alpha: value});
+				}
+			}
 			protected function module1_resizeHandler(event:ResizeEvent):void {
 				for each(var c:CircleSprite in renderers) {
 					c.x = c.data.xcoord*width/939.747;
 					c.y = c.data.ycoord*height/394.863;
 				}
+			}
+			
+
+
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				var map:FXGLoader = new FXGLoader();
+				mapHolder.addElement(map);
+				var file:File = File.desktopDirectory;
+				file = file.resolvePath("Namerica_map.fxg");
+				map.load(file);
+				
+				var map:FXGLoader = new FXGLoader();
+				mapHolder.addElement(map);
+				var file:File = File.desktopDirectory;
+				file = file.resolvePath("europe_map.fxg");
+				map.load(file);
 			}
 
 		]]>
@@ -130,7 +145,8 @@
 		<s:Fade alphaTo="1" duration="500" id="fadeIn" />
 		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
 	</fx:Declarations>
-	<maps:view_map_KD_2  id="map" width="100%" height="100%" />
+	
+	 <s:HGroup width="100%" height="100%"  id="mapHolder"/>
 
 	
 	<s:Group id="holder" width="100%" height="100%" />

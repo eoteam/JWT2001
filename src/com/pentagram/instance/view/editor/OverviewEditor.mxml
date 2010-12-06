@@ -11,7 +11,7 @@
 			import com.pentagram.controller.Constants;
 			import com.pentagram.model.vo.MimeType;
 			import com.pentagram.model.vo.Region;
-			import com.pentagram.view.event.ViewEvent;
+			import com.pentagram.main.event.ViewEvent;
 			
 			import mx.events.FlexEvent;
 			

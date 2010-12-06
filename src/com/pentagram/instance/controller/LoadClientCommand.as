@@ -10,7 +10,7 @@ package com.pentagram.instance.controller
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
 	import com.pentagram.services.interfaces.IInstanceService;
-	import com.pentagram.util.ViewUtils;
+	import com.pentagram.utils.ViewUtils;
 	
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;

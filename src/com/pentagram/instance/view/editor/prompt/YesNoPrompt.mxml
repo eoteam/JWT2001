@@ -5,7 +5,7 @@
 		  width="100%" height="100">
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.view.event.DataPromptEvent;
+			import com.pentagram.main.event.DataPromptEvent;
 			
 			private function nextHandler(event:Event):void
 			{
@@ -20,8 +20,8 @@
 		]]>
 	</fx:Script>
 	<fx:Metadata>
-        [Event(name="timeTypeNext", type="com.pentagram.view.event.DataPromptEvent")]
-        [Event(name="timeTypeBack", type="com.pentagram.view.event.DataPromptEvent")]
+        [Event(name="timeTypeNext", type="com.pentagram.main.event.DataPromptEvent")]
+        [Event(name="timeTypeBack", type="com.pentagram.main.event.DataPromptEvent")]
     </fx:Metadata>
 	<fx:Declarations>
 		<fx:String id="prompt" />

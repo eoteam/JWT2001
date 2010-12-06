@@ -6,7 +6,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.main.event.ViewEvent;
 	
 	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;

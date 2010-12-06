@@ -14,7 +14,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.DataRow;
-			import com.pentagram.view.event.ViewEvent;
+			import com.pentagram.main.event.ViewEvent;
 			
 			import mx.core.UIComponent;
 			import mx.events.FlexEvent;

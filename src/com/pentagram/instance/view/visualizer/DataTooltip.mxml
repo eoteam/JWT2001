@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer xmlns:fx="http://ns.adobe.com/mxml/2009" backgroundAlpha="1" backgroundColor="#242424" 
-					  xmlns:s="library://ns.adobe.com/flex/spark" skinClass="com.pentagram.view.skins.DataTooltipSkin" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" skinClass="com.pentagram.view.skins.components.DataTooltipSkin" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" width="180" height="100" xmlns:vo="com.pentagram.model.vo.*">
 	
 	<fx:Script>

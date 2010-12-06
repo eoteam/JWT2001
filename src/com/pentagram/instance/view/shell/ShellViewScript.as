@@ -1,7 +1,7 @@
 
-import com.pentagram.instance.view.visualizer.IGraphView;
-import com.pentagram.instance.view.visualizer.IMapView;
-import com.pentagram.instance.view.visualizer.IVisualizer;
+import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
+import com.pentagram.instance.view.visualizer.interfaces.IMapView;
+import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
 
 import mx.events.FlexEvent;
 import mx.events.IndexChangedEvent;

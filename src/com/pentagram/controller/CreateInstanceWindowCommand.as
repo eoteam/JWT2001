@@ -5,7 +5,7 @@ package com.pentagram.controller
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.OpenWindowsProxy;
-	import com.pentagram.view.windows.BaseWindow;
+	import com.pentagram.main.windows.BaseWindow;
 	
 	import mx.core.FlexGlobals;
 	

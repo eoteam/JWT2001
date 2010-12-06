@@ -1,6 +1,6 @@
 package com.pentagram.view.controls
 {
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.main.event.ViewEvent;
 	
 	import org.flashcommander.components.AutoComplete;
 	import org.flashcommander.event.CustomEvent;

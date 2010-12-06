@@ -5,13 +5,14 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.ShellView;
-	import com.pentagram.instance.view.visualizer.IGraphView;
-	import com.pentagram.instance.view.visualizer.IMapView;
-	import com.pentagram.instance.view.visualizer.IVisualizer;
-	import com.pentagram.instance.view.visualizer.ModuleUtil;
+	import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
+	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
+	import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.User;
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.utils.ModuleUtil;
 	
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
@@ -60,7 +61,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
 			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
 			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
-			view.tools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.filterTools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
 			
 			//mediatorMap.createMediator(view.bottomBarView);
 			if(model.user) {
@@ -76,12 +77,20 @@ package com.pentagram.instance.view.mediators.shell
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 			
 			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
+			view.filterTools.continentList.dataProvider = model.regions;
+			view.filterTools.continentList.addEventListener('selectionChanged',handleContinentSelection);
 			
 			yearTimer = new Timer(2000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
+		private function handleContinentSelection(event:Event):void {
+			var item:Region = view.filterTools.continentList.selectedItem as Region;
+			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
+			viz.toggleCategory(item.visible,item.id.toString());	
+			
+		}
 		private function handleStackChange(event:IndexChangedEvent):void {
-			var util:ModuleUtil;
+			var util:ModuleUtil
 			if(event.newIndex == 1 && view.mapView == null) {
 				util = new ModuleUtil();
 				util.addEventListener("moduleLoaded",handleMapLoaded);
@@ -282,7 +291,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleMaxRadius(event:Event):void {
 			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.updateMaxRadius(view.tools.maxRadiusSlider.value);
+			viz.updateMaxRadius(view.filterTools.maxRadiusSlider.value);
 		}
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;

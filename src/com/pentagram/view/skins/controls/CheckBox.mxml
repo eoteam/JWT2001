@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.CheckBox")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Rect height="11"  verticalCenter="0" id="rect0" includeIn="overAndSelected" width="10" x="0.5">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="10.1748" x="5.08789" y="0">
+				<s:GradientEntry alpha="1.0" color="#666666" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#1C1C1C" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+		<s:filters>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="11" verticalCenter="0" id="rect9" width="10" x="0.5"  includeIn="disabled,disabledAndSelected,down,downAndSelected,over,up,upAndSelected" x.up="0.5" y.up="4.5">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="10.1748" x="5.08789" y="0">
+				<s:GradientEntry alpha.over="1.0" color="#2E2E2E" color.over="#666666" ratio="0"/>
+				<s:GradientEntry alpha.over="1.0" color.over="#1C1C1C" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Path data="M 0.5 4.588 L 3.586 7.979 L 8.833 0.5" id="path12" includeIn="down,downAndSelected,overAndSelected,upAndSelected" winding="nonZero" x="1.792" verticalCenter="0">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#E6E6E6" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Path>
+	<s:Label id="labelDisplay"
+			 textAlign="start"
+			 verticalAlign="middle" fontFamily="FlamaBold"
+			 maxDisplayedLines="1"
+			 left="18" right="0" top="3" bottom="3" verticalCenter="2" />
+</s:Skin>

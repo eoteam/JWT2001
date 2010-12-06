@@ -9,7 +9,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.main.event.ViewEvent;
 	
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;

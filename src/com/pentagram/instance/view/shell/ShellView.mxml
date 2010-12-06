@@ -68,7 +68,8 @@
 			</s:Group>
 			
 			<!-- filters and tools -->
-			<shell:VisualizerTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
+			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
+			<shell:RightToolsView right="0" id="filterTools" top="61"/>
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
@@ -80,7 +81,7 @@
 	<shell:ClientBarView width="100%" id="clientBar" client="{client}"/>
 	
 	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0"  
-	skinClass="com.pentagram.view.skins.BottomBarBackgroundSkin" id="bottomPanelContainer">	
+	skinClass="com.pentagram.view.skins.components.BottomBarBackgroundSkin" id="bottomPanelContainer">	
 		<shell:BottomBarView width="100%" height="40" bottom="10" id="bottomBarView"  />
 		
 		<s:TabBar right="150" height="22" bottom="28" dataProvider="{mainStack}"  includeIn="loggedIn" />

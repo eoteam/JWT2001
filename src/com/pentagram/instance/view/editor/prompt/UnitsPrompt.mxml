@@ -5,7 +5,7 @@
 		  width="100%" height="100">
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.view.event.DataPromptEvent;
+			import com.pentagram.main.event.DataPromptEvent;
 			
 			import mx.collections.ArrayList;
 			[Bindable]
@@ -28,8 +28,8 @@
 		]]>
 	</fx:Script>
 	<fx:Metadata>
-        [Event(name="unitsNext", type="com.pentagram.view.event.DataPromptEvent")]
-        [Event(name="unitsBack", type="com.pentagram.view.event.DataPromptEvent")]
+        [Event(name="unitsNext", type="com.pentagram.main.event.DataPromptEvent")]
+        [Event(name="unitsBack", type="com.pentagram.main.event.DataPromptEvent")]
     </fx:Metadata>
 <!--    <mx:Array id="scaleFactors" >
     	<mx:String>None</mx:String>

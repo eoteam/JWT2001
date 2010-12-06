@@ -6,7 +6,7 @@
 				width="8" height="45" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
-				xmlns:util="com.pentagram.util.*"
+				xmlns:utils="com.pentagram.utils.*"
 				toolTip=" " 
 				toolTipCreate="createCustomTip(event)"
 				rollOver="itemrenderer1_rollOverHandler(event)" 
@@ -124,7 +124,7 @@
 	</s:states>
 	
 	<fx:Declarations>
-		<util:RectInterpolator id="interpolator" />
+		<utils:RectInterpolator id="interpolator" />
 	</fx:Declarations>
 	
 	<!--       Transitions          -->

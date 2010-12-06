@@ -9,7 +9,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.model.vo.Region;
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.main.event.ViewEvent;
 	
 	import flash.desktop.ClipboardFormats;
 	import flash.events.EventDispatcher;

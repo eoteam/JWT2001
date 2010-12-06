@@ -54,15 +54,19 @@ wscontainers|Navigator {
 	skinClass: ClassReference("ws.tink.spark.skins.containers.NavigatorSkin");
 }
 controls|PromptingTextInput {
-	skinClass:ClassReference('com.pentagram.view.skins.PromptingTextInputSkin');  
-
+	skinClass:ClassReference('com.pentagram.view.skins.controls.PromptingTextInputSkin');  
+ 	
 }
 controls|Drawer {
-	skinClass:ClassReference('com.pentagram.view.skins.DrawerSkin');  
+	skinClass:ClassReference('com.pentagram.view.skins.components.DrawerSkin');  
 }
 s|Scroller {
-	skinClass: ClassReference('com.pentagram.skins.scrollers.ScrollBarSkin');
+	skinClass: ClassReference('com.pentagram.view.skins.scrollers.ScrollBarSkin');
 }
 s|TextInput {
-	skinClass: ClassReference('com.pentagram.skins.controls.TextInput');
+	skinClass: ClassReference('com.pentagram.view.skins.controls.TextInput');
+}
+
+s|CheckBox {
+	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }

@@ -5,7 +5,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.instance.view.editor.DatasetCreator;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.view.event.ViewEvent;
+	import com.pentagram.main.event.ViewEvent;
 	
 	import flash.events.Event;
 	

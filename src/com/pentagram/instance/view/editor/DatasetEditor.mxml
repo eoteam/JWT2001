@@ -180,7 +180,7 @@
 				</s:stroke>
 			</s:Rect>
 			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff"  
-			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.MiGListSkin"  
+			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.controls.MiGListSkin"  
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
 			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>
 			

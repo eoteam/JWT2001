@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="Login"
+		  xmlns:s="library://ns.adobe.com/flex/spark"  width="400" height="220"
+		  xmlns:mx="library://ns.adobe.com/flex/mx" gripper="{null}"
+		  xmlns:windows="com.pentagram.main.windows.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.events.AppEvent;
+			import com.pentagram.model.vo.User;
+			[Bindable] public var user:User;
+			public function didLogin(user:User):void
+			{
+				this.user = user;
+				this.currentState = "loggedin";
+				stack.selectedIndex = 1;
+				
+			}
+			public function didLogout():void
+			{
+				this.currentState = "loggedout";
+				stack.selectedIndex = 0;
+			}
+			public function loginError(message:String):void
+			{
+				
+			}
+		]]>
+	</fx:Script>
+
+	<windows:states>
+		<s:State name="loggedin" id="loggedInState" />
+		<s:State name="loggedout" id="loggedOutState" />		
+	</windows:states>		
+	
+	<mx:ViewStack width="100%" height="100%"  id="stack" creationPolicy="all">
+		<s:NavigatorContent width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout paddingTop="12" paddingBottom="12" paddingRight="12"  paddingLeft="12" />
+			</s:layout>
+			<s:Label text="Login" fontSize="24" fontFamily="FlamaBold" />
+			<s:Rect height="20" />
+			<s:HGroup verticalAlign="middle">
+				<s:Label width="100" text="Username"/>
+				<s:TextInput width="260" id="unInput"/>
+			</s:HGroup>
+			<s:Rect height="10" />
+			<s:HGroup verticalAlign="middle">
+				<s:Label width="100" text="Password"/>
+				<s:TextInput width="260" displayAsPassword="true"  id="pwInput"/>
+			</s:HGroup>	
+			<s:Rect height="20" />
+			<s:HGroup verticalAlign="middle" width="100%">
+				<s:Rect width="100%" />
+				<s:Button label="Cancel" click="this.close()" />
+				<s:Button label="Log In" id="loginBtn"   />
+			</s:HGroup>				
+		</s:NavigatorContent>
+		<s:NavigatorContent width="100%" height="100%">
+			<s:layout>
+				<s:VerticalLayout paddingTop="12" paddingBottom="12" paddingRight="12"  paddingLeft="12" />
+			</s:layout>
+			<s:Label text="Welcome Back! {user.fullname}" fontSize="24" fontFamily="FlamaBold" />
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Rect width="100%" />
+				<s:Button label="Close" click="this.close()" />
+				<s:Button label="Log Out" id="logoutBtn" />
+			</s:HGroup>
+		</s:NavigatorContent>
+	</mx:ViewStack>
+</windows:BaseWindow>

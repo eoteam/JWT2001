@@ -7,7 +7,7 @@
 		<![CDATA[
 			import mx.validators.Validator;
 			import mx.controls.Alert;
-			import com.pentagram.view.event.DataPromptEvent;
+			import com.pentagram.main.event.DataPromptEvent;
 			
 			private var _validators:Array;
 			
@@ -49,8 +49,8 @@
 		]]>
 	</fx:Script>
 	<fx:Metadata>
-        [Event(name="timeRangeNext", type="com.pentagram.view.event.DataPromptEvent")]
-        [Event(name="timeRangeBack", type="com.pentagram.view.event.DataPromptEvent")]
+        [Event(name="timeRangeNext", type="com.pentagram.main.event.DataPromptEvent")]
+        [Event(name="timeRangeBack", type="com.pentagram.main.event.DataPromptEvent")]
     </fx:Metadata>
 	<fx:Declarations>
 		<fx:String id="startYear"  />

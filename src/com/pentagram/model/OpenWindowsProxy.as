@@ -3,8 +3,8 @@ package com.pentagram.model
 	import com.ericfeminella.collections.HashMap;
 	import com.ericfeminella.collections.IMap;
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.util.ViewUtils;
-	import com.pentagram.view.windows.BaseWindow;
+	import com.pentagram.utils.ViewUtils;
+	import com.pentagram.main.windows.BaseWindow;
 	
 	import mx.collections.ArrayCollection;
 	import mx.utils.UIDUtil;

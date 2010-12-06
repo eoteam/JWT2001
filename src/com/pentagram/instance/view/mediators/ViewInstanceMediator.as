@@ -25,8 +25,8 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
-	import com.pentagram.view.event.ViewEvent;
-	import com.pentagram.view.windows.LoginWindow;
+	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.main.windows.LoginWindow;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
