@@ -85,9 +85,10 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleContinentSelection(event:Event):void {
 			var item:Region = view.filterTools.continentList.selectedItem as Region;
-			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.toggleCategory(item.visible,item.id.toString());	
-			
+			if(view.visualizerArea.selectedIndex == 1) {
+				var viz:IMapView = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IMapView;
+				viz.toggleCategory(item);	
+			}
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil

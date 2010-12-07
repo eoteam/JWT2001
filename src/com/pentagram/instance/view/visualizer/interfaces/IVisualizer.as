@@ -20,8 +20,6 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function updateYear(year:int):void;
 		
-		function toggleCategory(visible:Boolean,prop:String):void;
-		
 		function toggleOpacity(value:uint):void;
 		
 	}

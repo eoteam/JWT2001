@@ -2794,11 +2794,6 @@
           </fill>
         </Ellipse>
       </Group>
-      <Rect x="0.154297" y="-0.00292969" width="382.649" height="209.333" ai:objID="3d1617d0" ai:seqID="562">
-        <stroke>
-          <SolidColorStroke weight="1.13523" caps="none" joints="miter" miterLimit="10" color="#F8971D"/>
-        </stroke>
-      </Rect>
     </Group>
   </Group>
 </Graphic>

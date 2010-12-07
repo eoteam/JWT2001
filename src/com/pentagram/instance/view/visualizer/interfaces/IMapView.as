@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Region;
 	
 	import mx.core.IUIComponent;
 
@@ -10,5 +11,6 @@ package com.pentagram.instance.view.visualizer.interfaces
 	
 		function visualize(dataset:Dataset):void;
 		
+		function toggleCategory(region:Region):void;
 	}
 }

@@ -9,5 +9,6 @@ package com.pentagram.model.vo
 		public var countries:ArrayList;
 		public var visible:Boolean = true;
 		public var selected:Boolean = true;
+		public var fxgmap:String;
 	}
 }

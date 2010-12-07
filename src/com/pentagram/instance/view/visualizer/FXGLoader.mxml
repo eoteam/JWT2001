@@ -15,13 +15,14 @@
 			import fxgparser.FxgDisplay;
 			
 			import mx.utils.NameUtil;
-			private var fxgSprite:FxgDisplay;
+			public var fxgSprite:FxgDisplay;
 			private var fxgxml:XML;
-			
+			private var fileName:String;
 			public function load(file:File):void {
 				XML.ignoreWhitespace = false;	//to preserve spaces inside texts			
 				var fs:FileStream = new FileStream();
 				fs.open(file, FileMode.READ);
+				fileName = file.name;
 				var fxgContent:String = fs.readUTFBytes(fs.bytesAvailable);
 				fs.close();
 				fxgxml = XML( fxgContent );
@@ -29,53 +30,23 @@
 				fxgSprite.addEventListener(Event.ADDED_TO_STAGE,complete);
 				fxgSprite.parse(fxgxml);
 				addChild( fxgSprite );
-				this.stage.addEventListener(Event.RESIZE,handleResize);
-			
-				
+				fxgSprite.x = (width / 2) - (fxgSprite.width / 2);
+				fxgSprite.y = (height / 2) - (fxgSprite.height / 2);
+				//this.stage.addEventListener(Event.RESIZE,handleResize);
 			}
 			private function complete(e:Event):void {
-				var g:Sprite = fxgSprite.getChildAt(0) as Sprite;
-				var area:AutoFitArea = new AutoFitArea(fxgSprite, 0, 0, g.width, g.height);
-				area.attach(g);
 				
+//				var g:Sprite = fxgSprite.getChildAt(0) as Sprite;
+//				trace(fileName,g.width, g.height);
+//				var area:AutoFitArea = new AutoFitArea(fxgSprite, 0, 0, g.width, g.height);
+//				area.attach(g);
+//				
 				//var area2:AutoFitArea = new AutoFitArea(this, 0, 0, g.width, g.height);
 				//area2.attach(fxgSprite);
 				 
 				//var area:AutoFitArea = AutoFitArea.createAround(g);
 			}
-			public function handleResize(event:Event):void {
-				var g:Sprite = fxgSprite.getChildAt(0) as Sprite;
-				var fxgRatio:Number = g.width / g.height;
-				var ratio:Number = width/ height;
-				var nw:Number; var nh:Number;
-				var sx:Number; var sy:Number;
-				if(ratio > fxgRatio) {
-					if(g.width > g.height) {
-						nh = height;
-						nw = nh*g.width /g.height;
-					}
-					else {
-						nw = width;
-						nh = nw*g.height/g.width;
-					}
-				}
-				else {
-					if(g.width < g.height) {
-						nh = height;
-						nw = nh*g.width /g.height;
-					}
-					else {
-						nw = width;
-						nh = nw*g.height/g.width;
-					}					
-				}
-				//sx = nw/g.width;
-				//sy = nh/g.height;
-				fxgSprite.width = nw;
-				fxgSprite.height = nh;
 
-			}
 		]]>
-	</fx:Script>
-
+	</fx:Script>	
 </s:SpriteVisualElement>

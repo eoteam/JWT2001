@@ -929,11 +929,6 @@
           </fill>
         </Path>
       </Group>
-      <Rect y="0.00585938" width="219.313" height="114.667" ai:objID="342805e0" ai:seqID="189">
-        <stroke>
-          <SolidColorStroke weight="1.10924" caps="none" joints="miter" miterLimit="10" color="#3A53A4"/>
-        </stroke>
-      </Rect>
     </Group>
   </Group>
   </Graphic>
