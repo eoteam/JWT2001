@@ -2,6 +2,7 @@ package com.pentagram.instance.view.visualizer.renderers
 {
 
 	
+	import com.greensock.TweenNano;
 	import com.pentagram.model.vo.DataRow;
 	
 	import flare.util.Colors;
@@ -27,16 +28,13 @@ package com.pentagram.instance.view.visualizer.renderers
 		private const FILL_RATIO:Array = [0,255];
 		
 		public var countrySprite:Shape;
+	
 		public function CircleSprite(sprite:Shape,point:DataRow,fColors:Array,radius:Number=0) {		
 			super();
 			this.countrySprite = sprite;
-			var pt:Point = countrySprite.localToGlobal(new Point(countrySprite.x,countrySprite.y));
-			this.x = pt.x;
-			this.y = pt.y;
 			_radius = radius;
 			_data = point;
 			fillColor = fColors[0] as uint;
-			draw();
 		}
 
 		protected var _selected:Boolean = false;
@@ -174,18 +172,44 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		/** @inheritDoc */
 		protected var dirtyFlag:Boolean = true;
+		protected var dirtyCoordFlag:Boolean = true;
+		protected var stateFlag:Boolean = true;
 		public function dirty():void {
 			dirtyFlag = true;
 			this.invalidateDisplayList();
 		}
+		public function dirtyCoordinates():void {
+			if(countrySprite) {
+				dirtyCoordFlag = true;
+				this.invalidateProperties();
+			}
+		}
+		public function set state(value:Boolean):void {
+			
+			if(value && !stateFlag)
+				dirtyFlag = true;
+			stateFlag = value;
+			this.invalidateDisplayList();
+		}
+		public function get state():Boolean {
+			return stateFlag;
+		}
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth,unscaledHeight);
-			if(dirtyFlag) {
-				draw();				
+			if(dirtyFlag && stateFlag)
+				draw();
+			else if(!stateFlag) {
+				this.graphics.clear();
 			}
 		}
+		override protected function commitProperties():void {
+			super.commitProperties();
+			if(dirtyCoordFlag)
+				updateCoordinates();
+		}
 		protected function draw():void {
+			dirtyFlag = false;
 			graphics.clear();
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
@@ -193,6 +217,13 @@ package com.pentagram.instance.view.visualizer.renderers
 			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],FILL_ALPHAS,FILL_RATIO,matr)			
 			graphics.drawCircle(0, 0, _radius);
 			graphics.endFill();		
+		}
+		protected function updateCoordinates():void {
+			dirtyCoordFlag = false;
+			var pt:Point = countrySprite.parent.localToGlobal(new Point(countrySprite.x,countrySprite.y));
+			pt = parent.globalToLocal(pt);
+			x = pt.x;
+			y = pt.y;
 		}
 	}
 }

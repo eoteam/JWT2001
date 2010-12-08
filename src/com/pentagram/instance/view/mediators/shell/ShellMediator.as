@@ -55,15 +55,26 @@ package com.pentagram.instance.view.mediators.shell
 			
 			//view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
-			view.tools.initTools();
-		
 
+			view.tools.initTools();
 			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
 			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
 			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
-			view.filterTools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			
 			//mediatorMap.createMediator(view.bottomBarView);
+
+			view.filterTools.continentList.dataProvider = model.regions;
+			view.filterTools.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
+			view.filterTools.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
+			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
+			view.filterTools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.filterTools.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+			//view.filterTools.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
+			
+			yearTimer = new Timer(2000);
+			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
+			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 				model.exportMenuItem.enabled = true;
@@ -74,17 +85,12 @@ package com.pentagram.instance.view.mediators.shell
 				model.importMenuItem.enabled = false;
 				view.currentState = view.loggedOutState.name;
 			}
+			
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
-			
-			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
-			view.filterTools.continentList.dataProvider = model.regions;
-			
-			view.filterTools.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-			view.filterTools.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-			
-			yearTimer = new Timer(2000);
-			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
+		}
+		private function handleXray(event:Event):void {
+			var viz:IVisualizer =  NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
+			viz.toggleOpacity(view.filterTools.xrayToggle.selected?1:0);
 		}
 		private function handleRegionSelect(event:Event):void {
 			var region:Region;

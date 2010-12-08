@@ -163,7 +163,7 @@
 			rotation = StyleUtil.validateAttr( item.@rotation ,rotation );
 			blendMode = StyleUtil.validateAttr(item.@blendMode , blendMode );
 			id = StyleUtil.validateAttr(item.@id , id );
-			//visible = StyleUtil.validateAttr(item.@visible , visible );
+
 			if(item.@visible.length() > 0 ) {
 				visible = item.@visible.toString() == "true"?true:false;
 			}

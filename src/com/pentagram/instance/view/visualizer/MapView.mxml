@@ -25,7 +25,7 @@
 			private var maxRadius:Number = 25;
 			private var dataset:Dataset;
 			private var currentYear:int;
-			private const PATH:String = "Sites/JWT2001/View/src/assets/maps/";
+			private const PATH:String = "Sites/Pentagram/View/src/assets/maps/";
 			
 			public function toggleMap(visible:Boolean):void {
 				if(mapHolder)
@@ -127,6 +127,7 @@
 				}
 				if(existingMap) {
 					TweenNano.to(existingMap, .5, {width: mapHolder.width,height:mapHolder.height,onComplete:onFinishTween,onCompleteParas:[existingMap]});
+					adjustRenderers();
 				}
 				else {
 					map = new FXGLoader();
@@ -138,10 +139,30 @@
 					map.percentHeight = 100;
 					map.percentWidth = 100;
 				}
-				//mapHolder.removeAllElements();
+
 			}
 			private function onFinishTween(map:FXGLoader):void {
 				map.percentHeight = map.percentWidth = 100;
+			}
+			//priv
+			private function adjustRenderers():void {
+				var visibleItems:Array = [];
+				var c:CircleSprite;
+				for (var i:int=0;i<mapHolder.numElements;i++) {
+					var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
+					for each(c in renderers) {
+						if(map.countries[c.countrySprite.name] && c.data.country.region.fxgmap == map.filename) {
+							c.state = true;
+							c.countrySprite = map.countries[c.countrySprite.name];
+							c.dirtyCoordinates();
+							visibleItems.push(c);
+						}
+					}
+				}
+				for each(c in renderers) {
+					if(visibleItems.indexOf(c) == -1)
+						c.state = false;
+				}
 			}
 			public function addRegion(region:Region):void {
 				if(mapHolder.numElements >= 3) {
@@ -176,17 +197,17 @@
 				var sy:Number;
 				var matr:Matrix;
 				for each(var c:CircleSprite in renderers) {
-					c.x = c.data.xcoord*width/939.747;
-					c.y = c.data.ycoord*height/394.863;
+					if(c.state)
+						c.dirtyCoordinates();
 				}
 				if(mapHolder.numElements > 1) {					
 					for (i=0;i<mapHolder.numElements;i++) {
 						child = mapHolder.getElementAt(i) as FXGLoader;
 						fxgSprite = child.fxgSprite;
-						child.graphics.clear();
-						child.graphics.beginFill(0xff6666,1);
-						child.graphics.drawRect(0,0,child.width,child.height);
-						child.graphics.endFill();
+//						child.graphics.clear();
+//						child.graphics.beginFill(0xff6666,1);
+//						child.graphics.drawRect(0,0,child.width,child.height);
+//						child.graphics.endFill();
 						var g:Sprite = fxgSprite.getChildAt(0) as Sprite;  
 						if(g.width > maxW) {
 							maxW = g.width;
@@ -257,13 +278,27 @@
 			private function resumeLoad(args:Array):void {
 				handleResize();
 				TweenNano.to(args[0],0.5,{alpha:1});
+				if(FXGLoader(args[0]).filename != "world_map.fxg")
+					adjustRenderers();
+				else
+					displayAllRenderers();
+			}
+			private function displayAllRenderers():void {
+				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
+				for each(var c:CircleSprite in renderers) {
+					if(map.countries[c.countrySprite.name]) {
+						c.state = true;
+						c.countrySprite = map.countries[c.countrySprite.name];
+						c.dirtyCoordinates();
+					}
+				}
 			}
 			private function loadWorldMap():void {
 				var map:FXGLoader = new FXGLoader();
 				map.addEventListener(Event.COMPLETE,handleMapLoaded);
 				mapHolder.addElement(map);
 				var file:File = File.userDirectory;
-				file = file.resolvePath(PATH+"JWT2001_view_map_world.fxg");
+				file = file.resolvePath(PATH+"world_map.fxg");
 				map.load(file);
 				map.percentHeight = 100;
 				map.percentWidth = 100;
