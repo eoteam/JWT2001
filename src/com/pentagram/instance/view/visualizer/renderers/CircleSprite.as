@@ -29,17 +29,14 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		public var countrySprite:Shape;
 	
-		public function CircleSprite(sprite:Shape,point:DataRow,fColors:Array,radius:Number=0) {		
+		public function CircleSprite() {		
 			super();
-			this.countrySprite = sprite;
-			_radius = radius;
-			_data = point;
-			fillColor = fColors[0] as uint;
 		}
 
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;
 		protected var _fillColor:uint = 0xffcccccc;
+		protected var _fillAlpha:Number = 0.7;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
 		protected var _data:DataRow;
@@ -99,9 +96,9 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function get fillColor():uint { return _fillColor; }
 		public function set fillColor(c:uint):void { _fillColor = c; dirty();	}
 		/** The alpha channel (a value between 0 and 1) for the fill color. */
-		public function get fillAlpha():Number { return Colors.a(_fillColor) / 255; }
+		public function get fillAlpha():Number { return _fillAlpha; }//Colors.a(_fillColor) / 255; }
 		public function set fillAlpha(a:Number):void {
-			_fillColor = Colors.setAlpha(_fillColor, uint(255*a)%256);
+			_fillAlpha = a;//Colors.setAlpha(_fillColor, uint(255*a)%256);
 			dirty();
 		}
 		/** The hue component of the fill color in HSV color space. */
@@ -171,9 +168,9 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		
 		/** @inheritDoc */
-		protected var dirtyFlag:Boolean = true;
-		protected var dirtyCoordFlag:Boolean = true;
-		protected var stateFlag:Boolean = true;
+		protected var dirtyFlag:Boolean = false;
+		protected var dirtyCoordFlag:Boolean = false;
+		protected var stateFlag:Boolean = false;
 		public function dirty():void {
 			dirtyFlag = true;
 			this.invalidateDisplayList();
@@ -214,7 +211,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
 			graphics.lineStyle(_lineWidth,_lineColor,1);
-			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],FILL_ALPHAS,FILL_RATIO,matr)			
+			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],[fillAlpha,fillAlpha],FILL_RATIO,matr)			
 			graphics.drawCircle(0, 0, _radius);
 			graphics.endFill();		
 		}

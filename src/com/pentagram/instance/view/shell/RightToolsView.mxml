@@ -55,7 +55,7 @@
 				</s:stroke>
 			</s:Rect>
 			<s:CheckBox  label="X-Ray Mode" id="xrayToggle" textAlign="center" height="25" selected="true" color="0xffffff"/>
-			<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="openAndMap" color="0xffffff"  />
+			<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="map" color="0xffffff"  />
 			
 			<s:Rect width="100%" height="0.25">
 				<s:stroke>

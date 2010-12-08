@@ -203,7 +203,7 @@
 			public function toggleCategory(visible:Boolean,prop:String):void {
 				
 			}
-			public function toggleOpacity(value:uint):void {
+			public function toggleOpacity(value:Number):void {
 
 			}
 		]]>

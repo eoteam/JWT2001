@@ -13,6 +13,8 @@
 		<![CDATA[
 			import com.greensock.TweenNano;
 			import com.pentagram.instance.view.visualizer.renderers.CircleSprite;
+			import com.pentagram.model.vo.Client;
+			import com.pentagram.model.vo.Country;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
 			import com.pentagram.model.vo.Region;
@@ -20,19 +22,36 @@
 			
 			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
+			import mx.utils.NameUtil;
 			
-			private var renderers:Vector.<CircleSprite> = new Vector.<CircleSprite>;
+			private var renderers:Vector.<CircleSprite>;
+			private var renderersDictionary:Dictionary;
 			private var maxRadius:Number = 25;
 			private var dataset:Dataset;
 			private var currentYear:int;
-			private const PATH:String = "Sites/Pentagram/View/src/assets/maps/";
+			private const PATH:String = "Sites/JWT2001/View/src/assets/maps/";
 			
 			public function toggleMap(visible:Boolean):void {
-				if(mapHolder)
-				mapHolder.visible = visible;
+				if(mapHolder) {
+					var a:int = visible?1:0;
+					TweenNano.to(mapHolder,.5,{alpha:a});
+				}
 			}
 			private var firstPass:Boolean = true;
+			public function set client(value:Client):void {
+				renderers = new Vector.<CircleSprite>;
+				renderersDictionary = new Dictionary();
+				for each(var country:Country in value.countries.source) {
+					var c:CircleSprite = new CircleSprite();
+					c.id = country.shortname;				
+					holder.addElement(c);
+					renderers.push(c);
+					renderersDictionary[country.shortname] = c;
+					c.state = false;
+				}
+			}
 			public function visualize(dataset:Dataset):void {
+				
 				this.dataset = dataset
 				var r:Number;
 				var c:CircleSprite;
@@ -41,8 +60,6 @@
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				
 				for each(row in dataset.rows) {
-					var x:Number = row.xcoord*width/939.747;
-					var y:Number = row.ycoord*height/394.863;
 					if(dataset.type == 1) {
 						if(dataset.time == 1) {
 							r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
@@ -51,19 +68,16 @@
 						else
 							r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
 					}
-					if(firstPass) {
-						if(world.countries[row.country.shortname]) {
-							c = new CircleSprite(world.countries[row.country.shortname],row,[row.country.region.color,row.country.region.color],r);
-							c.id = dataset.rows.getItemIndex(row).toString();
-							holder.addElement(c);
-							renderers.push(c);
-						}
-					}
-					else {
-						c = holder.getElementAt(dataset.rows.getItemIndex(row)) as CircleSprite;
-						c.data = row;
-						c.radius = r;
-					}
+					c = renderersDictionary[row.country.shortname];
+					if(world.countries[row.country.shortname]) {
+						c.countrySprite = world.countries[row.country.shortname];
+						c.state = true;
+						c.dirtyCoordinates();
+						c.dirty();
+					}	
+					c.data = row;
+					c.fillColor = row.country.region.color;
+					c.radius = r;			
 				}
 				firstPass = false;
 			}
@@ -109,9 +123,17 @@
 				}
 			}
 			public function removeRegion(region:Region):void {
+				total -= region.coeff;
 				for (var i:int=0;i<mapHolder.numElements;i++) {
+					total += FXGLoader(mapHolder.getElementAt(i)).region.coeff;
+				}
+				slice = 100/total;
+				for (i=0;i<mapHolder.numElements;i++) {
+					FXGLoader(mapHolder.getElementAt(i)).percentWidth = FXGLoader(mapHolder.getElementAt(i)).region.coeff*slice;
+				}
+				for (i=0;i<mapHolder.numElements;i++) {
 					var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
-					if(map.filename == region.fxgmap)
+					if(map.region.fxgmap == region.fxgmap)
 						mapHolder.removeElement(map);
 				}
 				handleResize();
@@ -120,13 +142,13 @@
 				var existingMap:FXGLoader;
 				for (var i:int=0;i<mapHolder.numElements;i++) {
 					var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
-					if(map.filename != region.fxgmap)
+					if(map.region.fxgmap != region.fxgmap)
 						mapHolder.removeElement(map);
 					else 
 						existingMap = map;
 				}
 				if(existingMap) {
-					TweenNano.to(existingMap, .5, {width: mapHolder.width,height:mapHolder.height,onComplete:onFinishTween,onCompleteParas:[existingMap]});
+					TweenNano.to(existingMap, .5, {width: mapHolder.width,height:mapHolder.height,onComplete:onFinishTween,onCompleteParams:[existingMap]});
 					adjustRenderers();
 				}
 				else {
@@ -135,7 +157,7 @@
 					mapHolder.addElement(map);
 					var file:File = File.userDirectory;
 					file = file.resolvePath(PATH+region.fxgmap);
-					map.load(file);
+					map.load(file,region);
 					map.percentHeight = 100;
 					map.percentWidth = 100;
 				}
@@ -146,48 +168,68 @@
 			}
 			//priv
 			private function adjustRenderers():void {
-				var visibleItems:Array = [];
-				var c:CircleSprite;
-				for (var i:int=0;i<mapHolder.numElements;i++) {
-					var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
-					for each(c in renderers) {
-						if(map.countries[c.countrySprite.name] && c.data.country.region.fxgmap == map.filename) {
-							c.state = true;
-							c.countrySprite = map.countries[c.countrySprite.name];
-							c.dirtyCoordinates();
-							visibleItems.push(c);
+				if(!firstPass) {
+					var visibleItems:Array = [];
+					var c:CircleSprite;
+					for (var i:int=0;i<mapHolder.numElements;i++) {
+						var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
+						for each(var countrySprite:Shape in map.countries) {
+							c = renderersDictionary[countrySprite.name];
+							if(c && c.data.country.region.fxgmap == map.region.fxgmap) {
+								c.countrySprite = countrySprite;
+								c.state = true;
+								c.dirtyCoordinates();
+								c.dirty();
+								visibleItems.push(c);
+							}
 						}
 					}
-				}
-				for each(c in renderers) {
-					if(visibleItems.indexOf(c) == -1)
-						c.state = false;
+					for each(c in renderers) {
+						if(visibleItems.indexOf(c) == -1)
+							c.state = false;
+					}
 				}
 			}
+			private var total:Number ;
+			private var slice:Number = 0;
 			public function addRegion(region:Region):void {
+				var map:FXGLoader;
 				if(mapHolder.numElements >= 3) {
 					mapHolder.removeAllElements();
 					loadWorldMap();
 				}
 				else {
-					var map:FXGLoader = new FXGLoader();
+				 	if(mapHolder.numElements == 1 && FXGLoader(mapHolder.getChildAt(0)).region.fxgmap == "world_map.fxg")
+						return;
+					
+					total = region.coeff;
+					for (var i:int=0;i<mapHolder.numElements;i++) {
+						total += FXGLoader(mapHolder.getElementAt(i)).region.coeff;
+					}
+					slice = 100/total;
+					for (i=0;i<mapHolder.numElements;i++) {
+						FXGLoader(mapHolder.getElementAt(i)).percentWidth = FXGLoader(mapHolder.getElementAt(i)).region.coeff*slice;
+					}
+					map = new FXGLoader();
 					map.addEventListener(Event.COMPLETE,handleMapLoaded);
 					mapHolder.addElement(map);
 					map.percentHeight = 100;
-					map.percentWidth = 40;
+					map.percentWidth = region.coeff*slice;
 					var file:File = File.userDirectory;
 					file = file.resolvePath(PATH+region.fxgmap);
-					map.load(file);	
+					map.load(file,region);	
 				}
 			}
-			public function toggleOpacity(value:uint):void {
+			public function toggleOpacity(value:Number):void {
 				for each(var renderer:CircleSprite in renderers) {
-					TweenNano.to(renderer, .5, {alpha: value});
+					TweenNano.to(renderer, .5, {fillAlpha: value});
 				}
 			}
 			private function handleResize(event:ResizeEvent=null):void {
+				//var maxW:Number = 0;
 				var maxW:Number = 0;
 				var widestSprite:Sprite;
+				var widestRegion:Region;
 				var i:int = 0;
 				var child:FXGLoader;
 				var fxgSprite:Sprite;
@@ -196,9 +238,11 @@
 				var sx:Number;
 				var sy:Number;
 				var matr:Matrix;
-				for each(var c:CircleSprite in renderers) {
-					if(c.state)
-						c.dirtyCoordinates();
+				if(!firstPass) {
+					for each(var c:CircleSprite in renderers) {
+						if(c.state)
+							c.dirtyCoordinates();
+					}
 				}
 				if(mapHolder.numElements > 1) {					
 					for (i=0;i<mapHolder.numElements;i++) {
@@ -212,20 +256,24 @@
 						if(g.width > maxW) {
 							maxW = g.width;
 							widestSprite = g;
+							widestRegion = child.region;							
 						}
+//						if(g.width < minW) {
+//
+//						}
 					}
 					if(mapHolder.numElements > 0) {
 						var nw:Number; var nh:Number;   
-						
-						fxgRatio = widestSprite.width / widestSprite.height;
-						ratio = (mapHolder.width*.4)/ mapHolder.height;  
+						trace(widestRegion.width , widestRegion.height, widestRegion.coeff);
+						fxgRatio = widestRegion.width / widestRegion.height;
+						ratio = (mapHolder.width/(slice*widestRegion.coeff/100))/ mapHolder.height;  
 					
 						if(ratio >= fxgRatio) {
 							nh = mapHolder.height;
 							nw = nh*fxgRatio;
 						}
 						else {
-							nw = (mapHolder.width)*.4;
+							nw = mapHolder.width / (slice*widestRegion.coeff/100);
 							nh = nw/fxgRatio;
 						}
 						sx = nw/widestSprite.width;
@@ -234,7 +282,7 @@
 						for (i=0;i<mapHolder.numElements;i++) {
 							child = mapHolder.getElementAt(i) as FXGLoader;
 							fxgSprite = child.fxgSprite;
-							matr = widestSprite.transform.matrix;
+							matr = Sprite(fxgSprite.getChildAt(0)).transform.matrix;	
 							matr.scale(sx, sy);
 							fxgSprite.transform.matrix = matr;
 							fxgSprite.x = (child.width / 2) - (fxgSprite.width / 2 );
@@ -278,18 +326,22 @@
 			private function resumeLoad(args:Array):void {
 				handleResize();
 				TweenNano.to(args[0],0.5,{alpha:1});
-				if(FXGLoader(args[0]).filename != "world_map.fxg")
+				if(FXGLoader(args[0]).region.fxgmap != "world_map.fxg")
 					adjustRenderers();
 				else
 					displayAllRenderers();
 			}
 			private function displayAllRenderers():void {
-				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				for each(var c:CircleSprite in renderers) {
-					if(map.countries[c.countrySprite.name]) {
-						c.state = true;
-						c.countrySprite = map.countries[c.countrySprite.name];
-						c.dirtyCoordinates();
+				if(!firstPass) {
+					var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
+					for each(var countrySprite:Shape in map.countries) {
+						var c:CircleSprite = renderersDictionary[countrySprite.name];
+						if(c) {
+							c.countrySprite = countrySprite;
+							c.state = true;
+							c.dirtyCoordinates();
+							c.dirty();
+						}
 					}
 				}
 			}
@@ -299,12 +351,12 @@
 				mapHolder.addElement(map);
 				var file:File = File.userDirectory;
 				file = file.resolvePath(PATH+"world_map.fxg");
-				map.load(file);
+				var r:Region = new Region();
+				r.coeff = 1; r.fxgmap = "world_map.fxg";
+				map.load(file,r);
 				map.percentHeight = 100;
 				map.percentWidth = 100;
 			}
-
-
 		]]>
 	</fx:Script>
 	<fx:Declarations>

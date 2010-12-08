@@ -70,7 +70,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
 			view.filterTools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
 			view.filterTools.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			//view.filterTools.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
+			view.filterTools.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
 			
 			yearTimer = new Timer(2000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
@@ -90,7 +90,12 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleXray(event:Event):void {
 			var viz:IVisualizer =  NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.toggleOpacity(view.filterTools.xrayToggle.selected?1:0);
+			viz.toggleOpacity(view.filterTools.xrayToggle.selected?1:0.7);
+		}
+		private function handleMapToggle(event:Event):void {
+			if(view.visualizerArea.selectedIndex == 1) {
+				IMapView(NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0)).toggleMap(view.filterTools.mapToggle.selected);
+			}
 		}
 		private function handleRegionSelect(event:Event):void {
 			var region:Region;
@@ -365,6 +370,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IMapView) {
 				this.view.mapView = util.view as IMapView;
 				view.mapHolder.addElement(util.view as Group);
+				IMapView(util.view).client = model.client;
 			}
 		}
 		private function handleClusterLoaded(event:Event):void {

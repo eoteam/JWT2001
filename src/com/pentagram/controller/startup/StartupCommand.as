@@ -38,6 +38,7 @@ package com.pentagram.controller.startup
 			counter++;
 			for each(var continent:Region in continents)
 			{
+				continent.coeff = Math.ceil(continent.width / Region(continents[0]).width);
 				appService.loadCountries(continent);
 				appService.addHandlers(handleCountries);
 				appService.addProperties("continent",continent);

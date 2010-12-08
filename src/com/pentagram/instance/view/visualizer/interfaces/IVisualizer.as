@@ -20,7 +20,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function updateYear(year:int):void;
 		
-		function toggleOpacity(value:uint):void;
+		function toggleOpacity(value:Number):void;
 		
 	}
 }

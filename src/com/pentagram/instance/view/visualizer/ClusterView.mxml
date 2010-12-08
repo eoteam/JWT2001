@@ -65,7 +65,7 @@
 				holder.graphics.beginFill(0x444444,0.6);
 				holder.graphics.drawRect(0,0,600,600);
 			}
-			public function toggleOpacity(value:uint):void {
+			public function toggleOpacity(value:Number):void {
 
 			}			
 		]]>

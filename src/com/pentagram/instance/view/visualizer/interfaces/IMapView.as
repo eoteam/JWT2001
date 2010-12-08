@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
+	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.Region;
 	
@@ -16,5 +17,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function addRegion(region:Region):void;
 		
 		function removeRegion(region:Region):void;
+		
+		function set client(value:Client):void;
 	}
 }

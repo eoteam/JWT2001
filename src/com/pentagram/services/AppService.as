@@ -33,6 +33,7 @@ package com.pentagram.services
 			params.action = "getContent";
 			params.verbosity = 2;
 			params.parentid = 3;
+			params.orderby = "width";
 			this.createService(params,ResponseType.DATA,Region);
 		}
 		public function loadCountries(continent:Region):void {

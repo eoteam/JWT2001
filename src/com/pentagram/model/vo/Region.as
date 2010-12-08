@@ -10,5 +10,8 @@ package com.pentagram.model.vo
 		public var selected:Boolean = true;
 		public var fxgmap:String;
 		public var enabled:Boolean = true;
+		public var width:Number = 1;
+		public var height:Number = 1;
+		public var coeff:Number = 1;
 	}
 }
