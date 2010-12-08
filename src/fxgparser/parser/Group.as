@@ -1,6 +1,8 @@
 ﻿package fxgparser.parser 
 {
 	import flash.display.Sprite;
+	
+	import fxgparser.FxgDisplay;
 	import fxgparser.parser.IParser;
 	import fxgparser.parser.model.Data;
 	import fxgparser.parser.style.Style;
@@ -27,6 +29,9 @@
 			group.height = _height = style.height;
 
 			data.currentCanvas.addChild( group );
+			if(group.name == "countries") {
+				FxgDisplay(data.canvas).countrySprite = group;
+			}
 			var groupXML:XML = data.currentXml.copy();
 			groupXML.setLocalName(  "_Group" );	
 			FxgFactory.parseData( data.copy( groupXML, group ) );

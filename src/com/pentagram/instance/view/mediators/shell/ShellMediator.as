@@ -78,16 +78,69 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			view.filterTools.continentList.dataProvider = model.regions;
-			view.filterTools.continentList.addEventListener('selectionChanged',handleContinentSelection);
+			
+			view.filterTools.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
+			view.filterTools.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
+			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
 			
 			yearTimer = new Timer(2000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
-		private function handleContinentSelection(event:Event):void {
+		private function handleRegionSelect(event:Event):void {
+			var region:Region;
 			var item:Region = view.filterTools.continentList.selectedItem as Region;
 			if(view.visualizerArea.selectedIndex == 1) {
 				var viz:IMapView = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IMapView;
-				viz.toggleCategory(item);	
+				switch(event.type) {
+					case "addRegion":
+						viz.addRegion(item);
+						adjustSelection();
+					break;
+					
+					case "selectRegion":
+						viz.selectRegion(item);
+						for each(region in model.regions.source) {
+							if(region != item)
+								region.selected = false;
+						}
+					break;
+					
+					case "removeRegion":
+						viz.removeRegion(item);
+						adjustSelection();
+					break;
+				}
+			}
+
+		}
+		private function adjustSelection():void {
+			var region:Region;
+			var selectCount:int = 0;
+			for each(region in model.regions.source) {
+				if(region.selected)
+					selectCount++;
+			} 
+			switch(selectCount) {
+				case selectCount >= 4:
+					for each(region in model.regions.source) {
+						region.enabled = true;
+						region.selected = true;
+					}
+					break;
+				case selectCount > 1:
+					for each(region in model.regions.source) {
+						if(region.selected)
+							region.enabled = true;
+					}
+				break;
+				case selectCount == 1:
+					for each(region in model.regions.source) {
+						if(region.selected)
+							region.enabled = false;
+						else
+							region.enabled = true;
+					}
+				break;
 			}
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {

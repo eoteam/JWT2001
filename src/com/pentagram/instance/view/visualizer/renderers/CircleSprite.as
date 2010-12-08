@@ -7,6 +7,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flare.util.Colors;
 	
 	import flash.display.GradientType;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
@@ -24,11 +25,14 @@ package com.pentagram.instance.view.visualizer.renderers
 		private const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
 		private const FILL_ALPHAS:Array = [0.8,0.8];
 		private const FILL_RATIO:Array = [0,255];
-
-		public function CircleSprite(point:DataRow,fColors:Array,radius:Number=0,x:Number=0,y:Number=0) {		
+		
+		public var countrySprite:Shape;
+		public function CircleSprite(sprite:Shape,point:DataRow,fColors:Array,radius:Number=0) {		
 			super();
-			this.x = x;
-			this.y = y;
+			this.countrySprite = sprite;
+			var pt:Point = countrySprite.localToGlobal(new Point(countrySprite.x,countrySprite.y));
+			this.x = pt.x;
+			this.y = pt.y;
 			_radius = radius;
 			_data = point;
 			fillColor = fColors[0] as uint;

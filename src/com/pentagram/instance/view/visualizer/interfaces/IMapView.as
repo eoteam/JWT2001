@@ -11,6 +11,10 @@ package com.pentagram.instance.view.visualizer.interfaces
 	
 		function visualize(dataset:Dataset):void;
 		
-		function toggleCategory(region:Region):void;
+		function selectRegion(region:Region):void;
+		
+		function addRegion(region:Region):void;
+		
+		function removeRegion(region:Region):void;
 	}
 }

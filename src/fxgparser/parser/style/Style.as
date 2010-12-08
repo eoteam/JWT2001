@@ -1,22 +1,23 @@
 ﻿package fxgparser.parser.style 
 {
-	import flash.display.DisplayObject;
+	import flash.display.BlendMode;
 	import flash.display.CapsStyle;
+	import flash.display.DisplayObject;
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
-	import flash.display.BlendMode;
 	import flash.geom.ColorTransform;
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.text.engine.FontWeight;
+	
+	import fxgparser.parser.Constants;
 	import fxgparser.parser.FxgFactory;
+	import fxgparser.parser.filters.*;
 	import fxgparser.parser.model.Data;
 	import fxgparser.parser.model.PersistentData;
+	import fxgparser.parser.style.*;
 	import fxgparser.parser.style.Transform;
 	import fxgparser.parser.utils.StyleUtil;
-	import fxgparser.parser.Constants;
-	import fxgparser.parser.style.*;
-	import fxgparser.parser.filters.*;
 	
 	public class Style
 	{
@@ -161,6 +162,12 @@
 			scaleY= StyleUtil.validateAttr( item.@scaleY , scaleY );
 			rotation = StyleUtil.validateAttr( item.@rotation ,rotation );
 			blendMode = StyleUtil.validateAttr(item.@blendMode , blendMode );
+			id = StyleUtil.validateAttr(item.@id , id );
+			//visible = StyleUtil.validateAttr(item.@visible , visible );
+			if(item.@visible.length() > 0 ) {
+				visible = item.@visible.toString() == "true"?true:false;
+			}
+			
 			if ( item.@viewWidth.length() || item.@viewHeight.length() )
 				viewBox = new Rectangle( 0, 0, item.@viewWidth , item.@viewHeight );
 		}

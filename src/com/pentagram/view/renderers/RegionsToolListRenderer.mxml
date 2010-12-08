@@ -11,30 +11,30 @@
 
 			protected function check_changeHandler(event:Event):void
 			{
-				data.visible=check.selected;
-				if(check.selected) {
-					select.selected = true;
-				}
-				this.owner.dispatchEvent(new Event("selectionChanged"));
+				data.selected = check.selected;
+				if(check.selected)
+					this.owner.dispatchEvent(new Event("addRegion"));
+				else
+					this.owner.dispatchEvent(new Event("removeRegion"));
 			}
 
 
 			protected function togglebutton1_changeHandler(event:Event):void
 			{
-				check.selected = data.selected = select.selected;
-				this.owner.dispatchEvent(new Event("selectionChanged"));
+				data.selected = true;
+				this.owner.dispatchEvent(new Event("selectRegion"));
 			}
 
 		]]>
 	</fx:Script>
-	<s:CheckBox id="check" verticalCenter="0" label=" " width="22" selected="{data.visible}"  change="check_changeHandler(event)"/>
+	<s:CheckBox id="check" verticalCenter="0" label=" " width="22" selected="{data.selected}"  change="check_changeHandler(event)" enabled="{data.enabled}"/>
 	<s:Rect width="0.25" height="100%" left="22">
 		<s:stroke>
 			<s:SolidColorStroke weight="0.25" color="0x666666"/>
 		</s:stroke>
 	</s:Rect>
-	<s:ToggleButton verticalCenter="0" skinClass="com.pentagram.view.skins.buttons.ContinentToggleButton"  id="select"
-	label="{data.name}" left="22.25"  color="{data.color}" change="togglebutton1_changeHandler(event)" selected="{data.selected}" />
+	<s:Button verticalCenter="0" skinClass="com.pentagram.view.skins.buttons.ContinentToggleButton"  id="select"
+	label="{data.name}" left="23"  color="{data.color}" click="togglebutton1_changeHandler(event)"  />
 	
 	<s:Rect width="100%" height="0.25" bottom="0">
 		<s:stroke>

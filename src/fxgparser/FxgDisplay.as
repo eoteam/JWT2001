@@ -10,6 +10,7 @@
 	public class FxgDisplay extends Sprite{
 		
 		private var _factory:FxgFactory;
+		public var countrySprite:Sprite;
 		
 		public function FxgDisplay() 
 		{ 

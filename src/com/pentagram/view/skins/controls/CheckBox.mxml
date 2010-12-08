@@ -35,7 +35,7 @@
 			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Rect>
-	<s:Path data="M 0.5 4.588 L 3.586 7.979 L 8.833 0.5" id="path12" includeIn="down,downAndSelected,overAndSelected,upAndSelected" winding="nonZero" x="1.792" verticalCenter="0">
+	<s:Path data="M 0.5 4.588 L 3.586 7.979 L 8.833 0.5" id="path12" includeIn="down,downAndSelected,overAndSelected,upAndSelected,disabledAndSelected" winding="nonZero" x="1.792" verticalCenter="0">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#E6E6E6" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>

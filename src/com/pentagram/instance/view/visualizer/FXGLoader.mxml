@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SpriteVisualElement xmlns:fx="http://ns.adobe.com/mxml/2009" 
-					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" alpha="0"
 					   xmlns:mx="library://ns.adobe.com/flex/mx"  resizeMode="scale"
 					   width="100%" height="100%">
 	<fx:Declarations>
-	
+		
 	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="complete",type="flash.events.Event")]
+	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.layout.AlignMode;
 			import com.greensock.layout.AutoFitArea;
 			import com.greensock.layout.ScaleMode;
+			import com.pentagram.model.vo.Region;
 			
 			import fxgparser.FxgDisplay;
 			
 			import mx.utils.NameUtil;
+			
 			public var fxgSprite:FxgDisplay;
+			public var countries:Dictionary = new Dictionary();
+			public var filename:String;
 			private var fxgxml:XML;
-			private var fileName:String;
+
 			public function load(file:File):void {
-				XML.ignoreWhitespace = false;	//to preserve spaces inside texts			
+				XML.ignoreWhitespace = true;	//to preserve spaces inside texts			
 				var fs:FileStream = new FileStream();
 				fs.open(file, FileMode.READ);
-				fileName = file.name;
+
 				var fxgContent:String = fs.readUTFBytes(fs.bytesAvailable);
+				fxgContent = fxgContent.replace(/d:userLabel/gi,"id");
 				fs.close();
 				fxgxml = XML( fxgContent );
 				fxgSprite = new FxgDisplay();	//parse SVG	
-				fxgSprite.addEventListener(Event.ADDED_TO_STAGE,complete);
+				fxgSprite.addEventListener(Event.COMPLETE,complete);
 				fxgSprite.parse(fxgxml);
 				addChild( fxgSprite );
 				fxgSprite.x = (width / 2) - (fxgSprite.width / 2);
 				fxgSprite.y = (height / 2) - (fxgSprite.height / 2);
-				//this.stage.addEventListener(Event.RESIZE,handleResize);
+				this.filename = file.name;
+				trace(filename);
 			}
-			private function complete(e:Event):void {
-				
-//				var g:Sprite = fxgSprite.getChildAt(0) as Sprite;
-//				trace(fileName,g.width, g.height);
-//				var area:AutoFitArea = new AutoFitArea(fxgSprite, 0, 0, g.width, g.height);
-//				area.attach(g);
-//				
-				//var area2:AutoFitArea = new AutoFitArea(this, 0, 0, g.width, g.height);
-				//area2.attach(fxgSprite);
-				 
-				//var area:AutoFitArea = AutoFitArea.createAround(g);
+			private function complete(e:Event):void {	
+				fxgSprite.addEventListener(Event.ADDED_TO_STAGE,handleAddedToStage);
+			}
+			private function handleAddedToStage(event:Event):void {
+				for(var i:int=0;i<fxgSprite.countrySprite.numChildren;i++) {
+					countries[fxgSprite.countrySprite.getChildAt(i).name] = fxgSprite.countrySprite.getChildAt(i);
+				}
+				this.dispatchEvent(new Event("complete"));
 			}
 
 		]]>
