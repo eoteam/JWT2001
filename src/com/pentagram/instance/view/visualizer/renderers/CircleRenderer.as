@@ -18,21 +18,21 @@ package com.pentagram.instance.view.visualizer.renderers
 	
 
 
-	public class CircleSprite extends UIComponent
+	internal class CircleRenderer extends UIComponent
 	{
-		private var _radius:Number;
+		
 		
 
 		private const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
 		private const FILL_ALPHAS:Array = [0.8,0.8];
 		private const FILL_RATIO:Array = [0,255];
 		
-		public var countrySprite:Shape;
+		
 	
-		public function CircleSprite() {		
+		public function CircleRenderer() {		
 			super();
 		}
-
+		protected var _radius:Number = 1;
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;
 		protected var _fillColor:uint = 0xffcccccc;
@@ -51,7 +51,7 @@ package com.pentagram.instance.view.visualizer.renderers
 
 		/** Object storing backing data values. */
 		public function get data():DataRow { return _data; }
-		public function set data(d:DataRow):void { _data = d; }
+		public function set data(d:DataRow):void { _data = d; fillColor = d.country.region.color; }
 		
 		// -- Interaction Properties ---------------------------
 		
@@ -175,12 +175,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			dirtyFlag = true;
 			this.invalidateDisplayList();
 		}
-		public function dirtyCoordinates():void {
-			if(countrySprite) {
-				dirtyCoordFlag = true;
-				this.invalidateProperties();
-			}
-		}
+
 		public function set state(value:Boolean):void {
 			
 			if(value && !stateFlag)
@@ -200,11 +195,6 @@ package com.pentagram.instance.view.visualizer.renderers
 				this.graphics.clear();
 			}
 		}
-		override protected function commitProperties():void {
-			super.commitProperties();
-			if(dirtyCoordFlag)
-				updateCoordinates();
-		}
 		protected function draw():void {
 			dirtyFlag = false;
 			graphics.clear();
@@ -215,12 +205,18 @@ package com.pentagram.instance.view.visualizer.renderers
 			graphics.drawCircle(0, 0, _radius);
 			graphics.endFill();		
 		}
-		protected function updateCoordinates():void {
-			dirtyCoordFlag = false;
-			var pt:Point = countrySprite.parent.localToGlobal(new Point(countrySprite.x,countrySprite.y));
-			pt = parent.globalToLocal(pt);
-			x = pt.x;
-			y = pt.y;
+		public function dirtyCoordinates():void {
+			dirtyCoordFlag = true;
+			this.invalidateProperties();
 		}
+		override protected function commitProperties():void {
+			super.commitProperties();
+			if(dirtyCoordFlag)
+				updateCoordinates();
+		}
+		protected function updateCoordinates():void {
+			//throw exception
+		}
+
 	}
 }

@@ -5,6 +5,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.instance.view.visualizer.interfaces.IClusterView;
 	import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
 	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
 	import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
@@ -90,7 +91,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleXray(event:Event):void {
 			var viz:IVisualizer =  NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.toggleOpacity(view.filterTools.xrayToggle.selected?1:0.7);
+			viz.toggleOpacity(view.filterTools.xrayToggle.selected?0.7:1);
 		}
 		private function handleMapToggle(event:Event):void {
 			if(view.visualizerArea.selectedIndex == 1) {
@@ -287,6 +288,10 @@ package com.pentagram.instance.view.mediators.shell
 			var dataset:Dataset;
 			switch(view.visualizerArea.selectedIndex) {
 				case 0:
+					if(view.tools.thirdSet.selectedItem) {
+						dataset = view.tools.thirdSet.selectedItem as Dataset;
+						view.clusterView.visualize(dataset);
+					}
 				break;
 				case 1:
 					if(view.tools.thirdSet.selectedItem) {
@@ -375,8 +380,8 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
-			if(util.view is IVisualizer) {
-				this.view.clusterView = util.view as IVisualizer;
+			if(util.view is IClusterView) {
+				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
 			}			
 		}

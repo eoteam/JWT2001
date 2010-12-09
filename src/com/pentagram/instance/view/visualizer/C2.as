@@ -1,37 +1,59 @@
 package com.pentagram.instance.view.visualizer
 {
-	import com.pentagram.instance.model.vo.Point3D;
-	import com.pentagram.instance.view.visualizer.renderers.InfoSprite;
-	import com.pentagram.instance.view.visualizer.renderers.InfoSprite;
-	
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
+	import com.pentagram.instance.model.vo.Point3D;
+	import com.pentagram.instance.view.visualizer.renderers.InfoSprite;
 	
-	import spark.core.SpriteVisualElement;
-
 	//[SWF(frameRate = '60', backgroundColor='0x000000',width='1024',height='768')]
-	public class CirclePacking extends Sprite
+	public class C2 extends Sprite
 	{
-		 
-		public var spriteArray:Vector.<InfoSprite> = new Vector.<InfoSprite>;
+		
+		private var numberList:Array= [];// = [10,10,20,30,50,10,10,10,20,30,50,10];
+		private var stringList:Array= [] ;// = ["a","b","c","d","e","f","a","b","c","d","e","f"];
+		private var spriteArray:Vector.<InfoSprite> = new Vector.<InfoSprite>;
 		private var circlePositions:Vector.<Point3D>;
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
-
-		public function CirclePacking()
+		private var canvas:Sprite;
+		public function C2()
 		{
-			super();			
-		}
-		public function refresh():void {
+			for (var i:int=0;i<60;i++) {
+				numberList.push(Math.random()*50+5);
+				stringList.push(i);
+			}
+			build();
 			dispose();
 			draw();
 		}
-		public function dispose():void {
+		private function build():void {
+			//var c:CirclesTagCloud;	
+			var counter:uint = 0;
+			while(counter < numberList.length) {
+				var sprite:InfoSprite = new  InfoSprite();
+				sprite.setValues(numberList[counter],stringList[counter]);
+				spriteArray.push(sprite);
+				this.addChild(sprite);
+				counter++;
+			}
+		}
+		public function refresh():void {
+			numberList = []; stringList = [];
+			for (var i:int=0;i<60;i++) {
+				var v:Number = Math.random()*50+5;
+				numberList.push(v);
+				stringList.push(i);
+				spriteArray[i].setValues(v,i.toString());
+			}
+			dispose();
+			draw();
+		}
+		private function dispose():void {
 			var disposeCounter:int = 2;
-			var _loc_1:InfoSprite;
+			var _loc_1:InfoSprite = null;
 			var _loc_2:Number = NaN;
 			var _loc_7:uint = 0;
 			var _loc_3:Number = 0;
@@ -40,14 +62,16 @@ package com.pentagram.instance.view.visualizer
 			circlePositions.push(new Point3D(0, 0, this.spriteArray[0].radius));
 			circlePositions.push(new Point3D(this.spriteArray[0].radius + this.spriteArray[1].radius + MIN_SPACE_BETWEEN_CIRCLES, 0,this.spriteArray[1].radius));
 			var _loc_5:Number = this.circlePositions[1].x + this.circlePositions[1].z;
-			while (disposeCounter < this.spriteArray.length){
+			trace(this.circlePositions[1].x , this.circlePositions[1].z);
+			while (disposeCounter < this.numberList.length){
+				
 				_loc_1 = this.spriteArray[disposeCounter];
-				this.graphics.moveTo(0, 0);
+				//this.graphics.moveTo(0, 0);
 				_loc_2 = this.spriteArray[0].radius + _loc_1.radius + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
 				while (_loc_7 < 1000){
-					
+					trace(_loc_7);
 					_loc_4.x = _loc_2 * Math.cos(_loc_3);
 					_loc_4.y = _loc_2 * Math.sin(_loc_3);
 					_loc_2 = _loc_2 + 0.2;
@@ -65,7 +89,8 @@ package com.pentagram.instance.view.visualizer
 				pos.x = pos.x /_loc_5;
 				pos.y = pos.y / _loc_5;
 				pos.z = pos.z / _loc_5;
-			}		
+			}
+			
 		}
 		protected function testCircleAtPoint(point:Point, radius:Number) : Boolean {
 			var _loc_3:uint = 1;
@@ -79,14 +104,15 @@ package com.pentagram.instance.view.visualizer
 			return true;
 		}
 		
-	 	public function draw() : void {
-			var _loc_1:InfoSprite;
-			if (this.spriteArray.length < 2){
+		protected function draw() : void {
+			var _loc_1:InfoSprite = null;
+			if (this.numberList.length < 2){
 				return;
 			}
 			var _loc_2:* = Math.floor(Math.min(800, 600) * 0.5) - 3;
 			var _loc_3:uint = 0;
-			while (_loc_3 < this.circlePositions.length) {			
+			while (_loc_3 < this.circlePositions.length){
+				
 				_loc_1 = this.spriteArray[_loc_3];
 				_loc_1.x = this.circlePositions[_loc_3].x * _loc_2;
 				_loc_1.y = this.circlePositions[_loc_3].y * _loc_2;

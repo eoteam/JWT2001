@@ -31,8 +31,8 @@ package com.pentagram.model
 		{
 			windowMap = new HashMap();
 			viewsMap = new HashMap();
-			viewsMap.put(LOGIN_WINDOW,"com.pentagram.view.windows.LoginWindow");
-			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.view.windows.ExportSpreadSheetWindow");
+			viewsMap.put(LOGIN_WINDOW,"com.pentagram.main.windows.LoginWindow");
+			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.main.windows.ExportSpreadSheetWindow");
 		}
 		
 		/**

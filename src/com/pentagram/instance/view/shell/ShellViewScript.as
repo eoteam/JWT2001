@@ -1,4 +1,5 @@
 
+import com.pentagram.instance.view.visualizer.interfaces.IClusterView;
 import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
 import com.pentagram.instance.view.visualizer.interfaces.IMapView;
 import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
@@ -8,7 +9,7 @@ import mx.events.IndexChangedEvent;
 
 public var graphView:IGraphView;
 public  var mapView:IMapView;
-public var clusterView:IVisualizer;
+public var clusterView:IClusterView;
 
 private function setInfoBtn_clickHandler(event:MouseEvent):void {
 	if(setInfoBtn.selected) {

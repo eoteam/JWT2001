@@ -1,5 +1,7 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
+	import com.pentagram.model.vo.DataRow;
+	
 	import flash.display.Sprite;
 	
 	public class InfoSprite extends Sprite
@@ -8,12 +10,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		{
 			super();
 		}
-		public var radius:int;
-		public var label:String;
-		public function setValues(value:int, label:String):void {
-			this.radius = value;
-			this.label = label;
-		}
+		public var data:DataRow;
+		public var radius:Number;
 		public function drawCircle(z:Number):void {
 			this.graphics.clear();
 			this.graphics.beginFill(0xff0000,1);

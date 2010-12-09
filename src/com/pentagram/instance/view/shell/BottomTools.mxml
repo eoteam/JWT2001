@@ -106,7 +106,7 @@
 		</primatives:Line>
 		<s:Rect width="10" includeIn="graph"/>
 		
-		<s:Label text="size by:  "/>
+		<s:Label text="size by:  " text.cluster="group by: "/>
 		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet" />
 		<s:Rect width="10" />
 		<primatives:Line width="1" height="40" >
@@ -116,7 +116,7 @@
 		</primatives:Line>
 		<s:Rect width="10" />
 		
-		<s:Label text.graph="color by:  " text.cluster="group by: " includeIn="groupingState"/>
+		<s:Label text.graph="color by:  " text.cluster="sizd by: " includeIn="groupingState"/>
 		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet" includeIn="groupingState"/>
 		<s:Rect width="10" includeIn="groupingState"/>
 		<primatives:Line width="1" height="40" includeIn="groupingState">

@@ -12,7 +12,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.TweenNano;
-			import com.pentagram.instance.view.visualizer.renderers.CircleSprite;
+			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.Client;
 			import com.pentagram.model.vo.Country;
 			import com.pentagram.model.vo.DataRow;
@@ -24,12 +24,12 @@
 			import mx.events.ResizeEvent;
 			import mx.utils.NameUtil;
 			
-			private var renderers:Vector.<CircleSprite>;
+			private var renderers:Vector.<MapRenderer>;
 			private var renderersDictionary:Dictionary;
 			private var maxRadius:Number = 25;
 			private var dataset:Dataset;
 			private var currentYear:int;
-			private const PATH:String = "Sites/JWT2001/View/src/assets/maps/";
+			private const PATH:String = "Sites/Pentagram/View/src/assets/maps/";
 			
 			public function toggleMap(visible:Boolean):void {
 				if(mapHolder) {
@@ -39,10 +39,10 @@
 			}
 			private var firstPass:Boolean = true;
 			public function set client(value:Client):void {
-				renderers = new Vector.<CircleSprite>;
+				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
 				for each(var country:Country in value.countries.source) {
-					var c:CircleSprite = new CircleSprite();
+					var c:MapRenderer = new MapRenderer();
 					c.id = country.shortname;				
 					holder.addElement(c);
 					renderers.push(c);
@@ -54,7 +54,7 @@
 				
 				this.dataset = dataset
 				var r:Number;
-				var c:CircleSprite;
+				var c:MapRenderer;
 				var row:DataRow;
 				
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
@@ -76,7 +76,6 @@
 						c.dirty();
 					}	
 					c.data = row;
-					c.fillColor = row.country.region.color;
 					c.radius = r;			
 				}
 				firstPass = false;
@@ -116,7 +115,7 @@
 			public function update():void {
 				if(dataset.time == 1 && currentYear >= Number(dataset.years[0]) && currentYear <= Number(dataset.years[1])) {
 					
-					for each(var c:CircleSprite in renderers) {
+					for each(var c:MapRenderer in renderers) {
 						var r:Number = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
 						TweenNano.to(c, .5, {radius: r});
 					}
@@ -170,7 +169,7 @@
 			private function adjustRenderers():void {
 				if(!firstPass) {
 					var visibleItems:Array = [];
-					var c:CircleSprite;
+					var c:MapRenderer;
 					for (var i:int=0;i<mapHolder.numElements;i++) {
 						var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
 						for each(var countrySprite:Shape in map.countries) {
@@ -221,7 +220,7 @@
 				}
 			}
 			public function toggleOpacity(value:Number):void {
-				for each(var renderer:CircleSprite in renderers) {
+				for each(var renderer:MapRenderer in renderers) {
 					TweenNano.to(renderer, .5, {fillAlpha: value});
 				}
 			}
@@ -239,7 +238,7 @@
 				var sy:Number;
 				var matr:Matrix;
 				if(!firstPass) {
-					for each(var c:CircleSprite in renderers) {
+					for each(var c:MapRenderer in renderers) {
 						if(c.state)
 							c.dirtyCoordinates();
 					}
@@ -335,7 +334,7 @@
 				if(!firstPass) {
 					var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 					for each(var countrySprite:Shape in map.countries) {
-						var c:CircleSprite = renderersDictionary[countrySprite.name];
+						var c:MapRenderer = renderersDictionary[countrySprite.name];
 						if(c) {
 							c.countrySprite = countrySprite;
 							c.state = true;
