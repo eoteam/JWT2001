@@ -28,7 +28,7 @@ package com.pentagram.main.mediators
 	public class MainMediator extends Mediator
 	{
 		[Inject]
-		public var view:Main;
+		public var view:View;
 		
 		[Inject]
 		public var appModel:AppModel;

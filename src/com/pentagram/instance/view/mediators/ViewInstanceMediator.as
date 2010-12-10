@@ -80,8 +80,9 @@ package com.pentagram.instance.view.mediators
 			model.regions = args[1];
 			model.countries = args[2];
 			model.user = args[3];	
-			model.exportMenuItem = args[4];	
-			model.importMenuItem = args[5];	
+			model.colors = args[4];
+			model.exportMenuItem = args[5];	
+			model.importMenuItem = args[6];	
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);

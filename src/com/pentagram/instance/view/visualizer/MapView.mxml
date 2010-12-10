@@ -29,7 +29,7 @@
 			private var maxRadius:Number = 25;
 			private var dataset:Dataset;
 			private var currentYear:int;
-			private const PATH:String = "Sites/Pentagram/View/src/assets/maps/";
+			private const PATH:String = "assets/maps/";
 			
 			public function toggleMap(visible:Boolean):void {
 				if(mapHolder) {
@@ -154,7 +154,7 @@
 					map = new FXGLoader();
 					map.addEventListener(Event.COMPLETE,handleMapLoaded);
 					mapHolder.addElement(map);
-					var file:File = File.userDirectory;
+					var file:File = File.applicationDirectory;
 					file = file.resolvePath(PATH+region.fxgmap);
 					map.load(file,region);
 					map.percentHeight = 100;
@@ -198,7 +198,7 @@
 					loadWorldMap();
 				}
 				else {
-				 	if(mapHolder.numElements == 1 && FXGLoader(mapHolder.getChildAt(0)).region.fxgmap == "world_map.fxg")
+				 	if(mapHolder.numElements == 1 && FXGLoader(mapHolder.getChildAt(0)).region.fxgmap == "world_map.xml")
 						return;
 					
 					total = region.coeff;
@@ -214,7 +214,7 @@
 					mapHolder.addElement(map);
 					map.percentHeight = 100;
 					map.percentWidth = region.coeff*slice;
-					var file:File = File.userDirectory;
+					var file:File = File.applicationDirectory;
 					file = file.resolvePath(PATH+region.fxgmap);
 					map.load(file,region);	
 				}
@@ -325,7 +325,7 @@
 			private function resumeLoad(args:Array):void {
 				handleResize();
 				TweenNano.to(args[0],0.5,{alpha:1});
-				if(FXGLoader(args[0]).region.fxgmap != "world_map.fxg")
+				if(FXGLoader(args[0]).region.fxgmap != "world_map.xml")
 					adjustRenderers();
 				else
 					displayAllRenderers();
@@ -347,11 +347,11 @@
 			private function loadWorldMap():void {
 				var map:FXGLoader = new FXGLoader();
 				map.addEventListener(Event.COMPLETE,handleMapLoaded);
-				mapHolder.addElement(map);
-				var file:File = File.userDirectory;
-				file = file.resolvePath(PATH+"world_map.fxg");
+				mapHolder.addElement(map);				
+				var file:File = File.applicationDirectory;
+				file = file.resolvePath(PATH+"world_map.xml");
 				var r:Region = new Region();
-				r.coeff = 1; r.fxgmap = "world_map.fxg";
+				r.coeff = 1; r.fxgmap = "world_map.xml";
 				map.load(file,r);
 				map.percentHeight = 100;
 				map.percentWidth = 100;

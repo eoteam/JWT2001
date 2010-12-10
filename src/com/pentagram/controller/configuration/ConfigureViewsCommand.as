@@ -1,6 +1,7 @@
 package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
+	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.view.editor.DatasetCreator;
 	import com.pentagram.instance.view.editor.DatasetEditor;
 	import com.pentagram.instance.view.editor.EditorMainView;
@@ -21,7 +22,6 @@ package com.pentagram.controller.configuration
 	import com.pentagram.main.mediators.MainMediator;
 	import com.pentagram.main.windows.ExportSpreadSheetWindow;
 	import com.pentagram.main.windows.LoginWindow;
-	import com.pentagram.instance.InstanceWindow;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.robotlegs.utilities.statemachine.StateEvent;
@@ -31,7 +31,7 @@ package com.pentagram.controller.configuration
 		override public function execute():void
 		{
 			//views and singleton windows
-			mediatorMap.mapView(Main, MainMediator);			
+			mediatorMap.mapView(View, MainMediator);			
 			mediatorMap.mapView(LoginWindow, LoginWindowMediator);
 			mediatorMap.mapView(ExportSpreadSheetWindow, ExportSpreadSheetWindowMediator); 
 			

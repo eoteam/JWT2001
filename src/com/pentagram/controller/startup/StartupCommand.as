@@ -25,9 +25,18 @@ package com.pentagram.controller.startup
 		private var total:int;
 		override public function execute():void
 		{
-			total = 2;
+			total = 3;
 			appService.loadContinents();
 			appService.addHandlers(handleContinents);
+			appService.loadColors();
+			appService.addHandlers(handleColorLoaded);
+		}
+		private function handleColorLoaded(event:ResultEvent):void {
+			counter++;
+			checkCount();
+			for each(var item:Object in event.token.results) {
+				appModel.colors.push(Number(item.value.toString()));
+			}
 		}
 		private function handleContinents(event:ResultEvent):void
 		{

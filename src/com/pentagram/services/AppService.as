@@ -43,7 +43,12 @@ package com.pentagram.services
 			params.parentid = continent.id;
 			this.createService(params,ResponseType.DATA,Country);		
 		}
-		
+		public function loadColors():void {
+			var params:Object = new  Object();
+			params.action = "getData";
+			params.tablename = 'colors';
+			this.createService(params,ResponseType.DATA);
+		}		
 
 		public function authenticateUser(username:String, password:String):void {
 			var params:Object = new Object();

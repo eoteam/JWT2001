@@ -54,7 +54,11 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
-			//view.mainStack.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);
+			var util:ModuleUtil = new ModuleUtil();
+			util.addEventListener("moduleLoaded",handleClusterLoaded);
+			util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");
+			loaders.push(util);
+			
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
 
 			view.tools.initTools();
@@ -175,13 +179,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			else if(event.newIndex == 0){
 				view.tools.thirdSet.selectedIndex = -1;
-				if(view.clusterView == null) {
-					//view.tools.thirdSet.selectedIndex = -1;
-					util = new ModuleUtil();
-					util.addEventListener("moduleLoaded",handleClusterLoaded);
-					util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");
-					loaders.push(util);
-				}
+
 			}
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
@@ -290,7 +288,7 @@ package com.pentagram.instance.view.mediators.shell
 				case 0:
 					if(view.tools.thirdSet.selectedItem) {
 						dataset = view.tools.thirdSet.selectedItem as Dataset;
-						view.clusterView.visualize(dataset);
+						view.clusterView.visualize(dataset,view.tools.fourthSet.selectedItem?view.tools.fourthSet.selectedItem:null);
 					}
 				break;
 				case 1:

@@ -12,7 +12,7 @@ package com.pentagram.model
 	{
 		public function AppModel()
 		{
-		
+			colors = new Vector.<uint>();
 		}
 
 		[Bindable]
@@ -24,7 +24,7 @@ package com.pentagram.model
 		[Bindable]
 		public var clients:ArrayList;
 		
-		
+		public var colors:Vector.<uint>;
 		public var loggedIn:Boolean = false;
 		
 		public var user:User;		

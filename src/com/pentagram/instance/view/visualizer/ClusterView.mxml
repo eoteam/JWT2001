@@ -13,6 +13,7 @@
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
+			import com.pentagram.model.vo.DatasetOption;
 			
 			import flash.display.Sprite;
 			import flash.events.Event;
@@ -30,30 +31,39 @@
 			private var CENTER:Point;
 			private var v:Vector3D;
 			private var ds:Dataset;
+			private var maxRadius:Number = 25;
+			
 			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
-				//this.removeAllElements();
+				this.removeAllElements();
 				if(dataset1.type == 0) { //quantitative
-					for each(var item:Object in dataset1.optionsArray) {
+					for each(var item:DatasetOption in dataset1.optionsArray) {
 						var parent:SpriteVisualElement = new SpriteVisualElement();
 						parent.percentHeight = parent.percentWidth = 100;
-						
 						this.addElement(parent);
-						var circle:CirclePacking = new CirclePacking();
-						circle.width = 800; circle.height = 800;
-						circle.x = parent.width/2;
-						circle.y = parent.height/2;
-						parent.addChild(circle);	
+		
+						var arr:Array = [];
+						var r:Number = 1;
 						for each(var row:DataRow in dataset1.rows) {
-							var value:String = dataset1.type == 1 ? row[dataset1.years[0]] : row.value;
-							if(value == item.item) {
-								var sprite:InfoSprite = new  InfoSprite();
-								sprite.data = row;
-								sprite.radius = 10;
-								circle.spriteArray.push(sprite);
-								circle.addChild(sprite);
-							}
+							var value:String = dataset1.time == 1 ? row[dataset1.years[0]] : row.value;
+							if(value == item.value) {
+								if(dataset2 && dataset2.type == 1) {
+									var row2:DataRow = dataset2.rows.getItemAt(dataset1.rows.getItemIndex(row)) as DataRow;
+									if(dataset2.time == 1)
+										r = (row2[dataset2.years[0]] - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;
+									else
+										r = (row2.value - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;	
+								}
+	
+								arr.push({data:row,radius:r,color:item.color});
+							}	
 						}
-						circle.refresh();
+						var circle:CirclePacking = new CirclePacking(arr);
+						circle.x = width/(dataset1.optionsArray.length*2);
+						circle.width = width/dataset1.optionsArray.length;
+						circle.y = height/2;
+						circle.height = height;
+						parent.addChild(circle);
+						this.callLater(function resumeDraw(c:CirclePacking):void {c.draw()},[circle]);
 					} 
 				}
 			}
@@ -62,7 +72,16 @@
 			}
 			
 			public function updateMaxRadius(value:Number):void {
-				
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+//					for each(var r:ClusterRenderer in c.spriteArray) {
+//						r.radiusBeforeRendering = r.radiusBeforeRendering / maxRadius * newRadius;
+//					}
+					c.scaler = value/100;
+					//c.layout();
+					c.draw();
+				}
 			}
 			
 			public function unload():void {
@@ -114,7 +133,10 @@
 					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
 					c.x = parent.width/2;
+					c.width = parent.width;
 					c.y = parent.height/2;
+					c.height = parent.height;
+					c.draw();
 				}
 			}
 

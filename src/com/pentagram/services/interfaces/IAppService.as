@@ -13,7 +13,9 @@ package com.pentagram.services.interfaces
 		function loadContinents():void;
 		
 		function loadClients():void;
-				
+		
+		function loadColors():void;
+		
 		function authenticateUser(username:String,password:String):void;
 		
 		function logOut():void;

@@ -28,6 +28,8 @@ package com.pentagram.instance.model
 		[Bindable]
 		public var clients:ArrayList;
 		
+		public var colors:Vector.<uint>;
+			
 		public var client:Client;
 		public var selectedSet:Dataset;
 		

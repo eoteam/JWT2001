@@ -62,7 +62,7 @@
 					<s:SolidColorStroke color="0x666666" weight="0.25" />
 				</s:stroke>
 			</s:Rect>			
-			<s:HSlider minimum="10" value="25" maximum="60" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>
+			<s:HSlider minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>
 			<s:Rect height="10" />
 		</s:VGroup>
 

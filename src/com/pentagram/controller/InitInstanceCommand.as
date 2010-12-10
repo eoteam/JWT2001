@@ -34,7 +34,7 @@ package com.pentagram.controller
 			 	var temp:Array = windowModel.buildMenu(windowModel.getWindowFromUID(event.uid));
 				exp = temp[0]; imp = temp[1];
 			}
-			callback.call(null,appModel.clients,appModel.regions,appModel.countries,appModel.user,exp,imp);
+			callback.call(null,appModel.clients,appModel.regions,appModel.countries,appModel.user,appModel.colors,exp,imp);
 		}
 	}
 }
