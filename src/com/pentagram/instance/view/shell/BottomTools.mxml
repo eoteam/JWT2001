@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:vo="com.pentagram.model.vo.*"
-		 xmlns:primatives="ws.tink.spark.primatives.*" 
+		 xmlns:primatives="ws.tink.spark.primatives.*"  currentState="map"
 		 xmlns:graphics="ws.tink.spark.graphics.*">
 	
 	<fx:Script>
@@ -86,44 +86,57 @@
 		
 		<s:Rect width="10" />
 		
-		<s:Label text="x:  " includeIn="graph"/>
-		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet" includeIn="graph"/>
-		<s:Rect width="10" includeIn="graph"/>
-		<primatives:Line width="1" height="40" includeIn="graph">
-			<primatives:stroke>
-				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-			</primatives:stroke>
-		</primatives:Line>
-		<s:Rect width="10" includeIn="graph"/>
+		<s:HGroup includeInLayout.graph="true" visible.graph="true" verticalAlign="middle" visible="false" includeInLayout="false">
+			<s:Label text="x:"/>
+			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet"/>
+			<s:Rect width="10"/>
+			<primatives:Line width="1" height="40">
+				<primatives:stroke>
+					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+				</primatives:stroke>
+			</primatives:Line>
+			<s:Rect width="10"/>			
+		</s:HGroup>
+
 		
-		<s:Label text="y: " includeIn="graph"/>
-		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet" includeIn="graph"/>
-		<s:Rect width="10" includeIn="graph"/>
-		<primatives:Line width="1" height="40" includeIn="graph">
-			<primatives:stroke>
-				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-			</primatives:stroke>
-		</primatives:Line>
-		<s:Rect width="10" includeIn="graph"/>
+		<s:HGroup includeInLayout.graph="true" visible.graph="true" verticalAlign="middle" visible="false" includeInLayout="false">
+			<s:Label text="y: "/>
+			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet"/>
+			<s:Rect width="10" includeIn="graph"/>
+			<primatives:Line width="1" height="40">
+				<primatives:stroke>
+					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+				</primatives:stroke>
+			</primatives:Line>
+			<s:Rect width="10"/>
+		</s:HGroup>
 		
-		<s:Label text="size by:  " text.cluster="group by: "/>
-		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet" />
-		<s:Rect width="10" />
-		<primatives:Line width="1" height="40" >
-			<primatives:stroke>
-				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-			</primatives:stroke>
-		</primatives:Line>
-		<s:Rect width="10" />
 		
-		<s:Label text.graph="color by:  " text.cluster="size by: " includeIn="groupingState"/>
-		<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet" includeIn="groupingState"/>
-		<s:Rect width="10" includeIn="groupingState"/>
-		<primatives:Line width="1" height="40" includeIn="groupingState">
-			<primatives:stroke>
-				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
-			</primatives:stroke>
-		</primatives:Line>
-		<s:Rect width="10" includeIn="groupingState"/>
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="size by:  " text.cluster="group by: "/>
+			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet" />
+			<s:Rect width="10" />
+			<primatives:Line width="1" height="40" >
+				<primatives:stroke>
+					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+				</primatives:stroke>
+			</primatives:Line>
+			<s:Rect width="10" />
+		</s:HGroup>
+		
+		
+		<s:HGroup includeInLayout.groupingState="true" visible.groupingState="true" verticalAlign="middle" visible="false" includeInLayout="false">
+			<s:Label text.graph="color by:  " text.cluster="size by: "/>
+			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet" selectedItem=""/>
+			<s:Rect width="10"/>
+			<primatives:Line width="1" height="40">
+				<primatives:stroke>
+					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
+				</primatives:stroke>
+			</primatives:Line>
+			<s:Rect width="10"/>
+		</s:HGroup>
+		
+		
 	</s:HGroup>
 </s:Group>

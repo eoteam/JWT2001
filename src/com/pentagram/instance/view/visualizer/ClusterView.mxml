@@ -36,7 +36,7 @@
 			private var  ds2:Dataset;
 			
 			public function get datasets():Array {
-				return [ds1,ds2];
+				return [null,null,ds1,ds2];
 			}
 			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
 				this.ds1 = dataset1; this.ds2 = dataset2;

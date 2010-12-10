@@ -52,27 +52,26 @@ package com.pentagram.instance.view.mediators.shell
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);
-			
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);		
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
 			var util:ModuleUtil = new ModuleUtil();
-			util.addEventListener("moduleLoaded",handleClusterLoaded);
-			util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");
+			util.addEventListener("moduleLoaded",handleMapLoaded);
+			util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");
 			loaders.push(util);
 			
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
 
-			view.tools.initTools();
-			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
-			view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);	
+			view.tools.initTools();		
+			view.tools.firstSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
+			view.tools.secondSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
+			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
+			view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
 			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
-			view.tools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleToolsStateChange);
 			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			
-			//mediatorMap.createMediator(view.bottomBarView);
-
+			view.filterTools.initTools();
 			view.filterTools.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
 			view.filterTools.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
 			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
@@ -96,19 +95,18 @@ package com.pentagram.instance.view.mediators.shell
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 		}
 		private function handleXray(event:Event):void {
-			var viz:IVisualizer =  NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.toggleOpacity(view.filterTools.xrayToggle.selected?0.7:1);
+			view.currentVisualizer.toggleOpacity(view.filterTools.xrayToggle.selected?0.7:1);
 		}
 		private function handleMapToggle(event:Event):void {
 			if(view.visualizerArea.selectedIndex == 1) {
-				IMapView(NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0)).toggleMap(view.filterTools.mapToggle.selected);
+				IMapView(view.currentVisualizer).toggleMap(view.filterTools.mapToggle.selected);
 			}
 		}
 		private function handleRegionSelect(event:Event):void {
 			var region:Region;
 			var item:Region = view.filterTools.continentList.selectedItem as Region;
 			if(view.visualizerArea.selectedIndex == 1) {
-				var viz:IMapView = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IMapView;
+				var viz:IMapView = view.currentVisualizer as IMapView;
 				switch(event.type) {
 					case "addRegion":
 						viz.addRegion(item);
@@ -163,61 +161,43 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil;
-		
-			
 			if(event.newIndex == 1){
-				view.filterTools.continentList.dataProvider = model.regions;
-				if(view.mapView == null) {
-					util = new ModuleUtil();
-					util.addEventListener("moduleLoaded",handleMapLoaded);
-					util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");	
-					loaders.push(util);
-					view.filterTools.state = "Map";
-					view.tools.firstSet
-				}
-				else {
-					restoreDataset();
-				}
+				restoreDatasets(view.mapView);
 			}
 			else if(event.newIndex == 2){
-				//view.tools.thirdSet.selectedIndex = -1;
 			 	if(view.graphView == null) {
-					//view.tools.thirdSet.selectedIndex = -1;
+					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
 					util = new ModuleUtil();
 					util.addEventListener("moduleLoaded",handleGraphLoaded);
 					util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
 					loaders.push(util);
-					view.filterTools.state = "Graph";
 				}
 				else {
-					//view.filterTools.continentList.dataProvider = Dataset(view.graphView.datasets[3]).op;
-					if(view.clusterView.datasets[2])
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[2].optionsArray));
-					restoreDataset();
+					if(view.graphView.datasets[3])
+						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[3].optionsArray));
+					restoreDatasets(view.graphView);
 				}	
 			}
 			else if(event.newIndex == 0){
-				view.tools.thirdSet.selectedIndex = -1;
-				view.filterTools.state = "Cluster";
-				if(view.clusterView.datasets[0])
-					view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[0].optionsArray));
-				restoreDataset();
+				if(view.clusterView == null) {
+					util = new ModuleUtil();
+					util.addEventListener("moduleLoaded",handleClusterLoaded);
+					util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");	
+					loaders.push(util);
+					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
+				}
+				else  {
+					if(view.clusterView.datasets[2])
+						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[2].optionsArray));
+					restoreDatasets(view.clusterView);
+				}
 			}
 		}
-		private function restoreDataset():void {
-			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			if(view.tools.firstSet && viz.datasets[0])
-				view.tools.firstSet.selectedItem = viz.datasets[0];
-			
-			if(view.tools.secondSet && viz.datasets[1])
-				view.tools.secondSet.selectedItem = viz.datasets[1];
-			
-			if(view.tools.thirdSet && viz.datasets[2])
-				view.tools.thirdSet.selectedItem = viz.datasets[2];
-			
-			if(view.tools.fourthSet && viz.datasets[3])
-				view.tools.fourthSet.selectedItem = viz.datasets[3];			
-
+		private function restoreDatasets(viz:IVisualizer):void {
+			view.tools.firstSet.selectedIndex = viz.datasets[0] ? model.client.datasets.getItemIndex(viz.datasets[0]) : -1;				
+			view.tools.secondSet.selectedIndex = viz.datasets[1] ? model.client.datasets.getItemIndex(viz.datasets[1]) : -1;				
+			view.tools.thirdSet.selectedIndex = viz.datasets[2] ? model.client.datasets.getItemIndex(viz.datasets[2]) : -1;				
+			view.tools.fourthSet.selectedIndex = viz.datasets[3] ? model.client.datasets.getItemIndex(viz.datasets[3]) : -1;				
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
@@ -241,13 +221,6 @@ package com.pentagram.instance.view.mediators.shell
 			model.user = null;
 			view.currentState = view.loggedOutState.name;
 		}	
-		private function handleToolsStateChange (event:StateChangeEvent):void  {
-			if(view.tools.currentState == "graph") {
-				view.tools.firstSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-				view.tools.secondSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);
-				view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleSecondSet,false,0,true);			
-			}
-		}
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
 			if(view.filterTools.state == 'Map') {		
 				view.filterTools.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
@@ -258,51 +231,35 @@ package com.pentagram.instance.view.mediators.shell
 			}	
 		}
 		private function handlePlayButton(event:Event):void {
-			switch(view.visualizerArea.selectedIndex) {
-				case 0:
-				break;
-				case 1:
-				break;
-				case 2:
-					view.graphView.continous = view.tools.playBtn.selected;
-					if(view.tools.playBtn.selected) {
-						if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1)
-							view.tools.yearSlider.selectedIndex = 0;
-						yearTimer.start();
-						view.tools.playBtn.label = "Stop";
-						model.updateData(view.graphView.visdata,
-							view.tools.yearSlider.dataProvider.getItemAt(0).year as int,
-							view.tools.firstSet.selectedItem,
-							view.tools.secondSet.selectedItem,
-							view.tools.thirdSet.selectedItem);
-						view.graphView.update();
-					}
-					else {
-						yearTimer.stop();
-						view.tools.playBtn.label = "Play";
-					}					
-				break;
+			view.currentVisualizer.continous = view.tools.playBtn.selected;
+			if(view.tools.playBtn.selected) {
+				if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1)
+					view.tools.yearSlider.selectedIndex = 0;
+				
+				handleYearSelection();
+				yearTimer.start();
+				view.tools.playBtn.label = "Stop";
+				
 			}
+			else {
+				yearTimer.stop();
+				view.tools.playBtn.label = "Play";
+			}					
 		}
 		private function handleTimer(event:TimerEvent):void {
 			view.tools.yearSlider.selectedIndex++;
+			
 			if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1) {
 				yearTimer.stop();
-				view.graphView.continous = view.tools.playBtn.selected = false;
-				view.tools.playBtn.label = "Play";
-				view.graphView.pause();
+				view.tools.playBtn.label = "Play";		
+				view.currentVisualizer.continous = view.tools.playBtn.selected = false;
+				view.currentVisualizer.pause();
 			}
 			else {
-				model.updateData(view.graphView.visdata,
-								 view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int,
-					view.tools.firstSet.selectedItem,
-					view.tools.secondSet.selectedItem,
-					view.tools.thirdSet.selectedItem,
-					view.tools.fourthSet.selectedItem);
-				view.graphView.update();
+				handleYearSelection();	
 			}
 		}
-		private function handleYearSelection(event:IndexChangeEvent):void {
+		private function handleYearSelection(event:IndexChangeEvent=null):void {
 			var ds1:Dataset;
 			var ds2:Dataset;
 			var ds3:Dataset;
@@ -318,14 +275,13 @@ package com.pentagram.instance.view.mediators.shell
 				case 2:	
 					ds1 = view.tools.firstSet.selectedItem as Dataset;
 					ds2 = view.tools.secondSet.selectedItem as Dataset;
-					
 					ds4 = view.tools.fourthSet.selectedItem as Dataset;
 					model.updateData(view.graphView.visdata,view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int,ds1,ds2,ds3,ds4);
 					view.graphView.update();
 				break;
 			}
 		}
-		private function handleSecondSet(event:Event):void {
+		private function handleDatasetSelection(event:Event):void {
 			var years:ArrayList = new ArrayList();
 			var i:int;
 			var dataset:Dataset;
@@ -354,6 +310,8 @@ package com.pentagram.instance.view.mediators.shell
 					}
 				break;
 				case 2:
+					if(view.graphView && event.target == view.tools.fourthSet)
+						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.tools.fourthSet.selectedItem.optionsArray));
 					if(view.tools.firstSet.selectedItem && view.tools.secondSet.selectedItem) {
 						
 						var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
@@ -398,14 +356,14 @@ package com.pentagram.instance.view.mediators.shell
 							}
 							view.tools.yearSlider.dataProvider = years;					
 						}
+						
 					}
 				break;
 			}
 			
 		}
 		private function handleMaxRadius(event:Event):void {
-			var viz:IVisualizer = NavigatorContent(view.visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
-			viz.updateMaxRadius(view.filterTools.maxRadiusSlider.value);
+			view.currentVisualizer.updateMaxRadius(view.filterTools.maxRadiusSlider.value);
 		}
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
@@ -417,6 +375,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleMapLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IMapView) {
+				view.filterTools.continentList.dataProvider = model.regions;
 				this.view.mapView = util.view as IMapView;
 				view.mapHolder.addElement(util.view as Group);
 				IMapView(util.view).client = model.client;
@@ -425,6 +384,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IClusterView) {
+				
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
 			}			

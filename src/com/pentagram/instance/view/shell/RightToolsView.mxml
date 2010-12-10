@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" currentState="closedAndCluster">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" currentState="closedAndMap">
 
 	<fx:Script>
 		<![CDATA[
+			import mx.events.IndexChangedEvent;
+			
 			import spark.skins.spark.CheckBoxSkin;
 			protected function toggle_changeHandler(event:Event):void
 			{
@@ -13,6 +15,22 @@
 					
 				}
 				else currentState = "closedAnd"+state;
+			}
+			public function initTools():void {
+				visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
+			}
+			private function handleIndexChanged(event:IndexChangedEvent):void {
+				switch(visualizerArea.selectedIndex) {
+					case 0:
+						this.currentState = isOpen? 'openAndCluster' : 'closedAndCluster';
+						break;
+					case 1:
+						this.currentState = isOpen? 'openAndMap' : 'closedAndMap';
+						break;					
+					case 2:
+						this.currentState = isOpen? 'openAndGraph' : 'closedAndGraph';
+						break;					
+				}
 			}
 			public function set state(value:String):void {
 				if(openStates.indexOf(currentState) != -1)
@@ -28,10 +46,18 @@
 					return 'Graph';
 				else return '';
 			}
+			public function get isOpen():Boolean {
+				if(openStates.indexOf(currentState) != -1)
+					return true;
+				else if(mapStates.indexOf(currentState) != -1)
+					return false;
+				else return false;
+			}
 		]]>
 	</fx:Script>
 
 	<fx:Declarations>
+		<mx:ViewStack id="visualizerArea" />
 		<fx:Array id="clusterStates">
 			<fx:String>closedAndCluster</fx:String>
 			<fx:String>openAndCluster</fx:String>
