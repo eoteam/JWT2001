@@ -58,7 +58,7 @@ package com.pentagram.instance.controller
 						var arr:Array =  dataset.options.split(',');
 						for(var i:int=0;i<arr.length;i++) {
 							var option:DatasetOption = new DatasetOption();
-							option.value = arr[i];
+							option.name = arr[i];
 							option.color= model.colors[i];
 							dataset.optionsArray.push(option);
 						}

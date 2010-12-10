@@ -34,5 +34,12 @@ package com.pentagram.utils
 			timer.start();
 			return timer;
 		}
+		public static function vectorToArray(v:*):Array {
+			var arr:Array = new Array();
+			for each (var elem:* in v) {
+				    arr.push(elem);
+			}
+			return arr;
+		}
 	}
 }

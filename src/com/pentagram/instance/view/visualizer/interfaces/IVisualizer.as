@@ -22,5 +22,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function toggleOpacity(value:Number):void;
 		
+		function get datasets():Array;
+		
 	}
 }

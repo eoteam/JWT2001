@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx" currentState="closedAndCluster">
 
 	<fx:Script>
 		<![CDATA[
@@ -9,22 +9,59 @@
 			protected function toggle_changeHandler(event:Event):void
 			{
 				if(toggle.selected) {
-					currentState = "openAndMap";
+					currentState = "openAnd"+state;
 					
 				}
-				else currentState = "closedAndMap";
+				else currentState = "closedAnd"+state;
+			}
+			public function set state(value:String):void {
+				if(openStates.indexOf(currentState) != -1)
+					currentState = 'openAnd'+value;
+				else currentState = 'closedAnd'+value;
+			}
+			public function get state():String {
+				if(clusterStates.indexOf(currentState) != -1)
+					return 'Cluster';
+				else if(mapStates.indexOf(currentState) != -1)
+					return 'Map';
+				else if(graphStates.indexOf(currentState) != -1)
+					return 'Graph';
+				else return '';
 			}
 		]]>
 	</fx:Script>
 
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<fx:Array id="clusterStates">
+			<fx:String>closedAndCluster</fx:String>
+			<fx:String>openAndCluster</fx:String>
+		</fx:Array>
+		<fx:Array id="mapStates">
+			<fx:String>closedAndMap</fx:String>
+			<fx:String>openAndMap</fx:String>
+		</fx:Array>
+		<fx:Array id="graphStates">
+			<fx:String>closedAndGraph</fx:String>
+			<fx:String>openAndGraph</fx:String>
+		</fx:Array>
+		<fx:Array id="openStates">
+			<fx:String>openAndCluster</fx:String>
+			<fx:String>openAndMap</fx:String>
+			<fx:String>openAndGraph</fx:String>
+		</fx:Array>
+		<fx:Array id="closedStates">
+			<fx:String>closedAndCluster</fx:String>
+			<fx:String>closedAndMap</fx:String>
+			<fx:String>closedAndGraph</fx:String>
+		</fx:Array>
 	</fx:Declarations>
 	<s:states>
+		<s:State name="closedAndCluster" stateGroups="closed,cluster" />
+		<s:State name="openAndCluster" stateGroups="open,cluster" />
 		<s:State name="closedAndMap" stateGroups="closed,map" />
 		<s:State name="openAndMap" stateGroups="open,map" />
-		<s:State name="openAndNoMap" stateGroups="open" />
-		<s:State name="closedAndNoMap" stateGroups="closed" />
+		<s:State name="closedAndGraph" stateGroups="closed,graph" />
+		<s:State name="openAndGraph" stateGroups="open,graph" />
 	</s:states>
 
 		<s:ToggleButton id="toggle" width="8" height="100%" change="toggle_changeHandler(event)"/>
@@ -54,8 +91,8 @@
 					<s:SolidColorStroke color="0x666666" weight="0.25" />
 				</s:stroke>
 			</s:Rect>
-			<s:CheckBox  label="X-Ray Mode" id="xrayToggle" textAlign="center" height="25" selected="true" color="0xffffff"/>
-			<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="map" color="0xffffff"  />
+			<s:CheckBox  label="X-Ray Mode" id="xrayToggle"  includeIn="map,graph" textAlign="center"  height="25" selected="true" color="0xffffff"/>
+			<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="map" color="0xffffff"   />
 			
 			<s:Rect width="100%" height="0.25">
 				<s:stroke>

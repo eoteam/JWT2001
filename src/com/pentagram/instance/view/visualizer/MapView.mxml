@@ -27,9 +27,16 @@
 			private var renderers:Vector.<MapRenderer>;
 			private var renderersDictionary:Dictionary;
 			private var maxRadius:Number = 25;
-			private var dataset:Dataset;
+			
 			private var currentYear:int;
 			private const PATH:String = "assets/maps/";
+			
+			private var dataset:Dataset;
+			private var  ds2:Dataset;
+			
+			public function get datasets():Array {
+				return [dataset];
+			}
 			
 			public function toggleMap(visible:Boolean):void {
 				if(mapHolder) {

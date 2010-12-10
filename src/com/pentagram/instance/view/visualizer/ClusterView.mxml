@@ -9,7 +9,6 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
-			import com.pentagram.instance.view.visualizer.renderers.InfoSprite;
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
@@ -33,7 +32,14 @@
 			private var ds:Dataset;
 			private var maxRadius:Number = 25;
 			
+			private var  ds1:Dataset;
+			private var  ds2:Dataset;
+			
+			public function get datasets():Array {
+				return [ds1,ds2];
+			}
 			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
+				this.ds1 = dataset1; this.ds2 = dataset2;
 				this.removeAllElements();
 				if(dataset1.type == 0) { //quantitative
 					for each(var item:DatasetOption in dataset1.optionsArray) {
@@ -45,7 +51,7 @@
 						var r:Number = 1;
 						for each(var row:DataRow in dataset1.rows) {
 							var value:String = dataset1.time == 1 ? row[dataset1.years[0]] : row.value;
-							if(value == item.value) {
+							if(value == item.name) {
 								if(dataset2 && dataset2.type == 1) {
 									var row2:DataRow = dataset2.rows.getItemAt(dataset1.rows.getItemIndex(row)) as DataRow;
 									if(dataset2.time == 1)

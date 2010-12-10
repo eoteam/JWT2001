@@ -8,6 +8,7 @@
 				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" contentBackgroundAlpha="0">
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.Dataset;
 			import com.pentagram.utils.ViewUtils;
 			
 			import flare.analytics.optimization.AspectRatioBanker;
@@ -38,6 +39,16 @@
 			private var vis:Visualization;
 
 			private var _visdata:Data;
+			
+			private var  ds1:Dataset;
+			private var  ds2:Dataset;
+			private var  ds3:Dataset;
+			private var  ds4:Dataset;
+			
+			public function get datasets():Array {
+				return [ds1,ds2,ds3,ds4];
+			}
+			
 			public function set visdata(d:Data):void {
 				_visdata = d;
 			}
@@ -59,7 +70,7 @@
 			public function get continous():Boolean{
 				return _continous;
 			}
-			
+
 			//private var banker;
 			private var firstPass:Boolean = true;
 			public function visualize(arr:Array,...props):void
@@ -77,6 +88,7 @@
 				var prop3:String = props[2] ? props[2].name : null;
 				var prop4:String = props[3] ? props[3].name : null;
 				
+				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
 				if(firstPass) {
 					var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
 					
