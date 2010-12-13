@@ -1,7 +1,7 @@
 package org.flashcommander.components
 {
 
-	import com.pentagram.view.controls.PromptingTextInput;
+
 	
 	import flash.events.Event;
 	import flash.events.FocusEvent;
@@ -59,8 +59,8 @@ package org.flashcommander.components
 		public var popUp:PopUpAnchor;
 		[SkinPart(required="true",type="spark.components.List")]
 		public var list:List;
-		[SkinPart(required="true",type="com.pentagram.view.controls.PromptingTextInputt")]
-		public var inputTxt:PromptingTextInput;
+		[SkinPart(required="true",type="spark.components.TextInputt")]
+		public var inputTxt:TextInput;
 		
 		override protected function partAdded(partName:String, instance:Object) : void{
 			super.partAdded(partName, instance)

@@ -7,14 +7,15 @@
 		blendMode="normal">
 
 	<fx:Metadata>
-		[HostComponent("com.pentagram.view.controls.PromptingTextInput")]
+		[HostComponent("spark.components.TextInput")]
 	</fx:Metadata> 
 
 	<!-- states -->
 	<s:states>
-		<s:State name="prompting"/>
 		<s:State name="normal"/>
-		<s:State name="disabled"/>
+		<s:State name="disabled" stateGroups="disabledStates"/>
+		<s:State name="normalWithPrompt" />
+		<s:State name="disabledWithPrompt" stateGroups="disabledStates"/>
 	</s:states>
 	
 	<!-- bg --> 
@@ -32,9 +33,5 @@
 			color="#333333"
 			verticalAlign="middle" />
 
-	<!-- prompt -->
-	<s:Label id="promptDisplay" left="4" right="4" top="1" bottom="0" includeIn="prompting"
-			color="#aaaaaa" fontStyle="italic"
-			maxDisplayedLines="1"
-			verticalAlign="middle" />
+
 </s:SparkSkin>

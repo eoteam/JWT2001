@@ -1,7 +1,7 @@
 package com.pentagram.model.vo
 {
 	[Bindable]
-	public class DatasetOption
+	public class Category
 	{
 		public var name:String;
 		public var color:uint;

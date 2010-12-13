@@ -1,7 +1,7 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
 
-	
+	import com.pentagram.model.vo.Category;
 	public interface IVisualizer
 	{
 		function update():void;
@@ -24,5 +24,10 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function get datasets():Array;
 		
+		function addCategory(value:Category):void;
+		
+		function removeCategory(value:Category):void;
+		
+		function selectCategory(value:Category):void;
 	}
 }

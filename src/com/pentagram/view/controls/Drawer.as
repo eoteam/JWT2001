@@ -11,7 +11,7 @@ package com.pentagram.view.controls {
 		[SkinPart(required="false")]
 		public var openButton:Button;
 
-		public var label:String;
+		[Bindable] public var label:String;
 		[Bindable] public var contentHeight:Number;
 		
 		public function get opened():Boolean {

@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
 	import com.pentagram.model.vo.Dataset;
+
 	
 	public interface IClusterView extends IVisualizer
 	{

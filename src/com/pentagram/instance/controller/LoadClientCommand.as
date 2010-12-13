@@ -6,7 +6,7 @@ package com.pentagram.instance.controller
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.DatasetOption;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
@@ -57,7 +57,7 @@ package com.pentagram.instance.controller
 					if(dataset.options && dataset.options != '') {
 						var arr:Array =  dataset.options.split(',');
 						for(var i:int=0;i<arr.length;i++) {
-							var option:DatasetOption = new DatasetOption();
+							var option:Category = new Category();
 							option.name = arr[i];
 							option.color= model.colors[i];
 							dataset.optionsArray.push(option);

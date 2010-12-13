@@ -12,6 +12,16 @@ package com.pentagram.events
 		
 		public static const REFRESH_VISUALIZER:String = "refreshVisualizer";
 		
+		
+		public static const DATASET_SELECTION_CHANGE:String = "datasetSelectionChange";
+		
+		public static const PLAY_TIMELINE:String = "playTimeline";
+		public static const STOP_TIMELINE:String = "playTimeline";
+		
+		public static const CATEGORY_CHANGE:String = "categoryChange";
+		
+		public static const UPDATE_VISUALIZER_VIEW:String = "updateVisualizerView";
+		
 		public var args:Array;
 		public function VisualizerEvent(type:String,...args)
 		{

@@ -85,7 +85,7 @@ package com.pentagram.view.layouts{
 				//trace(x,y);
             }
 			runningHeight = maxHeight;
-			
+			trace(runningHeight);
 			autoCompleteY = maxHeight-elementHeight;
 			if(count > 0) {
 				autoCompleteX = x + _gap;

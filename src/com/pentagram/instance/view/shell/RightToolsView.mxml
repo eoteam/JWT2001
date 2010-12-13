@@ -7,6 +7,7 @@
 		<![CDATA[
 			import mx.events.IndexChangedEvent;
 			
+			import spark.events.IndexChangeEvent;
 			import spark.skins.spark.CheckBoxSkin;
 			protected function toggle_changeHandler(event:Event):void
 			{
@@ -52,6 +53,9 @@
 				else if(mapStates.indexOf(currentState) != -1)
 					return false;
 				else return false;
+			}
+			public function handleChange(event:IndexChangeEvent):void {
+				trace("SELECTION");
 			}
 		]]>
 	</fx:Script>
@@ -99,7 +103,7 @@
 		</s:Rect> 
 		
 		<s:VGroup width.closed="0" left="8" id="toolContainer" gap="0">
-			<s:List borderVisible="false"  id="continentList" 
+			<s:List borderVisible="false"  id="continentList"  change="handleChange(event)" 
 			itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer"  contentBackgroundAlpha="0">
 				<s:layout>
 					<s:VerticalLayout paddingLeft="4" gap="0" />

@@ -11,11 +11,6 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.view.renderers.BlankRenderer;
-			import com.pentagram.view.renderers.DGDefaultRenderer;
-			import com.pentagram.view.renderers.QualityEditor;
-			import com.pentagram.view.renderers.QuantityEditor;
-			import com.pentagram.view.renderers.TimeQualityEditor;
-			import com.pentagram.view.renderers.TimeQuantityEditor;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.Sort;
@@ -25,41 +20,51 @@
 			
 			import spark.components.Button;
 			import spark.components.DataGroup;
-			import spark.components.supportClasses.DefaultColumnHeaderRenderer;
-			import spark.components.supportClasses.GridColumn;
-			import spark.components.supportClasses.GridSelectionMode;
+			import spark.components.gridClasses.DefaultGridItemEditor;
+			import spark.components.gridClasses.GridColumn;
+			import spark.components.gridClasses.GridSelectionMode;
 			import spark.events.GridEvent;
 			import spark.events.RendererExistenceEvent;
+			import spark.skins.spark.DefaultGridHeaderRenderer;
 
 			
 			public function generateDataset():void {
 				var column:GridColumn;
 				columns.removeAll();
-				//columns.addItem(countryCol);
+				
+				var countryCol:GridColumn  = new GridColumn();
+				countryCol.dataField = 'name';
+				countryCol.headerText = "Country";
+				countryCol.width = 75;	
+				countryCol.resizable = true;
+				countryCol.sortable = true;
+				columns.addItem(countryCol);
 				
 				if(dataset.time == 1) {
 					var years:Array = dataset.range.split(',');
 					for(var i:int=years[0];i<=years[1];i++) {
 						column  = new GridColumn();
 						column.headerText = i.toString();
-						if(dataset.type == 1)
-							column.itemRenderer = new ClassFactory(TimeQuantityEditor);
-						else
-							column.itemRenderer = new ClassFactory(TimeQualityEditor);
+//						if(dataset.type == 1)
+//							column.itemEditor = new ClassFactory(TimeQuantityEditor);
+//						else
+//							column.itemEditor = new ClassFactory(TimeQualityEditor);
 						column.dataField = i.toString();
 						column.width = 75;	
 						column.resizable = true;
 						column.sortable = true;
+						
 						columns.addItem(column);
 					}
 				}
 				else {
 					column = new GridColumn();
 					column.headerText = "Value";
-					if(dataset.type == 1)
-						column.itemRenderer = new ClassFactory(QuantityEditor);
-					else
-						column.itemRenderer = new ClassFactory(QualityEditor);
+					column.editable = true;
+//					if(dataset.type == 1)
+//						column.itemEditor = new ClassFactory(QuantityEditor);
+//					else
+//						column.itemEditor = new ClassFactory(QualityEditor);
 					column.dataField = "value";
 					column.width = 75;	
 					column.sortable = true;
@@ -67,13 +72,12 @@
 					
 					column = new GridColumn();
 					column.headerText = '';
-					column.itemRenderer = new ClassFactory(BlankRenderer);
+					//column.itemRenderer = new ClassFactory(BlankRenderer);
 					columns.addItem(column);
 				}
 				currentState = "showgrid";
 				grid.dataProvider = dataset.rows;
-				countryList.dataProvider = dataset.rows;
-				
+				//
 			}
 			private function handlePropChange(event:Event,prop:String,target:String):void {
 				if(dataset.modifiedProps.indexOf(prop) == -1) {
@@ -90,42 +94,42 @@
 				dataset.modified = true;
 			}
 			//DG functions
-			private function handler(event:Event):void
-			{
-				var group:DataGroup = grid.columnHeaderBar.dataGroup;
-				group.addEventListener(RendererExistenceEvent.RENDERER_ADD,handleColumnButtonAdd);
-				group.addEventListener(RendererExistenceEvent.RENDERER_REMOVE,handleColumnButtonRemove);				
-			}
-			private function handleDG(event:Event):void {	
-				var group:DataGroup = grid.columnHeaderBar.dataGroup;	
-				for (var i:int=0;i<group.numElements;i++) {
-					var b:Button = group.getElementAt(i) as Button;
-					if(b) {
-						b.mouseEnabled = true;
-						b.addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-					}
-				}
-			}
-			private function handleColumnButtonAdd(event:RendererExistenceEvent):void {
-				Button(event.renderer).mouseEnabled = true;
-				Button(event.renderer).addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-			}
-			private function handleColumnButtonRemove(event:RendererExistenceEvent):void {
-				Button(event.renderer).removeEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-			}
-			private function handleColumnButtonClick(event:MouseEvent):void {
-				hscrollValue = grid.scroller.horizontalScrollBar.value;
-				vscrollValue = grid.scroller.verticalScrollBar.value;
-				var sort:Sort = new Sort();
-				sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.target).data.dataField,false,false,true)];  		
-				if (dataset.rows != null)
-				{
-					dataset.rows.sort = sort;
-					dataset.rows.refresh();
-				}
-				grid.scroller.horizontalScrollBar.value = hscrollValue;
-				grid.scroller.verticalScrollBar.value = vscrollValue;
-			}
+//			private function handler(event:Event):void
+//			{
+//				var group:DataGroup = grid.columnHeaderBar.dataGroup;
+//				group.addEventListener(RendererExistenceEvent.RENDERER_ADD,handleColumnButtonAdd);
+//				group.addEventListener(RendererExistenceEvent.RENDERER_REMOVE,handleColumnButtonRemove);				
+//			}
+//			private function handleDG(event:Event):void {	
+//				var group:DataGroup = grid.columnHeaderGroup .dataGroup;	
+//				for (var i:int=0;i<group.numElements;i++) {
+//					var b:Button = group.getElementAt(i) as Button;
+//					if(b) {
+//						b.mouseEnabled = true;
+//						b.addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
+//					}
+//				}
+//			} 
+//			private function handleColumnButtonAdd(event:RendererExistenceEvent):void {
+//				Button(event.renderer).mouseEnabled = true;
+//				Button(event.renderer).addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
+//			}
+//			private function handleColumnButtonRemove(event:RendererExistenceEvent):void {
+//				Button(event.renderer).removeEventListener(MouseEvent.CLICK,handleColumnButtonClick);
+//			}
+//			private function handleColumnButtonClick(event:MouseEvent):void {
+//				hscrollValue = grid.scroller.horizontalScrollBar.value;
+//				vscrollValue = grid.scroller.verticalScrollBar.value;
+//				var sort:Sort = new Sort();
+//				sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.target).data.dataField,false,false,true)];  		
+//				if (dataset.rows != null)
+//				{
+//					dataset.rows.sort = sort;
+//					dataset.rows.refresh();
+//				}
+//				grid.scroller.horizontalScrollBar.value = hscrollValue;
+//				grid.scroller.verticalScrollBar.value = vscrollValue;
+//			}
 			[Bindable] private var scaleFactors:ArrayList = new ArrayList( [{label:'None',value:1},{label:'Thousands',value:1000},
 				{label:'Millions',value:1000000},{label:'Billions',value:1000000000},	 
 				{label:'Trillions',value:1000000000*100}]);
@@ -140,7 +144,7 @@
 		<fx:Number id="vscrollValue" />
 		<vo:Dataset id="dataset" />
 		<vo:Client id="client" />
-		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>
+<!--		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>-->
 		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
 		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
 		<s:ArrayList id="units">
@@ -169,7 +173,7 @@
 		<s:Label text="of " />
 		<s:DropDownList selectedIndex="{units.getItemIndex(dataset.unit)}" dataProvider="{units}" labelField="label" change="handlePropChange(event,'unit','selectedItem')" />
 	</s:HGroup>	
-	
+
 	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
 		<s:Label text="Data Set" width="100" />
 		<s:Rect width="5" />
@@ -179,14 +183,14 @@
 					<s:SolidColorStroke color="0xcccccc" weight="2"/>
 				</s:stroke>
 			</s:Rect>
-			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff"  
+<!--			<controls:MiGList minWidth="50" left="1" top="2" bottom="2"  sortField="name" contentBackgroundColor="0xffffff"  
 			height="100%" id="countryList" labelField="name" headerText="Countries" skinClass="com.pentagram.view.skins.controls.MiGListSkin"  
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
-			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>
+			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>-->
 			
-			<s:DataGrid updateComplete="handler(event)" left="{countryList.width+.5}" borderVisible="false" 
-			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  creationComplete="handleDG(event)"
-			height="100%" id="grid">
+			<s:DataGrid  borderVisible="false" left="1"
+			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  
+			height="100%" id="grid"><!-- updateComplete="handler(event)" creationComplete="handleDG(event)"-->
 				<s:columns>
 					<s:ArrayList id="columns" />
 				</s:columns>

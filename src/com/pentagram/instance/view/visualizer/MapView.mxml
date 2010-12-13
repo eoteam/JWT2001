@@ -13,6 +13,7 @@
 		<![CDATA[
 			import com.greensock.TweenNano;
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
+			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.Client;
 			import com.pentagram.model.vo.Country;
 			import com.pentagram.model.vo.DataRow;
@@ -128,7 +129,8 @@
 					}
 				}
 			}
-			public function removeRegion(region:Region):void {
+			public function removeCategory(value:Category):void {
+				var region:Region = value as Region;
 				total -= region.coeff;
 				for (var i:int=0;i<mapHolder.numElements;i++) {
 					total += FXGLoader(mapHolder.getElementAt(i)).region.coeff;
@@ -144,8 +146,10 @@
 				}
 				handleResize();
 			}
-			public function selectRegion(region:Region):void {
+			public function selectCategory(value:Category):void {
 				var existingMap:FXGLoader;
+				var region:Region = value as Region;
+				
 				for (var i:int=0;i<mapHolder.numElements;i++) {
 					var map:FXGLoader = mapHolder.getElementAt(i) as FXGLoader;
 					if(map.region.fxgmap != region.fxgmap)
@@ -198,7 +202,8 @@
 			}
 			private var total:Number ;
 			private var slice:Number = 0;
-			public function addRegion(region:Region):void {
+			public function addCategory(value:Category):void {
+				var region:Region = value as Region;
 				var map:FXGLoader;
 				if(mapHolder.numElements >= 3) {
 					mapHolder.removeAllElements();

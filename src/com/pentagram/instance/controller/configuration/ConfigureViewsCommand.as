@@ -17,7 +17,7 @@ package com.pentagram.instance.controller.configuration
 	import com.pentagram.instance.view.mediators.shell.SearchViewMediator;
 	import com.pentagram.instance.view.mediators.shell.ShellMediator;
 	import com.pentagram.instance.view.shell.BottomBarView;
-	import com.pentagram.instance.view.shell.BottomTools;
+	import com.pentagram.instance.view.shell.BottomToolsView;
 	import com.pentagram.instance.view.shell.RightToolsView;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.instance.view.shell.ShellView;
@@ -40,7 +40,7 @@ package com.pentagram.instance.controller.configuration
 			mediatorMap.mapView(BottomBarView,BottomBarMediator);
 			mediatorMap.mapView(ShellView,ShellMediator);
 			mediatorMap.mapView(RightToolsView, RightToolsMediator);
-			mediatorMap.mapView(BottomTools, BottomToolsMediator);
+			mediatorMap.mapView(BottomToolsView, BottomToolsMediator);
 			
 			mediatorMap.mapView(EditorMainView,EditorMediator); 
 			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator);

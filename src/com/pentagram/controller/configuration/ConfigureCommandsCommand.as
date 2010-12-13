@@ -10,13 +10,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
-	import com.pentagram.events.VisualizerEvent;
-	import com.pentagram.instance.controller.CreateDatasetCommand;
-	import com.pentagram.instance.controller.DeleteDatasetCommand;
-	import com.pentagram.instance.controller.LoadClientCommand;
-	import com.pentagram.instance.controller.UpdateClientCommand;
 	
 	import org.robotlegs.mvcs.Command;
 	import org.robotlegs.utilities.statemachine.StateEvent;

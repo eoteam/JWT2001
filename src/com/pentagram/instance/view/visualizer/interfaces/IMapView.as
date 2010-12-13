@@ -11,13 +11,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function toggleMap(visible:Boolean):void;
 	
 		function visualize(dataset:Dataset):void;
-		
-		function selectRegion(region:Region):void;
-		
-		function addRegion(region:Region):void;
-		
-		function removeRegion(region:Region):void;
-		
+				
 		function set client(value:Client):void;
 	}
 }

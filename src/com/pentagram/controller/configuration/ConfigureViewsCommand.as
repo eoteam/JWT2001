@@ -1,22 +1,6 @@
 package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
-	import com.pentagram.instance.InstanceWindow;
-	import com.pentagram.instance.view.editor.DatasetCreator;
-	import com.pentagram.instance.view.editor.DatasetEditor;
-	import com.pentagram.instance.view.editor.EditorMainView;
-	import com.pentagram.instance.view.editor.OverviewEditor;
-	import com.pentagram.instance.view.mediators.ViewInstanceMediator;
-	import com.pentagram.instance.view.mediators.editor.DatasetCreatorMediator;
-	import com.pentagram.instance.view.mediators.editor.DatasetEditorMediator;
-	import com.pentagram.instance.view.mediators.editor.EditorMediator;
-	import com.pentagram.instance.view.mediators.editor.OverviewEditorMediator;
-	import com.pentagram.instance.view.mediators.shell.BottomBarMediator;
-	import com.pentagram.instance.view.mediators.shell.SearchViewMediator;
-	import com.pentagram.instance.view.mediators.shell.ShellMediator;
-	import com.pentagram.instance.view.shell.BottomBarView;
-	import com.pentagram.instance.view.shell.SearchView;
-	import com.pentagram.instance.view.shell.ShellView;
 	import com.pentagram.main.mediators.ExportSpreadSheetWindowMediator;
 	import com.pentagram.main.mediators.LoginWindowMediator;
 	import com.pentagram.main.mediators.MainMediator;

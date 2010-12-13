@@ -10,8 +10,8 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
 	import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
 	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.DatasetOption;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ModuleUtil;
@@ -46,13 +46,19 @@ package com.pentagram.instance.view.mediators.shell
 		[Inject(name="ApplicationEventDispatcher")]
 		public var appEventDispatcher:EventDispatcher;  
 		
-		private var yearTimer:Timer;
+		
 		private var loaders:Array = [];
 		
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);		
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.STOP_TIMELINE,handleStopTimeline);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.PLAY_TIMELINE,handlePlayTimeline);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
+			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
@@ -62,25 +68,7 @@ package com.pentagram.instance.view.mediators.shell
 			loaders.push(util);
 			
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
-
-			view.tools.initTools();		
-			view.tools.firstSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-			view.tools.secondSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-			view.tools.thirdSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
-			view.tools.fourthSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
-			view.tools.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true);
-			view.tools.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
-			
-			view.filterTools.initTools();
-			view.filterTools.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-			view.filterTools.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-			view.filterTools.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-			view.filterTools.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
-			view.filterTools.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
-						
-			yearTimer = new Timer(2000);
-			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
-			
+		
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 				model.exportMenuItem.enabled = true;
@@ -94,71 +82,8 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 		}
-		private function handleXray(event:Event):void {
-			view.currentVisualizer.toggleOpacity(view.filterTools.xrayToggle.selected?0.7:1);
-		}
-		private function handleMapToggle(event:Event):void {
-			if(view.visualizerArea.selectedIndex == 1) {
-				IMapView(view.currentVisualizer).toggleMap(view.filterTools.mapToggle.selected);
-			}
-		}
-		private function handleRegionSelect(event:Event):void {
-			var region:Region;
-			var item:Region = view.filterTools.continentList.selectedItem as Region;
-			if(view.visualizerArea.selectedIndex == 1) {
-				var viz:IMapView = view.currentVisualizer as IMapView;
-				switch(event.type) {
-					case "addRegion":
-						viz.addRegion(item);
-						adjustSelection();
-					break;
-					
-					case "selectRegion":
-						viz.selectRegion(item);
-						for each(region in model.regions.source) {
-							if(region != item)
-								region.selected = false;
-						}
-					break;
-					
-					case "removeRegion":
-						viz.removeRegion(item);
-						adjustSelection();
-					break;
-				}
-			}
 
-		}
-		private function adjustSelection():void {
-			var region:Region;
-			var selectCount:int = 0;
-			for each(region in model.regions.source) {
-				if(region.selected)
-					selectCount++;
-			} 
-			switch(selectCount) {
-				case selectCount >= 4:
-					for each(region in model.regions.source) {
-						region.enabled = true;
-						region.selected = true;
-					}
-					break;
-				case selectCount > 1:
-					for each(region in model.regions.source) {
-						if(region.selected)
-							region.enabled = true;
-					}
-				break;
-				case selectCount == 1:
-					for each(region in model.regions.source) {
-						if(region.selected)
-							region.enabled = false;
-						else
-							region.enabled = true;
-					}
-				break;
-			}
-		}
+		
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil;
 			if(event.newIndex == 1){
@@ -193,12 +118,80 @@ package com.pentagram.instance.view.mediators.shell
 				}
 			}
 		}
+		private function handleDatasetSelection(event:VisualizerEvent):void {
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+					view.clusterView.visualize(event.args[0],event.args[1]);
+				break;
+				case 1:
+					view.mapView.visualize(event.args[0]);
+				break;
+				case 2:
+					view.graphView.visualize(event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
+				break;
+			}
+		}
+		private function handleStopTimeline(event:VisualizerEvent):void {
+			view.currentVisualizer.continous = false;
+			view.currentVisualizer.pause();
+		}
 		private function restoreDatasets(viz:IVisualizer):void {
 			view.tools.firstSet.selectedIndex = viz.datasets[0] ? model.client.datasets.getItemIndex(viz.datasets[0]) : -1;				
 			view.tools.secondSet.selectedIndex = viz.datasets[1] ? model.client.datasets.getItemIndex(viz.datasets[1]) : -1;				
 			view.tools.thirdSet.selectedIndex = viz.datasets[2] ? model.client.datasets.getItemIndex(viz.datasets[2]) : -1;				
 			view.tools.fourthSet.selectedIndex = viz.datasets[3] ? model.client.datasets.getItemIndex(viz.datasets[3]) : -1;				
 		}
+		private function handlePlayTimeline(event:VisualizerEvent):void {
+			view.currentVisualizer.continous = true;
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+					break;
+				case 1:
+					view.mapView.updateYear(event.args[0]);
+					break;
+				case 2:	
+					model.updateData(view.graphView.visdata,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
+					view.graphView.update();
+					break;
+			}
+		}
+		private function handleCategoryChange(event:VisualizerEvent):void {
+			var type:String = event.args[0];
+			var item:Category = event.args[1] as Category;
+			if(view.visualizerArea.selectedIndex == 1) {
+				
+				switch(type) {
+					case "addRegion":
+						view.currentVisualizer.addCategory(item);
+						break;
+					
+					case "selectRegion":
+						view.currentVisualizer.selectCategory(item);
+					break;
+					
+					case "removeRegion":
+						view.currentVisualizer.removeCategory(item);
+					break;
+				}
+			}
+		}
+		private function handleViewChange(event:VisualizerEvent):void {
+			var prop:String = event.args[0];
+			var value:* = event.args[1];
+			switch(prop) {
+				case 'alpha':
+					view.currentVisualizer.toggleOpacity(value);
+				break;
+				case 'mapToggle':
+					if(view.visualizerArea.selectedIndex == 1)
+						view.mapView.toggleMap(value);
+				break;
+				case 'maxRadius':
+					view.currentVisualizer.updateMaxRadius(value);
+				break;
+			}
+		}
+		
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
 			view.client = model.client;
@@ -221,150 +214,6 @@ package com.pentagram.instance.view.mediators.shell
 			model.user = null;
 			view.currentState = view.loggedOutState.name;
 		}	
-		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
-			if(view.filterTools.state == 'Map') {		
-				view.filterTools.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-				view.filterTools.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
-			}
-			else if(view.filterTools.state == 'Graph') {
-				view.filterTools.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			}	
-		}
-		private function handlePlayButton(event:Event):void {
-			view.currentVisualizer.continous = view.tools.playBtn.selected;
-			if(view.tools.playBtn.selected) {
-				if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1)
-					view.tools.yearSlider.selectedIndex = 0;
-				
-				handleYearSelection();
-				yearTimer.start();
-				view.tools.playBtn.label = "Stop";
-				
-			}
-			else {
-				yearTimer.stop();
-				view.tools.playBtn.label = "Play";
-			}					
-		}
-		private function handleTimer(event:TimerEvent):void {
-			view.tools.yearSlider.selectedIndex++;
-			
-			if(view.tools.yearSlider.selectedIndex == view.tools.yearSlider.dataProvider.length-1) {
-				yearTimer.stop();
-				view.tools.playBtn.label = "Play";		
-				view.currentVisualizer.continous = view.tools.playBtn.selected = false;
-				view.currentVisualizer.pause();
-			}
-			else {
-				handleYearSelection();	
-			}
-		}
-		private function handleYearSelection(event:IndexChangeEvent=null):void {
-			var ds1:Dataset;
-			var ds2:Dataset;
-			var ds3:Dataset;
-			var ds4:Dataset;
-			
-			ds3 = view.tools.thirdSet.selectedItem as Dataset;
-			switch(view.visualizerArea.selectedIndex) {
-				case 0:
-				break;
-				case 1:
-					view.mapView.updateYear(view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int);
-				break;
-				case 2:	
-					ds1 = view.tools.firstSet.selectedItem as Dataset;
-					ds2 = view.tools.secondSet.selectedItem as Dataset;
-					ds4 = view.tools.fourthSet.selectedItem as Dataset;
-					model.updateData(view.graphView.visdata,view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int,ds1,ds2,ds3,ds4);
-					view.graphView.update();
-				break;
-			}
-		}
-		private function handleDatasetSelection(event:Event):void {
-			var years:ArrayList = new ArrayList();
-			var i:int;
-			var dataset:Dataset;
-			switch(view.visualizerArea.selectedIndex) {
-				case 0:
-					if(view.tools.thirdSet.selectedItem) {
-						dataset = view.tools.thirdSet.selectedItem as Dataset;
-						view.clusterView.visualize(dataset,view.tools.fourthSet.selectedItem?view.tools.fourthSet.selectedItem:null);
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset.optionsArray)); 
-					}
-				break;
-				case 1:
-					if(view.tools.thirdSet.selectedItem) {
-						dataset = view.tools.thirdSet.selectedItem as Dataset;
-						view.mapView.visualize(dataset);
-						
-						if(dataset.time == 1) {
-							view.tools.timelineContainer.visible = true;
-							
-							for (i=dataset.years[0];i<=dataset.years[1];i++) {
-								years.addItem(new Year(i,1));
-							}
-							view.tools.yearSlider.dataProvider = years;
-						}
-						else view.tools.timelineContainer.visible = false;
-					}
-				break;
-				case 2:
-					if(view.graphView && event.target == view.tools.fourthSet)
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.tools.fourthSet.selectedItem.optionsArray));
-					if(view.tools.firstSet.selectedItem && view.tools.secondSet.selectedItem) {
-						
-						var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
-						var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
-						var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
-						var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
-						
-						var d:Array = model.normalizeData(ds1,ds2,ds3,ds4);	
-						view.graphView.visualize(d,ds1,ds2,ds3,ds4);
-
-						var minYear:int; var maxYear:int; var showTime:Boolean = false;		
-						if(ds1.time == 1) {
-							showTime = true;
-							minYear = ds1.years[0];
-							maxYear = ds1.years[1];
-						}
-						if(ds2.time == 1) {
-							showTime = true;
-							if(ds2.years[0] < minYear)
-								minYear = ds2.years[0];
-							if(ds2.years[1] > maxYear)
-								maxYear = ds2.years[1];	
-						} 
-						if(ds3 && ds3.time == 1) {
-							showTime = true;
-							if(ds3.years[0] < minYear)
-								minYear = ds3.years[0];
-							if(ds3.years[1] > maxYear)
-								maxYear = ds3.years[1];	
-						}
-						if(ds4 && ds4.time ==1) {
-							showTime = true;
-							if(ds4.years[0] < minYear)
-								minYear = ds4.years[0];
-							if(ds4.years[1] > maxYear)
-								maxYear = ds4.years[1];	
-						}
-						view.tools.yearSlider.visible = showTime;
-						if(showTime) {
-							for (i=minYear;i<=maxYear;i++) {
-								years.addItem(new Year(i,1));
-							}
-							view.tools.yearSlider.dataProvider = years;					
-						}
-						
-					}
-				break;
-			}
-			
-		}
-		private function handleMaxRadius(event:Event):void {
-			view.currentVisualizer.updateMaxRadius(view.filterTools.maxRadiusSlider.value);
-		}
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IGraphView) {
@@ -384,11 +233,9 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IClusterView) {
-				
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
 			}			
-		}
-			
+		}	
 	}
 }

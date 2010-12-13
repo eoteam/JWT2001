@@ -7,22 +7,26 @@
 		<![CDATA[
 			import com.pentagram.view.skins.buttons.ContinentToggleButton;
 			
+			import spark.components.List;
 			import spark.skins.spark.ToggleButtonSkin;
 
-			protected function check_changeHandler(event:Event):void
+			private function check_changeHandler(event:Event):void
 			{
 				data.selected = check.selected;
+				List(this.owner).selectedItem = this.data;
 				if(check.selected)
-					this.owner.dispatchEvent(new Event("addRegion"));
+					this.callLater(resumeUpdate,["addRegion"]);
 				else
-					this.owner.dispatchEvent(new Event("removeRegion"));
+					this.callLater(resumeUpdate,["removeRegion"]);
 			}
-
-
-			protected function togglebutton1_changeHandler(event:Event):void
+			private function togglebutton1_changeHandler(event:Event):void
 			{
 				data.selected = true;
-				this.owner.dispatchEvent(new Event("selectRegion"));
+				List(this.owner).selectedItem = this.data;
+				this.callLater(resumeUpdate,["selectRegion"]);
+			}
+			private function resumeUpdate(type:String):void {
+				this.owner.dispatchEvent(new Event(type));
 			}
 
 		]]>

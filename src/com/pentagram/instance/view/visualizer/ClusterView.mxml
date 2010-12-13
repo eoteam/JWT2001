@@ -10,9 +10,9 @@
 		<![CDATA[
 			import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
+			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
-			import com.pentagram.model.vo.DatasetOption;
 			
 			import flash.display.Sprite;
 			import flash.events.Event;
@@ -42,11 +42,11 @@
 				this.ds1 = dataset1; this.ds2 = dataset2;
 				this.removeAllElements();
 				if(dataset1.type == 0) { //quantitative
-					for each(var item:DatasetOption in dataset1.optionsArray) {
+					for each(var item:Category in dataset1.optionsArray) {
 						var parent:SpriteVisualElement = new SpriteVisualElement();
 						parent.percentHeight = parent.percentWidth = 100;
 						this.addElement(parent);
-		
+						
 						var arr:Array = [];
 						var r:Number = 1;
 						for each(var row:DataRow in dataset1.rows) {
@@ -64,6 +64,7 @@
 							}	
 						}
 						var circle:CirclePacking = new CirclePacking(arr);
+						circle.name = item.name;
 						circle.x = width/(dataset1.optionsArray.length*2);
 						circle.width = width/dataset1.optionsArray.length;
 						circle.y = height/2;
@@ -132,7 +133,16 @@
 			public function toggleOpacity(value:Number):void {
 
 			}			
-
+			public function addCategory(value:Category):void {
+				
+			}
+			
+			public function removeCategory(value:Category):void {
+				
+			}
+			public function selectCategory(value:Category):void {
+				
+			}
 			protected function module1_resizeHandler(event:ResizeEvent):void
 			{
 				for (var i:int=0;i<this.numElements;i++) {
@@ -145,6 +155,7 @@
 					c.draw();
 				}
 			}
+			
 
 		]]>
 	</fx:Script>

@@ -68,7 +68,7 @@
 			</s:Group>
 			
 			<!-- filters and tools -->
-			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
+			<shell:BottomToolsView id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
 			<shell:RightToolsView right="0" id="filterTools" top="61" visualizerArea="{visualizerArea}"/>
 		</s:NavigatorContent>
 	

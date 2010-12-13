@@ -3,7 +3,9 @@
 	<fx:Metadata>[HostComponent("spark.components.TextInput")]</fx:Metadata>
 	<s:states>
 		<s:State name="normal"/>
-		<s:State name="disabled"/>
+		<s:State name="disabled" stateGroups="disabledStates"/>
+		<s:State name="normalWithPrompt"/>
+		<s:State name="disabledWithPrompt" stateGroups="disabledStates"/>
 	</s:states>
 	<s:Group id="group10" d:id="3" flm:knockout="false" left="0" right="0" top="0" bottom="0" >
 		<s:Rect height="24" radiusX="1.9919" radiusY="1.9919" left="0" right="0" top="0" bottom="0">
