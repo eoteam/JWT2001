@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.visualizer
 {
+	import com.greensock.TweenNano;
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 	
@@ -105,7 +106,7 @@ package com.pentagram.instance.view.visualizer
 				c.x = this.circlePositions[i].x * _loc_2;
 				c.y = this.circlePositions[i].y * _loc_2;
 				c.state = true;
-				c.radius = this.circlePositions[i].z * _loc_2 * scaler;
+				TweenNano.to(c,.5,{radius: this.circlePositions[i].z * _loc_2 * scaler});
 				i++;
 			}
 			//cacheAsBitmap = true;

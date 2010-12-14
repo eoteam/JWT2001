@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009"  creationComplete="module1_creationCompleteHandler(event)"
 				xmlns:s="library://ns.adobe.com/flex/spark"  resize="module1_resizeHandler(event)"
-				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView"
+				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" updateComplete="module1_creationCompleteHandler(event)"
 				xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:modules="ws.tink.spark.modules.*">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -43,6 +43,7 @@
 				this.removeAllElements();
 				if(dataset1.type == 0) { //quantitative
 					for each(var item:Category in dataset1.optionsArray) {
+						item.selected = item.enabled = true;
 						var parent:SpriteVisualElement = new SpriteVisualElement();
 						parent.percentHeight = parent.percentWidth = 100;
 						this.addElement(parent);
@@ -134,25 +135,54 @@
 
 			}			
 			public function addCategory(value:Category):void {
-				
-			}
-			
-			public function removeCategory(value:Category):void {
-				
-			}
-			public function selectCategory(value:Category):void {
-				
-			}
-			protected function module1_resizeHandler(event:ResizeEvent):void
-			{
 				for (var i:int=0;i<this.numElements;i++) {
 					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
-					c.x = parent.width/2;
-					c.width = parent.width;
-					c.y = parent.height/2;
-					c.height = parent.height;
-					c.draw();
+					if(c.name == value.name) {
+						parent.visible = true;
+						parent.includeInLayout = true;
+						break;
+					}
+				}
+			}
+			
+			public function removeCategory(value:Category):void {
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+					if(c.name == value.name) {
+						parent.visible = false;
+						parent.includeInLayout = false;
+						break;
+					}
+				}
+			}
+			public function selectCategory(value:Category):void {
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+					if(c.name != value.name) {
+						parent.visible = false;
+						parent.includeInLayout = false;
+					}
+					else {
+						parent.visible = true;
+						parent.includeInLayout = true;
+					}
+				}
+			}
+			protected function module1_resizeHandler(event:ResizeEvent=null):void
+			{
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					if(parent.visible) {
+						var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+						c.x = parent.width/2;
+						c.width = parent.width;
+						c.y = parent.height/2;
+						c.height = parent.height;
+						c.draw();
+					}
 				}
 			}
 			

@@ -7,6 +7,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function ClusterRenderer()
 		{
 			super();
+			this.fillAlpha = 1;
 		}
 		public var radiusBeforeRendering:Number;
 	}

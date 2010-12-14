@@ -157,23 +157,21 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleCategoryChange(event:VisualizerEvent):void {
 			var type:String = event.args[0];
-			var item:Category = event.args[1] as Category;
-			if(view.visualizerArea.selectedIndex == 1) {
+			var item:Category = event.args[1] as Category;	
+			switch(type) {
+				case "addRegion":
+					view.currentVisualizer.addCategory(item);
+					break;
 				
-				switch(type) {
-					case "addRegion":
-						view.currentVisualizer.addCategory(item);
-						break;
-					
-					case "selectRegion":
-						view.currentVisualizer.selectCategory(item);
-					break;
-					
-					case "removeRegion":
-						view.currentVisualizer.removeCategory(item);
-					break;
-				}
+				case "selectRegion":
+					view.currentVisualizer.selectCategory(item);
+				break;
+				
+				case "removeRegion":
+					view.currentVisualizer.removeCategory(item);
+				break;
 			}
+			
 		}
 		private function handleViewChange(event:VisualizerEvent):void {
 			var prop:String = event.args[0];
