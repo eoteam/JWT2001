@@ -17,22 +17,6 @@
 				}
 				else currentState = "closedAnd"+state;
 			}
-			public function initTools():void {
-				visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-			}
-			private function handleIndexChanged(event:IndexChangedEvent):void {
-				switch(visualizerArea.selectedIndex) {
-					case 0:
-						this.currentState = isOpen? 'openAndCluster' : 'closedAndCluster';
-						break;
-					case 1:
-						this.currentState = isOpen? 'openAndMap' : 'closedAndMap';
-						break;					
-					case 2:
-						this.currentState = isOpen? 'openAndGraph' : 'closedAndGraph';
-						break;					
-				}
-			}
 			public function set state(value:String):void {
 				if(openStates.indexOf(currentState) != -1)
 					currentState = 'openAnd'+value;

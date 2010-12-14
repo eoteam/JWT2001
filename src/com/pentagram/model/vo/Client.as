@@ -15,6 +15,9 @@ package com.pentagram.model.vo
 		public var thumbs:String;
 		
 		public var datasets:ArrayList;
+		public var quantityDatasets:ArrayList;
+		public var qualityDatasets:ArrayList;
+		
 		public var countries:ArrayList = new ArrayList();
 		public var regions:ArrayList = new ArrayList();
 		

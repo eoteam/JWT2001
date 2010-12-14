@@ -1,5 +1,7 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
+	import com.pentagram.model.vo.DataRow;
+	
 	import flash.display.Sprite;
 	
 	public class ClusterRenderer extends CircleRenderer
@@ -10,5 +12,6 @@ package com.pentagram.instance.view.visualizer.renderers
 			this.fillAlpha = 1;
 		}
 		public var radiusBeforeRendering:Number;
+		public var data2:DataRow;
 	}
 }

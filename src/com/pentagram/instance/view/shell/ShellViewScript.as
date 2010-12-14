@@ -4,6 +4,8 @@ import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
 import com.pentagram.instance.view.visualizer.interfaces.IMapView;
 import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
 
+import flash.events.FullScreenEvent;
+
 import mx.events.FlexEvent;
 import mx.events.IndexChangedEvent;
 

@@ -5,6 +5,7 @@ package com.pentagram.instance.model
 	import com.pentagram.model.vo.DataCell;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.NormalizedVO;
 	import com.pentagram.model.vo.User;
 	
 	import flare.vis.data.Data;
@@ -13,6 +14,7 @@ package com.pentagram.instance.model
 	
 	import flash.display.NativeMenuItem;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;
@@ -120,6 +122,58 @@ package com.pentagram.instance.model
 				data.push(obj);
 			}
 			return data;
+		}
+		public function normalizeData2(ds1:Dataset,ds2:Dataset,ds3:Dataset=null,ds4:Dataset=null):ArrayCollection {
+			var data:ArrayCollection = new ArrayCollection();;
+			for (var i:int=0;i<ds1.rows.length;i++) {
+				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
+				var obj:NormalizedVO = new NormalizedVO(); 
+				obj.name = row.name;
+				obj.data = row;
+				obj.index = i;
+				
+				if(ds1.time == 1) 
+					obj.x = Number(ds1.rows.getItemAt(i)[ds1.years[0]]);
+				else
+					obj.x = Number(ds1.rows.getItemAt(i).value);
+				
+				if(ds2.time == 1) 
+					obj.y = Number(ds2.rows.getItemAt(i)[ds2.years[0]]);
+				else
+					obj.y = Number(ds2.rows.getItemAt(i).value);
+				if(ds3) {
+					if(ds3.time == 1) 
+						obj.radius = Number(ds3.rows.getItemAt(i)[ds3.years[0]]);
+					else
+						obj.radius = Number(ds3.rows.getItemAt(i).value);
+				}
+				else
+					obj.radius = 1;
+				if(ds4) {
+					if(ds4.time == 1) 
+						obj[ds4.name] = Number(ds4.rows.getItemAt(i)[ds4.years[0]]);
+					else
+						obj[ds4.name] = Number(ds4.rows.getItemAt(i).value);
+				}
+				obj.color = ds1.rows.getItemAt(i).color;
+				//trace(obj[ds1.name],obj[ds2.name],obj.color);
+				data.addItem(obj);
+			}
+			return data;
+		}
+		public function updateData2(data:ArrayCollection,year:int,...datasets):void {
+			for each(var item:NormalizedVO in data) {
+				//for each(var ds:Dataset in datasets) {
+				if(Dataset(datasets[0]).time == 1)
+					item.x =  Dataset(datasets[0]).rows.getItemAt(item.index)[year];
+				if(Dataset(datasets[1]).time == 1)	
+					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index)[year];
+				
+				if(datasets[2] && Dataset(datasets[0]).time == 1)
+					item.radius = Dataset(datasets[2]).rows.getItemAt(item.index)[year];
+				//	}	
+				
+			}
 		}
 		public function updateData(data:Data,year:int,...datasets):void {
 			

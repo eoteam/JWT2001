@@ -13,6 +13,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	
@@ -30,11 +31,12 @@ package com.pentagram.instance.view.mediators.shell
 		public var model:InstanceModel;
 		
 		private var yearTimer:Timer;
+		private var counter:uint = 0;
 		private var normalizedData:Array;
 		
 		override public function onRegister():void
 		{
-			view.initTools();		
+			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);	
 			view.firstSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 			view.secondSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
@@ -42,8 +44,22 @@ package com.pentagram.instance.view.mediators.shell
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true); 
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			
-			yearTimer = new Timer(2000);
+			yearTimer = new Timer(1000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
+			
+		}
+		private function handleIndexChanged(event:IndexChangedEvent):void {
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+					view.currentState = 'cluster';
+					break;
+				case 1:
+					view.currentState = 'map';
+					break;					
+				case 2:
+					view.currentState = 'graph';
+					break;					
+			}
 		}
 		private function handleDatasetSelection(event:Event):void {
 			var years:ArrayList = new ArrayList();
@@ -80,7 +96,7 @@ package com.pentagram.instance.view.mediators.shell
 						var ds3:Dataset = view.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.fourthSet.selectedItem as Dataset;
 						
-						var d:Array = model.normalizeData(ds1,ds2,ds3,ds4);	
+						var d:ArrayCollection = model.normalizeData2(ds1,ds2,ds3,ds4);	
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,d,ds1,ds2,ds3,ds4));
 						
 						var minYear:int; var maxYear:int; var showTime:Boolean = false;		
@@ -125,19 +141,20 @@ package com.pentagram.instance.view.mediators.shell
 		}
 
 		private function handleTimer(event:TimerEvent):void {
-			view.yearSlider.selectedIndex++;
+			counter++;
 			
-			if(view.yearSlider.selectedIndex == view.yearSlider.dataProvider.length-1) {
+			if(counter == view.yearSlider.dataProvider.length) {
 				yearTimer.stop();
 				view.playBtn.label = "Play";		
 				view.playBtn.selected = false;
 				this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.STOP_TIMELINE));
 			}
 			else {
-				handleYearSelection();	
+				view.yearSlider.selectedIndex = counter;
+				handleYearSelection();
 			}
 		}
-		private function handleYearSelection(event:IndexChangedEvent=null):void {
+		private function handleYearSelection(event:IndexChangeEvent=null):void {
 		
 			var ds1:Dataset;
 			var ds2:Dataset;
@@ -152,6 +169,7 @@ package com.pentagram.instance.view.mediators.shell
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.PLAY_TIMELINE,year,ds1,ds2,ds3,ds4));	
 		}
 		private function handlePlayButton(event:Event):void {
+			counter = 0;
 			if(view.playBtn.selected) {
 				if(view.yearSlider.selectedIndex == view.yearSlider.dataProvider.length-1)
 					view.yearSlider.selectedIndex = 0;

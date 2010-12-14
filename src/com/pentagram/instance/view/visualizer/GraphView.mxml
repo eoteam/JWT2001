@@ -34,12 +34,14 @@
 			import flare.vis.operator.encoder.SizeEncoder;
 			import flare.vis.operator.layout.AxisLayout;
 			
+			import mx.charts.CategoryAxis;
+			import mx.charts.LinearAxis;
+			import mx.charts.chartClasses.IAxis;
+			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
 			
-			private var vis:Visualization;
 
-			private var _visdata:Data;
 			
 			private var  ds1:Dataset;
 			private var  ds2:Dataset;
@@ -49,14 +51,7 @@
 			public function get datasets():Array {
 				return [ds1,ds2,ds3,ds4];
 			}
-			
-			public function set visdata(d:Data):void {
-				_visdata = d;
-			}
-			public function get visdata():Data {
-				return _visdata;
-			}
-			
+						
 			private var _continous:Boolean = false;
 			public function set continous(value:Boolean):void{
 				_continous = value;
@@ -74,100 +69,47 @@
 
 			//private var banker;
 			private var firstPass:Boolean = true;
-			public function visualize(arr:Array,...props):void
-			{			
-				visdata = Data.fromArray(arr);
+			private function group1_resizeHandler(event:ResizeEvent):void {
 				
-				var axisLayout:AxisLayout;
-				var colorEncoder:ColorEncoder;
-				var propEncoder:PropertyEncoder;
-				var sizeEncoder:SizeEncoder;
-				var sizePalette:SizePalette = new SizePalette(1,20);
+			}
+			public function visualize(arr:ArrayCollection,...props):void
+			{		
+				_visdata = arr;
+				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];				
+				chart.verticalAxis = createAxis(ds1);
+				chart.horizontalAxis = createAxis(ds2);
+				mainSeries.dataProvider = _visdata;
 				
-				var prop1:String = props[0] ? props[0].name : null;
-				var prop2:String = props[1] ? props[1].name : null;
-				var prop3:String = props[2] ? props[2].name : null;
-				var prop4:String = props[3] ? props[3].name : null;
+			}
+			private function createAxis(dataset:Dataset):IAxis {
 				
-				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
-				if(firstPass) {
-					var bounds:Rectangle =  new Rectangle(0, 0, this.width-100, this.height-100);
-					
-					vis = new Visualization();
-					vis.continuousUpdates = true;
-					vis.x = 50; 
-					vis.y = 20;
-					vis.bounds = bounds;
-					
-					holder.rawChildren.addChild(vis);
-					this.addEventListener(ResizeEvent.RESIZE,group1_resizeHandler);
-					
-					vis.data = _visdata;
-					firstPass = false;
-					axisLayout = new AxisLayout("data."+prop1, "data."+prop2);	
-					propEncoder = new PropertyEncoder({lineAlpha: 1, alpha:0.75, buttonMode: true,scaleX: 1, scaleY: 1, size: 1});
-					
-					if(prop4) {
-						var colorPalette:ColorPalette = new ColorPalette([0xffff5555, 0xff8888ff],[1,2,3,4,5,6,7,8,9,10]);
-						new ColorEncoder("data."+prop4, Data.NODES,"fillColor", ScaleType.CATEGORIES,colorPalette);
-					}
-					else
-						colorEncoder = new ColorEncoder("data.color", Data.NODES,"fillColor", ScaleType.CATEGORIES);
-					
-					if(prop3)
-						sizeEncoder = new SizeEncoder("data."+prop3, Data.NODES,sizePalette);
-					else 
-						sizeEncoder = new SizeEncoder("data.size",Data.NODES);
-					vis.operators.add(axisLayout);
-					vis.operators.add(propEncoder);
-					vis.operators.add(sizeEncoder);
-					vis.operators.add(colorEncoder);
-					
-					
-					vis.xyAxes.showBorder = false;
-					vis.xyAxes.showXLine = true;
-					vis.xyAxes.showYLine = true;
-					vis.xyAxes.xAxis.showLines = false;
-					vis.xyAxes.yAxis.showLines = false;
-					ViewUtils.executeLater(pause);
+				if(dataset.type == 1) {
+					var linearAxis:LinearAxis = new LinearAxis();
+					linearAxis.title = dataset.name;
+					linearAxis.maximum = dataset.max;
+					linearAxis.minimum = dataset.min;
+					return linearAxis;
 				}
 				else {
-					vis.data = _visdata;
-					axisLayout = vis.operators.getOperatorAt(0) as AxisLayout;
-					axisLayout.xField  = "data."+prop1; axisLayout.yField = "data."+prop2;
-					if(prop3) {
-						sizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
-						sizeEncoder.source = "data."+prop3;
-						sizeEncoder.scale.data = _visdata;
-					}
-					if(prop4) {
-						colorEncoder = vis.operators.getOperatorAt(3) as ColorEncoder;
-						//colorPalette = new ColorPalette([0xff5555, 0x8888ff]);
-						//colorEncoder.palette = colorPalette;
-						colorEncoder.source = "data."+prop4;
-						colorEncoder.palette = ColorPalette.category(20,[0xff5555, 0x8888ff],1);
-						colorEncoder.scale.data = _visdata;
-					}
-					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
-					resume();
-					resumeUpdate();
+					var categoryAxis:CategoryAxis = new CategoryAxis();
+					categoryAxis.title = dataset.name;
+					categoryAxis.categoryField = "name";
+					categoryAxis.dataProvider = dataset.optionsArray;
+					return categoryAxis;
 				}
 			}
+			private var _visdata:ArrayCollection; 
+			public function set visdata(d:ArrayCollection):void {
+				_visdata = d;
+			}
+			public function get visdata():ArrayCollection {
+				return _visdata;
+			}  
 			public function update():void {
-				if(!_continous)
-					resume();
-					
-				resumeUpdate();
+				
 			}
 			public function updateMaxRadius(value:Number):void {
-				var sizeEncoder:SizeEncoder = vis.operators.getOperatorAt(2) as SizeEncoder;
-				SizePalette(sizeEncoder.palette).maximumSize = value;
-				resume();
-				this.callLater(function resumeUpdate():void {
-					var t:Transitioner = new Transitioner(1);
-					t.addEventListener(TransitionEvent.END,handleEnd);
-					vis.update(t).play();
-				});
+
 				
 			}
 			public function addCategory(value:Category):void {
@@ -179,46 +121,15 @@
 			}
 			public function selectCategory(value:Category):void {
 				
-			}
-			protected function group1_resizeHandler(event:ResizeEvent):void {
-				if(!firstPass) {
-					vis.bounds = new Rectangle(0, 0, this.width-100, this.height-100);
-					resume();
-					ViewUtils.executeLater(coldUpdate).addEventListener("executed",handleUpdateComplete); 
-				}
-			}
-			private function coldUpdate():void {
-				vis.update();
-			}
-			private function handleUpdateComplete(event:Event):void {
-				ViewUtils.executeLater(handleEnd);
-			}
-			private function handleEnd(event:Event=null):void {
-				if(!_continous) {
-					pause();
-				}
-			}
-			
+			}			
 			public function unload():void {
-				if(vis) {
-					Scheduler.instance.remove(vis.rec);
-					vis = null;
-				}
+
 			}
 			public function resume():void {
-				DirtySprite.resume();
-				Scheduler.instance.play();
-				vis.resume();
+
 			}
 			public function pause():void {
-				DirtySprite.pause();
-				Scheduler.instance.pause();
-				vis.pause();				
-			}
-			private function resumeUpdate():void {
-				var t:Transitioner = new Transitioner(2.5);
-				t.addEventListener(TransitionEvent.END,handleEnd);
-				vis.update(t).play();
+				
 			}
 			public function updateYear(year:int):void {
 				
@@ -229,13 +140,21 @@
 			public function toggleOpacity(value:Number):void {
 
 			}
+			public function updateSize():void {
+				
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
+		<mx:SeriesInterpolate id="changeEffect" duration="300" />
 	</fx:Declarations>
 <!--	<s:Group width="100%" height="100%">
 		<s:SpriteVisualElement id="holder" width="100%" height="100%"/>	
 	</s:Group>-->
-	<mx:Canvas id="holder" width="100%" height="100%" />
-	
+<!--	<mx:Canvas id="holder" width="100%" height="100%" />-->
+		<mx:BubbleChart width="100%" height="100%" id="chart">
+			<mx:series>
+				<mx:BubbleSeries id="mainSeries" showDataEffect="{changeEffect}" xField="x" yField="y" radiusField="radius" />
+			</mx:series>
+		</mx:BubbleChart>
 </modules:Module>

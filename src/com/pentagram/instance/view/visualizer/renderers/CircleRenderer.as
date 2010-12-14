@@ -8,13 +8,10 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flare.util.Colors;
 	
 	import flash.display.GradientType;
-	import flash.display.Shape;
-	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
 	import mx.core.UIComponent;
-	import mx.utils.ColorUtil;
 	
 
 
@@ -203,7 +200,10 @@ package com.pentagram.instance.view.visualizer.renderers
 			graphics.lineStyle(_lineWidth,_lineColor,1);
 			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],[fillAlpha,fillAlpha],FILL_RATIO,matr)			
 			graphics.drawCircle(0, 0, _radius);
-			graphics.endFill();		
+			graphics.endFill();	
+			if(this.alpha == 0) {
+				TweenNano.to(this,0.5,{delay:1,alpha:1});
+			}
 		}
 		public function dirtyCoordinates():void {
 			dirtyCoordFlag = true;

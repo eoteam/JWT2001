@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009"  creationComplete="module1_creationCompleteHandler(event)"
-				xmlns:s="library://ns.adobe.com/flex/spark"  resize="module1_resizeHandler(event)"
-				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" updateComplete="module1_creationCompleteHandler(event)"
-				xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:modules="ws.tink.spark.modules.*">
+<modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				xmlns:modules="ws.tink.spark.modules.*"
+				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
+				creationComplete="module1_creationCompleteHandler(event)"
+				updateComplete="module1_creationCompleteHandler(event)"
+				resize="handleResize(event)">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenNano;
 			import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.Category;
@@ -59,9 +64,8 @@
 										r = (row2[dataset2.years[0]] - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;
 									else
 										r = (row2.value - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;	
-								}
-	
-								arr.push({data:row,radius:r,color:item.color});
+								}	
+								arr.push({data:row,radius:r,color:item.color,data2:row2});
 							}	
 						}
 						var circle:CirclePacking = new CirclePacking(arr);
@@ -71,7 +75,7 @@
 						circle.y = height/2;
 						circle.height = height;
 						parent.addChild(circle);
-						this.callLater(function resumeDraw(c:CirclePacking):void {c.draw()},[circle]);
+						this.callLater(function resumeDraw(c:CirclePacking):void {c.layout()},[circle]);
 					} 
 				}
 			}
@@ -113,12 +117,30 @@
 			}
 			
 			public function updateYear(year:int):void {
-				
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+					for (var j:int=0;j<c.numChildren;j++) {
+						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
+						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[1]) {
+							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+							trace(circle.radiusBeforeRendering);
+						}	
+//						if(ds1.time == 1 && year >= ds2.years[0] && year <= ds2.years[1])
+//						{
+//							circle.includeInLayout = false;
+//						}
+							
+					}
+					c.layout();
+					//c.draw();
+					
+				}
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
 				
 			}
-			protected function module1_creationCompleteHandler(event:FlexEvent):void {
+			private function module1_creationCompleteHandler(event:FlexEvent):void {
 //				var parent:SpriteVisualElement = new SpriteVisualElement();
 //				parent.percentHeight = parent.percentWidth = 100;
 //				this.addElement(parent);
@@ -133,7 +155,10 @@
 			}
 			public function toggleOpacity(value:Number):void {
 
-			}			
+			}	
+			public function updateSize():void {
+				this.callLater(handleResize);
+			}
 			public function addCategory(value:Category):void {
 				for (var i:int=0;i<this.numElements;i++) {
 					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
@@ -144,6 +169,7 @@
 						break;
 					}
 				}
+				this.callLater(handleResize);
 			}
 			
 			public function removeCategory(value:Category):void {
@@ -156,6 +182,7 @@
 						break;
 					}
 				}
+				this.callLater(handleResize);
 			}
 			public function selectCategory(value:Category):void {
 				for (var i:int=0;i<this.numElements;i++) {
@@ -170,8 +197,9 @@
 						parent.includeInLayout = true;
 					}
 				}
+				this.callLater(handleResize);
 			}
-			protected function module1_resizeHandler(event:ResizeEvent=null):void
+			private function handleResize(event:ResizeEvent=null):void
 			{
 				for (var i:int=0;i<this.numElements;i++) {
 					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;

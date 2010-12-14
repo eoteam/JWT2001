@@ -12,6 +12,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
+	import mx.events.IndexChangedEvent;
 	import mx.events.StateChangeEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -26,7 +27,7 @@ package com.pentagram.instance.view.mediators.shell
 		
 		override public function onRegister():void
 		{	
-			view.initTools();
+			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
 			view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
 			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
 			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
@@ -34,7 +35,23 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			
 		}
+		private function handleIndexChanged(event:IndexChangedEvent):void {
+			switch(view.visualizerArea.selectedIndex) {
+				case 0:
+					view.currentState = view.isOpen? 'openAndCluster' : 'closedAndCluster';					
+					break;
+				case 1:
+					view.currentState = view.isOpen? 'openAndMap' : 'closedAndMap';
+					view.continentList.dataProvider = model.regions;
+					break;					
+				case 2:
+					view.currentState = view.isOpen? 'openAndGraph' : 'closedAndGraph';
+					break;					
+			}
+		}
+
 		private function handleRegionSelect(event:Event):void {
 			var item:Category = view.continentList.selectedItem as Category;
 			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item));

@@ -28,7 +28,7 @@
 		
 				var ptt:YearListRendererToolTip = new YearListRendererToolTip();
 				ptt.bodyText = data.year;
-				var pt:Point = this.localToGlobal(new Point(x,y));
+				var pt:Point = this.owner.localToGlobal(new Point(x,y));
 				//ToolTipManager.createToolTip(-30,-30,);
 				//ptt.x=pt.x-35; ptt.y=-pt.y-height-300;
 				event.toolTip = ptt;
@@ -130,7 +130,7 @@
 	<!--       Transitions          -->
 	<s:transitions>
 		<s:Transition autoReverse="true">
-				<s:Animate target="{tOffsets}" duration="350">
+				<s:Animate target="{tOffsets}" duration="150">
 					<s:SimpleMotionPath property="scaleY"  />
 				</s:Animate>
 		</s:Transition>
@@ -165,7 +165,7 @@
 		</s:fill>
 		<!--       The Zoom effect      -->
 		<s:postLayoutTransformOffsets>
-			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="{data.selection}" scaleY.hovered="1.5" scaleY.selected="1.5"   />
+			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.5" scaleY.selected="1.5"   />
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
 	

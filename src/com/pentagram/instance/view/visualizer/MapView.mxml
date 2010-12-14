@@ -3,7 +3,8 @@
 				xmlns:s="library://ns.adobe.com/flex/spark"  width="100%" height="100%"
 				xmlns:mx="library://ns.adobe.com/flex/mx"  clipAndEnableScrolling="true"
 				xmlns:modules="ws.tink.spark.modules.*" contentBackgroundColor="0xff0000" 
-				resize="handleResize(event)" creationComplete="module1_creationCompleteHandler(event)"
+				resize="handleResize(event)" 
+				creationComplete="module1_creationCompleteHandler(event)"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IMapView" 
 				xmlns:assets="assets.*" 
 				xmlns:maps="assets.maps.*" 
@@ -45,7 +46,11 @@
 					TweenNano.to(mapHolder,.5,{alpha:a});
 				}
 			}
+			public function updateSize():void {
+				this.callLater(handleResize);
+			}
 			private var firstPass:Boolean = true;
+			private var firstLoad:Boolean = true;
 			public function set client(value:Client):void {
 				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
@@ -60,7 +65,12 @@
 			}
 			public function visualize(dataset:Dataset):void {
 				
-				this.dataset = dataset
+				this.dataset = dataset;
+				if(!firstLoad) {
+					doVisualize();
+				}
+			}
+			private function doVisualize():void {
 				var r:Number;
 				var c:MapRenderer;
 				var row:DataRow;
@@ -79,6 +89,8 @@
 					c = renderersDictionary[row.country.shortname];
 					if(world.countries[row.country.shortname]) {
 						c.countrySprite = world.countries[row.country.shortname];
+						if(firstLoad)
+							c.alpha = 0;
 						c.state = true;
 						c.dirtyCoordinates();
 						c.dirty();
@@ -86,9 +98,9 @@
 					c.data = row;
 					c.radius = r;			
 				}
+				firstLoad = false;
 				firstPass = false;
 			}
-			
 			private var _continous:Boolean = false;
 			public function get continous():Boolean{
 				return _continous;
@@ -121,13 +133,16 @@
 			
 			}
 			public function update():void {
-				if(dataset.time == 1 && currentYear >= Number(dataset.years[0]) && currentYear <= Number(dataset.years[1])) {
-					
-					for each(var c:MapRenderer in renderers) {
-						var r:Number = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-						TweenNano.to(c, .5, {radius: r});
-					}
+			
+				for each(var c:MapRenderer in renderers) {
+					var r:Number;
+					if(dataset.time == 1)
+						r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+					else 
+						r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+					TweenNano.to(c, .5, {radius: r});
 				}
+				
 			}
 			public function removeCategory(value:Category):void {
 				var region:Region = value as Region;
@@ -325,12 +340,14 @@
 					fxgSprite.y = (child.height / 2) - (fxgSprite.height / 2);
 				}
 			}
-			
 			private function module1_creationCompleteHandler(event:FlexEvent):void {	
-					loadWorldMap();
+				loadWorldMap();
 			}
 			private function handleMapLoaded(event:Event):void {
 				FXGLoader(event.target).removeEventListener(Event.COMPLETE,handleMapLoaded);
+				if(firstLoad) {
+					doVisualize();
+				}
 				var timer:CallTimer = new CallTimer(resumeLoad,[event.target],250,1);
 				timer.start();
 			}

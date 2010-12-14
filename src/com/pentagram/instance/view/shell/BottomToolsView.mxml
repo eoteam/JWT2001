@@ -9,22 +9,7 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.IndexChangedEvent;
-			public function initTools():void {
-				visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-			}
-			private function handleIndexChanged(event:IndexChangedEvent):void {
-				switch(visualizerArea.selectedIndex) {
-					case 0:
-						this.currentState = 'cluster';
-					break;
-					case 1:
-						this.currentState = 'map';
-					break;					
-					case 2:
-						this.currentState = 'graph';
-					break;					
-				}
-			}
+		
 			public function hideTimeline():void {
 				timelineContainer.visible = false;
 			}
@@ -114,7 +99,7 @@
 		
 		<s:HGroup verticalAlign="middle">
 			<s:Label text="size by:  " text.cluster="group by: "/>
-			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="thirdSet" />
+			<s:DropDownList width="180" dataProvider="{client.quantityDatasets}" dataProvider.cluster="{client.qualityDatasets}" labelField="name"  id="thirdSet" />
 			<s:Rect width="10" />
 			<primatives:Line width="1" height="40" >
 				<primatives:stroke>
@@ -127,7 +112,7 @@
 		
 		<s:HGroup includeInLayout.groupingState="true" visible.groupingState="true" verticalAlign="middle" visible="false" includeInLayout="false">
 			<s:Label text.graph="color by:  " text.cluster="size by: "/>
-			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="fourthSet" selectedItem=""/>
+			<s:DropDownList width="180" dataProvider="{client.datasets}" dataProvider.cluster="{client.quantityDatasets}" labelField="name" id="fourthSet" selectedItem=""/>
 			<s:Rect width="10"/>
 			<primatives:Line width="1" height="40">
 				<primatives:stroke>

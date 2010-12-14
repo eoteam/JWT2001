@@ -29,5 +29,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function removeCategory(value:Category):void;
 		
 		function selectCategory(value:Category):void;
+		
+		function updateSize():void;
 	}
 }

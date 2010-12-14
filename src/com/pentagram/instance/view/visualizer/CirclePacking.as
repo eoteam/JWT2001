@@ -34,13 +34,13 @@ package com.pentagram.instance.view.visualizer
 			while(counter < numberList.length) {
 				var sprite:ClusterRenderer = new  ClusterRenderer(); 
 				sprite.data = numberList[counter].data;
+				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				spriteArray.push(sprite);
 				this.addChild(sprite);
 				counter++;
 			}
-			layout();
 		}
 		public function layout():void {
 			var disposeCounter:int = 2;
@@ -73,6 +73,7 @@ package com.pentagram.instance.view.visualizer
 					}
 					_loc_7 = _loc_7 + 1;
 				}
+				draw();
 				disposeCounter++;
 			}
 			for each(var pos:Point3D in circlePositions) {
@@ -80,7 +81,7 @@ package com.pentagram.instance.view.visualizer
 				pos.y = pos.y / _loc_5;
 				pos.z = pos.z / _loc_5;
 			}
-			
+			draw();
 		}
 		protected function testCircleAtPoint(point:Point, radius:Number) : Boolean {
 			var _loc_3:uint = 1;
@@ -103,10 +104,10 @@ package com.pentagram.instance.view.visualizer
 			var i:uint = 0;
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
-				c.x = this.circlePositions[i].x * _loc_2;
-				c.y = this.circlePositions[i].y * _loc_2;
 				c.state = true;
-				TweenNano.to(c,.5,{radius: this.circlePositions[i].z * _loc_2 * scaler});
+				TweenNano.to(c,.5,{radius: this.circlePositions[i].z * _loc_2 * scaler,
+								   x: this.circlePositions[i].x * _loc_2,
+								   y: this.circlePositions[i].y * _loc_2});
 				i++;
 			}
 			//cacheAsBitmap = true;

@@ -38,6 +38,8 @@
 				countryCol.width = 75;	
 				countryCol.resizable = true;
 				countryCol.sortable = true;
+				countryCol.minWidth = 200;
+				countryCol.editable = false;
 				columns.addItem(countryCol);
 				
 				if(dataset.time == 1) {
@@ -53,7 +55,7 @@
 						column.width = 75;	
 						column.resizable = true;
 						column.sortable = true;
-						
+						column.editable = true;
 						columns.addItem(column);
 					}
 				}
@@ -188,7 +190,7 @@
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
 			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>-->
 			
-			<s:DataGrid  borderVisible="false" left="1"
+			<s:DataGrid  borderVisible="false" left="1" editable="true"
 			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  
 			height="100%" id="grid"><!-- updateComplete="handler(event)" creationComplete="handleDG(event)"-->
 				<s:columns>

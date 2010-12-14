@@ -3,10 +3,10 @@ package com.pentagram.instance.controller
 	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
@@ -50,6 +50,8 @@ package com.pentagram.instance.controller
 		{
 			var sets:Array = event.token.results as Array;
 			model.client.datasets = new ArrayList(sets);
+			model.client.qualityDatasets = new ArrayList();
+			model.client.quantityDatasets = new ArrayList();
 			if(sets.length > 0) {
 				for each(var dataset:Dataset in model.client.datasets.source) {
 					if(dataset.time == 1)
@@ -63,7 +65,11 @@ package com.pentagram.instance.controller
 							dataset.optionsArray.push(option);
 						}
 					}
-						
+					if(dataset.type == 1)
+						model.client.quantityDatasets.addItem(dataset);
+					else
+						model.client.qualityDatasets.addItem(dataset);
+					
 					datasetService.loadDataSet(dataset);
 					datasetService.addHandlers(handleDatasetLoaded);
 					datasetService.addProperties("dataset",dataset);
