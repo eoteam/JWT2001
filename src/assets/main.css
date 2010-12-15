@@ -33,7 +33,13 @@
 	font-family: "FlamaBookMx";
 	embedAsCFF: false;
 	advancedAntiAliasing: true;      
-} 
+}
+@font-face {
+	src: url("/assets/fonts/FlamaBold.ttf");
+	font-family: "FlamaBoldMx";
+	embedAsCFF: false;
+	advancedAntiAliasing: true;      
+}
 mx|UIComponent {
 	fontFamily: FlamaBookMx;
 	embedFonts:true;
@@ -66,3 +72,5 @@ s|TextInput {
 s|CheckBox {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }
+
+
