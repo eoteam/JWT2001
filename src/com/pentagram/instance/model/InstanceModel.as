@@ -8,10 +8,6 @@ package com.pentagram.instance.model
 	import com.pentagram.model.vo.NormalizedVO;
 	import com.pentagram.model.vo.User;
 	
-	import flare.vis.data.Data;
-	import flare.vis.data.DataSprite;
-	import flare.vis.data.NodeSprite;
-	
 	import flash.display.NativeMenuItem;
 	
 	import mx.collections.ArrayCollection;
@@ -43,6 +39,7 @@ package com.pentagram.instance.model
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		
+		public var maxRadius:Number = 25;
 		public function parseData(data:Array,dataset:Dataset,client:Client):void {
 			var prop:String;
 			var item:Object;
@@ -129,7 +126,8 @@ package com.pentagram.instance.model
 				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
 				var obj:NormalizedVO = new NormalizedVO(); 
 				obj.name = row.name;
-				obj.data = row;
+				obj.xData = row;
+				obj.yData = ds2.rows.getItemAt(i) as DataRow;
 				obj.index = i;
 				
 				if(ds1.time == 1) 
@@ -141,20 +139,27 @@ package com.pentagram.instance.model
 					obj.y = Number(ds2.rows.getItemAt(i)[ds2.years[0]]);
 				else
 					obj.y = Number(ds2.rows.getItemAt(i).value);
+				
+				
 				if(ds3) {
-					if(ds3.time == 1) 
-						obj.radius = Number(ds3.rows.getItemAt(i)[ds3.years[0]]);
+					var row2:DataRow = ds3.rows.getItemAt(i) as DataRow;
+					obj.rData = row2;
+					if(ds3.time == 1)
+						obj.radius = (row2[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
 					else
-						obj.radius = Number(ds3.rows.getItemAt(i).value);
+						obj.radius = (row2.value - ds3.min) / (ds3.max - ds3.min);
 				}
 				else
-					obj.radius = 1;
+					obj.radius = 10;
+				
 				if(ds4) {
+					obj.cData = ds4.rows.getItemAt(i) as DataRow;
 					if(ds4.time == 1) 
-						obj[ds4.name] = Number(ds4.rows.getItemAt(i)[ds4.years[0]]);
+						obj.color = Number(ds4.rows.getItemAt(i)[ds4.years[0]]);
 					else
-						obj[ds4.name] = Number(ds4.rows.getItemAt(i).value);
+						obj.color = Number(ds4.rows.getItemAt(i).value);
 				}
+
 				obj.color = ds1.rows.getItemAt(i).color;
 				//trace(obj[ds1.name],obj[ds2.name],obj.color);
 				data.addItem(obj);
@@ -163,41 +168,17 @@ package com.pentagram.instance.model
 		}
 		public function updateData2(data:ArrayCollection,year:int,...datasets):void {
 			for each(var item:NormalizedVO in data) {
-				//for each(var ds:Dataset in datasets) {
 				if(Dataset(datasets[0]).time == 1)
 					item.x =  Dataset(datasets[0]).rows.getItemAt(item.index)[year];
 				if(Dataset(datasets[1]).time == 1)	
 					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index)[year];
 				
-				if(datasets[2] && Dataset(datasets[0]).time == 1)
-					item.radius = Dataset(datasets[2]).rows.getItemAt(item.index)[year];
-				//	}	
-				
+				if(datasets[2] && Dataset(datasets[2]).time == 1) {
+					var ds3:Dataset = datasets[2] as Dataset;
+					var row2:DataRow = ds3.rows.getItemAt(item.index) as DataRow;
+					item.radius = (row2[year] - ds3.min) / (ds3.max - ds3.min) + maxRadius/100;
+				}	
 			}
-		}
-		public function updateData(data:Data,year:int,...datasets):void {
-			
-			data.nodes.visit(function(d:DataSprite):void {
-				for each(var ds:Dataset in datasets) {
-					if(ds && ds.time == 1) {
-						d.data[ds.name] = ds.rows.getItemAt(d.data.index)[year];
-					}
-				}
-			});
-//			
-//			for each(var ds:Dataset in datasets) {
-//				if(ds.time == 1) {
-//					for(var i:int=0;i<ds.rows.length;i++) {
-//						if(i < data.nodes.length) {
-//							var node:NodeSprite = data.nodes[i] as NodeSprite;
-//							
-//							//node.dirty();
-//						}
-//					}
-//				}
-//			}
-			
-			
 		}
 	}
 }

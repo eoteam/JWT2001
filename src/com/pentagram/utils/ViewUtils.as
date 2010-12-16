@@ -41,5 +41,13 @@ package com.pentagram.utils
 			}
 			return arr;
 		}
+//		public static function normalizeValue(dataset:Dataset,index:int,year:int=0):Number {
+//			if(dataset.type == 1) {
+//				var row:DataRow = dataset.rows.getItemAt(index) as DataRow;
+//				var value:Number;
+//				value = dataset.t
+//			}
+//			else return 0;
+//		}
 	}
 }

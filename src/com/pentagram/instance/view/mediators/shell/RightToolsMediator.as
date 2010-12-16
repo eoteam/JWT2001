@@ -122,6 +122,7 @@ package com.pentagram.instance.view.mediators.shell
 //			}
 		}
 		private function handleMaxRadius(event:Event):void {
+			model.maxRadius = view.maxRadiusSlider.value;
 			dispatchPropEvent('maxRadius',view.maxRadiusSlider.value);
 			//view.currentVisualizer.updateMaxRadius();
 		}

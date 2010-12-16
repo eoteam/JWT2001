@@ -1,8 +1,6 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
-	
-	import flare.vis.data.Data;
-	
+		
 	import mx.collections.ArrayCollection;
 
 	public interface IGraphView extends IVisualizer
@@ -11,6 +9,6 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function get visdata():ArrayCollection;
 		
-		function visualize(arr:ArrayCollection,...props):void;
+		function visualize(maxRadius:Number,arr:ArrayCollection,...props):void;
 	}
 }

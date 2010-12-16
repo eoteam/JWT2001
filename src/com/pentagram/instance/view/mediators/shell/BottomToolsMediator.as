@@ -33,7 +33,7 @@ package com.pentagram.instance.view.mediators.shell
 		private var yearTimer:Timer;
 		private var counter:uint = 0;
 		private var normalizedData:Array;
-		
+		private var maxRadius:Number = 25;
 		override public function onRegister():void
 		{
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);	

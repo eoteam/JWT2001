@@ -7,8 +7,14 @@ package com.pentagram.model.vo
 		public var y:*;
 		public var radius:Number;
 		public var color:uint;
-		public var data:DataRow;
 		public var name:String;
 		public var index:int;
+		public var alpha:Number=.7;
+		public var visible:Boolean = true;
+		
+		public var xData:DataRow;
+		public var yData:DataRow;
+		public var rData:DataRow;
+		public var cData:DataRow;
 	}
 }

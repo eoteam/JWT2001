@@ -24,6 +24,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	import mx.events.StateChangeEvent;
@@ -128,7 +129,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.mapView.visualize(event.args[0]);
 				break;
 				case 2:
-					view.graphView.visualize(event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
+					view.graphView.visualize(model.maxRadius,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
 				break;
 			}
 		}
@@ -187,6 +188,14 @@ package com.pentagram.instance.view.mediators.shell
 						view.mapView.toggleMap(value);
 				break;
 				case 'maxRadius':
+					if(view.visualizerArea.selectedIndex == 2) {
+					var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
+					var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
+					var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
+					var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
+					var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
+					model.updateData2(view.graphView.visdata,year,ds1,ds2,ds3,ds4);
+					}
 					view.currentVisualizer.updateMaxRadius(value);
 				break;
 			}
@@ -223,6 +232,13 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
+				var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
+				var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
+				var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
+				//var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
+				var d:ArrayCollection = model.normalizeData2(ds1,ds2,ds3,null);
+				
+				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
 			}
 		}
 		private function handleMapLoaded(event:Event):void {

@@ -2,54 +2,36 @@
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				 xmlns:s="library://ns.adobe.com/flex/spark" 
 				 xmlns:mx="library://ns.adobe.com/flex/mx"
-				 xmlns:vo="com.pentagram.model.vo.*"
+				 xmlns:vo="com.pentagram.model.vo.*" creationComplete="module1_creationCompleteHandler(event)"
 				 implements="com.pentagram.instance.view.visualizer.interfaces.IGraphView" 
-				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" contentBackgroundAlpha="0">
+				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" 
+				 contentBackgroundAlpha="0" xmlns:visualizer="com.pentagram.instance.view.visualizer.*">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.Dataset;
+			import com.pentagram.model.vo.NormalizedVO;
 			import com.pentagram.utils.ViewUtils;
 			
-			import flare.analytics.optimization.AspectRatioBanker;
-			import flare.animate.Scheduler;
-			import flare.animate.TransitionEvent;
-			import flare.animate.Transitioner;
-			import flare.data.DataSet;
-			import flare.data.DataSource;
-			import flare.data.converters.Converters;
-			import flare.data.converters.IDataConverter;
-			import flare.display.DirtySprite;
-			import flare.scale.ScaleType;
-			import flare.util.palette.ColorPalette;
-			import flare.util.palette.SizePalette;
-			import flare.vis.Visualization;
-			import flare.vis.data.Data;
-			import flare.vis.data.NodeSprite;
-			import flare.vis.operator.OperatorList;
-			import flare.vis.operator.encoder.ColorEncoder;
-			import flare.vis.operator.encoder.PropertyEncoder;
-			import flare.vis.operator.encoder.ShapeEncoder;
-			import flare.vis.operator.encoder.SizeEncoder;
-			import flare.vis.operator.layout.AxisLayout;
-			
-			import mx.charts.BarChart;
+			import mx.charts.AxisRenderer;
 			import mx.charts.BubbleChart;
 			import mx.charts.CategoryAxis;
 			import mx.charts.LinearAxis;
 			import mx.charts.chartClasses.IAxis;
-			import mx.charts.series.BarSeries;
 			import mx.charts.series.BubbleSeries;
 			import mx.collections.ArrayCollection;
+			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
 			import mx.events.ResizeEvent;
-			
-
+			import mx.graphics.SolidColorStroke;
 			
 			private var  ds1:Dataset;
 			private var  ds2:Dataset;
 			private var  ds3:Dataset;
 			private var  ds4:Dataset;
+			[Bindable] private var	 maxRadius:Number = 25;
+			private var firstLoad:Boolean = true;
+			
 			
 			public function get datasets():Array {
 				return [ds1,ds2,ds3,ds4];
@@ -70,93 +52,37 @@
 				return _continous;
 			}
 
-			//private var banker;
+			
 			private var firstPass:Boolean = true;
-
 			
-			private function group1_resizeHandler(event:ResizeEvent):void {
-				
-			}
-			private var mainSeries:BubbleSeries;
-			//private var chart:BubbleChart;
-			public function visualize(arr:ArrayCollection,...props):void
-			{		
-				if(firstPass) {
-					
-					//chart  = new BubbleChart();
-					
-					//chart.percentHeight = chart.percentWidth = 100;
-					chart.dataProvider = _visdata;
-					
-					ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];				
-					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds1);
-					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds2);
-					chart.verticalAxisRenderers = [vAxisRenderer]; 
-					chart.horizontalAxisRenderers = [hAxisRenderer];
-					
-					var mySeries:Array=new Array();
-					mainSeries = new BubbleSeries();
-					//mainSeries.setStyle('showDataEffect',changeEffect);
-					mainSeries.xField = 'x';
-					mainSeries.yField = 'y';
-					mainSeries.radiusField = 'radius';
-					mySeries.push(mainSeries);
-					
-					chart.series = mySeries;
-					
-					//this.addElement(chart);
-					firstPass = false;
+			public function visualize(maxRadius:Number,arr:ArrayCollection,...props):void {
+				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
+				_visdata = arr;
+				this.maxRadius = maxRadius;		
+				if(!firstLoad) {
+					doVisualize();
 				}
-				
-				
-//				
-//				myChart = new BarChart();
-//				myChart.showDataTips = true;
-//				myChart.dataProvider = expenses;
-//				
-//				// Define the category axis.
-//				var vAxis:CategoryAxis = new CategoryAxis();
-//				vAxis.categoryField = "Month" ;
-//				vAxis.dataProvider =  expenses;
-//				myChart.verticalAxis = vAxis;
-//				
-//				// Add the series.
-//				var mySeries:Array=new Array();
-//				series1 = new BarSeries();
-//				series1.xField="Profit";
-//				series1.yField="Month";
-//				series1.displayName = "Profit";
-//				mySeries.push(series1);
-//				
-//				series2 = new BarSeries();
-//				series2.xField="Expenses";
-//				series2.yField="Month";
-//				series2.displayName = "Expenses";
-//				mySeries.push(series2);
-//				
-//				myChart.series = mySeries;
-//				
-//				addElement(myChart);
 			}
-			[Bindable]
-			public var expenses:ArrayCollection = new ArrayCollection([
-				{Month:"Jan", Profit:2000, Expenses:1500},
-				{Month:"Feb", Profit:1000, Expenses:200},
-				{Month:"Mar", Profit:1500, Expenses:500}
-			]);
-			
-			public var myChart:BarChart;
-			public var series1:BarSeries;
-			public var series2:BarSeries;
-		//	public var legend1:Legend;
-
+			private function doVisualize():void {	
+				chart.newXAxis = hAxisRenderer;
+				chart.newYAxis = vAxisRenderer;
+				
+				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1);
+				chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2);
+				//if(ds3)
+				//	chart.radiusAxis = createRadiusAxis(ds3);
+				chart.verticalAxisRenderers = [vAxisRenderer]; 
+				chart.horizontalAxisRenderers = [hAxisRenderer];
+				
+				firstPass = firstLoad = false;	
+			}
 			private function createAxis(dataset:Dataset):IAxis {
 				
 				if(dataset.type == 1) {
 					var linearAxis:LinearAxis = new LinearAxis();
 					linearAxis.title = dataset.name;
-					linearAxis.maximum = dataset.max;
-					linearAxis.minimum = dataset.min;
+					linearAxis.maximum = dataset.max + Math.abs(dataset.max*.1);
+					linearAxis.minimum = dataset.min - Math.abs(dataset.min*.1);
 					return linearAxis;
 				}
 				else {
@@ -167,7 +93,14 @@
 					return categoryAxis;
 				}
 			}
-			private var _visdata:ArrayCollection; 
+			private function createRadiusAxis(dataset:Dataset):IAxis {
+				var axis:LinearAxis = new LinearAxis();
+				axis.minimum = 0;
+				axis.maximum = 100;
+				//axis.maximumLabelPrecision = 4;
+				return axis;
+			}
+			[Bindable] private var _visdata:ArrayCollection; 
 			public function set visdata(d:ArrayCollection):void {
 				_visdata = d;
 			}
@@ -175,21 +108,31 @@
 				return _visdata;
 			}  
 			public function update():void {
-				
+				chart.dataProvider = _visdata;
 			}
 			public function updateMaxRadius(value:Number):void {
-
-				
+				this.maxRadius = value;
 			}
 			public function addCategory(value:Category):void {
-				
+				for each(var item:NormalizedVO in _visdata) {
+					if(item.xData.country.region.name == value.name)
+						item.visible = true;
+				}				
 			}
 			
 			public function removeCategory(value:Category):void {
-				
+				for each(var item:NormalizedVO in _visdata) {
+					if(item.xData.country.region.name == value.name)
+						item.visible = false;
+				}					
 			}
 			public function selectCategory(value:Category):void {
-				
+				for each(var item:NormalizedVO in _visdata) {
+					if(item.xData.country.region.name != value.name)
+						item.visible = false;
+					else
+						item.visible = true;
+				}
 			}			
 			public function unload():void {
 
@@ -203,15 +146,20 @@
 			public function updateYear(year:int):void {
 				
 			}
-			public function toggleCategory(visible:Boolean,prop:String):void {
-				
-			}
 			public function toggleOpacity(value:Number):void {
-
+				for each(var item:NormalizedVO in _visdata) {
+					item.alpha = value;
+				}
 			}
 			public function updateSize():void {
 				
 			}
+
+			protected function module1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.doVisualize();
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Style>
@@ -219,42 +167,47 @@
 		@namespace mx "library://ns.adobe.com/flex/mx";
 		
 		mx|BubbleChart {
-			fontFamily:FlamaBookMx;
+			fontFamily:FlamaBook;
 			fontSize:12;
 			color:#000000;
 		}
 		.axisTitle {
-			fontFamily: FlamaBoldMx;
+			fontFamily: FlamaBold;
 			embedFonts:true;
 			fontSize:14;
 		}
 	</fx:Style>
 	<fx:Declarations>
 		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0" />
-
-			<mx:AxisRenderer  id="vAxisRenderer"  
-			axisTitleStyleName="axisTitle" tickPlacement="none" placement="left"
-			tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true">
-				<mx:axisStroke>
-					<s:SolidColorStroke color="0" weight="0.5" />
-				</mx:axisStroke>
-				<mx:tickStroke>
-					<s:SolidColorStroke color="0" weight="0.5" />
-				</mx:tickStroke>
-			</mx:AxisRenderer>
-
-			<mx:AxisRenderer id="hAxisRenderer"  
-			 axisTitleStyleName="axisTitle" tickPlacement="none" placement="bottom"
-			 tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true"> 
-				<mx:axisStroke>
-					<s:SolidColorStroke color="0" weight="0.5" />
-				</mx:axisStroke>
-				<mx:tickStroke>
-					<s:SolidColorStroke color="0" weight="0.5" />
-				</mx:tickStroke>
-			</mx:AxisRenderer>
-	</fx:Declarations>
-	<mx:BubbleChart width="100%" height="100%"  showDataTips="true" id="chart">
 		
-	</mx:BubbleChart>
+		<mx:AxisRenderer  id="vAxisRenderer" axisTitleStyleName="axisTitle" tickPlacement="none" placement="left"
+		tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true">
+			<mx:axisStroke>
+				<s:SolidColorStroke color="0" weight="0.5" />
+			</mx:axisStroke>
+			<mx:tickStroke>
+				<s:SolidColorStroke color="0" weight="0.5" />
+			</mx:tickStroke>
+		</mx:AxisRenderer>
+		
+		<mx:AxisRenderer id="hAxisRenderer"  
+		 axisTitleStyleName="axisTitle" tickPlacement="none" placement="bottom"
+		 tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true"> 
+			<mx:axisStroke>
+				<s:SolidColorStroke color="0" weight="0.5" />
+			</mx:axisStroke>
+			<mx:tickStroke>
+				<s:SolidColorStroke color="0" weight="0.5" />
+			</mx:tickStroke>
+		</mx:AxisRenderer>		
+	</fx:Declarations>
+	
+	<visualizer:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" showDataTips="true" id="chart"
+	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20">
+		<visualizer:series>
+			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
+			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>
+		</visualizer:series>
+	</visualizer:ViewBubbleChart>
+	
 </modules:Module>
