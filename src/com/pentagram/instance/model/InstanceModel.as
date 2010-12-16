@@ -40,6 +40,11 @@ package com.pentagram.instance.model
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		
 		public var maxRadius:Number = 25;
+		
+		public const MAP_INDEX:int = 0;
+		public const CLUSTER_INDEX:int = 1;
+		public const GRAPH_INDEX:int = 2;
+		
 		public function parseData(data:Array,dataset:Dataset,client:Client):void {
 			var prop:String;
 			var item:Object;
@@ -131,26 +136,26 @@ package com.pentagram.instance.model
 				obj.index = i;
 				
 				if(ds1.time == 1) 
-					obj.x = Number(ds1.rows.getItemAt(i)[ds1.years[0]]);
+					obj.x = ds1.rows.getItemAt(i)[ds1.years[0]];
 				else
-					obj.x = Number(ds1.rows.getItemAt(i).value);
+					obj.x = ds1.rows.getItemAt(i).value;
 				
 				if(ds2.time == 1) 
-					obj.y = Number(ds2.rows.getItemAt(i)[ds2.years[0]]);
+					obj.y = ds2.rows.getItemAt(i)[ds2.years[0]];
 				else
-					obj.y = Number(ds2.rows.getItemAt(i).value);
+					obj.y = ds2.rows.getItemAt(i).value;
 				
 				
 				if(ds3) {
 					var row2:DataRow = ds3.rows.getItemAt(i) as DataRow;
 					obj.rData = row2;
 					if(ds3.time == 1)
-						obj.radius = (row2[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
+						obj.radius = obj.prevRadius = (row2[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
 					else
-						obj.radius = (row2.value - ds3.min) / (ds3.max - ds3.min);
+						obj.radius = obj.prevRadius = (row2.value - ds3.min) / (ds3.max - ds3.min);
 				}
 				else
-					obj.radius = 10;
+					obj.radius = obj.prevRadius = 10;
 				
 				if(ds4) {
 					obj.cData = ds4.rows.getItemAt(i) as DataRow;
@@ -176,7 +181,7 @@ package com.pentagram.instance.model
 				if(datasets[2] && Dataset(datasets[2]).time == 1) {
 					var ds3:Dataset = datasets[2] as Dataset;
 					var row2:DataRow = ds3.rows.getItemAt(item.index) as DataRow;
-					item.radius = (row2[year] - ds3.min) / (ds3.max - ds3.min) + maxRadius/100;
+					item.radius = item.prevRadius = (row2[year] - ds3.min) / (ds3.max - ds3.min) + maxRadius/100;
 				}	
 			}
 		}

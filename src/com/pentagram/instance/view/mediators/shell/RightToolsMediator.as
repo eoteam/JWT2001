@@ -39,14 +39,14 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
-				case 0:
+				case model.CLUSTER_INDEX:
 					view.currentState = view.isOpen? 'openAndCluster' : 'closedAndCluster';					
 					break;
-				case 1:
+				case model.MAP_INDEX:
 					view.currentState = view.isOpen? 'openAndMap' : 'closedAndMap';
 					view.continentList.dataProvider = model.regions;
 					break;					
-				case 2:
+				case model.GRAPH_INDEX:
 					view.currentState = view.isOpen? 'openAndGraph' : 'closedAndGraph';
 					break;					
 			}

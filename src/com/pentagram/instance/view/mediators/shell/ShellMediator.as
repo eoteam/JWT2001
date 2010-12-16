@@ -122,13 +122,13 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleDatasetSelection(event:VisualizerEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
-				case 0:
+				case model.CLUSTER_INDEX:
 					view.clusterView.visualize(event.args[0],event.args[1]);
 				break;
-				case 1:
+				case model.MAP_INDEX:
 					view.mapView.visualize(event.args[0]);
 				break;
-				case 2:
+				case model.GRAPH_INDEX:
 					view.graphView.visualize(model.maxRadius,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
 				break;
 			}
@@ -146,13 +146,13 @@ package com.pentagram.instance.view.mediators.shell
 		private function handlePlayTimeline(event:VisualizerEvent):void {
 			view.currentVisualizer.continous = true;
 			switch(view.visualizerArea.selectedIndex) {
-				case 0:
+				case model.CLUSTER_INDEX:
 					view.clusterView.updateYear(event.args[0]);
 				break;
-				case 1:
+				case model.MAP_INDEX:
 					view.mapView.updateYear(event.args[0]);
 					break;
-				case 2:	
+				case model.GRAPH_INDEX:	
 					model.updateData2(view.graphView.visdata,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
 					view.graphView.update();
 					break;
@@ -184,11 +184,11 @@ package com.pentagram.instance.view.mediators.shell
 					view.currentVisualizer.toggleOpacity(value);
 				break;
 				case 'mapToggle':
-					if(view.visualizerArea.selectedIndex == 1)
+					if(view.visualizerArea.selectedIndex == model.MAP_INDEX)
 						view.mapView.toggleMap(value);
 				break;
 				case 'maxRadius':
-					if(view.visualizerArea.selectedIndex == 2) {
+					if(view.visualizerArea.selectedIndex == model.GRAPH_INDEX) {
 					var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
 					var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
 					var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
@@ -248,8 +248,19 @@ package com.pentagram.instance.view.mediators.shell
 				this.view.mapView = util.view as IMapView;
 				IMapView(util.view).client = model.client;
 				view.mapHolder.addElement(util.view as Group);
-				view.mapView.visualize(model.client.quantityDatasets.getItemAt(0) as Dataset);
-				view.tools.thirdSet.selectedItem = model.client.quantityDatasets.getItemAt(0) as Dataset;
+				var dataset:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
+				view.mapView.visualize(dataset);
+				view.tools.thirdSet.selectedItem = dataset;
+				
+				var years:ArrayList = new ArrayList();
+				if(dataset.time == 1) {
+					view.tools.timelineContainer.visible = true;
+					
+					for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+						years.addItem(new Year(i,1)); 
+					}
+					view.tools.yearSlider.dataProvider = years;
+				}
 			}
 		}
 		private function handleClusterLoaded(event:Event):void {

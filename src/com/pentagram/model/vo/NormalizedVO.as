@@ -10,7 +10,8 @@ package com.pentagram.model.vo
 		public var name:String;
 		public var index:int;
 		public var alpha:Number=.7;
-		public var visible:Boolean = true;
+		
+		public var prevRadius:Number;
 		
 		public var xData:DataRow;
 		public var yData:DataRow;

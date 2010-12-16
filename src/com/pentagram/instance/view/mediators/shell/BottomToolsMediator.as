@@ -50,13 +50,13 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
-				case 0:
+				case model.CLUSTER_INDEX:
 					view.currentState = 'cluster';
 					break;
-				case 1:
+				case model.MAP_INDEX:
 					view.currentState = 'map';
 					break;					
-				case 2:
+				case model.GRAPH_INDEX:
 					view.currentState = 'graph';
 					break;					
 			}
@@ -66,13 +66,13 @@ package com.pentagram.instance.view.mediators.shell
 			var i:int;
 			var dataset:Dataset;
 			switch(view.visualizerArea.selectedIndex) {
-				case 0:
+				case model.CLUSTER_INDEX:
 					if(view.thirdSet.selectedItem) {
 						dataset = view.thirdSet.selectedItem as Dataset;
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset,view.fourthSet.selectedItem));
 					}
 					break;
-				case 1:
+				case model.MAP_INDEX:
 					if(view.thirdSet.selectedItem) {
 						dataset = view.thirdSet.selectedItem as Dataset;
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset));
@@ -88,7 +88,7 @@ package com.pentagram.instance.view.mediators.shell
 						else view.timelineContainer.visible = false;
 					}
 					break; 
-				case 2:	
+				case model.GRAPH_INDEX:	
 					if(view.firstSet.selectedItem && view.secondSet.selectedItem) {
 						
 						var ds1:Dataset = view.firstSet.selectedItem as Dataset;
@@ -99,7 +99,7 @@ package com.pentagram.instance.view.mediators.shell
 						var d:ArrayCollection = model.normalizeData2(ds1,ds2,ds3,ds4);	
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,d,ds1,ds2,ds3,ds4));
 						
-						var minYear:int; var maxYear:int; var showTime:Boolean = false;		
+						var minYear:int = 10000; var maxYear:int; var showTime:Boolean = false;		
 						if(ds1.time == 1) {
 							showTime = true;
 							minYear = ds1.years[0];

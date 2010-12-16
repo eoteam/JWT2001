@@ -109,19 +109,25 @@ package com.pentagram.instance.view.visualizer.renderers
 		/**
 		 *  @private
 		 */
-		
+		private var prevW:Number;
+		private var prevH:Number;
 		public function set data(value:Object):void
 		{
-			if (_data == value) {
-				if(!_data.item.visible && this.alpha == 1) {
-					TweenNano.to(this,.5,{alpha:0});
-				}
-				else if(_data.item.visible && this.alpha == 0)
-					TweenNano.to(this,.5,{alpha:1});
+			if (_data == value) { 
+				return;
+//				if(!_data.item.visible && this.alpha == 1) {
+//					prevW = width; prevH=height;
+//					TweenNano.to(this,.5,{width:0,height:0,onComplete:adjust,onUpdate:invalidateDisplayList});
+//				}
+//				else if(_data.item.visible && this.alpha == 0)
+//					TweenNano.to(this,.5,{alpha:1});
 			}
 			_data = value;
 		}
-		
+		private function adjust():void {
+			alpha = 0;
+			width = prevW; height= prevH;
+		}
 		//--------------------------------------------------------------------------
 		//
 		//  Overridden methods
@@ -132,13 +138,15 @@ package com.pentagram.instance.view.visualizer.renderers
 		 *  @private
 		 */
 		
-		override protected function updateDisplayList(unscaledWidth:Number,
-													  unscaledHeight:Number):void
+		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth, unscaledHeight);
+			draw(unscaledWidth, unscaledHeight);
+		}
+		private function draw(unscaledWidth:Number,unscaledHeight:Number):void {
 			var fill:IFill;
 			var state:String = "";
-
+			
 			if (_data is ChartItem && _data.hasOwnProperty('fill'))
 			{
 				fill = _data.fill;
@@ -156,7 +164,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case ChartItem.FOCUSED:
 				case ChartItem.ROLLOVER:
-							color = ColorUtil.adjustBrightness2(color,-20);
+					color = ColorUtil.adjustBrightness2(color,-20);
 					fill = new SolidColor(color,alpha);
 					adjustedRadius = getStyle('adjustedRadius');
 					if (!adjustedRadius)
@@ -173,10 +181,10 @@ package com.pentagram.instance.view.visualizer.renderers
 					adjustedRadius = getStyle('adjustedRadius');
 					if (!adjustedRadius)
 						adjustedRadius = 0;
-				break;
+					break;
 				default:
 					fill = new SolidColor(color,alpha);
-				break;
+					break;
 			}
 			//fill = new SolidColor(color,data.item.alpha);
 			var stroke:IStroke = getStyle("stroke");
@@ -197,7 +205,6 @@ package com.pentagram.instance.view.visualizer.renderers
 			if (fill)
 				fill.end(g);
 		}
-		
 	}
 	
 }

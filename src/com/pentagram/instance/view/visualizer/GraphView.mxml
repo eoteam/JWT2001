@@ -67,8 +67,8 @@
 				chart.newXAxis = hAxisRenderer;
 				chart.newYAxis = vAxisRenderer;
 				
-				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1);
-				chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2);
+				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");
+				chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
 				//if(ds3)
 				//	chart.radiusAxis = createRadiusAxis(ds3);
 				chart.verticalAxisRenderers = [vAxisRenderer]; 
@@ -76,7 +76,7 @@
 				
 				firstPass = firstLoad = false;	
 			}
-			private function createAxis(dataset:Dataset):IAxis {
+			private function createAxis(dataset:Dataset,axis:String):IAxis {
 				
 				if(dataset.type == 1) {
 					var linearAxis:LinearAxis = new LinearAxis();
@@ -89,7 +89,8 @@
 					var categoryAxis:CategoryAxis = new CategoryAxis();
 					categoryAxis.title = dataset.name;
 					categoryAxis.categoryField = "name";
-					categoryAxis.dataProvider = new ArrayCollection(ViewUtils.vectorToArray(dataset.optionsArray));
+					categoryAxis.dataProvider = ViewUtils.vectorToArray(dataset.optionsArray);
+					//categoryAxis.dataProvider = new ArrayCollection(ViewUtils.vectorToArray(dataset.optionsArray));
 					return categoryAxis;
 				}
 			}
@@ -116,22 +117,23 @@
 			public function addCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
 					if(item.xData.country.region.name == value.name)
-						item.visible = true;
+						item.radius = item.prevRadius;
 				}				
 			}
 			
 			public function removeCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
 					if(item.xData.country.region.name == value.name)
-						item.visible = false;
+						item.radius = 0;
 				}					
 			}
 			public function selectCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
-					if(item.xData.country.region.name != value.name)
-						item.visible = false;
-					else
-						item.visible = true;
+					if(item.xData.country.region.name != value.name) {
+						item.radius = 0;
+					}
+					else if(item.radius == 0)
+						item.radius = item.prevRadius;
 				}
 			}			
 			public function unload():void {
