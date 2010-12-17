@@ -2,10 +2,13 @@
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				 xmlns:s="library://ns.adobe.com/flex/spark" 
 				 xmlns:mx="library://ns.adobe.com/flex/mx"
-				 xmlns:vo="com.pentagram.model.vo.*" creationComplete="module1_creationCompleteHandler(event)"
-				 implements="com.pentagram.instance.view.visualizer.interfaces.IGraphView" 
-				 width="100%" height="100%" xmlns:modules="ws.tink.spark.modules.*" 
-				 contentBackgroundAlpha="0" xmlns:visualizer="com.pentagram.instance.view.visualizer.*">
+				 xmlns:vo="com.pentagram.model.vo.*" 
+				 xmlns:chart="com.pentagram.instance.view.visualizer.chart.*"
+				 implements="com.pentagram.instance.view.visualizer.interfaces.IGraphView"
+				 xmlns:modules="ws.tink.spark.modules.*" 
+				 creationComplete="module1_creationCompleteHandler(event)"
+				 width="100%" height="100%" 
+				 contentBackgroundAlpha="0"  >
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.model.vo.Category;
@@ -30,6 +33,7 @@
 			private var  ds3:Dataset;
 			private var  ds4:Dataset;
 			[Bindable] private var	 maxRadius:Number = 25;
+			private var categories:Array;
 			private var firstLoad:Boolean = true;
 			
 			
@@ -57,6 +61,7 @@
 			
 			public function visualize(maxRadius:Number,arr:ArrayCollection,...props):void {
 				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
+				
 				_visdata = arr;
 				this.maxRadius = maxRadius;		
 				if(!firstLoad) {
@@ -116,20 +121,20 @@
 			}
 			public function addCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
-					if(item.xData.country.region.name == value.name)
+					if(item.category == value.name)
 						item.radius = item.prevRadius;
 				}				
 			}
 			
 			public function removeCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
-					if(item.xData.country.region.name == value.name)
+					if(item.category == value.name)
 						item.radius = 0;
 				}					
 			}
 			public function selectCategory(value:Category):void {
 				for each(var item:NormalizedVO in _visdata) {
-					if(item.xData.country.region.name != value.name) {
+					if(item.category != value.name) {
 						item.radius = 0;
 					}
 					else if(item.radius == 0)
@@ -204,13 +209,13 @@
 		</mx:AxisRenderer>		
 	</fx:Declarations>
 	
-	<visualizer:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" showDataTips="true" id="chart"
+	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" showDataTips="true" id="chart"
 	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20">
-		<visualizer:series>
+		<chart:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
 			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>
-		</visualizer:series>
-		<visualizer:backgroundElements />
-	</visualizer:ViewBubbleChart>
+		</chart:series>
+		<chart:backgroundElements />
+	</chart:ViewBubbleChart>
 	
 </modules:Module>

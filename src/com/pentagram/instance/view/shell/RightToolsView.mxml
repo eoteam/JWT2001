@@ -5,6 +5,9 @@
 
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.model.vo.Category;
+			
+			import mx.collections.ArrayList;
 			import mx.events.IndexChangedEvent;
 			
 			import spark.events.IndexChangeEvent;
@@ -40,6 +43,14 @@
 			}
 			public function handleChange(event:IndexChangeEvent):void {
 				trace("SELECTION");
+			}
+			public function get selectedCategories():Array {
+				var results:Array = [];
+				for each(var item:Category in ArrayList(this.continentList.dataProvider).source) {
+					if(item.selected)
+						results.push(item.name);
+				}
+				return results;
 			}
 		]]>
 	</fx:Script>
@@ -87,7 +98,7 @@
 		</s:Rect> 
 		
 		<s:VGroup width.closed="0" left="8" id="toolContainer" gap="0">
-			<s:List borderVisible="false"  id="continentList"  change="handleChange(event)" 
+			<s:List borderVisible="false"  id="continentList"  change="handleChange(event)"  allowMultipleSelection="true"
 			itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer"  contentBackgroundAlpha="0">
 				<s:layout>
 					<s:VerticalLayout paddingLeft="4" gap="0" />

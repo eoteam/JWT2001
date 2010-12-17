@@ -75,8 +75,7 @@ package com.pentagram.instance.view.mediators.shell
 				case model.MAP_INDEX:
 					if(view.thirdSet.selectedItem) {
 						dataset = view.thirdSet.selectedItem as Dataset;
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset));
-						
+					
 						if(dataset.time == 1) {
 							view.timelineContainer.visible = true;
 							
@@ -86,6 +85,7 @@ package com.pentagram.instance.view.mediators.shell
 							view.yearSlider.dataProvider = years;
 						}
 						else view.timelineContainer.visible = false;
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset));
 					}
 					break; 
 				case model.GRAPH_INDEX:	
@@ -95,9 +95,6 @@ package com.pentagram.instance.view.mediators.shell
 						var ds2:Dataset = view.secondSet.selectedItem as Dataset;
 						var ds3:Dataset = view.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.fourthSet.selectedItem as Dataset;
-						
-						var d:ArrayCollection = model.normalizeData2(ds1,ds2,ds3,ds4);	
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,d,ds1,ds2,ds3,ds4));
 						
 						var minYear:int = 10000; var maxYear:int; var showTime:Boolean = false;		
 						if(ds1.time == 1) {
@@ -133,7 +130,7 @@ package com.pentagram.instance.view.mediators.shell
 							}
 							view.yearSlider.dataProvider = years;					
 						}
-						
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,ds1,ds2,ds3,ds4));	
 					}
 					break;
 			}

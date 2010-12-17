@@ -124,13 +124,25 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleDatasetSelection(event:VisualizerEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
+					if(event.args[0])
+						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[0]).optionsArray));
+					else
+						view.filterTools.continentList.dataProvider = null;
 					view.clusterView.visualize(event.args[0],event.args[1]);
 				break;
 				case model.MAP_INDEX:
 					view.mapView.visualize(event.args[0]);
+					view.filterTools.continentList.dataProvider = model.regions;
 				break;
 				case model.GRAPH_INDEX:
-					view.graphView.visualize(model.maxRadius,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
+					
+					if(event.args[3] && Dataset(event.args[3]).type == 0)
+						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
+					else
+						view.filterTools.continentList.dataProvider = model.regions;
+					
+					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3]);	
+					view.graphView.visualize(model.maxRadius,d,event.args[0],event.args[1],event.args[2],event.args[3]);
 				break;
 			}
 		}
@@ -154,7 +166,8 @@ package com.pentagram.instance.view.mediators.shell
 					view.mapView.updateYear(event.args[0]);
 					break;
 				case model.GRAPH_INDEX:	
-					model.updateData2(view.graphView.visdata,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
+					model.updateData(view.filterTools.selectedCategories,
+									 view.graphView.visdata,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
 					view.graphView.update();
 					break;
 			}
@@ -175,7 +188,6 @@ package com.pentagram.instance.view.mediators.shell
 					view.currentVisualizer.removeCategory(item);
 				break;
 			}
-			
 		}
 		private function handleViewChange(event:VisualizerEvent):void {
 			var prop:String = event.args[0];
@@ -195,7 +207,7 @@ package com.pentagram.instance.view.mediators.shell
 					var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
 					var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
 					var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
-					model.updateData2(view.graphView.visdata,year,ds1,ds2,ds3,ds4);
+					model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
 					}
 					view.currentVisualizer.updateMaxRadius(value);
 				break;
@@ -236,8 +248,8 @@ package com.pentagram.instance.view.mediators.shell
 				var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
 				var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
 				var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
-				//var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-				var d:ArrayCollection = model.normalizeData2(ds1,ds2,ds3,null);
+				var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
+				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);
 				
 				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
 			}
@@ -275,6 +287,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.tools.thirdSet.selectedItem = dataset1;
 				view.tools.fourthSet.selectedItem = dataset2;
 				view.clusterView.visualize(dataset1,dataset2);
+				view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));
 			}			
 		}
 		private function handleFullScreen(event:Event):void{

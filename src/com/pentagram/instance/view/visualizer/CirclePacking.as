@@ -111,6 +111,9 @@ package com.pentagram.instance.view.visualizer
 				i++;
 			}
 			//cacheAsBitmap = true;
-		}		
+		}
+		public function resize():void {
+			this.invalidateParentSizeAndDisplayList();
+		}
 	}
 }		

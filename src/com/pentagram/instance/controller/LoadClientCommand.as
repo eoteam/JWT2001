@@ -63,6 +63,7 @@ package com.pentagram.instance.controller
 							option.name = arr[i];
 							option.color= model.colors[i];
 							dataset.optionsArray.push(option);
+							dataset.colorArray[option.name] = option.color;
 						}
 					}
 					if(dataset.type == 1)

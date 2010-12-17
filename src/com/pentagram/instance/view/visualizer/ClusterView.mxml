@@ -190,11 +190,11 @@
 					else {
 						parent.visible = true;
 						parent.includeInLayout = true;
+						c.resize();
 					}
 				}
-				this.callLater(handleResize);
 			}
-			private function handleResize(event:ResizeEvent=null):void
+			private function handleResize(event:Event=null):void
 			{
 				for (var i:int=0;i<this.numElements;i++) {
 					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;

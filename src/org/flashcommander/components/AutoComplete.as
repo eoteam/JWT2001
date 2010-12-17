@@ -162,7 +162,8 @@ package org.flashcommander.components
 		}
 		
 		public function filterData():void{
-			if (!this.focusManager || this.focusManager.getFocus()!=inputTxt) return;
+				if (!this.focusManager || this.focusManager.getFocus()!=inputTxt) 
+				return;
 			
 			if (!popUp) return;
 			

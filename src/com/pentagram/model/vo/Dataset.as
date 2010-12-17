@@ -1,5 +1,7 @@
 package com.pentagram.model.vo
 {
+	import flash.utils.Dictionary;
+	
 	import mx.collections.ArrayCollection;
 
 	[Bindable]
@@ -35,6 +37,7 @@ package com.pentagram.model.vo
 		public var data:String; //content of table in JSON format
 		public var rows:ArrayCollection = new ArrayCollection();
 		public var optionsArray:Vector.<Category> = new Vector.<Category>();
+		public var colorArray:Dictionary = new Dictionary();
 		//public var columns:ArrayCollection = new ArrayCollection();
 		public var years:Array;
 		

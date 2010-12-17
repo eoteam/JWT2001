@@ -12,10 +12,7 @@ package com.pentagram.model.vo
 		public var alpha:Number=.7;
 		
 		public var prevRadius:Number;
-		
-		public var xData:DataRow;
-		public var yData:DataRow;
-		public var rData:DataRow;
-		public var cData:DataRow;
+		public var category:String;
+
 	}
 }
