@@ -1,7 +1,7 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.events.AppEvent;
-	import com.pentagram.events.VisualizerEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.ShellView;
@@ -66,6 +66,7 @@ package com.pentagram.instance.view.mediators.shell
 						
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
 			view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreen,false,0,true);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
 			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -84,12 +85,12 @@ package com.pentagram.instance.view.mediators.shell
 		
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil;
-			if(event.newIndex == 1){
+			if(event.newIndex == model.MAP_INDEX){
 				restoreDatasets(view.mapView);
 				view.mapView.updateSize();
 				
 			}
-			else if(event.newIndex == 2){
+			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
 					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
 					util = new ModuleUtil();
@@ -104,7 +105,7 @@ package com.pentagram.instance.view.mediators.shell
 					restoreDatasets(view.graphView);
 				}	
 			}
-			else if(event.newIndex == 0){
+			else if(event.newIndex == model.CLUSTER_INDEX){
 				if(view.clusterView == null) {
 					util = new ModuleUtil();
 					util.addEventListener("moduleLoaded",handleClusterLoaded);
@@ -268,9 +269,15 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
+				
+				var dataset1:Dataset = model.client.qualityDatasets.getItemAt(0) as Dataset;
+				var dataset2:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
+				view.tools.thirdSet.selectedItem = dataset1;
+				view.tools.fourthSet.selectedItem = dataset2;
+				view.clusterView.visualize(dataset1,dataset2);
 			}			
 		}
-		private function handleFullScreen(event:FullScreenEvent):void{
+		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();
 		}
 	}

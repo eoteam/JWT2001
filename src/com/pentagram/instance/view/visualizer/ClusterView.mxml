@@ -5,7 +5,6 @@
 				xmlns:modules="ws.tink.spark.modules.*"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
 				creationComplete="module1_creationCompleteHandler(event)"
-				updateComplete="module1_creationCompleteHandler(event)"
 				resize="handleResize(event)">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -36,18 +35,23 @@
 			private var v:Vector3D;
 			private var ds:Dataset;
 			private var maxRadius:Number = 25;
-			
-			private var  ds1:Dataset;
-			private var  ds2:Dataset;
+			private var firstLoad:Boolean = true;
+			private var ds1:Dataset;
+			private var ds2:Dataset;
 			
 			public function get datasets():Array {
 				return [null,null,ds1,ds2];
 			}
 			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
 				this.ds1 = dataset1; this.ds2 = dataset2;
+				if(!firstLoad) {
+					doVisualize();
+				}
+			}
+			private function doVisualize():void {
 				this.removeAllElements();
-				if(dataset1.type == 0) { //quantitative
-					for each(var item:Category in dataset1.optionsArray) {
+				if(ds1.type == 0) { //quantitative
+					for each(var item:Category in ds1.optionsArray) {
 						item.selected = item.enabled = true;
 						var parent:SpriteVisualElement = new SpriteVisualElement();
 						parent.percentHeight = parent.percentWidth = 100;
@@ -55,29 +59,30 @@
 						
 						var arr:Array = [];
 						var r:Number = 1;
-						for each(var row:DataRow in dataset1.rows) {
-							var value:String = dataset1.time == 1 ? row[dataset1.years[0]] : row.value;
+						for each(var row:DataRow in ds1.rows) {
+							var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
 							if(value == item.name) {
-								if(dataset2 && dataset2.type == 1) {
-									var row2:DataRow = dataset2.rows.getItemAt(dataset1.rows.getItemIndex(row)) as DataRow;
-									if(dataset2.time == 1)
-										r = (row2[dataset2.years[0]] - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;
+								if(ds2 && ds2.type == 1) {
+									var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
+									if(ds2.time == 1)
+										r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
 									else
-										r = (row2.value - dataset2.min) / (dataset2.max - dataset2.min) * maxRadius;	
+										r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
 								}	
 								arr.push({data:row,radius:r,color:item.color,data2:row2});
 							}	
 						}
 						var circle:CirclePacking = new CirclePacking(arr);
 						circle.name = item.name;
-						circle.x = width/(dataset1.optionsArray.length*2);
-						circle.width = width/dataset1.optionsArray.length;
+						circle.x = width/(ds1.optionsArray.length*2);
+						circle.width = width/ds1.optionsArray.length;
 						circle.y = height/2;
 						circle.height = height;
 						parent.addChild(circle);
 						this.callLater(function resumeDraw(c:CirclePacking):void {c.layout()},[circle]);
 					} 
 				}
+				firstLoad = false;
 			}
 			public function update():void {
 				
@@ -141,17 +146,7 @@
 				
 			}
 			private function module1_creationCompleteHandler(event:FlexEvent):void {
-//				var parent:SpriteVisualElement = new SpriteVisualElement();
-//				parent.percentHeight = parent.percentWidth = 100;
-//				this.addElement(parent);
-//				
-//				var circle:C2 = new C2();
-//				circle.width = 800; circle.height = 800;
-//				circle.x = parent.width/2;
-//				circle.y = parent.height/2;
-//				parent.addChild(circle);
-//				parent.graphics.beginFill(0x444444,0.6);
-//				parent.graphics.drawRect(0,0,600,600);
+				this.doVisualize();
 			}
 			public function toggleOpacity(value:Number):void {
 

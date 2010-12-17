@@ -4,7 +4,7 @@ package com.pentagram.events
 	
 	public class AppEvent extends Event
 	{
-
+		public static const STARTUP_BEGIN:String = "startupBegin";
 		public static const STARTUP_COMPLETE:String = "startupComplete";
 		public static const STARTUP_PROGRESS:String = "startupProgress";
 		
@@ -15,6 +15,7 @@ package com.pentagram.events
 		
 		public static const TIMED_OUT:String = "timedout";
 		public static const BOOTSTRAP_COMPLETE:String = "bootStrapComplete";
+		
 		
 		 //slide show event
 		

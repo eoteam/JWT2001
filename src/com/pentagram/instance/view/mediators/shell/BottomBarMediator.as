@@ -3,7 +3,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.controller.Constants;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.events.VisualizerEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.BottomBarView;
 	import com.pentagram.model.AppModel;

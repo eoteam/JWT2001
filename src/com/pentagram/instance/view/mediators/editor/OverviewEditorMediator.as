@@ -1,7 +1,7 @@
 package com.pentagram.instance.view.mediators.editor
 {
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.events.VisualizerEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.OverviewEditor;
 	import com.pentagram.instance.view.editor.RegionDrawer;

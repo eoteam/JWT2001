@@ -1,4 +1,4 @@
-package com.pentagram.events
+package com.pentagram.instance.events
 {
 	import flash.events.Event;
 	
@@ -21,6 +21,8 @@ package com.pentagram.events
 		public static const CATEGORY_CHANGE:String = "categoryChange";
 		
 		public static const UPDATE_VISUALIZER_VIEW:String = "updateVisualizerView";
+		
+		public static const WINDOW_RESIZE:String = "windowResize";
 		
 		public var args:Array;
 		public function VisualizerEvent(type:String,...args)

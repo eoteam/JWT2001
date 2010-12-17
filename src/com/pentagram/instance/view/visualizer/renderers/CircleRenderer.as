@@ -20,9 +20,9 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		
 
-		private const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		private const FILL_ALPHAS:Array = [0.8,0.8];
-		private const FILL_RATIO:Array = [0,255];
+		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
+		public const FILL_ALPHAS:Array = [0.8,0.8];
+		public const FILL_RATIO:Array = [0,255];
 		
 		
 	

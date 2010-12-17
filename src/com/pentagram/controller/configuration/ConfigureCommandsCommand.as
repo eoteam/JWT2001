@@ -20,7 +20,7 @@ package com.pentagram.controller.configuration
 		override public function execute():void
 		{
 			//after login, start sequence FSM
-			commandMap.mapEvent(AppEvent.BOOTSTRAP_COMPLETE,StartupCommand,AppEvent); 
+			commandMap.mapEvent(AppEvent.STARTUP_BEGIN,StartupCommand,AppEvent); 
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
 			
 			//instance commands

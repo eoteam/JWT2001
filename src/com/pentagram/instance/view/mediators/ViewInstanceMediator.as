@@ -3,8 +3,8 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
-	import com.pentagram.events.VisualizerEvent;
 	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.DatasetCreator;
 	import com.pentagram.instance.view.editor.DatasetEditor;
@@ -21,12 +21,12 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.shell.BottomBarView;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.main.windows.LoginWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
-	import com.pentagram.main.event.ViewEvent;
-	import com.pentagram.main.windows.LoginWindow;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenu;
@@ -35,10 +35,13 @@ package com.pentagram.instance.view.mediators
 	import flash.events.EventDispatcher;
 	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
+	import flash.events.NativeWindowBoundsEvent;
+	import flash.events.NativeWindowDisplayStateEvent;
 	
 	import mx.core.FlexGlobals;
 	import mx.events.AIREvent;
 	import mx.events.FlexEvent;
+	import mx.events.ResizeEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
@@ -68,14 +71,16 @@ package com.pentagram.instance.view.mediators
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 			
-			
+			//view.systemManager.stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize);
+			//this.addViewListener("widthChanged",handleWindowResize			
+			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize);
 			//mediatorMap.createMediator(view.searchView);
 		} 
 		private function handleLogin(event:AppEvent):void
 		{
 			model.user = event.args[0] as User; 
 		}
-		public function handleInit(...args):void {
+		private function handleInit(...args):void {
 			model.clients = args[0];
 			model.regions = args[1];
 			model.countries = args[2];
@@ -128,9 +133,13 @@ package com.pentagram.instance.view.mediators
 			mediatorMap.removeMediatorByView(view.shellView);
 			super.onRemove();
 		}
-		public function handleCloseWindow(event:Event):void {
+		private function handleCloseWindow(event:Event):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_CLOSED, view.id));
 			view.cleanup();
 		}
+		private function handleWindowResize(event:NativeWindowBoundsEvent):void {
+			this.dispatch(new VisualizerEvent(VisualizerEvent.WINDOW_RESIZE));
+		}
+		
 	}
 }

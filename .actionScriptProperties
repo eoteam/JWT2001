@@ -15,17 +15,19 @@
   <applications>
     <application path="View.mxml">
       <airExcludes>
-        <airExclude path="com/pentagram/services"/>
-        <airExclude path="com/pentagram/view"/>
         <airExclude path="com/.DS_Store"/>
+        <airExclude path="com/ericfeminella"/>
+        <airExclude path="assets/maps/.DS_Store"/>
         <airExclude path="com/adobe"/>
-        <airExclude path="server"/>
         <airExclude path="flex"/>
+        <airExclude path="assets/.DS_Store"/>
+        <airExclude path="com/pentagram/view"/>
+        <airExclude path="com/pentagram/instance/view/.DS_Store"/>
+        <airExclude path="server"/>
         <airExclude path="com/pentagram/.DS_Store"/>
-        <airExclude path="fxgparser"/>
         <airExclude path="assets/fonts"/>
         <airExclude path="ws"/>
-        <airExclude path="assets/.DS_Store"/>
+        <airExclude path=".DS_Store"/>
       </airExcludes>
     </application>
   </applications>

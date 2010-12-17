@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemEditor xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="griditemeditor1_creationCompleteHandler(event)"
+				  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="org.flashcommander.components.*">
+	<fx:Declarations> 
+	
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.Category;
+			import com.pentagram.model.vo.DataRow;
+			import com.pentagram.utils.ViewUtils;
+			
+			import mx.collections.ArrayList;
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			
+			import spark.events.TextOperationEvent;
+
+			override public function set data(value:Object):void {
+				super.data = value;
+				if(value) {
+					dp = ViewUtils.vectorToArray(DataRow(value).dataset.optionsArray);
+				}
+			}
+			[Bindable] private var dp:Array;		
+
+			protected function editorInput_enterHandler(event:Event):void
+			{
+				var d:DataRow =  this.data as DataRow;
+				var v:String = editorInput.text;
+				d.modified = true;
+				value = d[this.column.dataField] = v;
+				
+				var exists:Boolean = false;
+				for each(var option:Category  in d.dataset.optionsArray) {
+					if(option.name == v) {
+						exists = true;
+						break;
+					}
+				}
+				if(!exists && editorInput.text != '') {
+					d.dataset.modified = true;
+					var c:Category = new Category();
+					c.name = v;
+					d.dataset.optionsArray.push(c);		
+					d.dataset.options += ","+value;
+					trace(d.dataset.options);	
+					if(d.dataset.modifiedProps.indexOf("options") == -1)	
+						d.dataset.modifiedProps.push("options");	
+					d.modified = true;
+				}			
+				if(d.modifiedProps.indexOf(this.column.dataField) == -1)
+					d.modifiedProps.push(this.column.dataField);
+			}
+
+
+			protected function griditemeditor1_creationCompleteHandler(event:FlexEvent):void
+			{
+				editorInput.inputTxt.setFocus();
+				editorInput.inputTxt.selectRange(editorInput.inputTxt.selectionActivePosition,editorInput.inputTxt.selectionActivePosition);
+			}
+
+		]]>
+	</fx:Script>
+	<components:AutoComplete text="{value}" left="0" right="0" top="0" bottom="0"  select="editorInput_enterHandler(event)"
+	id="editorInput" dataProvider="{dp}" labelField="name"  enter="editorInput_enterHandler(event)" />	
+</s:GridItemEditor>

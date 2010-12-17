@@ -14,6 +14,7 @@ package com.pentagram.main.mediators
 	import flash.display.NativeWindow;
 	import flash.display.StageDisplayState;
 	import flash.events.Event;
+	import flash.events.StatusEvent;
 	import flash.events.TimerEvent;
 	import flash.system.System;
 	import flash.ui.Keyboard;
@@ -50,6 +51,10 @@ package com.pentagram.main.mediators
 			}
 			// Manually close all open Windows when app closes.
 			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
+			view.addEventListener("networkOn",handleNetworkOn);
+		}
+		private function handleNetworkOn(event:Event):void {
+			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
 		}
 		protected function handleWindowFocus(event:InstanceWindowEvent):void {
 			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);

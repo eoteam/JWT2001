@@ -1,7 +1,7 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.events.AppEvent;
-	import com.pentagram.events.VisualizerEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.model.AppModel;

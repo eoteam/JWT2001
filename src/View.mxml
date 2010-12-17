@@ -37,7 +37,7 @@
 			protected var monitor:URLMonitor;
 			protected var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
 			protected var file:File; // Used for preferences file
-			protected var currentVersion:String="1.0"
+			protected var currentVersion:String="2.0"
 			
 			
 			
@@ -57,22 +57,19 @@
 			
 			protected function init():void
 			{
-				stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				
 				// Request to be notified when this application is activated (brought forward as the active window)
 				// or deactivated
 				addEventListener(AIREvent.APPLICATION_ACTIVATE, onAppActivate);
 				addEventListener(AIREvent.APPLICATION_DEACTIVATE, onAppDeactivate);
 				
-				// Center main AIR app window on the screen
-				nativeWindow.x = (Capabilities.screenResolutionX - nativeWindow.width) / 2;
-				nativeWindow.y = (Capabilities.screenResolutionY - nativeWindow.height) / 2;
 				
 				// Invoke listener - request to be notified when the AIR app is invoked (started), this could occur from the command line, UI or
 				// from opening an associated file
 				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
 				
 				// Detecting online/offline network connectivity with a URLMonitor
-				monitor = new URLMonitor(new URLRequest("http://www.adobe.com")); // change URL to URL desired
+				monitor = new URLMonitor(new URLRequest("http://www.google.com")); // change URL to URL desired
 				monitor.addEventListener(StatusEvent.STATUS, onStatusChange);
 				monitor.pollInterval = 20000;// Milliseconds
 				monitor.start();
@@ -87,30 +84,20 @@
 				NativeApplication.nativeApplication.idleThreshold = 5;
 				NativeApplication.nativeApplication.addEventListener(Event.USER_IDLE, onUserIdle);
 				NativeApplication.nativeApplication.addEventListener (Event.USER_PRESENT, onUserPresent);
-				
-				// Get notified when minimize/maximize occurs
-				addEventListener(NativeWindowDisplayStateEvent.DISPLAY_STATE_CHANGING, onDisplayStateChange);
-				
-				// Get notified when window resizing occurs
-				nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,onWindowResize);
-				
+								
 				// Get notified whan a global error occurs
 				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, errorHandler);
 				
-				// Create a native menu with two items in the top-level application menu. 
-				
-				
-				
-				// Create a file for storing preferences in the application storage directory
+				loadPreferences();
+			}
+			private function loadPreferences():void {
 				file = File.applicationStorageDirectory;
 				file = file.resolvePath("Preferences/version.txt");
 				//trace("Preferences file location: " + file.nativePath);
 				if (file.exists)
 					checkVersion();
 				else firstRun();
-				
 			}
-			
 			// The application is now in the foreground and active
 			protected function onAppActivate(event:Event):void {
 				//trace("Handling application activate event");
@@ -132,9 +119,10 @@
 			{
 				if (monitor.available) 
 				{
-					trace("Network is online");
+					visible = false;
+					this.dispatchEvent(new Event("networkOn"));
 				} else {
-					trace("Network is offline");
+					visible = true;
 				}
 			}
 			
@@ -169,7 +157,7 @@
 			// The network status has changed
 			protected function onNetworkChange(e:Event):void
 			{
-				//trace("Network State Changed");
+				trace("Network State Changed");
 			}
 			
 			// Called when the user is idle 
@@ -182,19 +170,6 @@
 			{
 				//trace("Handling user present event");
 			}
-			
-			// Handles when the app is minimized/maximized
-			protected function onDisplayStateChange(e:NativeWindowDisplayStateEvent):void
-			{
-				//trace("Display State Changed from " + e.beforeDisplayState + " to " + e.afterDisplayState);
-			}
-			
-			// Called when window is resized
-			protected function onWindowResize(event:NativeWindowBoundsEvent):void
-			{
-				//trace("Window resizing");
-			}
-			
 			// Handle Global Errors
 			protected function errorHandler(e:UncaughtErrorEvent):void
 			{
@@ -251,4 +226,5 @@
 	<samples:SampleNativeWindows width="100%" height="100%" />
 	</mx:ViewStack>
 	<s:TabBar dataProvider="{stack}" />-->
+	<s:Label fontSize="20" verticalCenter="0" horizontalCenter="0" text="You seem to be working offline, please check your network connection" />
 </s:WindowedApplication>

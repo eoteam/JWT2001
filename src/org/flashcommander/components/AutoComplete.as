@@ -59,7 +59,7 @@ package org.flashcommander.components
 		public var popUp:PopUpAnchor;
 		[SkinPart(required="true",type="spark.components.List")]
 		public var list:List;
-		[SkinPart(required="true",type="spark.components.TextInputt")]
+		[SkinPart(required="true",type="spark.components.TextInput")]
 		public var inputTxt:TextInput;
 		
 		override protected function partAdded(partName:String, instance:Object) : void{

@@ -18,6 +18,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				pt = parent.globalToLocal(pt);
 				x = pt.x;
 				y = pt.y;
+				//TweenNano.to(this,0.2,{x:pt.x,y:pt.y});	
 			}
 		}
 	}

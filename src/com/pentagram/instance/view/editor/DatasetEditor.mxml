@@ -11,6 +11,8 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.view.renderers.BlankRenderer;
+			import com.pentagram.view.renderers.QualityEditor;
+			import com.pentagram.view.renderers.QuantityEditor;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.Sort;
@@ -27,7 +29,6 @@
 			import spark.events.RendererExistenceEvent;
 			import spark.skins.spark.DefaultGridHeaderRenderer;
 
-			
 			public function generateDataset():void {
 				var column:GridColumn;
 				columns.removeAll();
@@ -47,10 +48,10 @@
 					for(var i:int=years[0];i<=years[1];i++) {
 						column  = new GridColumn();
 						column.headerText = i.toString();
-//						if(dataset.type == 1)
-//							column.itemEditor = new ClassFactory(TimeQuantityEditor);
-//						else
-//							column.itemEditor = new ClassFactory(TimeQualityEditor);
+						if(dataset.type == 1)
+							column.itemEditor = new ClassFactory(QuantityEditor);
+						else
+							column.itemEditor = new ClassFactory(QualityEditor);
 						column.dataField = i.toString();
 						column.width = 75;	
 						column.resizable = true;
@@ -63,10 +64,10 @@
 					column = new GridColumn();
 					column.headerText = "Value";
 					column.editable = true;
-//					if(dataset.type == 1)
-//						column.itemEditor = new ClassFactory(QuantityEditor);
-//					else
-//						column.itemEditor = new ClassFactory(QualityEditor);
+					if(dataset.type == 1)
+						column.itemEditor = new ClassFactory(QuantityEditor);
+					else
+						column.itemEditor = new ClassFactory(QualityEditor);
 					column.dataField = "value";
 					column.width = 75;	
 					column.sortable = true;
@@ -74,6 +75,7 @@
 					
 					column = new GridColumn();
 					column.headerText = '';
+					column.editable = false;
 					//column.itemRenderer = new ClassFactory(BlankRenderer);
 					columns.addItem(column);
 				}
@@ -190,7 +192,7 @@
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
 			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>-->
 			
-			<s:DataGrid  borderVisible="false" left="1" editable="true"
+			<s:DataGrid  borderVisible="false" left="1" editable="true" 
 			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  
 			height="100%" id="grid"><!-- updateComplete="handler(event)" creationComplete="handleDG(event)"-->
 				<s:columns>

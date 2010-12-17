@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:GridItemEditor xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				  xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="griditemeditor1_creationCompleteHandler(event)"
+				  xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations> 
+	<mx:NumberValidator id="validator" allowNegative="true" decimalSeparator="." valid="validator_validHandler(event)" 
+	requiredFieldError="true" source="{editorInput}" triggerEvent="change"  property="text"/>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.model.vo.DataRow;
+			
+			import mx.events.FlexEvent;
+			import mx.events.ValidationResultEvent;
+			
+			import spark.events.TextOperationEvent;
+
+			protected function validator_validHandler(event:ValidationResultEvent):void
+			{
+				var d:DataRow =  this.data as DataRow;
+				d.modified = true;
+				value = d[this.column.dataField] = Number(editorInput.text);
+				if(d.modifiedProps.indexOf(this.column.dataField) == -1)
+					d.modifiedProps.push(this.column.dataField);
+			}
+			protected function griditemeditor1_creationCompleteHandler(event:FlexEvent):void
+			{
+				editorInput.setFocus();
+				editorInput.selectRange(editorInput.selectionActivePosition,editorInput.selectionActivePosition);
+			}			
+		]]>
+	</fx:Script>
+	<s:TextInput text="{value}" left="0" right="0" top="0" bottom="0" id="editorInput" />	
+</s:GridItemEditor>

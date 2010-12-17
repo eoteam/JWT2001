@@ -3,6 +3,7 @@
 @namespace mx "library://ns.adobe.com/flex/mx";
 @namespace controls "com.pentagram.view.controls.*";
 @namespace wscontainers "ws.tink.spark.containers.*";
+@namespace flashcommander "org.flashcommander.components.*";
 
 @font-face {
 	src: url("/assets/fonts/FlamaBook.ttf");
@@ -68,9 +69,19 @@ s|Scroller {
 s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.TextInput');
 }
+#editorInput {
+	skinClass: ClassReference('spark.skins.spark.TextInputSkin');
+}
 
 s|CheckBox {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }
+flashcommander|AutoComplete s|TextInput {
+	skinClass: ClassReference('com.pentagram.view.skins.controls.TextInput');
+}
+flashcommander|AutoComplete#editorInput s|TextInput {
+	skinClass: ClassReference('spark.skins.spark.TextInputSkin');
+}
+
 
 

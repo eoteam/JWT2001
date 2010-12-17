@@ -2,7 +2,7 @@ package com.pentagram.instance.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.events.VisualizerEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.controller.CreateDatasetCommand;
 	import com.pentagram.instance.controller.DeleteDatasetCommand;
 	import com.pentagram.instance.controller.LoadClientCommand;
