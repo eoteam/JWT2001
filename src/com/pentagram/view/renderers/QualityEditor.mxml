@@ -57,8 +57,10 @@
 
 			protected function griditemeditor1_creationCompleteHandler(event:FlexEvent):void
 			{
-				editorInput.inputTxt.setFocus();
-				editorInput.inputTxt.selectRange(editorInput.inputTxt.selectionActivePosition,editorInput.inputTxt.selectionActivePosition);
+				this.editorInput.inputTxt.setFocus();
+				//this.callLater(function resume():void {
+				//	editorInput.inputTxt.selectRange(editorInput.inputTxt.text.length,editorInput.inputTxt.text.length);			
+				//});
 			}
 
 		]]>

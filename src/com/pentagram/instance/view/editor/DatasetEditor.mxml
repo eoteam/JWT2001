@@ -22,8 +22,11 @@
 			
 			import spark.components.Button;
 			import spark.components.DataGroup;
+			import spark.components.Grid;
 			import spark.components.gridClasses.DefaultGridItemEditor;
 			import spark.components.gridClasses.GridColumn;
+			import spark.components.gridClasses.GridItemEditor;
+			import spark.components.gridClasses.GridSelection;
 			import spark.components.gridClasses.GridSelectionMode;
 			import spark.events.GridEvent;
 			import spark.events.RendererExistenceEvent;
@@ -36,13 +39,13 @@
 				var countryCol:GridColumn  = new GridColumn();
 				countryCol.dataField = 'name';
 				countryCol.headerText = "Country";
-				countryCol.width = 75;	
 				countryCol.resizable = true;
 				countryCol.sortable = true;
-				countryCol.minWidth = 200;
+				countryCol.minWidth = countryCol.width = 200;
 				countryCol.editable = false;
 				columns.addItem(countryCol);
 				
+	
 				if(dataset.time == 1) {
 					var years:Array = dataset.range.split(',');
 					for(var i:int=years[0];i<=years[1];i++) {
@@ -72,13 +75,13 @@
 					column.width = 75;	
 					column.sortable = true;
 					columns.addItem(column);
-					
-					column = new GridColumn();
-					column.headerText = '';
-					column.editable = false;
-					//column.itemRenderer = new ClassFactory(BlankRenderer);
-					columns.addItem(column);
 				}
+				//padded column
+				column = new GridColumn();
+				column.headerText = '';
+				column.editable = false;
+				columns.addItem(column);
+				
 				currentState = "showgrid";
 				grid.dataProvider = dataset.rows;
 				//
@@ -97,46 +100,18 @@
 				dataset.multiplier = scaleInput.selectedItem.value as Number;
 				dataset.modified = true;
 			}
-			//DG functions
-//			private function handler(event:Event):void
-//			{
-//				var group:DataGroup = grid.columnHeaderBar.dataGroup;
-//				group.addEventListener(RendererExistenceEvent.RENDERER_ADD,handleColumnButtonAdd);
-//				group.addEventListener(RendererExistenceEvent.RENDERER_REMOVE,handleColumnButtonRemove);				
-//			}
-//			private function handleDG(event:Event):void {	
-//				var group:DataGroup = grid.columnHeaderGroup .dataGroup;	
-//				for (var i:int=0;i<group.numElements;i++) {
-//					var b:Button = group.getElementAt(i) as Button;
-//					if(b) {
-//						b.mouseEnabled = true;
-//						b.addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-//					}
-//				}
-//			} 
-//			private function handleColumnButtonAdd(event:RendererExistenceEvent):void {
-//				Button(event.renderer).mouseEnabled = true;
-//				Button(event.renderer).addEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-//			}
-//			private function handleColumnButtonRemove(event:RendererExistenceEvent):void {
-//				Button(event.renderer).removeEventListener(MouseEvent.CLICK,handleColumnButtonClick);
-//			}
-//			private function handleColumnButtonClick(event:MouseEvent):void {
-//				hscrollValue = grid.scroller.horizontalScrollBar.value;
-//				vscrollValue = grid.scroller.verticalScrollBar.value;
-//				var sort:Sort = new Sort();
-//				sort.fields = [new  SortField(DefaultColumnHeaderRenderer(event.target).data.dataField,false,false,true)];  		
-//				if (dataset.rows != null)
-//				{
-//					dataset.rows.sort = sort;
-//					dataset.rows.refresh();
-//				}
-//				grid.scroller.horizontalScrollBar.value = hscrollValue;
-//				grid.scroller.verticalScrollBar.value = vscrollValue;
-//			}
 			[Bindable] private var scaleFactors:ArrayList = new ArrayList( [{label:'None',value:1},{label:'Thousands',value:1000},
 				{label:'Millions',value:1000000},{label:'Billions',value:1000000000},	 
 				{label:'Trillions',value:1000000000*100}]);
+
+			protected function grid_keyDownHandler(event:KeyboardEvent):void
+			{
+				if(event.keyCode ==  Keyboard.ENTER && grid.selectedCell && event.target == grid) {
+					trace(event.target);
+					grid.startItemEditorSession(grid.selectedCell.rowIndex,grid.selectedCell.columnIndex);
+				}
+			}
+
 		]]>
 	</fx:Script>
 	<s:states>
@@ -192,7 +167,7 @@
 			sortStarted="hscrollValue=grid.scroller.horizontalScrollBar.value;vscrollValue=grid.scroller.verticalScrollBar.value"
 			sortComplete="grid.scroller.horizontalScrollBar.value=hscrollValue;grid.scroller.verticalScrollBar.value=vscrollValue"/>-->
 			
-			<s:DataGrid  borderVisible="false" left="1" editable="true" 
+			<s:DataGrid  borderVisible="false" left="1" editable="true" keyDown="grid_keyDownHandler(event)"
 			selectionMode="{GridSelectionMode.MULTIPLE_CELLS}" right="1" top="2" bottom="2"  
 			height="100%" id="grid"><!-- updateComplete="handler(event)" creationComplete="handleDG(event)"-->
 				<s:columns>
