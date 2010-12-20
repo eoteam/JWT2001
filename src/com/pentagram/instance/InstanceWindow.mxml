@@ -48,9 +48,8 @@
 				context.shutdown();
 				if(shellView) {
 					shellView.unload();
-					appEventDispatcher = null;
-					
 				}
+				appEventDispatcher = null;
 			}
 
 		]]>

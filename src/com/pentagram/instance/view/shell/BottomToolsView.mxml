@@ -9,10 +9,17 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.IndexChangedEvent;
-		
+			
 			public function hideTimeline():void {
 				timelineContainer.visible = false;
 			}
+
+  
+			public function generate ():void    
+			{   
+  
+			} 
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -58,6 +65,9 @@
 				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 			</primatives:stroke>
 		</primatives:Line>
+		
+		<s:Rect width="100%" />
+		<s:Button label="export" id="pdfBtn" click="generate()" />
 	</s:HGroup>
 	
 	<s:Rect width="100%" height="1" bottom="60">

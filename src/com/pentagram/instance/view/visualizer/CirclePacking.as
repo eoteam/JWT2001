@@ -11,10 +11,11 @@ package com.pentagram.instance.view.visualizer
 	import flash.geom.Rectangle;
 	import flash.utils.Timer;
 	
+	import spark.components.Group;
 	import spark.core.SpriteVisualElement;
 
 	//[SWF(frameRate = '60', backgroundColor='0x000000',width='1024',height='768')]
-	public class CirclePacking extends SpriteVisualElement
+	public class CirclePacking extends Group
 	{
 		 
 		public var spriteArray:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
@@ -38,11 +39,11 @@ package com.pentagram.instance.view.visualizer
 				sprite.fillColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				spriteArray.push(sprite);
-				this.addChild(sprite);
+				this.addElement(sprite);
 				counter++;
 			}
 		}
-		public function layout():void {
+		public function doLayout():void {
 			var disposeCounter:int = 2;
 			var c:ClusterRenderer = null;
 			var _loc_2:Number = NaN;

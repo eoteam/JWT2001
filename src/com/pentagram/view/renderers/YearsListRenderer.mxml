@@ -3,16 +3,14 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				autoDrawBackground="false"
 				depth="0" depth.hovered="1" depth.selected="2" 
-				width="8" height="45" 
+				width="8"
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
 				xmlns:utils="com.pentagram.utils.*"
-				toolTip=" " 
-				toolTipCreate="createCustomTip(event)"
-				rollOver="itemrenderer1_rollOverHandler(event)" 
-				rollOut="itemrenderer1_rollOutHandler(event)"
-				 click="itemrenderer1_clickHandler(event)">
-	
+				xmlns:renderers="com.pentagram.view.renderers.*">
+	<!-- 				rollOver="itemrenderer1_rollOverHandler(event)" 
+	rollOut="itemrenderer1_rollOutHandler(event)"
+	click="itemrenderer1_clickHandler(event)" -->
 	<fx:Script>
 		<![CDATA[
 			import flash.geom.Point;
@@ -23,18 +21,9 @@
 			import mx.managers.ToolTipManager;
 			
 			import spark.components.List;
+			import spark.skins.spark.HSliderSkin;
 
-			private function createCustomTip(event:ToolTipEvent):void {
-		
-				var ptt:YearListRendererToolTip = new YearListRendererToolTip();
-				ptt.bodyText = data.year;
-				var pt:Point = this.owner.localToGlobal(new Point(x,y));
-				//ToolTipManager.createToolTip(-30,-30,);
-				//ptt.x=pt.x-35; ptt.y=-pt.y-height-300;
-				event.toolTip = ptt;
-				//this.addEventListener(
-			}
-
+new HSliderSkin
 			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
 			{
 				var yearSlider:List = this.owner as List;
@@ -134,24 +123,7 @@
 					<s:SimpleMotionPath property="scaleY"  />
 				</s:Animate>
 		</s:Transition>
-		<!--
-		<s:Transition fromState="hovered" toState="normal" autoReverse="true" >
-			<s:Animate target="{tOffsets}" duration="350">
-				<s:SimpleMotionPath property="scaleY" valueFrom="1.3" valueTo="{data.selection}" valueBy="0.01"   />
-			</s:Animate>
-		</s:Transition>
-		
-		<s:Transition fromState="hovered" toState="selected" autoReverse="true">
-			<s:Animate target="{tOffsets}" duration="350">
-				<s:SimpleMotionPath property="scaleY"  valueFrom="1.3" valueTo="1.5" valueBy="0.01"  />
-			</s:Animate>
-		</s:Transition>	
-		
-		<s:Transition fromState="selected" toState="normal" autoReverse="true">
-			<s:Animate target="{tOffsets}" duration="350">
-				<s:SimpleMotionPath property="scaleY"  valueFrom="1.5" valueTo="{data.selection}" valueBy="0.01"  />
-			</s:Animate>
-		</s:Transition>	-->
+
 	</s:transitions>
 
 
@@ -168,5 +140,9 @@
 			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.5" scaleY.selected="1.5"   />
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
-	
+	<s:PopUpAnchor  y="-18" popUpPosition="above" x="-35.5" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
+		<s:popUp>
+			<renderers:YearListRendererToolTip bodyText="{data.year}"/>
+		</s:popUp>
+	</s:PopUpAnchor>
 </s:ItemRenderer>

@@ -131,6 +131,13 @@ package com.pentagram.instance.view.mediators
 		override public function onRemove():void {
 			mediatorMap.removeMediatorByView(view.searchView);
 			mediatorMap.removeMediatorByView(view.shellView);
+			model.clients = null;
+			model.regions = null;
+			model.countries = null;
+			model.user = null;	
+			model.colors = null;
+			model.exportMenuItem = null;	
+			model.importMenuItem = null;
 			super.onRemove();
 		}
 		private function handleCloseWindow(event:Event):void {
@@ -140,6 +147,5 @@ package com.pentagram.instance.view.mediators
 		private function handleWindowResize(event:NativeWindowBoundsEvent):void {
 			this.dispatch(new VisualizerEvent(VisualizerEvent.WINDOW_RESIZE));
 		}
-		
 	}
 }

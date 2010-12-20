@@ -57,7 +57,7 @@
 				for each(var country:Country in value.countries.source) {
 					var c:MapRenderer = new MapRenderer();
 					c.id = country.shortname;				
-					holder.addElement(c);
+					holder.addElement(c);				
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;
 					c.state = false;

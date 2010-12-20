@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 implements="mx.core.IToolTip" >
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
 
 	<fx:Script>
 		<![CDATA[
 			[Bindable]
 			public var bodyText:String = "";
-			
-			//  Implement required methods of the IToolTip interface; these 
-			//  methods are not used in this example, though.
-			public var _text:String;
-			
-			public function get text():String { 
-				return _text; 
-			} 
-			public function set text(value:String):void {
-			} 
+
 		]]>
 	</fx:Script>
 
-		<s:Group id="allContent" width="60" height="30">
-			<s:Rect id="bg" top="0" right="0" bottom="0" left="0" radiusX="3" radiusY="3" >
+		<s:Group width="60" height="30">
+			<s:Rect id="bg"  left="0" right="0" top="0" bottom="0" radiusX="3" radiusY="3" >
 				<s:fill>
 					<s:SolidColor id="bgColor" color="0x121212" />
 				</s:fill>
 			</s:Rect>
-			<s:Label text="{bodyText}" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
+			<s:Label text="{bodyText}" fontFamily="FlamaBold" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
 		</s:Group>
+	
 		<s:Path id="arrow" x="25" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
 			<s:fill>
 				<s:SolidColor id="arrowColor" color="0"/>

@@ -79,7 +79,7 @@
 						circle.y = height/2;
 						circle.height = height;
 						parent.addChild(circle);
-						this.callLater(function resumeDraw(c:CirclePacking):void {c.layout()},[circle]);
+						this.callLater(function resumeDraw(c:CirclePacking):void {c.doLayout()},[circle]);
 					} 
 				}
 				firstLoad = false;
@@ -137,7 +137,7 @@
 //						}
 							
 					}
-					c.layout();
+					c.doLayout();
 					//c.draw();
 					
 				}
