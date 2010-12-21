@@ -15,7 +15,7 @@ package com.pentagram.instance.view.visualizer
 	import spark.core.SpriteVisualElement;
 
 	//[SWF(frameRate = '60', backgroundColor='0x000000',width='1024',height='768')]
-	public class CirclePacking extends Group
+	public class CirclePacking extends SpriteVisualElement
 	{
 		 
 		public var spriteArray:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
@@ -39,7 +39,7 @@ package com.pentagram.instance.view.visualizer
 				sprite.fillColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				spriteArray.push(sprite);
-				this.addElement(sprite);
+				this.addChild(sprite);
 				counter++;
 			}
 		}

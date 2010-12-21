@@ -1,7 +1,8 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.pentagram.model.vo.DataRow;
 	import com.greensock.TweenNano;
+	import com.pentagram.model.vo.DataRow;
+	
 	import flash.display.Sprite;
 	import flash.geom.Matrix;
 	
@@ -11,6 +12,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		{
 			super();
 			this.fillAlpha = 1;
+			
 		}
 		public var radiusBeforeRendering:Number;
 		public var data2:DataRow;

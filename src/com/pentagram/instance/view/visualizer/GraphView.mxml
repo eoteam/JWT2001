@@ -40,7 +40,6 @@
 			public function get datasets():Array {
 				return [ds1,ds2,ds3,ds4];
 			}
-						
 			private var _continous:Boolean = false;
 			public function set continous(value:Boolean):void{
 				_continous = value;

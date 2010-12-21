@@ -1,110 +1,15 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
-	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
-	import flash.display.GradientType;
-	import flash.events.Event;
-	import flash.events.MouseEvent;
-	import flash.geom.Matrix;
 	import flash.geom.Point;
 	
-	import mx.core.UIComponent;
-	import mx.graphics.IStroke;
-	import mx.graphics.Stroke;
+	import mx.controls.Button;
 	
-	import spark.components.Button;
-	import spark.components.Group;
-	import spark.components.PopUpAnchor;
-	import spark.components.ToggleButton;
+	import spark.components.supportClasses.SkinnableComponent;
 	
-	public class CircleRenderer extends UIComponent
+	internal class BaseRenderer extends Button
 	{
-
-		private var _hovered:Boolean = false; 
-		private var _mouseCaptured:Boolean = false;  
-		
-		public function CircleRenderer():void {
-			super();
-			addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
-			addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
-			addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-		}
-		
-		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		public const FILL_ALPHAS:Array = [0.8,0.8];
-		public const FILL_RATIO:Array = [0,255];
-		
-	
-		protected var stateFlag:Boolean = false;
-		protected var dirtyFlag:Boolean = false;
-		protected var dirtyCoordFlag:Boolean = false;
-		protected var _data:DataRow;
-		
-		
-		/** @inheritDoc */
-		
-		/** Object storing backing data values. */
-		public function get data():DataRow { return _data; }
-		public function set data(d:DataRow):void { _data = d; fillColor = d.country.region.color; }
-		
-		public function set state(value:Boolean):void {
-			
-			if(value && !stateFlag)
-				dirtyFlag = true;
-			stateFlag = value;
-		}
-		public function get state():Boolean {
-			return stateFlag;
-		}
-		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
-		{
-			super.updateDisplayList(unscaledWidth,unscaledHeight);
-			if(dirtyFlag && stateFlag)
-				draw();
-			else if(!stateFlag) {
-				this.graphics.clear();
-			}
-		}
-		protected function draw():void {
-			dirtyFlag = false;
-			graphics.clear();
-			
-			//graphics.lineStyle(_lineWidth,,1);
-			var stroke:IStroke = new Stroke(_lineColor,1,0.2);
-			
-			stroke.apply(graphics,null,null);
-			
-			var matr:Matrix = new Matrix();
-			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
-			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[fillColor,fillColor],[fillAlpha,fillAlpha],FILL_RATIO,matr)			
-			graphics.drawCircle(0, 0, _radius);
-			graphics.endFill();	
-			
-			if(this.alpha == 0) {
-				TweenNano.to(this,0.5,{delay:1,alpha:1});
-			}
-		}
-		public function dirtyCoordinates():void {
-			dirtyCoordFlag = true;
-			this.invalidateProperties();
-		}
-		override protected function commitProperties():void {
-			super.commitProperties();
-			if(dirtyCoordFlag)
-				updateCoordinates();
-		}
-		protected function updateCoordinates():void {
-			//throw exception
-		}
-		public function dirty():void {
-			dirtyFlag = true;
-			this.invalidateDisplayList();
-		}
 		[Bindable] protected var _radius:Number = 1;
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;
@@ -115,10 +20,10 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		/** Flag indicating if this node is currently selected. This flag can
 		 *  be used by renderers to display selection state. */
-		//		public function get selected():Boolean { return _selected; }
-		//		public function set selected(b:Boolean):void { if (b != _selected) {_selected = b;  } }	
-		//		
-		
+//		public function get selected():Boolean { return _selected; }
+//		public function set selected(b:Boolean):void { if (b != _selected) {_selected = b;  } }	
+//		
+
 		
 		// -- Interaction Properties ---------------------------
 		
@@ -151,7 +56,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		 * @private
 		 */
 		public function set radius(r:Number):void {
-			_radius = r;
+			width = height = _radius = r;
 			
 			if(isNaN(_radius))
 				_radius = 0;
@@ -233,53 +138,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			var distance:Number = dx*dx + dy*dy;
 			
 			return distance;
-		}    
-		private function addedToStageHandler(event:Event):void {
-			popUp = new RendererToolTip();
-			this.addChild(popUp);
-		}
-		private var popUp:RendererToolTip;
-		
-		protected function mouseEventHandler(event:Event):void
-		{
-			var mouseEvent:MouseEvent = event as MouseEvent;
-			switch (event.type)
-			{
-				case MouseEvent.ROLL_OVER:
-				{
-					var arr:Array = this.parentApplication.getObjectsUnderPoint(new Point
-						(this.parentApplication.mouseX,this.parentApplication.mouseY));
-					for each(var item:Object in arr)
-						trace(item);
-					trace("################");	
-					if(this.hitTestObject(popUp.popUp as Group) == false)
-						popUp.displayPopUp = true;	
-					break;
-				}
-					
-				case MouseEvent.ROLL_OUT:
-				{
-					popUp.displayPopUp = false;	
-					break;
-				}
-					
-				case MouseEvent.MOUSE_DOWN:
-				{
-					break;
-				}
-					
-				case MouseEvent.MOUSE_UP:
-				{
-
-					break;
-				}
-				case MouseEvent.CLICK:
-				{
-					
-				}
-			}
-
-		}
-				
+		}     
+		public function dirty():void {}
 	}
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:PopUpAnchor xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+	 	displayPopUp="false" xmlns:renderers="com.pentagram.instance.view.visualizer.renderers.*">
+	<s:popUp>
+		<s:Group x="{-CircleRenderer(parent).radius*2}" y="{--CircleRenderer(parent).radius*2}">
+			<s:Path alpha="0.9" data="M 214.063 161.577 L 214.063 3 C 214.063 1.352 212.714 0 211.063 0 L 15.749 0 C 14.099 0 12.749 1.352 12.749 3 L 12.749 27.885 L 0 35.244 L 12.749 42.606 L 12.749 161.577 C 12.749 163.228 14.099 164.577 15.749 164.577 L 211.063 164.577 C 212.714 164.577 214.063 163.228 214.063 161.577 Z" 
+					winding="nonZero" x="0.03" y="1.453">
+				<s:fill>
+					<s:SolidColor color="#1A1A1A"/>
+				</s:fill>
+				<s:filters>
+					<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+				</s:filters>
+			</s:Path>
+			<s:Line x="13.5" xTo="201" y="101.5">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+				</s:stroke>
+			</s:Line>
+		</s:Group>	
+	</s:popUp>
+
+</s:PopUpAnchor>
