@@ -39,18 +39,23 @@
 			}
 			private var loader:Loader;
 			private function doSaveImage():void {
-				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
+				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,72);
 				//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
 				loader = new Loader();	
 				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
 				loader.loadBytes(imageSnap.data);
 			}
 			private function getBitmapData(e:Event):void {
-				var content:* = loader.content;
+				var content:Bitmap = loader.content as Bitmap;
 				var pt:Point = this.parent.localToGlobal(new Point(x,y));
+				
 				var bmd:BitmapData = new BitmapData(content.width,(pt.y /this.parentApplication.height) * content.height);
-				var UIMatrix:Matrix = new Matrix();
-				bmd.draw(content, UIMatrix);
+				var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /this.parentApplication.height) * content.height);
+				
+				bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
+				content.bitmapData.dispose();
+//				var UIMatrix:Matrix = new Matrix();
+//				bmd.draw(content, UIMatrix);
 				var enc:PNGEncoder = new PNGEncoder();
 				//encode the bitmapdata object and keep the encoded ByteArray
 				var imgByteArray:ByteArray = enc.encode(bmd);

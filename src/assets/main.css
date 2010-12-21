@@ -82,6 +82,12 @@ flashcommander|AutoComplete s|TextInput {
 flashcommander|AutoComplete#editorInput s|TextInput {
 	skinClass: ClassReference('spark.skins.spark.TextInputSkin');
 }
-
+#rendererLabel {
+	fontFamily: FlamaBold;
+	fontSize: 12;
+	color: #FFFFFF;	
+	verticalCenter:0;
+	horizontalCenter: 0 ;
+}
 
 

@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:PopUpAnchor xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		xmlns:s="library://ns.adobe.com/flex/spark" 
-		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:mx="library://ns.adobe.com/flex/mx" creationComplete="popupanchor1_creationCompleteHandler(event)"
 	 	displayPopUp="false" xmlns:renderers="com.pentagram.instance.view.visualizer.renderers.*">
+
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			protected function popupanchor1_rollOutHandler(event:MouseEvent):void
+			{
+				var v1:Boolean = parent.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
+				var v2:Boolean = popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
+				if(!v1 && !v2)
+					this.displayPopUp = false;
+			}
+
+			protected function popupanchor1_creationCompleteHandler(event:FlexEvent):void
+			{
+				popUp.addEventListener(MouseEvent.ROLL_OUT,popupanchor1_rollOutHandler);
+				
+			}
+
+		]]>
+	</fx:Script>
 	<s:popUp>
-		<s:Group x="{-CircleRenderer(parent).radius*2}" y="{--CircleRenderer(parent).radius*2}">
+		<s:Group>
 			<s:Path alpha="0.9" data="M 214.063 161.577 L 214.063 3 C 214.063 1.352 212.714 0 211.063 0 L 15.749 0 C 14.099 0 12.749 1.352 12.749 3 L 12.749 27.885 L 0 35.244 L 12.749 42.606 L 12.749 161.577 C 12.749 163.228 14.099 164.577 15.749 164.577 L 211.063 164.577 C 212.714 164.577 214.063 163.228 214.063 161.577 Z" 
 					winding="nonZero" x="0.03" y="1.453">
 				<s:fill>
