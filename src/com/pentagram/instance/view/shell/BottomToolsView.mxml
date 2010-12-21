@@ -9,16 +9,66 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.IndexChangedEvent;
+			import mx.graphics.ImageSnapshot;
+			import mx.graphics.codec.JPEGEncoder;
+			import mx.graphics.codec.PNGEncoder;
 			
 			public function hideTimeline():void {
 				timelineContainer.visible = false;
 			}
 
-  
+  			private var folderSelect:Boolean = false;
+			private var dir:File;
 			public function generate ():void    
 			{   
-  
+				if(!dir) {
+					selectedNewDirectory();
+				}
+				else doSaveImage();
 			} 
+			private function selectedNewDirectory():void {
+				dir = new File();
+				dir.addEventListener(Event.SELECT, file_select);
+				dir.browseForDirectory("Please select a directory...")
+			}
+			private function file_select(evt:Event):void {
+				dirButton.label = dir.nativePath;
+				dirButton.enabled = true;
+				if(!folderSelect)
+					doSaveImage();
+			}
+			private var loader:Loader;
+			private function doSaveImage():void {
+				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
+				//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
+				loader = new Loader();	
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
+				loader.loadBytes(imageSnap.data);
+			}
+			private function getBitmapData(e:Event):void {
+				var content:* = loader.content;
+				var pt:Point = this.parent.localToGlobal(new Point(x,y));
+				var bmd:BitmapData = new BitmapData(content.width,(pt.y /this.parentApplication.height) * content.height);
+				var UIMatrix:Matrix = new Matrix();
+				bmd.draw(content, UIMatrix);
+				var enc:PNGEncoder = new PNGEncoder();
+				//encode the bitmapdata object and keep the encoded ByteArray
+				var imgByteArray:ByteArray = enc.encode(bmd);
+				
+				var fs:FileStream = new FileStream();
+				var d:Date = new Date();
+				var fl:File = dir.resolvePath("viz"+d.time+".png");
+				try{
+					//open file in write mode
+					fs.open(fl,FileMode.WRITE);
+					//write bytes from the byte array
+					fs.writeBytes(imgByteArray);
+					//close the file
+					fs.close();
+				}catch(e:Error){
+					trace(e.message);
+				}	
+			}
 
 		]]>
 	</fx:Script>
@@ -34,13 +84,13 @@
 		
 	</s:states>
 	
-	<s:Rect width="100%" height="1" bottom="120">
+	<s:Rect width="100%" height="1" bottom="70">
 		<s:fill>
 			<s:SolidColor color="0xB3B1AC" />
 		</s:fill>
 	</s:Rect> 
 	
-	<s:HGroup id="timelineContainer" visible="false" width="100%" verticalAlign="middle" bottom="75"  height="30" paddingLeft="10" paddingRight="10" gap="10">
+	<s:HGroup id="timelineContainer" visible="false" width="100%" verticalAlign="middle" bottom="36"  height="34" paddingLeft="10" paddingRight="10" gap="10">
 		<s:ToggleButton label="Play"  id="playBtn"/>
 		
 		
@@ -67,15 +117,15 @@
 		</primatives:Line>
 		
 		<s:Rect width="100%" />
-		<s:Button label="export" id="pdfBtn" click="generate()" />
+		
 	</s:HGroup>
 	
-	<s:Rect width="100%" height="1" bottom="60">
+	<s:Rect width="100%" height="1" bottom="34">
 		<s:fill>
 			<s:SolidColor color="0xB3B1AC" />
 		</s:fill>
 	</s:Rect> 
-	<s:HGroup width="100%" verticalAlign="middle" height="60" gap="0"  bottom="0" paddingLeft="10" paddingRight="10">
+	<s:HGroup width="100%" verticalAlign="middle" height="34" gap="0"  bottom="0" paddingLeft="10">
 		
 		<s:TabBar dataProvider="{visualizerArea}" />
 		
@@ -132,6 +182,19 @@
 			<s:Rect width="10"/>
 		</s:HGroup>
 		
-		
+		<s:Rect width="100%" />
+		<s:Rect height="100%" width="1" bottom="34">
+			<s:fill>
+				<s:SolidColor color="0xB3B1AC" />
+			</s:fill>
+		</s:Rect> 
+		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn" click="generate()" />
+		<s:Rect height="100%" width="1" bottom="34">
+			<s:fill>
+				<s:SolidColor color="0xB3B1AC" />
+			</s:fill>
+		</s:Rect> 
+		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.FolderButton" id="dirButton" 
+		enabled="false" click="selectedNewDirectory();folderSelect=true" />
 	</s:HGroup>
 </s:Group>
