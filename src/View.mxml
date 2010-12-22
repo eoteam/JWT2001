@@ -12,6 +12,8 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+
+			
 			import air.net.URLMonitor;
 			import air.update.ApplicationUpdaterUI;
 			import air.update.events.UpdateEvent;
@@ -33,6 +35,7 @@
 			import mx.events.StyleEvent;
 			import mx.managers.ToolTipManager;
 			
+
 			
 			protected var monitor:URLMonitor;
 			protected var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update

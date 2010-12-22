@@ -10,6 +10,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
 	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	import flash.text.engine.ElementFormat;
 	import flash.text.engine.FontDescription;
 	import flash.text.engine.Kerning;
@@ -55,30 +57,11 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _data:DataRow;
 	
 		private var popUp:RendererToolTip;
-		private var label:TextLine
-		private var format:ElementFormat;
-		
+	
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { 
 			_data = d; 
-			fillColor = d.country.region.color;
-			var font_description:FontDescription = new FontDescription();
-			font_description.fontName = "FlamaBook";
-			font_description.renderingMode=RenderingMode.CFF;
-			font_description.fontLookup = "embeddedCFF";
-			font_description.locked=true;
-			
-			format = new ElementFormat(font_description);
-			format.fontSize=12;
-			format.kerning=Kerning.ON;
-			format.color=_fillColor;
-			format.alpha=1;
-			
-			var text_element:TextElement = new TextElement(_data.country.shortname,format);
-			var text_block:TextBlock = new TextBlock();
-			text_block.content = text_element;		
-			label = text_block.createTextLine(null,30);
-			addChild(label);
+			fillColor = d.country.region.color;		
 		}
 		
 		public function set state(value:Boolean):void {
@@ -136,11 +119,11 @@ package com.pentagram.instance.view.visualizer.renderers
 //			graphics.moveTo(0,-_radius);
 //			graphics.drawRect(0,-_radius,1,_radius*2);
 //			graphics.endFill();
-			format.
-			format.color = _fillColor;
+			//textFormat.color = _fillColor;
 			label.x = -label.textWidth/2;
-		
-			//label.y = -label.textHeight/2;	
+			label.y = -label.textHeight/2;
+			label.text = _data.country.shortname;
+			label.defaultTextFormat = textFormat;
 			if(this.alpha == 0) {
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
 			}
@@ -159,8 +142,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				{
 					//trace(this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true),popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true));
 					//var v1:Boolean = this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-					var v2:Boolean = popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-					if(!v2)
+//					var v2:Boolean = popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
+//					if(!v2)
 						popUp.displayPopUp = false;
 					break;
 				}
@@ -182,16 +165,24 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 
 		}
-		
+
 		private function addedToStageHandler(event:Event):void {
 			popUp = new RendererToolTip();
 			this.addChild(popUp);			
-//			label = new Label();
-//			label.id = "rendererLabel"
-//			this.addChild(label);
-//			if(_data)
-//				label.text = _data.country.shortname;
+
+			textFormat = new TextFormat();
+			textFormat.font = "FlamaBookMx2";
+			textFormat.size = 14;
+			textFormat.color = 0xffffff;
+			textFormat.align="left";
+				
+			label = new TextField();
+			label.selectable = false;
 			
+			label.embedFonts = true;
+			label.mouseEnabled = false;
+			label.defaultTextFormat = textFormat;
+			this.addChild(label);
 		}
 				
 	}

@@ -10,10 +10,10 @@
 			import mx.managers.PopUpManager;
 			protected function popupanchor1_rollOutHandler(event:MouseEvent):void
 			{
-				var v1:Boolean = parent.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-				var v2:Boolean = popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-				if(!v1 && !v2)
-					this.displayPopUp = false;
+//				var v1:Boolean = parent.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
+//				var v2:Boolean = popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
+//				if(!v1 && !v2)
+//					this.displayPopUp = false;
 			}
 
 			protected function popupanchor1_creationCompleteHandler(event:FlexEvent):void
@@ -21,7 +21,13 @@
 				popUp.addEventListener(MouseEvent.ROLL_OUT,popupanchor1_rollOutHandler);
 				
 			}
-
+			override protected function calculatePopUpPosition():Point
+			{
+				var pt:Point = super.calculatePopUpPosition();
+				pt.x += CircleRenderer(parent).radius;
+				pt.y -= CircleRenderer(parent).radius;
+				return pt;
+			}
 		]]>
 	</fx:Script>
 	<s:popUp>
@@ -42,5 +48,5 @@
 			</s:Line>
 		</s:Group>	
 	</s:popUp>
-
+	
 </s:PopUpAnchor>

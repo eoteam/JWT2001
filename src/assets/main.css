@@ -38,8 +38,7 @@
 @font-face {
 	src: url("/assets/fonts/FlamaBold.ttf");
 	font-family: "FlamaBoldMx";
-	embedAsCFF: false;
-	advancedAntiAliasing: true;      
+	embedAsCFF: false;     
 }
 mx|UIComponent {
 	fontFamily: FlamaBookMx;

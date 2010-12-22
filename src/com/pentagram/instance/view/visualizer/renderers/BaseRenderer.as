@@ -1,15 +1,21 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import flash.geom.Point;
 	import com.pentagram.utils.Colors;
+	
+	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	
 	import mx.core.UIComponent;
 
 	internal class BaseRenderer extends UIComponent
 	{
+		protected var label:TextField;
+		protected var textFormat:TextFormat;
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;
 		protected var _fillColor:uint = 0xffcccccc;
-		protected var _fillAlpha:Number = 0.4;
+		protected var _fillAlpha:Number = 0.25;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
 		[Bindable] protected var _radius:Number = 1;
@@ -24,7 +30,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			[Bindable] public function get radius():Number { return _radius; }		
 			public function set radius(r:Number):void {
-				width = height =  _radius = r;
+				 _radius = r;
 				if(isNaN(_radius))
 					_radius = 0;
 				dirty();

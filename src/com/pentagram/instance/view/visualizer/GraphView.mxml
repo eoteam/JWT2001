@@ -11,6 +11,9 @@
 				 contentBackgroundAlpha="0"  >
 	<fx:Script>
 		<![CDATA[
+			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
+			private var _flamaBook:Class;
+			
 			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.Dataset;
 			import com.pentagram.model.vo.NormalizedVO;

@@ -106,7 +106,8 @@ package com.pentagram.instance.view.visualizer
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
 				c.state = true;
-				TweenNano.to(c,.5,{radius: this.circlePositions[i].z * _loc_2 * scaler,
+				c.radius = this.circlePositions[i].z * _loc_2;
+				TweenNano.to(c,.5,{
 								   x: this.circlePositions[i].x * _loc_2,
 								   y: this.circlePositions[i].y * _loc_2});
 				i++;

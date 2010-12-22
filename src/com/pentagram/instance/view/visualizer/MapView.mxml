@@ -12,6 +12,10 @@
 	
 	<fx:Script>
 		<![CDATA[
+
+			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
+			private var _flamaBook:Class;
+			
 			import com.greensock.TweenNano;
 			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.Category;
