@@ -12,7 +12,6 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ModuleUtil;
 	import com.pentagram.utils.ViewUtils;
@@ -20,22 +19,14 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.FullScreenEvent;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
-	import mx.events.StateChangeEvent;
-	import mx.utils.ArrayUtil;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.components.Group;
-	import spark.components.NavigatorContent;
-	import spark.events.DropDownEvent;
-	import spark.events.IndexChangeEvent;
 	
 	public class ShellMediator extends Mediator
 	{

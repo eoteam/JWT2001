@@ -2,10 +2,23 @@
 <windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" title="Clients"
-					xmlns:windows="com.pentagram.main.windows.*" minWidth="400" minHeight="300"
-					xmlns:editor="com.pentagram.instance.view.editor.*">
+					xmlns:windows="com.pentagram.main.windows.*" minWidth="800" minHeight="600"
+					xmlns:editor="com.pentagram.instance.view.editor.*" xmlns:vo="com.pentagram.model.vo.*" xmlns:components="org.flashcommander.components.*" xmlns:layouts="com.pentagram.view.layouts.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.controller.Constants;
+			import com.pentagram.main.event.ViewEvent;
+			protected function handlePropChange(event:Event,prop:String):void {
+				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,prop,event.target.text,client)); 
+			}
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<s:ArrayList id="clients" />
+		<fx:int id="LABEL_WIDTH">90</fx:int>
+		<fx:int id="FIELD_WIDTH">400</fx:int>
+		<vo:Client id="client" />
 	</fx:Declarations>
 	<windows:states>
 		<s:State name="view"  />
@@ -17,11 +30,11 @@
 	</windows:layout>
 			
 	<s:VGroup width="200" gap="0">		
-		<s:List width="100%" dataProvider="{clients}" labelField="name"
-				alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC" />			
+		<s:List width="100%" dataProvider="{clients}" labelField="name" change="this.client=clientList.selectedItem" selectedIndex.create="-1"
+				alternatingItemColors="[#ffffff,#cccccc]" id="clientList" selectionColor="0x3A9DCC" />			
 		
 		<s:HGroup width="100%" gap="0">
-			<s:Button width="100%" label="+ Add Client" click="this.currentState='create'" />
+			<s:Button width="100%" label="+ Add Client" click="this.currentState='create';client=new Client(false)" />
 			<s:Button width="100%" label="- Delete" id="deleteListBtn" />
 		</s:HGroup>
 	</s:VGroup>
@@ -33,7 +46,108 @@
 			</s:stroke>
 		</s:Rect>
 		
-
+		<s:VGroup id="clientEditor" width="100%" top="15" left="16" right="16" bottom="52">
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Full Name" />
+				<s:Rect width="8" />
+				<s:TextInput width="{FIELD_WIDTH}" text="{client.name}" change="handlePropChange(event,'name')"/>
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Short Name" />
+				<s:Rect width="8" />
+				<s:TextInput width="{FIELD_WIDTH}" text="{client.shortname}" change="handlePropChange(event,'shortname')" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Logo" />
+				<s:Rect width="8" />
+				<s:Group width="{FIELD_WIDTH}" id="logoHolder">
+					<s:Rect left="0" right="0" top="0" bottom="0">
+						<s:stroke>
+							<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+						</s:stroke>
+					</s:Rect>
+					<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+client.thumbs}" />
+					<s:Group left="1" right="1" top="1" height="30">
+						<s:Rect left="0" right="0" top="0" bottom="0">
+							<s:fill>
+								<s:LinearGradient>
+									<s:GradientEntry color="#FFFFFF" />
+									<s:GradientEntry color="#F5F6F6" />
+								</s:LinearGradient>
+							</s:fill>
+							<s:stroke>
+								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+							</s:stroke>
+						</s:Rect>
+						<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
+							<s:Button label="Change Logo" />
+							<s:Button label="Download Logo" />
+						</s:HGroup>
+					</s:Group>		
+				</s:Group>
+			</s:HGroup>		
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Website" />
+				<s:Rect width="8" />
+				<s:TextInput width="{FIELD_WIDTH}" text="{client.website}" change="handlePropChange(event,'website')" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
+				<s:Rect width="8" />
+				<s:TextInput width="{FIELD_WIDTH}" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
+			</s:HGroup>
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Employees" />
+				<s:Rect width="8" />
+				<s:TextInput width="{FIELD_WIDTH}" text="{client.employees}" change="handlePropChange(event,'employees')" />
+			</s:HGroup>	
+			
+			
+			
+			<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:Label width="{LABEL_WIDTH}" text="Similar Clients" />
+				<s:Rect width="8" />
+				<s:Group width="{FIELD_WIDTH}">
+					<s:Rect left="0" right="0" top="0" bottom="0">
+						<s:stroke>
+							<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+						</s:stroke>
+					</s:Rect>
+					<s:List top="30" width="100%" contentBackgroundAlpha="0">
+						<s:layout>
+							<layouts:FlowLayout />	
+						</s:layout>
+					</s:List>
+					<s:Group left="1" right="1" top="1" height="30">
+						<s:Rect left="0" right="0" top="0" bottom="0">
+							<s:fill>
+								<s:LinearGradient>
+									<s:GradientEntry color="#FFFFFF" />
+									<s:GradientEntry color="#F5F6F6" />
+								</s:LinearGradient>
+							</s:fill>
+							<s:stroke>
+								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+							</s:stroke>
+						</s:Rect>
+						<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
+							<s:Label id="countryTotal" text="Total: " />
+							<components:AutoComplete labelField="name" width="160" id="clientInput"/>
+							<s:Rect width="100%" />
+							<s:Button label="- Delete" color="0xC61023" id="deleteBtn2" />
+						</s:HGroup>
+					</s:Group>		
+				</s:Group>
+			</s:HGroup>		
+		</s:VGroup>	
+		
+	
+		
 		<s:Rect left="0" right="0"  bottom="40">
 			<s:stroke>
 				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />

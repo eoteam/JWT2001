@@ -2,35 +2,17 @@ package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
 	import com.pentagram.model.vo.DataRow;
-	import com.pentagram.utils.Colors;
 	
-	import flash.display.DisplayObject;
 	import flash.display.GradientType;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-	import flash.text.engine.ElementFormat;
-	import flash.text.engine.FontDescription;
-	import flash.text.engine.Kerning;
-	import flash.text.engine.RenderingMode;
-	import flash.text.engine.TextBlock;
-	import flash.text.engine.TextElement;
-	import flash.text.engine.TextLine;
 	
-	import mx.core.IFlexDisplayObject;
-	import mx.core.UIComponent;
 	import mx.events.ToolTipEvent;
 	import mx.graphics.IStroke;
 	import mx.graphics.Stroke;
-	
-	import spark.components.Button;
-	import spark.components.Group;
-	import spark.components.Label;
-	import spark.components.PopUpAnchor;
-	import spark.components.ToggleButton;
 	
 	public class CircleRenderer extends BaseRenderer
 	{
@@ -43,7 +25,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			textFormat = new TextFormat();
 			textFormat.font = "FlamaBookMx2";
-			textFormat.size = 14;
+			textFormat.size = 12;
 			textFormat.color = _textColor;
 			textFormat.align="left";
 			

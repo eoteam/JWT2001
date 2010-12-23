@@ -5,14 +5,12 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.OverviewEditor;
 	import com.pentagram.instance.view.editor.RegionDrawer;
-	import com.pentagram.model.AppModel;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.model.vo.Region;
-	import com.pentagram.main.event.ViewEvent;
 	
 	import flash.desktop.ClipboardFormats;
-	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;

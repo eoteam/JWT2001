@@ -2,12 +2,10 @@ package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
-	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
 	
 	import mx.rpc.events.ResultEvent;

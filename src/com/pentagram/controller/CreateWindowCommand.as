@@ -1,8 +1,8 @@
 package com.pentagram.controller
 {
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.main.windows.BaseWindow;
+	import com.pentagram.model.OpenWindowsProxy;
 	
 	import org.robotlegs.mvcs.Command;
 	

@@ -1,16 +1,12 @@
 package com.pentagram.controller
 {
-	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.InstanceWindowsProxy;
-	import com.pentagram.model.OpenWindowsProxy;
 	
 	import flash.display.NativeMenuItem;
 	import flash.display.NativeWindow;
-	
-	import mx.core.FlexGlobals;
 	
 	import org.robotlegs.mvcs.Command;
 	

@@ -291,7 +291,7 @@ package com.pentagram.model
 		}	
 		public var exportMenuItem:NativeMenuItem;
 		public var importMenuItem:NativeMenuItem;
-		
+		public var clientMenuItem:NativeMenuItem
 		public	function buildMenu(window:Window=null):Array {
 			//Arrange memu
 			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
@@ -366,7 +366,7 @@ package com.pentagram.model
 				window.stage.nativeWindow.menu.addItem(fileMenu);
 				window.stage.nativeWindow.menu.addItem(mroot);
 			}
-			
+			clientMenuItem = clients;
 			windowMenu.submenu.addItemAt(arrange,0);
 			windowMenu.submenu.addItem(fullScreen);
 			windowMenu.submenu.addItem(newWindow);		

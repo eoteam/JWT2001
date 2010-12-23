@@ -3,11 +3,10 @@ package com.pentagram.model
 	import com.ericfeminella.collections.HashMap;
 	import com.ericfeminella.collections.IMap;
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.utils.ViewUtils;
 	import com.pentagram.main.windows.BaseWindow;
+	import com.pentagram.utils.ViewUtils;
 	
 	import mx.collections.ArrayCollection;
-	import mx.utils.UIDUtil;
 	
 	import org.robotlegs.mvcs.Actor;
 	

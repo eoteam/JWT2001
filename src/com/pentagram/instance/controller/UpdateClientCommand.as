@@ -1,18 +1,12 @@
 package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.StatusResult;
-	import com.pentagram.services.interfaces.IAppService;
-	import com.pentagram.services.interfaces.IInstanceService;
-	
-	import flash.events.Event;
+	import com.pentagram.services.interfaces.IClientService;
 	
 	import mx.rpc.events.ResultEvent;
 	
@@ -24,7 +18,7 @@ package com.pentagram.instance.controller
 		public var model:InstanceModel;
 		
 		[Inject]
-		public var service:IInstanceService;
+		public var service:IClientService;
 		
 		[Inject]
 		public var event:EditorEvent;
@@ -34,14 +28,14 @@ package com.pentagram.instance.controller
 		override public function execute():void {
 			counter = total = 0;
 			if(model.client.modified) {
-				service.saveClientInfo();
+				service.saveClientInfo(model.client);
 				service.addHandlers(handleClientSaved);
 				//appService.addProperties("client",client);
 				total++;
 			}
 			var dataset:Dataset;
 			if(model.client.newCountries.length > 0) {
-				service.addClientCountries(model.client.newCountries);
+				service.addClientCountries(model.client,model.client.newCountries);
 				service.addHandlers(handleAddClientCountry);
 				total++;
 				for each(dataset in model.client.datasets.source) {
@@ -52,7 +46,7 @@ package com.pentagram.instance.controller
 				}
 			}
 			if(model.client.deletedCountries.length > 0) {
-				service.removeClientCountries(model.client.deletedCountries);
+				service.removeClientCountries(model.client,model.client.deletedCountries);
 				service.addHandlers(handleRemoveClientCountry);
 				total++;
 				for each(dataset in model.client.datasets.source) {

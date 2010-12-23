@@ -1,11 +1,8 @@
 package com.pentagram.controller
 {
-	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.InstanceWindowsProxy;
-	import com.pentagram.model.OpenWindowsProxy;
-	import com.pentagram.main.windows.BaseWindow;
 	
 	import mx.core.FlexGlobals;
 	

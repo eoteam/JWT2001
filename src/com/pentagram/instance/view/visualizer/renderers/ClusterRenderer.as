@@ -1,9 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
 	import com.pentagram.model.vo.DataRow;
-	
-	import flash.display.Sprite;
 	
 	public class ClusterRenderer extends CircleRenderer
 	{

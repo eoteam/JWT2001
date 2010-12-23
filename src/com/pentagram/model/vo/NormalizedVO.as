@@ -10,7 +10,7 @@ package com.pentagram.model.vo
 		public var name:String;
 		public var index:int;
 		public var alpha:Number=.7;
-		
+		public var shortname:String;
 		public var prevRadius:Number;
 		public var category:String;
 

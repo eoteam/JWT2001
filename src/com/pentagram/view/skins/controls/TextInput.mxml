@@ -30,6 +30,6 @@
 			</s:stroke>
 		</s:Rect>
 	</s:Group>
-	<s:RichEditableText color="#666666" fontFamily="Arial" fontSize="13" id="textDisplay" tabStops="S0 S50 S100 S150" 
+	<s:RichEditableText fontSize="13" id="textDisplay" tabStops="S0 S50 S100 S150" 
 	left="7" right="7" top="3" bottom="3" heightInLines="1"/>
 </s:Skin>

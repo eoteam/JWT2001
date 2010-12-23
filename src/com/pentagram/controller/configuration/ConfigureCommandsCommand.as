@@ -7,9 +7,11 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.InitInstanceCommand;
 	import com.pentagram.controller.RemoveInstanceWindowCommand;
 	import com.pentagram.controller.RemoveWindowCommand;
+	import com.pentagram.controller.UpdateClientCommand;
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	
 	import org.robotlegs.mvcs.Command;
@@ -22,6 +24,9 @@ package com.pentagram.controller.configuration
 			//after login, start sequence FSM
 			commandMap.mapEvent(AppEvent.STARTUP_BEGIN,StartupCommand,AppEvent); 
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
+			
+			//managers commands
+			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
 			
 			//instance commands
 			commandMap.mapEvent(InstanceWindowEvent.INIT_INSTANCE, InitInstanceCommand , InstanceWindowEvent );

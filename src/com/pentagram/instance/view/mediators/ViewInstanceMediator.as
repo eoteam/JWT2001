@@ -10,41 +10,23 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.editor.DatasetEditor;
 	import com.pentagram.instance.view.editor.EditorMainView;
 	import com.pentagram.instance.view.editor.OverviewEditor;
-	import com.pentagram.instance.view.mediators.ViewInstanceMediator;
-	import com.pentagram.instance.view.mediators.editor.DatasetCreatorMediator;
-	import com.pentagram.instance.view.mediators.editor.DatasetEditorMediator;
-	import com.pentagram.instance.view.mediators.editor.EditorMediator;
-	import com.pentagram.instance.view.mediators.editor.OverviewEditorMediator;
-	import com.pentagram.instance.view.mediators.shell.BottomBarMediator;
-	import com.pentagram.instance.view.mediators.shell.SearchViewMediator;
-	import com.pentagram.instance.view.mediators.shell.ShellMediator;
 	import com.pentagram.instance.view.shell.BottomBarView;
+	import com.pentagram.instance.view.shell.BottomToolsView;
+	import com.pentagram.instance.view.shell.RightToolsView;
 	import com.pentagram.instance.view.shell.SearchView;
 	import com.pentagram.instance.view.shell.ShellView;
 	import com.pentagram.main.event.ViewEvent;
-	import com.pentagram.main.windows.LoginWindow;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.OpenWindowsProxy;
-	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
 	
-	import flash.desktop.NativeApplication;
-	import flash.display.NativeMenu;
 	import flash.display.NativeWindow;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
-	import flash.events.FocusEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NativeWindowBoundsEvent;
-	import flash.events.NativeWindowDisplayStateEvent;
 	
-	import mx.core.FlexGlobals;
 	import mx.events.AIREvent;
-	import mx.events.FlexEvent;
-	import mx.events.ResizeEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
-	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
 	
 	public class ViewInstanceMediator extends Mediator
 	{
@@ -73,7 +55,7 @@ package com.pentagram.instance.view.mediators
 			
 			//view.systemManager.stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize);
 			//this.addViewListener("widthChanged",handleWindowResize			
-			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize);
+			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize,false,0,true);
 			//mediatorMap.createMediator(view.searchView);
 		} 
 		private function handleLogin(event:AppEvent):void
@@ -107,7 +89,10 @@ package com.pentagram.instance.view.mediators
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
 		}
 		private function handleClientSelected(event:ViewEvent):void {
-			view.currentState = view.visualizerAndLoadingState.name;
+			if(!model.client.loaded)
+				view.currentState = view.visualizerAndLoadingState.name;
+			else
+				view.currentState = view.visualizerAndLoadedState.name;
 			view.client = model.client;
 			view.title = model.client.name;
 			//mediatorMap.createMediator(view.shellView);
@@ -129,8 +114,8 @@ package com.pentagram.instance.view.mediators
 			trace("WTFFFF");
 		}
 		override public function onRemove():void {
-			mediatorMap.removeMediatorByView(view.searchView);
-			mediatorMap.removeMediatorByView(view.shellView);
+//			mediatorMap.removeMediatorByView(view.searchView);
+//			mediatorMap.removeMediatorByView(view.shellView);
 			model.clients = null;
 			model.regions = null;
 			model.countries = null;
@@ -138,6 +123,17 @@ package com.pentagram.instance.view.mediators
 			model.colors = null;
 			model.exportMenuItem = null;	
 			model.importMenuItem = null;
+			
+			mediatorMap.unmapView(SearchView);
+			mediatorMap.unmapView(BottomBarView);
+			mediatorMap.unmapView(ShellView);  
+			mediatorMap.unmapView(RightToolsView);
+			mediatorMap.unmapView(BottomToolsView);
+			
+			mediatorMap.unmapView(EditorMainView);
+			mediatorMap.unmapView(OverviewEditor);
+			mediatorMap.unmapView(DatasetCreator);
+			mediatorMap.unmapView(DatasetEditor);
 			super.onRemove();
 		}
 		private function handleCloseWindow(event:Event):void {

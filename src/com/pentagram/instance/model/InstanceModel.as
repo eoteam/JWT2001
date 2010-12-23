@@ -2,14 +2,12 @@ package com.pentagram.instance.model
 {
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
-	import com.pentagram.model.vo.DataCell;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.NormalizedVO;
 	import com.pentagram.model.vo.User;
 	
 	import flash.display.NativeMenuItem;
-	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
@@ -96,6 +94,7 @@ package com.pentagram.instance.model
 				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
 				var obj:NormalizedVO = new NormalizedVO(); 
 				obj.name = row.name;
+				obj.shortname = row.country.shortname;
 				obj.index = i;
 				
 				if(ds1.time == 1) 

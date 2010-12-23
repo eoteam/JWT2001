@@ -5,15 +5,12 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.BottomToolsView;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.Region;
-	import com.pentagram.utils.ViewUtils;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
-	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	

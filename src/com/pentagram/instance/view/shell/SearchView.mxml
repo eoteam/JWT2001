@@ -17,9 +17,7 @@
 			private function returnToSeach():void {
 				this.currentState = "search";
 			}
-			private function handleNewClient():void {
-				//trigger new window
-			}
+
 			private function handleInputSelect():void {
 				
 			}
@@ -66,7 +64,8 @@
 			<s:Label text="I'm sorry, that client is not in the database." styleName="errorText"/>
 			<s:HGroup>
 				<s:Button label="Redo Search" styleName="searchErrorButton" click="returnToSeach()" />
-				<s:Button label="Create New Client" styleName="searchErrorButton" click="handleNewClient()" />
+				<s:Button label="Create New Client" styleName="searchErrorButton"  enabled="{loggedIn}" id="newClientBtn"
+				creationComplete="this.dispatchEvent(new Event('notfoundState'))"  />
 			</s:HGroup>
 		</s:VGroup>
 	</s:Group>
@@ -76,5 +75,6 @@
 		<s:Fade alphaTo="1" duration="500" id="fadeIn2" target="{questionMark}" />	
 		<s:Power exponent="0.5" id="easeOutExpo2" />
 		<s:Power exponent="3" id="easeOutExpo"/>
+		<fx:Boolean id="loggedIn">false</fx:Boolean>
 	</fx:Declarations>
 </s:Group>

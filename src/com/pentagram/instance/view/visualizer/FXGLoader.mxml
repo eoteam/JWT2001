@@ -11,14 +11,9 @@
 	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
-			import com.greensock.layout.AlignMode;
-			import com.greensock.layout.AutoFitArea;
-			import com.greensock.layout.ScaleMode;
 			import com.pentagram.model.vo.Region;
 			
 			import fxgparser.FxgDisplay;
-			
-			import mx.utils.NameUtil;
 			
 			public var fxgSprite:FxgDisplay;
 			public var countries:Dictionary = new Dictionary();

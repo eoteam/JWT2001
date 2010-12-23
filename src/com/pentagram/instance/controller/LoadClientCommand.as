@@ -2,16 +2,12 @@ package com.pentagram.instance.controller
 {
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Category;
-	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.Region;
-	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IDatasetService;
-	import com.pentagram.services.interfaces.IInstanceService;
-	import com.pentagram.utils.ViewUtils;
+	import com.pentagram.services.interfaces.IClientService;
 	
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
@@ -21,7 +17,7 @@ package com.pentagram.instance.controller
 	public class LoadClientCommand extends Command
 	{
 		[Inject]
-		public var service:IInstanceService;
+		public var service:IClientService;
 		
 		[Inject]
 		public var datasetService:IDatasetService;
@@ -37,9 +33,9 @@ package com.pentagram.instance.controller
 		{
 			counter = 0;
 			if(!model.client.loaded) {
-				service.loadClientDatasets();
+				service.loadClientDatasets(model.client);
 				service.addHandlers(handleClientDatasets);
-				service.loadClientCountries();
+				service.loadClientCountries(model.client);
 				service.addHandlers(handleClientCountries);	
 			}
 			else {

@@ -1,24 +1,16 @@
 package com.pentagram.instance.view.mediators.editor
 {
-	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.EditorMainView;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.MimeType;
-	import com.pentagram.services.interfaces.IAppService;
-	import com.pentagram.services.interfaces.IInstanceService;
+	import com.pentagram.services.interfaces.IClientService;
 	
 	import flash.desktop.ClipboardFormats;
-	import flash.desktop.NativeApplication;
 	import flash.desktop.NativeDragManager;
-	import flash.display.NativeMenu;
-	import flash.display.NativeMenuItem;
-	import flash.display.NativeWindow;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -41,7 +33,7 @@ package com.pentagram.instance.view.mediators.editor
 		public var model:InstanceModel;
 
 		[Inject]
-		public var service:IInstanceService;
+		public var service:IClientService;
 		
 		
 		[Inject(name="ApplicationEventDispatcher")]

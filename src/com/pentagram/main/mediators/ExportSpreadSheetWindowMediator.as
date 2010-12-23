@@ -1,12 +1,11 @@
 package com.pentagram.main.mediators
 {
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.model.AppModel;
+	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.main.windows.ExportSpreadSheetWindow;
 	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
-	import com.pentagram.main.event.ViewEvent;
-	import com.pentagram.main.windows.ExportSpreadSheetWindow;
 	
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;

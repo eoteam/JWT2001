@@ -36,16 +36,16 @@ package com.pentagram.instance.controller.configuration
 		{
 			mediatorMap.mapView(InstanceWindow, ViewInstanceMediator);
 
-			mediatorMap.mapView(SearchView,	SearchViewMediator);
-			mediatorMap.mapView(BottomBarView,BottomBarMediator);
-			mediatorMap.mapView(ShellView,ShellMediator);
-			mediatorMap.mapView(RightToolsView, RightToolsMediator);
-			mediatorMap.mapView(BottomToolsView, BottomToolsMediator);
+			mediatorMap.mapView(SearchView,	SearchViewMediator,null,true,false);
+			mediatorMap.mapView(BottomBarView,BottomBarMediator,null,true,false);
+			mediatorMap.mapView(ShellView,ShellMediator,null,true,false);
+			mediatorMap.mapView(RightToolsView, RightToolsMediator,null,true,false);
+			mediatorMap.mapView(BottomToolsView, BottomToolsMediator,null,true,false);
 			
-			mediatorMap.mapView(EditorMainView,EditorMediator); 
-			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator);
-			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator); 
-			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator); 		
+			mediatorMap.mapView(EditorMainView,EditorMediator,null,true,false); 
+			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator,null,true,false);
+			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator,null,true,false); 
+			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator,null,true,false); 		
 						
 			trace("Configure Instance: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));

@@ -2,8 +2,8 @@ package com.pentagram.main.mediators
 {
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.model.AppModel;
 	import com.pentagram.main.windows.LoginWindow;
+	import com.pentagram.model.AppModel;
 	
 	import flash.events.Event;
 	import flash.events.MouseEvent;

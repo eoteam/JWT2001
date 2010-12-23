@@ -4,12 +4,9 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightToolsView;
 	import com.pentagram.model.vo.Category;
-	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.ViewUtils;
 	
 	import flash.events.Event;
-	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;

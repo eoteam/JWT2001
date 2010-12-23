@@ -12,17 +12,19 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	
-	import com.greensock.TweenNano;
-	
 	import flash.display.Graphics;
 	import flash.geom.Rectangle;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import mx.charts.ChartItem;
 	import mx.charts.chartClasses.GraphicsUtilities;
 	import mx.core.IDataRenderer;
+	import mx.core.UIComponent;
 	import mx.graphics.IFill;
 	import mx.graphics.IStroke;
 	import mx.graphics.SolidColor;
+	import mx.graphics.Stroke;
 	import mx.skins.ProgrammaticSkin;
 	import mx.utils.ColorUtil;
 	
@@ -39,10 +41,10 @@ package com.pentagram.instance.view.visualizer.renderers
 	 *  @playerversion AIR 1.1
 	 *  @productversion Flex 3
 	 */
-	public class BubbleRenderer extends ProgrammaticSkin
+	public class BubbleRenderer extends UIComponent
 		implements IDataRenderer
 	{
-		//include "../../core/Version.as";
+
 		
 		//--------------------------------------------------------------------------
 		//
@@ -72,6 +74,20 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function BubbleRenderer() 
 		{
 			super();
+			textFormat = new TextFormat();
+			textFormat.font = "FlamaBookMx2";
+			textFormat.size = 12;
+			textFormat.align="left";
+			
+			label = new TextField();
+			label.selectable = false;
+			
+			label.embedFonts = true;
+			label.mouseEnabled = false;
+			label.defaultTextFormat = textFormat;
+			this.addChild(label);
+			
+
 		}
 		
 		//--------------------------------------------------------------------------
@@ -105,29 +121,20 @@ package com.pentagram.instance.view.visualizer.renderers
 		{
 			return _data;
 		}
-		
+		protected var label:TextField;
+		protected var textFormat:TextFormat;
 		/**
 		 *  @private
 		 */
-		private var prevW:Number;
-		private var prevH:Number;
+
 		public function set data(value:Object):void
 		{
 			if (_data == value) { 
 				return;
-//				if(!_data.item.visible && this.alpha == 1) {
-//					prevW = width; prevH=height;
-//					TweenNano.to(this,.5,{width:0,height:0,onComplete:adjust,onUpdate:invalidateDisplayList});
-//				}
-//				else if(_data.item.visible && this.alpha == 0)
-//					TweenNano.to(this,.5,{alpha:1});
 			}
 			_data = value;
 		}
-		private function adjust():void {
-			alpha = 0;
-			width = prevW; height= prevH;
-		}
+
 		//--------------------------------------------------------------------------
 		//
 		//  Overridden methods
@@ -156,8 +163,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				fill = GraphicsUtilities.fillFromStyle(getStyle('fill'));
 			
 			
-			var color:uint = data.item.color;
-			var alpha:Number = data.item.alpha;
+			var color:uint = _data.item.color;
+			var alpha:Number = 0.2;//data.item.alpha;
 			var adjustedRadius:Number = 0;
 			
 			switch (state)
@@ -188,7 +195,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			//fill = new SolidColor(color,data.item.alpha);
 			var stroke:IStroke = getStyle("stroke");
-			
+			Stroke(stroke).color = color;
+			Stroke(stroke).alpha = 1;
 			var w:Number = stroke ? stroke.weight / 2 : 0;
 			
 			rcFill.right = unscaledWidth;
@@ -204,6 +212,18 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			if (fill)
 				fill.end(g);
+	
+			
+				textFormat.color = color;
+				label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
+				label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
+				label.text = _data.item.shortname;
+				label.defaultTextFormat = textFormat;
+			if(unscaledWidth - 2 * w + adjustedRadius * 2 > 0) {	
+				this.visible = true;
+			}
+			else
+				this.visible = false;
 		}
 	}
 	

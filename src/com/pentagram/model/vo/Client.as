@@ -26,9 +26,13 @@ package com.pentagram.model.vo
 		
 		
 		public var loaded:Boolean = false;
+		public var created:Boolean = true;
 		
 		public var tags:String='';
 		public var relatedcontent:String;
 		
+		public function Client(created:Boolean = true) {
+			this.created = created;
+		}
 	}
 }

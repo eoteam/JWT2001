@@ -2,8 +2,6 @@ package com.pentagram.model
 {
 	import com.pentagram.model.vo.User;
 	
-	import flash.display.NativeMenuItem;
-	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;

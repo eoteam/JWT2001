@@ -1,48 +1,48 @@
 package com.pentagram.services
 {
 	import com.pentagram.instance.model.InstanceModel;
+	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
-	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.services.interfaces.IInstanceService;
+	import com.pentagram.services.interfaces.IClientService;
 	
 	import mx.collections.ArrayList;
 
-	public class InstanceService extends AbstractService implements IInstanceService
+	public class ClientService extends AbstractService implements IClientService
 	{
-		[Inject]
-		public var model:InstanceModel;
+//		[Inject]
+//		public var model:InstanceModel;
 		
-		public function loadClientDatasets():void {
+		public function loadClientDatasets(client:Client):void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "datasets";
-			params.contentid = model.client.id;
+			params.contentid = client.id;
 			params.deleted = 0;
 			this.createService(params,ResponseType.DATA,Dataset);
 		}
-		public function loadClientCountries():void {
+		public function loadClientCountries(client:Client):void {
 			var params:Object = new Object();
 			params.action = "getData";
 			params.tablename = "client_countries";
-			params.clientid = model.client.id;
+			params.clientid = client.id;
 			this.createService(params,ResponseType.DATA);	
 		}
-		public function saveClientInfo():void {
+		public function saveClientInfo(client:Client):void {
 			var params:Object = new Object();
-			for each(var prop:String in model.client.modifiedProps) {
-				params[prop] = model.client[prop];
+			for each(var prop:String in client.modifiedProps) {
+				params[prop] = client[prop];
 			}
 			params.action = "updateRecord";
 			params.tablename = "content";
-			params.id = model.client.id;
+			params.id = client.id;
 			this.createService(params,ResponseType.STATUS);
 		}
-		public function addClientCountries(countries:ArrayList):void {
+		public function addClientCountries(client:Client,countries:ArrayList):void {
 			var params:Object = new Object();
 			params.action = "insertRecordsByKey";
 			params.tablename = "client_countries";
-			params.clientid = model.client.id;
+			params.clientid = client.id;
 			params.manyfield = 'countryid';
 			var manyids:String = '';
 			for each(var country:Country in countries.source)
@@ -65,11 +65,11 @@ package com.pentagram.services
 		}
 
 		
-		public function removeClientCountries(countries:ArrayList):void {
+		public function removeClientCountries(client:Client,countries:ArrayList):void {
 			var params:Object = new Object();
 			params.action = "deleteRecords";
 			params.tablename = "client_countries";
-			params.clientid = model.client.id;
+			params.clientid = client.id;
 			params.idfield = 'countryid';
 			var manyids:String = '';
 			for each(var country:Country in countries.source)

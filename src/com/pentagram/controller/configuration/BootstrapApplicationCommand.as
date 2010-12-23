@@ -14,7 +14,7 @@
 package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
-
+	
 	import org.robotlegs.mvcs.Command;
 	import org.robotlegs.utilities.statemachine.FSMInjector;
 	import org.robotlegs.utilities.statemachine.StateEvent;

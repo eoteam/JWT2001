@@ -11,6 +11,7 @@
 				 contentBackgroundAlpha="0"  >
 	<fx:Script>
 		<![CDATA[
+			import mx.charts.HitData;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -20,15 +21,12 @@
 			import com.pentagram.utils.ViewUtils;
 			
 			import mx.charts.AxisRenderer;
-			import mx.charts.BubbleChart;
 			import mx.charts.CategoryAxis;
 			import mx.charts.LinearAxis;
 			import mx.charts.chartClasses.IAxis;
 			import mx.charts.series.BubbleSeries;
 			import mx.collections.ArrayCollection;
-			import mx.core.UIComponent;
 			import mx.events.FlexEvent;
-			import mx.events.ResizeEvent;
 			import mx.graphics.SolidColorStroke;
 			
 			private var  ds1:Dataset;
@@ -168,7 +166,16 @@
 			{
 				this.doVisualize();
 			}
-
+			public function dtFunc(hd:HitData):String {
+				var item:NormalizedVO = hd.item as NormalizedVO;
+				var result:String = '';
+				result +=  ds1.name + ": " + item.x + "\n";
+				result +=  ds2.name + ": " + item.y + "\n";
+				if(ds3) result +=  ds3.name + ": " + Math.round(item.radius*ds3.max) + "\n";
+				if(ds4) result +=  ds4.name + ": " + item.category;
+				return result;
+				
+			}
 		]]>
 	</fx:Script>
 	<fx:Style>
@@ -209,10 +216,10 @@
 			<mx:tickStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
 			</mx:tickStroke>
-		</mx:AxisRenderer>		
+		</mx:AxisRenderer>
 	</fx:Declarations>
 	
-	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" showDataTips="true" id="chart"
+	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
 	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20" dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
 		<chart:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 

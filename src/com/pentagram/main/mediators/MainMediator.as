@@ -1,7 +1,6 @@
 package com.pentagram.main.mediators
 {
 	import com.pentagram.events.AppEvent;
-	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.AppModel;
@@ -9,22 +8,12 @@ package com.pentagram.main.mediators
 	import com.pentagram.model.OpenWindowsProxy;
 	
 	import flash.desktop.NativeApplication;
-	import flash.display.NativeMenu;
-	import flash.display.NativeMenuItem;
-	import flash.display.NativeWindow;
-	import flash.display.StageDisplayState;
 	import flash.events.Event;
-	import flash.events.StatusEvent;
 	import flash.events.TimerEvent;
 	import flash.system.System;
-	import flash.ui.Keyboard;
 	import flash.utils.Timer;
 	
-	import mx.events.FlexEvent;
-	
-	import org.robotlegs.core.IMediator;
 	import org.robotlegs.mvcs.Mediator;
-	import org.robotlegs.utilities.modular.mvcs.ModuleMediator;
 	
 	public class MainMediator extends Mediator
 	{
@@ -43,6 +32,7 @@ package com.pentagram.main.mediators
 		public override function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
+			eventMap.mapListener(eventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_CLOSED,handleWindowClosed);
 			
@@ -56,25 +46,27 @@ package com.pentagram.main.mediators
 		private function handleNetworkOn(event:Event):void {
 			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
 		}
-		protected function handleWindowFocus(event:InstanceWindowEvent):void {
+		private function handleWindowFocus(event:InstanceWindowEvent):void {
 			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
 			instanceWindowModel.currentWindow = window;
 		}
-		protected function handleStartUp(event:Event):void {
+		private function handleStartUp(event:Event):void {
 			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
 		}
 		// Handle Menu item selection
-
+		private function handleLogin(event:AppEvent):void {
+			instanceWindowModel.clientMenuItem.enabled = true;
+		}
 
 		// Called when application window closes
-		protected function onAppWinClose(e:Event):void
+		private function onAppWinClose(e:Event):void
 		{
 			//trace("Handling application window close event");
 			closeOpenWindows(e);
 		}
 		
 		// Closes all open windows
-		protected function closeOpenWindows(e:Event):void
+		private function closeOpenWindows(e:Event):void
 		{
 			// This code can be uncommented to prevent the default close action from occurringand first call the close method on each open window to
 			// perform any actions needed. Closes each from most recently opened to oldest.

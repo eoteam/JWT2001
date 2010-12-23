@@ -1,13 +1,12 @@
 package com.pentagram.instance
 {
 	import com.pentagram.instance.controller.configuration.BootstrapInstanceCommand;
+	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
 	
-	import mx.core.FlexGlobals;
-	
-	import org.robotlegs.mvcs.Context;
 	import org.robotlegs.base.ContextEvent;
+	import org.robotlegs.mvcs.Context;
 		
 	public class InstanceContext extends Context
 	{

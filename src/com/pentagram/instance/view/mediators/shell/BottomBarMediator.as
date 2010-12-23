@@ -1,20 +1,13 @@
 package com.pentagram.instance.view.mediators.shell
 {
-	import com.pentagram.controller.Constants;
-	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.BottomBarView;
-	import com.pentagram.model.AppModel;
-	import com.pentagram.model.OpenWindowsProxy;
 	import com.pentagram.model.vo.Client;
-	import com.pentagram.main.event.ViewEvent;
 	
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
-	
-	import mx.collections.ArrayCollection;
 	
 	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;

@@ -73,10 +73,8 @@
 					<s:Button label="Change Logo" />
 					<s:Button label="Download Logo" />
 				</s:HGroup>
-				
 			</s:Group>		
 		</s:Group>
-		
 	</s:HGroup>		
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  

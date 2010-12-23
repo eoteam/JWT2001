@@ -1,7 +1,6 @@
 package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IDatasetService;
