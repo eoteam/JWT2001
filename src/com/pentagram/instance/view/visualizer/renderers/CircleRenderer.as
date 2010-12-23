@@ -40,6 +40,21 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		public function CircleRenderer():void {
 			super();
+			
+			textFormat = new TextFormat();
+			textFormat.font = "FlamaBookMx2";
+			textFormat.size = 14;
+			textFormat.color = _textColor;
+			textFormat.align="left";
+			
+			label = new TextField();
+			label.selectable = false;
+			
+			label.embedFonts = true;
+			label.mouseEnabled = false;
+			label.defaultTextFormat = textFormat;
+			this.addChild(label);
+			
 			addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
 			addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
 			addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
@@ -64,14 +79,13 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { 
 			_data = d; 
-			fillColor = d.country.region.color;
+			fillColor = textColor = d.country.region.color;
 		}
-		
 		public function set state(value:Boolean):void {
-			
 			if(value && !stateFlag)
 				dirtyFlag = true;
 			stateFlag = value;
+			this.invalidateDisplayList();
 		}
 		public function get state():Boolean {
 			return stateFlag;
@@ -101,7 +115,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				draw();
 			else if(!stateFlag) {
 				this.graphics.clear();
-				label.visible = false;
+				if(label)
+					label.visible = false;
 			}
 		}
 		protected function draw():void {
@@ -124,7 +139,8 @@ package com.pentagram.instance.view.visualizer.renderers
 //			graphics.drawRect(0,-_radius,1,_radius*2);
 //			graphics.endFill();
 			//textFormat.color = _fillColor;
-			textFormat.color = _fillColor;
+			
+			textFormat.color = _textColor;
 			label.x = -label.textWidth/2;
 			label.y = -label.textHeight/2;
 			label.text = _data.country.shortname;
@@ -139,7 +155,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			var ptt:RendererToolTip = new RendererToolTip();
 			ptt.bodyText = _data.country.shortname;
 			event.toolTip = ptt;	
-			trace(x,y,width,height);
+			//trace(x,y,width,height);
 		}
 		
 		private function positionTip(event:ToolTipEvent):void{
@@ -183,19 +199,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 		}
 		private function addedToStageHandler(event:Event):void {
-			textFormat = new TextFormat();
-			textFormat.font = "FlamaBookMx2";
-			textFormat.size = 14;
-			textFormat.color = 0xffffff;
-			textFormat.align="left";
-			
-			label = new TextField();
-			label.selectable = false;
-			
-			label.embedFonts = true;
-			label.mouseEnabled = false;
-			label.defaultTextFormat = textFormat;
-			this.addChild(label);
+
 		}
 				
 	}

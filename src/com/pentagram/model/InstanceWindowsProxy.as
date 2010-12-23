@@ -38,9 +38,11 @@ package com.pentagram.model
 		public var appModel:AppModel;
 		
 		protected var windowMap:IMap;
+		
 		public var currentWindow:InstanceWindow;
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
+		public const CLIENT_WINDOW:String = "clientWindow";
 		
 		public function InstanceWindowsProxy()
 		{
@@ -291,6 +293,7 @@ package com.pentagram.model
 		public var importMenuItem:NativeMenuItem;
 		
 		public	function buildMenu(window:Window=null):Array {
+			//Arrange memu
 			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
 			arrange.submenu = new NativeMenu();
 			
@@ -308,6 +311,12 @@ package com.pentagram.model
 			arrange.submenu.addItem(cascade);
 			cascade.addEventListener(Event.SELECT,handleArrange);
 			
+			//Manager Menu Items
+			var clients:NativeMenuItem = new NativeMenuItem("Clients");
+			clients.addEventListener(Event.SELECT,handleClient);
+			clients.enabled = false;
+			
+			//Item within Window Menu
 			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
 			newWindow.keyEquivalent = "n";
 			newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
@@ -318,6 +327,7 @@ package com.pentagram.model
 			fullScreen.keyEquivalentModifiers = [Keyboard.COMMAND];			
 			fullScreen.addEventListener(Event.SELECT,onItemSelect);
 			
+			//Items within File Menu
 			var exp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
 			exp.addEventListener(Event.SELECT,handleExportMenu);
 			exp.enabled = false;
@@ -328,11 +338,15 @@ package com.pentagram.model
 			
 			var windowMenu:NativeMenuItem;
 			var fileMenu:NativeMenuItem;
-			
+			var managers:NativeMenu = new NativeMenu();
+	
 			if (NativeApplication.supportsMenu) {
 				var m:NativeMenu = NativeApplication.nativeApplication.menu;
 				windowMenu = m.items[3] as NativeMenuItem;
 				fileMenu = m.items[1] as NativeMenuItem;
+				
+				m.addSubmenu(managers,"Managers");
+		
 				exportMenuItem = exp;
 				importMenuItem  = imp;
 				
@@ -344,9 +358,13 @@ package com.pentagram.model
 				windowMenu.submenu = new NativeMenu();
 				fileMenu = new NativeMenuItem("File");
 				fileMenu.submenu = new NativeMenu();
+
+				var mroot:NativeMenuItem = new NativeMenuItem("Managers");
+				mroot.submenu = managers; 
 				
 				window.stage.nativeWindow.menu.addItem(windowMenu);
 				window.stage.nativeWindow.menu.addItem(fileMenu);
+				window.stage.nativeWindow.menu.addItem(mroot);
 			}
 			
 			windowMenu.submenu.addItemAt(arrange,0);
@@ -355,6 +373,9 @@ package com.pentagram.model
 			
 			fileMenu.submenu.addItemAt(exp,0);	
 			fileMenu.submenu.addItemAt(imp,0);
+			
+			managers.addItem(clients);
+			
 			
 			return [exp,imp];
 		}
@@ -385,5 +406,9 @@ package com.pentagram.model
 		private function handleImportMenu(event:Event):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT)); 
 		}
+		private function handleClient(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,CLIENT_WINDOW));
+		}
+									 
 	}
 }

@@ -21,6 +21,7 @@ package com.pentagram.model
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
+		public const CLIENT_WINDOW:String = "clientWindow";
 		/**
 		 * Hash of currently open windows
 		 */
@@ -33,6 +34,7 @@ package com.pentagram.model
 			viewsMap = new HashMap();
 			viewsMap.put(LOGIN_WINDOW,"com.pentagram.main.windows.LoginWindow");
 			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.main.windows.ExportSpreadSheetWindow");
+			viewsMap.put(CLIENT_WINDOW,"com.pentagram.main.windows.ClientListWindow");
 		}
 		
 		/**

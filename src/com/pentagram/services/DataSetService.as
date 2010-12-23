@@ -9,8 +9,8 @@ package com.pentagram.services
 	
 	import mx.utils.StringUtil;
 	
-
-
+	
+	
 	public class DatasetService extends AbstractService implements IDatasetService
 	{
 		[Inject]
@@ -68,7 +68,7 @@ package com.pentagram.services
 			params.tablename = row.dataset.tablename;
 			params.countryid = row.country.id;
 			for each(var prop:String in row.modifiedProps)
-				params[prop.toString()] = row[prop];
+			params[prop.toString()] = row[prop];
 			this.createService(params,ResponseType.STATUS);
 		}
 	}

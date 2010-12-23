@@ -11,6 +11,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		{
 			super();
 			this.fillAlpha = 1;
+			this.textColor = 0xffffffff;
 		}
 		public var radiusBeforeRendering:Number;
 		public var data2:DataRow;

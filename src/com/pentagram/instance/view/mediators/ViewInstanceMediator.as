@@ -92,7 +92,6 @@ package com.pentagram.instance.view.mediators
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
 			//eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
-			
 			if(NativeWindow.supportsMenu) {
 				
 				view.showStatusBar = false;
@@ -110,6 +109,7 @@ package com.pentagram.instance.view.mediators
 		private function handleClientSelected(event:ViewEvent):void {
 			view.currentState = view.visualizerAndLoadingState.name;
 			view.client = model.client;
+			view.title = model.client.name;
 			//mediatorMap.createMediator(view.shellView);
 			//selectedClient = event.args[0] as Client;
 		}

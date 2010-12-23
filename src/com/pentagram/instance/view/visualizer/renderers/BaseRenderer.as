@@ -16,6 +16,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;
 		protected var _fillColor:uint = 0xffcccccc;
+		protected var _textColor:uint = 0xffcccccc;
 		protected var _fillAlpha:Number = 0.25;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
@@ -38,6 +39,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			}		
 			public function get fillColor():uint { return _fillColor; }
 			public function set fillColor(c:uint):void { _fillColor = c; dirty();	}
+			
+			public function get textColor():uint { return _textColor; }
+			public function set textColor(c:uint):void { _textColor = c; dirty();	}
 			
 			public function get fillAlpha():Number { return _fillAlpha; }//Colors.a(_fillColor) / 255; }
 			public function set fillAlpha(a:Number):void {

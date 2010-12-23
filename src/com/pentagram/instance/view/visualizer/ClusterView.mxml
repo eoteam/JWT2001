@@ -215,8 +215,9 @@
 
 		]]>
 	</fx:Script>
-	<modules:layout>
-		<s:HorizontalLayout gap="2" verticalAlign="middle" />
-	</modules:layout>
+
+		<modules:layout>
+			<s:HorizontalLayout gap="2" verticalAlign="middle" />
+		</modules:layout>		
 
 </modules:Module>

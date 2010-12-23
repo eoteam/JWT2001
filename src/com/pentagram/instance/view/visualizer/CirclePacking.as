@@ -37,7 +37,9 @@ package com.pentagram.instance.view.visualizer
 				sprite.data = numberList[counter].data;
 				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
+				sprite.textColor = 0xffffffff;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
+				sprite.scaleX= -1;
 				spriteArray.push(sprite);
 				this.addChild(sprite);
 				counter++;
@@ -106,8 +108,8 @@ package com.pentagram.instance.view.visualizer
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
 				c.state = true;
-				c.radius = this.circlePositions[i].z * _loc_2;
-				TweenNano.to(c,.5,{
+				trace(this.circlePositions[i].z * _loc_2 * scaler);
+				TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
 								   x: this.circlePositions[i].x * _loc_2,
 								   y: this.circlePositions[i].y * _loc_2});
 				i++;
@@ -115,7 +117,7 @@ package com.pentagram.instance.view.visualizer
 			//cacheAsBitmap = true;
 		}
 		public function resize():void {
-			this.invalidateParentSizeAndDisplayList();
+			//this.invalidateParentSizeAndDisplayList();
 		}
 	}
 }		

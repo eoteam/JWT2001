@@ -21,5 +21,10 @@ package com.pentagram.instance.view.visualizer.renderers
 				//TweenNano.to(this,0.2,{x:pt.x,y:pt.y});	
 			}
 		}
+		override public function set fillAlpha(value:Number):void {
+			super.fillAlpha = value;
+			if(value == 1)
+				textColor = 0xffffffff;
+		}
 	}
 }
