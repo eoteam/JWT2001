@@ -6,6 +6,10 @@ package com.pentagram.services
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IDatasetService;
+	
+	import mx.utils.StringUtil;
+	
+
 
 	public class DatasetService extends AbstractService implements IDatasetService
 	{
@@ -23,7 +27,7 @@ package com.pentagram.services
 			var params:Object = new Object();
 			params.action = "createDataset";
 			params.contentid = model.client.id;
-			params.tablename = String(model.client.shortname+'_'+dataset.name).toLowerCase();
+			params.tablename = String(model.client.shortname+'_'+ dataset.name.split(' ').join('')).toLowerCase();
 			params.name = dataset.name;
 			var countryids:String = '';
 			for each(var country:Country in model.client.countries.source) {
@@ -60,9 +64,9 @@ package com.pentagram.services
 		}
 		public function updateDataRow(row:DataRow):void {
 			var params:Object = new Object();
-			params.action = "updateRecord";
+			params.action = "updateDatasetRow";
 			params.tablename = row.dataset.tablename;
-			params.id = row.id;
+			params.countryid = row.country.id;
 			for each(var prop:String in row.modifiedProps)
 				params[prop.toString()] = row[prop];
 			this.createService(params,ResponseType.STATUS);

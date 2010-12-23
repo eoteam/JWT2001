@@ -93,8 +93,8 @@ package com.pentagram.instance.controller
 						var row:DataRow = new DataRow();
 						row = new DataRow();
 						row.name = country.name;
-						row.xcoord = country.xcoord/849;
-						row.ycoord = -country.ycoord/337;
+//						row.xcoord = country.xcoord/849;
+//						row.ycoord = -country.ycoord/337;
 						row.country = country;
 						row.id = Number(item.id);
 						row.color = country.region.color;

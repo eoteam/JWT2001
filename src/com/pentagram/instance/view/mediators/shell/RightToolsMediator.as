@@ -35,7 +35,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
-			
+			view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
 		}
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
@@ -112,7 +112,7 @@ package com.pentagram.instance.view.mediators.shell
 			}	
 		}
 		private function handleXray(event:Event):void {
-			var alpha:Number = view.xrayToggle.selected?0.7:1;
+			var alpha:Number = view.xrayToggle.selected?0.2:1;
 			dispatchPropEvent('alpha',alpha);
 		}
 		private function handleMapToggle(event:Event):void {

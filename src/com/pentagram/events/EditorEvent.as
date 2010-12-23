@@ -8,6 +8,7 @@ package com.pentagram.events
 		public static const CLIENT_DATA_UPDATED:String = "clientDataUpdated";
 		
 		public static const CREATE_DATASET:String = "createDataset";
+		public static const DUMP_DATASET_DATA:String = "dumpDatasetData";
 		public static const DATASET_CREATED:String = "datasetCreated";
 		
 		public static const DELETE_DATASET:String = "deleteDataset";

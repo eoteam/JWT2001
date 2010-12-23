@@ -91,16 +91,18 @@
 							r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
 					}
 					c = renderersDictionary[row.country.shortname];
-					if(world.countries[row.country.shortname]) {
-						c.countrySprite = world.countries[row.country.shortname];
-						if(firstLoad)
-							c.alpha = 0;
-						c.state = true;
-						c.dirtyCoordinates();
-						c.dirty();
-					}	
-					c.data = row;
-					c.radius = r;			
+					if(c) {
+						if(world.countries[row.country.shortname]) {
+							c.countrySprite = world.countries[row.country.shortname];
+							if(firstLoad)
+								c.alpha = 0;
+							c.state = true;
+							c.dirtyCoordinates();
+							c.dirty();
+						}	
+						c.data = row;
+						c.radius = r;
+					}
 				}
 				firstLoad = false;
 				firstPass = false;

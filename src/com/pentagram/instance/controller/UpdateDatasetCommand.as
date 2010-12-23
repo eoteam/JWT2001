@@ -62,24 +62,22 @@
 			}
 		}
 		private function updateMinMax():void {
-			var max:Number = model.selectedSet.max; 
-			var min:Number = model.selectedSet.min;
 			for each(var row:DataRow in model.selectedSet.rows) {
 				if(model.selectedSet.time == 1) {
-					for (var i:int=model.selectedSet.years[0];i<=model.selectedSet.years[1];i++) {
-						if(row[i] < min) {
+					for (var i:int = model.selectedSet.years[0];i<= model.selectedSet.years[1];i++) {
+						if(row[i] < model.selectedSet.min) {
 							setPropChanged("min",row[i]);
 						}
-						else if(row[i] > max) {
+						if(row[i] > model.selectedSet.max) {
 							setPropChanged("max",row[i]);
 						}			
 					}
 				}
 				else {
-					if(row.value < min) {
+					if(row.value < model.selectedSet.min) {
 						setPropChanged("min",row.value);
 					}
-					else if(row.value > max) {
+					else if(row.value > model.selectedSet.max) {
 						setPropChanged("min",row.value);
 					}
 				}

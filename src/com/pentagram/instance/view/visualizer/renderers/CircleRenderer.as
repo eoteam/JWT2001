@@ -22,6 +22,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	
 	import mx.core.IFlexDisplayObject;
 	import mx.core.UIComponent;
+	import mx.events.ToolTipEvent;
 	import mx.graphics.IStroke;
 	import mx.graphics.Stroke;
 	
@@ -45,6 +46,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			addEventListener(MouseEvent.CLICK, mouseEventHandler);
 			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.toolTip = " ";
+			this.addEventListener(ToolTipEvent.TOOL_TIP_CREATE,createToolTip);
+			this.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
 		}
 		
 		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
@@ -56,12 +60,11 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var dirtyCoordFlag:Boolean = false;
 		protected var _data:DataRow;
 	
-		private var popUp:RendererToolTip;
 	
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { 
 			_data = d; 
-			fillColor = d.country.region.color;		
+			fillColor = d.country.region.color;
 		}
 		
 		public function set state(value:Boolean):void {
@@ -98,6 +101,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				draw();
 			else if(!stateFlag) {
 				this.graphics.clear();
+				label.visible = false;
 			}
 		}
 		protected function draw():void {
@@ -120,31 +124,45 @@ package com.pentagram.instance.view.visualizer.renderers
 //			graphics.drawRect(0,-_radius,1,_radius*2);
 //			graphics.endFill();
 			//textFormat.color = _fillColor;
+			textFormat.color = _fillColor;
 			label.x = -label.textWidth/2;
 			label.y = -label.textHeight/2;
 			label.text = _data.country.shortname;
 			label.defaultTextFormat = textFormat;
+			label.visible = true;
 			if(this.alpha == 0) {
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
+				
 			}
-		}		
+		}	
+		protected function createToolTip(event:ToolTipEvent):void {
+			var ptt:RendererToolTip = new RendererToolTip();
+			ptt.bodyText = _data.country.shortname;
+			event.toolTip = ptt;	
+			trace(x,y,width,height);
+		}
+		
+		private function positionTip(event:ToolTipEvent):void{
+//			event.toolTip.x=event.currentTarget.x + event.currentTarget.width + 10;
+//			event.toolTip.y=event.currentTarget.y;
+		}
 		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					popUp.displayPopUp = true;	
+					//popUp.displayPopUp = true;	
 					break;
 				}
 					
 				case MouseEvent.ROLL_OUT:
-				{
+				{	
 					//trace(this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true),popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true));
 					//var v1:Boolean = this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
 //					var v2:Boolean = popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
 //					if(!v2)
-						popUp.displayPopUp = false;
+					//	popUp.displayPopUp = false;
 					break;
 				}
 					
@@ -163,19 +181,14 @@ package com.pentagram.instance.view.visualizer.renderers
 					
 				}
 			}
-
 		}
-
 		private function addedToStageHandler(event:Event):void {
-			popUp = new RendererToolTip();
-			this.addChild(popUp);			
-
 			textFormat = new TextFormat();
 			textFormat.font = "FlamaBookMx2";
 			textFormat.size = 14;
 			textFormat.color = 0xffffff;
 			textFormat.align="left";
-				
+			
 			label = new TextField();
 			label.selectable = false;
 			

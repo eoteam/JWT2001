@@ -44,29 +44,41 @@ package com.pentagram.instance.controller
 					dataset.range = dataset.years[0].toString()+','+dataset.years[1].toString();
 				var country:Country;
 				var row:DataRow;
-				if(dataset.time == 1) {
-					for each(country in model.client.countries.source) {
-						row = new DataRow();
-						row.name = country.name;
-						row.dataset = dataset;
-						for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-							row[i.toString()] = dataset.type == 1 ? 0:'';
+				if(dataset.rows.length == 0 ) {
+					if(dataset.time == 1) {
+						for each(country in model.client.countries.source) {
+							row = new DataRow();
+							row.name = country.name;
+							row.dataset = dataset;
+							row.country = country;
+							for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+								row[i.toString()] = dataset.type == 1 ? 0:'';
+							}
+							dataset.rows.addItem(row);
 						}
-						dataset.rows.addItem(row);
+					}				
+					else {
+						for each(country in model.client.countries.source) {
+							row = new DataRow();
+							row.name = country.name;
+							row.country = country;
+							row.value = dataset.type == 1 ? 0:'';
+							row.dataset = dataset;
+							dataset.rows.addItem(row);
+						}
 					}
+					
+					eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_CREATED,dataset));
 				}
-				
 				else {
-					for each(country in model.client.countries.source) {
-						row = new DataRow();
-						row.name = country.name;
-						row.value = dataset.type == 1 ? 0:'';
-						row.dataset = dataset;
-						dataset.rows.addItem(row);
-					}
+					this.dispatch(new EditorEvent(EditorEvent.DUMP_DATASET_DATA,dataset));
 				}
+				if(dataset.type == 1)
+					model.client.quantityDatasets.addItem(dataset);
+				else
+					model.client.quantityDatasets.addItem(dataset);
 				model.client.datasets.addItem(dataset);
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_CREATED,dataset));
+				
 			}
 		}
 	}

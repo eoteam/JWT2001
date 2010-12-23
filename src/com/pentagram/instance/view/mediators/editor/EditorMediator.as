@@ -94,6 +94,7 @@ package com.pentagram.instance.view.mediators.editor
 			view.dataSetList.selectedItem = dataset;
 			model.selectedSet = view.dataSetList.selectedItem as Dataset;
 			view.statusModule.updateStatus("Data Set Created");
+			
 			if(view.datasetEditor) {
 				view.datasetEditor.dataset = dataset;
 				view.datasetEditor.generateDataset();
@@ -215,24 +216,35 @@ package com.pentagram.instance.view.mediators.editor
 						if(countryName == country.name) {
 							var row:DataRow = new DataRow();
 							row.name = countryName;
+							row.dataset = dataset;
+							row.country = country;
+						
 							//values are now after ",	
 							var values:Array;
+							var cleanValue:String;
 							if(offset == 1)
 								values = arr[1].toString().split(',');
 							else
 								values = arr.slice(1,arr.length);
+							
 							if(dataset.time == 1) {
 								if(values.length <= fields.length-1) {
-									for(j=offset;j<values.length;j++) {
-										row[fields[j].toString()] = values[j-1];
-										if(values[j-1] != '0' && Number(values[j-1]) > 0) {
-											//isNumeric = true;
-										}
-										else
+									for(j=1;j<values.length;j++) {
+										cleanValue = values[j-1].toString().split('"').join('');
+										row.modifiedProps.push(fields[j].toString());
+										
+										if(Number(cleanValue) > 0 || cleanValue == "0") {
 											isNumeric = 1;
+											row[fields[j].toString()] = Number(cleanValue);
+										}
+										else {
+											isNumeric = 0;
+											row[fields[j].toString()] = cleanValue;
+										}
 									}
+									//if the row is shorter than the number of columns
 									for(j=values.length;j<fields.length;j++) {
-										row[fields[j].toString()] = ''
+										row[fields[j].toString()] = isNumeric == 1 ? 0:'';
 									}
 								}
 								else {
@@ -240,13 +252,20 @@ package com.pentagram.instance.view.mediators.editor
 									return;
 								}
 							}
+							
+							
 							else {
-								if(arr[1] != '0' && Number(arr[1]) > 0) {
-									//isNumeric = true;
-								}
-								else
+								cleanValue = arr[1].toString().split('"').join('');	
+								row.modifiedProps.push('value');
+								if(Number(cleanValue) > 0 || cleanValue == "0") {
 									isNumeric = 1;
-								row.value = arr[1];
+									row.value = Number(cleanValue);
+									
+								}
+								else {
+									isNumeric = 0;
+									row.value = cleanValue;
+								}								
 							}
 							dataset.rows.addItem(row);
 							countryFound = true;
@@ -255,7 +274,7 @@ package com.pentagram.instance.view.mediators.editor
 					}
 					if(!countryFound) {
 						eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Country Not Found"));
-						return;
+						//return;
 					}
 				}
 			}

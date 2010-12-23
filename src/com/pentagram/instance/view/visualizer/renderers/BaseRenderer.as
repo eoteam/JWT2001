@@ -6,6 +6,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.containers.Canvas;
 	import mx.core.UIComponent;
 
 	internal class BaseRenderer extends UIComponent
@@ -105,8 +106,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 				return distance;
 			}  
-			public function dirty():void {
-				//throw exception
+			public function dirty():void { 
+				
 			}
 	}
 }

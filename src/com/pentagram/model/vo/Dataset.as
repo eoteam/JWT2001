@@ -16,8 +16,8 @@ package com.pentagram.model.vo
 		public var type:uint;
 		public var tablename:String; //name of table
 		public var description:String;
-		public var min:Number;
-		public var max:Number;
+		public var min:Number = Number.MAX_VALUE;
+		public var max:Number = Number.MIN_VALUE;
 		public var range:String;
 		public var options:String; //for qualitative type
 		

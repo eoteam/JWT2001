@@ -187,6 +187,7 @@
 		}
 	</fx:Style>
 	<fx:Declarations>
+		
 		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0" />
 		
 		<mx:AxisRenderer  id="vAxisRenderer" axisTitleStyleName="axisTitle" tickPlacement="none" placement="left"
@@ -212,7 +213,7 @@
 	</fx:Declarations>
 	
 	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" showDataTips="true" id="chart"
-	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20">
+	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20" dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
 		<chart:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
 			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>

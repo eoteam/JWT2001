@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"  
+		 implements="mx.core.IDataRenderer" width="100" height="75"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.charts.HitData;
+			import mx.core.IDataRenderer;
+			private var _hitData:HitData;
+			public function set data(value:Object):void{
+				var hd:HitData = value as HitData;
+				_hitData = hd;
+			}
+			public function get data():Object {
+				return _hitData;
+			}
+			
+
+		]]>
+	</fx:Script>
+	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Rect>
+</s:Group>

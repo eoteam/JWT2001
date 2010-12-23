@@ -126,6 +126,22 @@
 			</s:Rect>			
 			<s:HSlider minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>
 			<s:Rect height="10" />
+			<s:List id="colorList" height="250">
+				<s:layout>
+					<s:TileLayout clipAndEnableScrolling="true" requestedColumnCount="6" />
+				</s:layout>
+				<s:itemRenderer>
+					<fx:Component>
+						<s:ItemRenderer>
+							<s:Ellipse width="10" height="10">
+								<s:fill>
+									<s:SolidColor color="{data}" />
+								</s:fill>
+							</s:Ellipse>
+						</s:ItemRenderer>
+					</fx:Component>
+				</s:itemRenderer>
+			</s:List>
 		</s:VGroup>
 
 </s:Group>
