@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:vo="com.pentagram.model.vo.*"
 		 xmlns:primatives="ws.tink.spark.primatives.*"  currentState="map"
-		 xmlns:graphics="ws.tink.spark.graphics.*">
+		 xmlns:graphics="ws.tink.spark.graphics.*" xmlns:shell="com.pentagram.instance.view.shell.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -17,63 +17,57 @@
 				timelineContainer.visible = false;
 			}
 
-  			private var folderSelect:Boolean = false;
-			private var dir:File;
 			public function generate ():void    
 			{   
-				if(!dir) {
-					selectedNewDirectory();
-				}
-				else doSaveImage();
+//				if(!dir) {
+//					selectedNewDirectory();
+//				}
+//				else doSaveImage();
 			} 
-			private function selectedNewDirectory():void {
-				dir = new File();
-				dir.addEventListener(Event.SELECT, file_select);
-				dir.browseForDirectory("Please select a directory...")
-			}
-			private function file_select(evt:Event):void {
-				dirButton.label = dir.nativePath;
-				dirButton.enabled = true;
-				if(!folderSelect)
-					doSaveImage();
-			}
-			private var loader:Loader;
-			private function doSaveImage():void {
-				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,72);
-				//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
-				loader = new Loader();	
-				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
-				loader.loadBytes(imageSnap.data);
-			}
-			private function getBitmapData(e:Event):void {
-				var content:Bitmap = loader.content as Bitmap;
-				var pt:Point = this.parent.localToGlobal(new Point(x,y));
-				
-				var bmd:BitmapData = new BitmapData(content.width,(pt.y /this.parentApplication.height) * content.height);
-				var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /this.parentApplication.height) * content.height);
-				
-				bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
-				content.bitmapData.dispose();
-//				var UIMatrix:Matrix = new Matrix();
-//				bmd.draw(content, UIMatrix);
-				var enc:PNGEncoder = new PNGEncoder();
-				//encode the bitmapdata object and keep the encoded ByteArray
-				var imgByteArray:ByteArray = enc.encode(bmd);
-				
-				var fs:FileStream = new FileStream();
-				var d:Date = new Date();
-				var fl:File = dir.resolvePath("viz"+d.time+".png");
-				try{
-					//open file in write mode
-					fs.open(fl,FileMode.WRITE);
-					//write bytes from the byte array
-					fs.writeBytes(imgByteArray);
-					//close the file
-					fs.close();
-				}catch(e:Error){
-					trace(e.message);
-				}	
-			}
+
+//			private function file_select(evt:Event):void {
+//				dirButton.label = dir.nativePath;
+//				dirButton.enabled = true;
+//				if(!folderSelect)
+//					doSaveImage();
+//			}
+//			private var loader:Loader;
+//			private function doSaveImage():void {
+//				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,72);
+//				//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
+//				loader = new Loader();	
+//				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
+//				loader.loadBytes(imageSnap.data);
+//			}
+//			private function getBitmapData(e:Event):void {
+//				var content:Bitmap = loader.content as Bitmap;
+//				var pt:Point = this.parent.localToGlobal(new Point(x,y));
+//				
+//				var bmd:BitmapData = new BitmapData(content.width,(pt.y /this.parentApplication.height) * content.height);
+//				var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /this.parentApplication.height) * content.height);
+//				
+//				bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
+//				content.bitmapData.dispose();
+////				var UIMatrix:Matrix = new Matrix();
+////				bmd.draw(content, UIMatrix);
+//				var enc:PNGEncoder = new PNGEncoder();
+//				//encode the bitmapdata object and keep the encoded ByteArray
+//				var imgByteArray:ByteArray = enc.encode(bmd);
+//				
+//				var fs:FileStream = new FileStream();
+//				var d:Date = new Date();
+//				var fl:File = dir.resolvePath("viz"+d.time+".png");
+//				try{
+//					//open file in write mode
+//					fs.open(fl,FileMode.WRITE);
+//					//write bytes from the byte array
+//					fs.writeBytes(imgByteArray);
+//					//close the file
+//					fs.close();
+//				}catch(e:Error){
+//					trace(e.message);
+//				}	
+//			}
 
 		]]>
 	</fx:Script>
@@ -199,7 +193,6 @@
 				<s:SolidColor color="0xB3B1AC" />
 			</s:fill>
 		</s:Rect> 
-		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.FolderButton" id="dirButton" 
-		enabled="false" click="selectedNewDirectory();folderSelect=true" />
+		<s:Button skinClass="com.pentagram.view.skins.buttons.GearButtonSkin" id="settingsBtn" />
 	</s:HGroup>
 </s:Group>

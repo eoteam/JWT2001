@@ -12,6 +12,8 @@ package com.pentagram.main.event
 		
 		public static const CLIENT_PROP_CHANGED:String = "clientPropChanged";
 		
+		public static const SAVE_EXPORT_SETTINGS:String = "saveExportSettings";
+		
 		public var args:Array;
 		public function ViewEvent(type:String,...args)
 		{

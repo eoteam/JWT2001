@@ -68,12 +68,16 @@
 			<!-- filters and tools -->
 			<shell:RightToolsView right="0" id="filterTools" top="61" visualizerArea="{visualizerArea}"/>
 			<shell:BottomToolsView id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
+			
+	
+			<shell:ExportSettingsView  right="10"  bottom="45" id="darkPanel" visible="false"/>
+
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
 <!--			<mx:ModuleLoader width="100%" height="100%"  id="editorLoader"  
 			url="com/pentagram/view/modules/editor/EditorModule.swf" ready="moduleloader1_readyHandler(event)" /> 	-->
-			<editor:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview"   id="editorView" client="{client}" />
+			<editor:EditorMainView left="10" top="50" bottom="50" right="10" currentState="overview" id="editorView" client="{client}" />
 		</s:NavigatorContent>
 	</mx:ViewStack>
 	<shell:ClientBarView width="100%" id="clientBar" client="{client}"/>

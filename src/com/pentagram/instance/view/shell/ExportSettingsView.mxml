@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" styleName="darkPanel"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="240" height="240" xmlns:controls="bxf.ui.controls.*">
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.main.event.ViewEvent;
+			
+			import spark.skins.spark.ButtonSkin;
+
+			private var dir:File;
+			private function selectedNewDirectory():void {
+				dir = new File();
+				dir.addEventListener(Event.SELECT, file_select);
+				dir.browseForDirectory("Please select a directory...")
+			}
+			private function file_select(evt:Event):void {
+				dirPath.text = dir.nativePath; new ButtonSkin
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.dispatchEvent(new ViewEvent(ViewEvent.SAVE_EXPORT_SETTINGS));
+			}
+
+		]]>
+	</fx:Script>
+
+		<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Rect>
+		<s:Path  
+				id="path12"  winding="nonZero"
+				data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" top="{height}" right="15">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Path>
+
+		<s:VGroup horizontalCenter="0" gap="2" width="100%" paddingLeft="5" paddingRight="5" paddingTop="5" height="100%" paddingBottom="5">
+			<s:Label text="Export Settings" fontFamily="FlamaBold" />
+			<s:Rect height="10" />
+			
+			<s:CheckBox label="Include Header" color="0xffffff" fontFamily="FlamaBook" />
+			<s:Rect height="8" />
+			
+			<s:Label text="Dimensions:" />
+			<s:HGroup width="100%" verticalAlign="middle">
+				<controls:HotTextNumber value="0" height="25" minValue="1"  maxValue="100" increment="1" textLabel="Width: " width="100%"
+				labelColor="0xffffff"  />
+				<controls:HotTextNumber  value="0" height="25" minValue="1" maxValue="100" increment="1" textLabel="Height: "  width="100%"
+				labelColor="0xffffff"  />
+			</s:HGroup>
+			<s:Rect height="8" />
+			
+			<s:HGroup verticalAlign="middle">
+				<s:Label text="Browse for Directory:" />
+				<s:Button id="dirButton" scaleX="0.75" scaleY="0.75" skinClass="com.pentagram.view.skins.buttons.FolderButton" click="selectedNewDirectory()"/>
+			</s:HGroup>
+			<s:RichText id="dirPath" maxDisplayedLines="3" width="100%" />
+			<s:Rect height="100%" />
+			
+			<s:Button label="Save" width="60" click="button1_clickHandler(event)" />
+		</s:VGroup>
+		
+</s:Group>

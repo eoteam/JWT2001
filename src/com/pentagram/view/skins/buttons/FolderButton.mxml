@@ -1,77 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt">
-	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
-	<s:states>
-		<s:State name="up" />
-		<s:State name="over" stateGroups="overStates" />
-		<s:State name="down" stateGroups="downStates" />
-		<s:State name="disabled" stateGroups="disabledStates" />
-		<s:State name="upAndSelected" stateGroups="selectedStates, selectedUpStates" />
-		<s:State name="overAndSelected" stateGroups="overStates, selectedStates" />
-		<s:State name="downAndSelected" stateGroups="downStates, selectedStates" />
-		<s:State name="disabledAndSelected" stateGroups="selectedUpStates, disabledStates, selectedStates" />
-	</s:states>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+		<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+		<s:states>
+			<s:State name="up"/>
+			<s:State name="over"/>
+			<s:State name="down"/>
+			<s:State name="disabled"/>
+		</s:states>
+		<s:Group d:id="5" flm:knockout="false" x="0" y="0">
+			<s:filters>
+				<s:GlowFilter includeIn="over" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
+				<s:GlowFilter includeIn="down" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
+			</s:filters>
+			<s:Rect height="27" d:id="6" radiusX="3.98381" radiusY="3.98381" flm:variant="2" width="60"  x="0" y="1">
+				<s:fill>
+					<s:LinearGradient rotation="270" scaleX="21.8075" x="46.499" y="23.0215">
+						<s:GradientEntry color="#262626" ratio="0"/>
+						<s:GradientEntry color="#262626" ratio="0.472393"/>
+						<s:GradientEntry color="#4F4F4F" ratio="1"/>
+					</s:LinearGradient>
+				</s:fill>
+				<s:filters>
+					<s:DropShadowFilter includeIn="down" blurX="2" blurY="2" distance="2" hideObject="false" color="#999999" inner="true" strength="1" alpha="0.45" quality="2" knockout="false" angle="45.0"/>
+				</s:filters>
+			</s:Rect>
+			<s:Rect height="27" radiusX="3.98381" radiusY="3.98381"  x="0.5" width="59" y="0.5">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#333333" joints="miter" miterLimit="4" weight="1"/>
+				</s:stroke>
+			</s:Rect>
+		</s:Group>
 
-	<s:Rect height="34" id="rect9" width="69" x="0" y="0">
-		<s:fill>
-			<s:LinearGradient rotation="270" scaleX="34.4004" x="34.623" y="34.4004">
-				<s:GradientEntry color="#F0F0F0" ratio="0"/>
-				<s:GradientEntry color="#FFFFFF" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Rect>
+
 	
 	<s:Group verticalCenter="0" horizontalCenter="0" scaleX="1.5" scaleY="1.5">
-		<s:Group d:locked="true" d:type="layer" d:userLabel="Layer 1">
+		<s:Group>
+			
+		
 			<s:Path data="M22.9 14.8 0 14.8 0 0 22.9 0 22.9 14.8">
 				<s:fill>
 					<s:SolidColor color="#010101" alpha="0"/>
 				</s:fill>
 			</s:Path>
-		</s:Group>
-		<s:Group d:type="layer" d:userLabel="FlashAICB">
-			<s:Group>
-				<s:Path scaleY="1.00354" y="0.15" data="M16.65 1.85Q17.2 1.85 17.2 2.4 17.2 2.65 17.35 2.85 17.55 3.1 17.75 3.1L18 3.1Q18.2 3.1 18.35 3.25 18.55 3.4 18.5 3.65L18.5 4.55 0.95 4.55 0.95 3.65Q0.95 3.4 1.05 3.25 1.2 3.1 1.45 3.1L11.5 3.1Q11.7 3.1 11.9 2.85 12.05 2.65 12.05 2.4 12.05 1.85
-					  12.6 1.85L16.65 1.85">
-					<s:fill>
-						<s:LinearGradient x="9.7" y="2.2875" scaleX="-2.125" rotation="270">
-							<s:GradientEntry ratio="0" color="#B3BAC9" color.disabledStates="#8C8C8C"/>
-							<s:GradientEntry color="#A9A9A9" ratio="0.496393" includeIn="disabledStates"/>
-							<s:GradientEntry ratio="1" color="#7D8CA3" color.disabledStates="#B3B3B3"/>
-						</s:LinearGradient>
-					</s:fill>
-				</s:Path>
-			</s:Group>
-			<s:Group>
-				<s:Group>
-					<s:Path scaleX="0.25564575" scaleY="0.25653076" x="-9.3" y="-6.7" 
-					data="M110.25 44.35Q111.15 44.35 111.75 45 112.35 45.65 112.25 46.55L109.55 87.15Q109.5 88.05 108.8 88.7 108.1 89.3 107.25 89.3L41.4 89.3Q40.5 89.3 39.8 88.7 39.15 88.05 39.1 87.15L36.35 46.55Q36.3 45.65 36.9 45 37.5 44.35 38.35 44.35L110.25 44.35">
-						<s:fill>
-							<s:LinearGradient x="74.3" y="48.75" scaleX="-40.5" rotation="270">
-								<s:GradientEntry ratio="0" color="#C7CDDA" color.disabledStates="#8C8C8C"/>
-								<s:GradientEntry color="#A9A9A9" ratio="0.496393" includeIn="disabled"/>
-								<s:GradientEntry ratio="1" color="#93A0B7" color.disabledStates="#B3B3B3"/>
-							</s:LinearGradient>
-						</s:fill>
-					</s:Path>
-				</s:Group>
-			</s:Group>
+
+			<s:Path scaleY="1.00354" y="0.15" data="M16.65 1.85Q17.2 1.85 17.2 2.4 17.2 2.65 17.35 2.85 17.55 3.1 17.75 3.1L18 3.1Q18.2 3.1 18.35 3.25 18.55 3.4 18.5 3.65L18.5 4.55 0.95 4.55 0.95 3.65Q0.95 3.4 1.05 3.25 1.2 3.1 1.45 3.1L11.5 3.1Q11.7 3.1 11.9 2.85 12.05 2.65 12.05 2.4 12.05 1.85
+				  12.6 1.85L16.65 1.85">
+				<s:fill>
+					<s:LinearGradient x="9.7" y="2.2875" scaleX="-2.125" rotation="270">
+						<s:GradientEntry ratio="0" color="#B3BAC9" />
+						<s:GradientEntry color="#A9A9A9" ratio="0.496393" />
+						<s:GradientEntry ratio="1" color="#7D8CA3" />
+					</s:LinearGradient>
+				</s:fill>
+			</s:Path>
+	
+
+			<s:Path scaleX="0.25564575" scaleY="0.25653076" x="-9.3" y="-6.7" 
+			data="M110.25 44.35Q111.15 44.35 111.75 45 112.35 45.65 112.25 46.55L109.55 87.15Q109.5 88.05 108.8 88.7 108.1 89.3 107.25 89.3L41.4 89.3Q40.5 89.3 39.8 88.7 39.15 88.05 39.1 87.15L36.35 46.55Q36.3 45.65 36.9 45 37.5 44.35 38.35 44.35L110.25 44.35">
+				<s:fill>
+					<s:LinearGradient x="74.3" y="48.75" scaleX="-40.5" rotation="270">
+						<s:GradientEntry ratio="0" color="#C7CDDA" />
+						<s:GradientEntry color="#A9A9A9" ratio="0.496393" />
+						<s:GradientEntry ratio="1" color="#93A0B7"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Path>
 		</s:Group>
 	</s:Group>
-	<s:PopUpAnchor displayPopUp.overStates="true" displayPopUp="false" popUpPosition="below">
-		<s:popUp>
-			<s:Group>
-				<s:Rect left="0" right="0" top="0" bottom="0">
-					<s:stroke>
-						<s:SolidColorStroke weight="0.25" caps="square" color="0xB3B1AC" />
-					</s:stroke>
-					<s:fill>
-						<s:SolidColor color="0xffffff" />
-					</s:fill>
-				</s:Rect>
-				<s:Label text="{hostComponent.label}"  color="0" />
-			</s:Group>
-			
-		</s:popUp>
-	</s:PopUpAnchor>
+
 </s:Skin>

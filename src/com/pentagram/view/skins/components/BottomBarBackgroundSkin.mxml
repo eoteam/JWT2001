@@ -55,7 +55,7 @@
 			</s:LinearGradient>
 		</s:fill>
 		<s:filters>
-		 	<s:DropShadowFilter alpha="0.5" angle="90" blurX="4.0" blurY="4.0" color="0x000000" distance="4.0" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+			<s:DropShadowFilter alpha="0.5" angle="90" blurX="4.0" blurY="4.0" color="0x000000" distance="4.0" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
 		</s:filters>
 	</s:Rect>
     

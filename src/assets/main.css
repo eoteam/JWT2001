@@ -4,6 +4,7 @@
 @namespace controls "com.pentagram.view.controls.*";
 @namespace wscontainers "ws.tink.spark.containers.*";
 @namespace flashcommander "org.flashcommander.components.*";
+@namespace bxf "bxf.ui.controls.*";
 
 @font-face {
 	src: url("/assets/fonts/FlamaBook.ttf");
@@ -88,5 +89,29 @@ flashcommander|AutoComplete#editorInput s|TextInput {
 	verticalCenter:0;
 	horizontalCenter: 0 ;
 }
-
-
+bxf|HotTextNumber {
+	fontFamily: FlamaBookMx;
+	embedFonts:true;	
+	color:				#FFFFFF;
+	backColor:			#1A1A1A;
+	text-decoration:	none;
+	border-bottom:		solid 1px;
+}
+s|Group#darkPanel s|Label {
+	color: #ffffff;	
+	fontSize: 14;
+}
+s|Group#darkPanel s|RichText {
+	color: #ffffff;	
+	fontSize: 14;
+}
+s|Group#darkPanel s|Button {
+	skinClass: ClassReference("com.pentagram.view.skins.buttons.DarkButton");
+}
+.hotTextStyle {
+	embedFonts: true;
+	color:				#FFFFFF;
+	backColor:			#1A1A1A;
+	text-decoration:	none;
+	border-bottom:		solid 1px;
+}

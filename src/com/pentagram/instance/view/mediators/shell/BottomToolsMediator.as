@@ -1,9 +1,12 @@
 package com.pentagram.instance.view.mediators.shell
 {
+	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.BottomToolsView;
+	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Dataset;
 	
 	import flash.events.Event;
@@ -40,6 +43,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.fourthSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true); 
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
+			view.settingsBtn.addEventListener(MouseEvent.CLICK,handleSettingsBtn,false,0,true);
 			
 			yearTimer = new Timer(1000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
@@ -177,6 +181,9 @@ package com.pentagram.instance.view.mediators.shell
 				yearTimer.stop();
 				view.playBtn.label = "Play";
 			}					
+		}
+		private function handleSettingsBtn(event:MouseEvent):void {
+			InstanceWindow(view.parentApplication).shellView.darkPanel.visible = true;
 		}
 	}
 }

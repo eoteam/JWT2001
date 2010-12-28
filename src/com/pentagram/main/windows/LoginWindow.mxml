@@ -2,7 +2,7 @@
 <windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" title="Login"
 		  xmlns:s="library://ns.adobe.com/flex/spark"  width="400" height="220"
 		  xmlns:mx="library://ns.adobe.com/flex/mx" gripper="{null}"
-		  xmlns:windows="com.pentagram.main.windows.*">
+		  xmlns:windows="com.pentagram.main.windows.*" xmlns:controls="bxf.ui.controls.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -68,4 +68,5 @@
 			</s:HGroup>
 		</s:NavigatorContent>
 	</mx:ViewStack>
+	 <controls:HotTextNumber  textLabel="TESTING CRAP" minValue="400" maxValue="1200" value="500" height="45"  decimalPlaces="0" increment="10" width="200" chromeColor="0xffffff" labelColor="0xffffff" />			
 </windows:BaseWindow>

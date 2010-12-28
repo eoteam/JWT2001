@@ -72,7 +72,6 @@
 	<assets:CircularProgress includeIn="loading" verticalCenter="0" horizontalCenter="0" />
 	
 	<s:HGroup bottom="4" verticalAlign="middle" width="100%" paddingLeft="10" paddingRight="10" includeIn="search">
-		<s:Button id="presentationBtn" label="P" width="25"  />
 		<s:Button id="loginBtn" label="Login"/> 
 		<s:Rect width="100%" />
 		<s:Group>

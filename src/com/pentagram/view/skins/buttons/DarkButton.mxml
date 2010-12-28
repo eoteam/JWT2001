@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Group d:id="5" flm:knockout="false"  left="0"  right="0" top="0" bottom="0">
+		<s:filters>
+			<s:GlowFilter includeIn="over" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
+			<s:GlowFilter includeIn="down" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
+		</s:filters>
+		<s:Rect height="27" d:id="6" radiusX="3.98381" radiusY="3.98381" flm:variant="2" left="0"  right="0" bottom="0"  top="1">
+			<s:fill>
+				<s:LinearGradient rotation="270" scaleX="21.8075" x="46.499" y="23.0215">
+					<s:GradientEntry color="#262626" ratio="0"/>
+					<s:GradientEntry color="#262626" ratio="0.472393"/>
+					<s:GradientEntry color="#4F4F4F" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter includeIn="down" blurX="2" blurY="2" distance="2" hideObject="false" color="#999999" inner="true" strength="1" alpha="0.45" quality="2" knockout="false" angle="45.0"/>
+			</s:filters>
+		</s:Rect>
+		<s:Rect height="27" radiusX="3.98381" radiusY="3.98381"  left="0.5"  right=".5" top=".5" bottom="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#333333" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
+	</s:Group>
+	<!-- layer 8: text -->
+	<!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 maxDisplayedLines="1"
+			 horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
+			 left="10" right="10" top="2" bottom="2">
+	</s:Label>
+</s:Skin>

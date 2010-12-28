@@ -57,7 +57,9 @@ package com.pentagram.instance.view.mediators.shell
 						
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleStackChange,false,0,true);			
 			view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreen,false,0,true);
+			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
+			eventMap.mapListener(view.darkPanel,ViewEvent.SAVE_EXPORT_SETTINGS,handleExportSettingsSave);
 			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -283,6 +285,9 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();
+		}
+		private function handleExportSettingsSave(event:ViewEvent):void {
+			view.darkPanel.visible = false;
 		}
 	}
 }
