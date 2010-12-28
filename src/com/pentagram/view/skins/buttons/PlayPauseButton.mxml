@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path2" d:id="6" includeIn="up" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">
+				<s:GradientEntry color="#8C8C8C" ratio="0"/>
+				<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+				<s:GradientEntry color="#B3B3B3" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Group id="group26" includeIn="overAndSelected" x="4" y="2">
+		<s:Group id="group24" x="0" y="0">
+			<s:Rect height="22" id="rect1" d:id="4" radiusX="1.9919" radiusY="1.9919" d:userLabel="timeline_on" flm:variant="1" width="5" x="0" y="0">
+				<s:fill>
+					<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+						<s:GradientEntry color="#983333" ratio="0"/>
+						<s:GradientEntry color="#BB2A31" ratio="0.268915"/>
+						<s:GradientEntry color="#D4242F" ratio="0.528872"/>
+						<s:GradientEntry color="#E5202E" ratio="0.778039"/>
+						<s:GradientEntry color="#EB1E2E" ratio="1"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+			<s:Rect height="22" id="rect4" d:id="4" radiusX="1.9919" radiusY="1.9919" d:userLabel="timeline_on" flm:variant="1" width="5" x="9" y="0">
+				<s:fill>
+					<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+						<s:GradientEntry color="#983333" ratio="0"/>
+						<s:GradientEntry color="#BB2A31" ratio="0.268915"/>
+						<s:GradientEntry color="#D4242F" ratio="0.528872"/>
+						<s:GradientEntry color="#E5202E" ratio="0.778039"/>
+						<s:GradientEntry color="#EB1E2E" ratio="1"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Rect>
+		</s:Group>
+	</s:Group>
+	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path0" d:id="6" includeIn="over" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">
+				<s:GradientEntry alpha="1.0" color="#983333" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#BB2A31" ratio="0.24705882352941178"/>
+				<s:GradientEntry alpha="1.0" color="#D4242F" ratio="0.496393"/>
+				<s:GradientEntry alpha="1.0" color="#E5202E" ratio="0.7372549019607844"/>
+				<s:GradientEntry alpha="1.0" color="#E5202E" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="148" blurX="2" blurY="2" color="#FFFFFF" distance="2" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Path>
+	<s:Group id="group27" includeIn="down" x="4" y="2">
+		<s:Group id="group2" x="0" y="0">
+			<s:Group id="group3" d:id="3" flm:knockout="false" d:userLabel="timeline" x="0" y="0">
+				<s:Rect height="22" d:id="4" radiusX="1.9919" radiusY="1.9919" flm:variant="1" width="5" x="0" y="0">
+					<s:fill>
+						<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+							<s:GradientEntry color="#8C8C8C" ratio="0"/>
+							<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+							<s:GradientEntry color="#B3B3B3" ratio="1"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
+			<s:Group id="group4" d:id="3" flm:knockout="false" d:userLabel="timeline" x="9" y="0">
+				<s:Rect height="22" d:id="4" radiusX="1.9919" radiusY="1.9919" flm:variant="1" width="5" x="0" y="0">
+					<s:fill>
+						<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+							<s:GradientEntry color="#8C8C8C" ratio="0"/>
+							<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+							<s:GradientEntry color="#B3B3B3" ratio="1"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path1" d:id="6" includeIn="disabled" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">
+				<s:GradientEntry color="#8C8C8C" ratio="0"/>
+				<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+				<s:GradientEntry color="#B3B3B3" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Group id="group0" includeIn="upAndSelected" x="4" y="2">
+		<s:Group id="group1" x="0" y="0">
+			<s:Group id="group7" d:id="3" flm:knockout="false" d:userLabel="timeline" x="0" y="0">
+				<s:Rect height="22" d:id="4" radiusX="1.9919" radiusY="1.9919" flm:variant="1" width="5" x="0" y="0">
+					<s:fill>
+						<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+							<s:GradientEntry color="#8C8C8C" ratio="0"/>
+							<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+							<s:GradientEntry color="#B3B3B3" ratio="1"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
+			<s:Group id="group8" d:id="3" flm:knockout="false" d:userLabel="timeline" x="9" y="0">
+				<s:Rect height="22" d:id="4" radiusX="1.9919" radiusY="1.9919" flm:variant="1" width="5" x="0" y="0">
+					<s:fill>
+						<s:LinearGradient rotation="270" scaleX="16.568" x="2.475" y="20.778">
+							<s:GradientEntry color="#8C8C8C" ratio="0"/>
+							<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+							<s:GradientEntry color="#B3B3B3" ratio="1"/>
+						</s:LinearGradient>
+					</s:fill>
+				</s:Rect>
+			</s:Group>
+		</s:Group>
+	</s:Group>
+	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path4" d:id="6" includeIn="downAndSelected" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">
+				<s:GradientEntry color="#8C8C8C" ratio="0"/>
+				<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+				<s:GradientEntry color="#B3B3B3" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path3" d:id="6" includeIn="disabledAndSelected" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">
+				<s:GradientEntry color="#8C8C8C" ratio="0"/>
+				<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+				<s:GradientEntry color="#B3B3B3" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+</s:Skin>

@@ -20,9 +20,10 @@
 	</s:HGroup>
 	
 	
-	<s:Rect width="100%" height="0.5">
+	
+	<s:Line width="100%" height="0.5">
 		<s:stroke>
 			<s:SolidColorStroke weight="0.25" color="0xB3B1AC" />
 		</s:stroke>
-	</s:Rect>
+	</s:Line>
 </s:SkinnableContainer>

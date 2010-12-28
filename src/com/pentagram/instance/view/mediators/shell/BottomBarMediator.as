@@ -3,7 +3,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.instance.view.shell.BottomBarView;
+	import com.pentagram.instance.view.shell.BottomBar;
 	import com.pentagram.model.vo.Client;
 	
 	import flash.events.EventDispatcher;
@@ -15,14 +15,14 @@ package com.pentagram.instance.view.mediators.shell
 	public class BottomBarMediator extends Mediator
 	{
 		[Inject]
-		public var view:BottomBarView;
+		public var view:BottomBar;
 		
 		[Inject]
 		public var model:InstanceModel;
 			
-		
-		[Inject(name="ApplicationEventDispatcher")]
-		public var appEventDispatcher:EventDispatcher;   
+//		
+//		[Inject(name="ApplicationEventDispatcher")]
+//		public var appEventDispatcher:EventDispatcher;   
 		
 		override public function onRegister():void
 		{
@@ -37,7 +37,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleUserButton(event:MouseEvent):void
 		{
-			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,model.LOGIN_WINDOW)); 
+			//appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,model.LOGIN_WINDOW)); 
 		}
 		private function handleSelect(event:CustomEvent):void
 		{

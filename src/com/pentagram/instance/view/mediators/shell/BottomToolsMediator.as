@@ -4,8 +4,8 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
-	import com.pentagram.instance.view.shell.BottomToolsView;
-	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.instance.view.shell.BottomTools;
+	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Dataset;
 	
@@ -25,7 +25,7 @@ package com.pentagram.instance.view.mediators.shell
 	public class BottomToolsMediator extends Mediator
 	{
 		[Inject]
-		public var view:BottomToolsView;
+		public var view:BottomTools;
 		
 		[Inject]
 		public var model:InstanceModel;
@@ -183,7 +183,7 @@ package com.pentagram.instance.view.mediators.shell
 			}					
 		}
 		private function handleSettingsBtn(event:MouseEvent):void {
-			InstanceWindow(view.parentApplication).shellView.darkPanel.visible = true;
+			InstanceWindow(view.parentApplication).shellView.exportPanel.visible = true;
 		}
 	}
 }

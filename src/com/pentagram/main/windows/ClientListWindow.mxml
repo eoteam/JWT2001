@@ -144,10 +144,7 @@
 					</s:Group>		
 				</s:Group>
 			</s:HGroup>		
-		</s:VGroup>	
-		
-	
-		
+		</s:VGroup>
 		<s:Rect left="0" right="0"  bottom="40">
 			<s:stroke>
 				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />

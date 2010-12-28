@@ -8,6 +8,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.RemoveInstanceWindowCommand;
 	import com.pentagram.controller.RemoveWindowCommand;
 	import com.pentagram.controller.UpdateClientCommand;
+	import com.pentagram.controller.UserLogoutCommand;
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
@@ -24,6 +25,7 @@ package com.pentagram.controller.configuration
 			//after login, start sequence FSM
 			commandMap.mapEvent(AppEvent.STARTUP_BEGIN,StartupCommand,AppEvent); 
 			commandMap.mapEvent(AppEvent.LOGIN,AuthenticateUserCommand,AppEvent);  
+			commandMap.mapEvent(AppEvent.LOGGEDOUT,UserLogoutCommand,AppEvent); 
 			
 			//managers commands
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);

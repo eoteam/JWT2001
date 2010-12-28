@@ -17,11 +17,12 @@
 		<mx:Image id="logo" height="{barHeight-5}"  source="{Constants.FILES_URL+client.thumbs}" scaleContent="true" maintainAspectRatio="true"/>
 		
 		<s:Rect width="15" excludeFrom="editor" />
-		<s:Rect width="1" height="100%" excludeFrom="editor">
-			<s:fill>
-				<s:SolidColor color="0xB3B1AC" />
-			</s:fill>
-		</s:Rect>
+		<s:Line height="100%" excludeFrom="editor">
+			<s:stroke>
+				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
+			</s:stroke>
+		</s:Line>
+		
 		<s:Rect width="15" excludeFrom="editor"/>
 		
 		<s:Label text="Full Name:" excludeFrom="editor"/>
@@ -71,29 +72,32 @@
 			<s:HGroup gap="10" width="100%" height="100%">
 				<s:VGroup width="100%" height="100%">
 					
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+					
 					<s:Label text="Full Name" />
 					<s:Label text="{client.name}"  />
 					<s:Rect height="4" />
 
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>					
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+									
 					<s:Label text="Founded" />
 					<s:Label text="{client.founded.toString()}"  />
 					<s:Rect height="4" />
 
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>					
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+										
 					<s:HGroup width="100%" verticalAlign="middle">
 						<s:Label text="Headquarters" />
 						<s:Rect width="100%" />
@@ -102,39 +106,43 @@
 					<s:Label text="{client.headquarters}"  />		
 					<s:Rect height="4" />
 					
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>					
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+										
 					<s:Label text="Employees" />
 					<s:Label text="{client.employees.toString()}"  />		
 					<s:Rect height="4" />
 					
 				</s:VGroup>
 				<s:VGroup width="100%" height="100%">
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+					
 				</s:VGroup>
 				
 				<s:VGroup width="100%" height="100%">
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+					
 					<s:Label text="Website" />
 					<s:Button label="{client.website}" />
 					<s:Rect height="4" />
 					
-					<s:Rect width="100%" height="1">
-						<s:fill>
-							<s:SolidColor color="0xB3B1AC"/>
-						</s:fill>
-					</s:Rect>
+					<s:Line width="100%" height="1">
+						<s:stroke>
+							<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
+						</s:stroke>
+					</s:Line>
+					
 					<s:Label text="Similar Companies in View" />
 					<s:List dataProvider="{new ArrayList(client.relatedcontent.split(','))}" borderVisible="false">
 						<s:layout>

@@ -83,17 +83,17 @@
 		
 	</s:states>
 	
-	<s:Rect width="100%" height="1" bottom="70">
-		<s:fill>
-			<s:SolidColor color="0xB3B1AC" />
-		</s:fill>
-	</s:Rect> 
+	<s:Line width="100%"   bottom="70">
+		<s:stroke>
+			<s:SolidColorStroke color="0xB3B1AC" weight="1" />
+		</s:stroke>
+	</s:Line> 
 	
 	<s:HGroup id="timelineContainer" visible="false" width="100%" verticalAlign="middle" bottom="36"  height="34" paddingLeft="10" paddingRight="10" gap="10">
-		<s:ToggleButton label="Play"  id="playBtn"/>
+		<s:ToggleButton label="Play" width="25"  id="playBtn" skinClass="com.pentagram.view.skins.buttons.PlayPauseButton"/>
 		
 		
-		<primatives:Line width="1" height="40">
+		<primatives:Line width="1" height="100%">
 			<primatives:stroke>
 				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 			</primatives:stroke>
@@ -109,7 +109,7 @@
 			</s:layout>
 		</s:List>
 		
-		<primatives:Line width="1" height="40">
+		<primatives:Line width="1" height="100%">
 			<primatives:stroke>
 				<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 			</primatives:stroke>
@@ -119,11 +119,12 @@
 		
 	</s:HGroup>
 	
-	<s:Rect width="100%" height="1" bottom="34">
-		<s:fill>
-			<s:SolidColor color="0xB3B1AC" />
-		</s:fill>
-	</s:Rect> 
+	<s:Line width="100%"  bottom="34">
+		<s:stroke>
+			<s:SolidColorStroke weight="1" color="0xB3B1AC" />
+		</s:stroke>
+	</s:Line> 
+	
 	<s:HGroup width="100%" verticalAlign="middle" height="34" gap="0"  bottom="0" paddingLeft="10">
 		
 		<s:TabBar dataProvider="{visualizerArea}" />
@@ -134,7 +135,7 @@
 			<s:Label text="x:"/>
 			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name"  id="firstSet"/>
 			<s:Rect width="10"/>
-			<primatives:Line width="1" height="40">
+			<primatives:Line width="1" height="100%">
 				<primatives:stroke>
 					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 				</primatives:stroke>
@@ -147,7 +148,7 @@
 			<s:Label text="y: "/>
 			<s:DropDownList width="180" dataProvider="{client.datasets}" labelField="name" id="secondSet"/>
 			<s:Rect width="10" includeIn="graph"/>
-			<primatives:Line width="1" height="40">
+			<primatives:Line width="1" height="100%">
 				<primatives:stroke>
 					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 				</primatives:stroke>
@@ -160,7 +161,7 @@
 			<s:Label text="size by:  " text.cluster="group by: "/>
 			<s:DropDownList width="180" dataProvider="{client.quantityDatasets}" dataProvider.cluster="{client.qualityDatasets}" labelField="name"  id="thirdSet" />
 			<s:Rect width="10" />
-			<primatives:Line width="1" height="40" >
+			<primatives:Line width="1" height="100%" >
 				<primatives:stroke>
 					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 				</primatives:stroke>
@@ -173,7 +174,7 @@
 			<s:Label text.graph="color by:  " text.cluster="size by: "/>
 			<s:DropDownList width="180" dataProvider="{client.datasets}" dataProvider.cluster="{client.quantityDatasets}" labelField="name" id="fourthSet" selectedItem=""/>
 			<s:Rect width="10"/>
-			<primatives:Line width="1" height="40">
+			<primatives:Line width="1" height="100%">
 				<primatives:stroke>
 					<graphics:SolidColorDash dash="0.05" gap="1" weight="0.5" color="0x000000" caps="square"/>
 				</primatives:stroke>
@@ -182,17 +183,17 @@
 		</s:HGroup>
 		
 		<s:Rect width="100%" />
-		<s:Rect height="100%" width="1" bottom="34">
-			<s:fill>
-				<s:SolidColor color="0xB3B1AC" />
-			</s:fill>
-		</s:Rect> 
+		<s:Line height="100%" width="1" bottom="34">
+			<s:stroke>
+				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
+			</s:stroke>
+		</s:Line> 
 		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn" click="generate()" />
-		<s:Rect height="100%" width="1" bottom="34">
-			<s:fill>
-				<s:SolidColor color="0xB3B1AC" />
-			</s:fill>
-		</s:Rect> 
+		<s:Line height="100%" width="1" bottom="34">
+			<s:stroke>
+				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
+			</s:stroke>
+		</s:Line> 
 		<s:Button skinClass="com.pentagram.view.skins.buttons.GearButtonSkin" id="settingsBtn" />
 	</s:HGroup>
 </s:Group>

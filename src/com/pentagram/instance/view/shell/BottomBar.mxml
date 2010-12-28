@@ -3,15 +3,21 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:components="org.flashcommander.components.*" 
-		 gap="0" verticalAlign="middle" xmlns:components1="com.hillelcoren.components.*">
+		 xmlns:primatives="ws.tink.spark.primatives.*"
+		 gap="0" verticalAlign="middle" xmlns:graphics="ws.tink.spark.graphics.*">
 
 		
 	<components:AutoComplete width="260" id="searchInput" labelField="name" />
-
-	<s:Rect width="25" />
 	
-	<s:Button id="presentationBtn" label="P" width="25" />
-	<s:Button id="loginBtn" label="U" width="25"/>
+	<s:Rect width="12" />
+	<primatives:Line width="1" height="{height}" >
+		<primatives:stroke>
+			<graphics:SolidColorDash dash="0.05" gap="1" weight="1" color="0xffffff" caps="none" miterLimit="4" joints="miter"/>
+		</primatives:stroke>
+	</primatives:Line>
+	<s:Rect width="12" />
+	
+	<s:ToggleButton id="loginBtn" label="U" width="25" skinClass="com.pentagram.view.skins.buttons.LoginButton"/>
 	
 	<s:Rect width="100%" />
 	

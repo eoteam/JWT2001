@@ -64,11 +64,11 @@
 		<editor:OverviewEditor id="overviewEditor" width="100%" top="15" left="16" right="16" bottom="52" includeIn="overview"  />
 		<editor:DatasetCreator id="datasetCreator" width="100%" top="15" left="16" right="16" bottom="52" includeIn="create" />
 		
-		<s:Rect left="0" right="0"  bottom="40">
+		<s:Line left="0" right="0"  bottom="40">
 			<s:stroke>
 				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
 			</s:stroke>
-		</s:Rect>
+		</s:Line>
 		<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
 			<s:Button label="Save Changes" id="saveBtn" />
 			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />

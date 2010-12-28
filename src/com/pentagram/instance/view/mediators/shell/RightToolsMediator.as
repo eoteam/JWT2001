@@ -2,7 +2,7 @@ package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.instance.view.shell.RightToolsView;
+	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.utils.ViewUtils;
 	
@@ -17,7 +17,7 @@ package com.pentagram.instance.view.mediators.shell
 	public class RightToolsMediator extends Mediator
 	{
 		[Inject]
-		public var view:RightToolsView;
+		public var view:RightTools;
 		
 		[Inject]
 		public var model:InstanceModel;

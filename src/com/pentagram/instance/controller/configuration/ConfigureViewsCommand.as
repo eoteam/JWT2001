@@ -13,14 +13,16 @@ package com.pentagram.instance.controller.configuration
 	import com.pentagram.instance.view.mediators.editor.OverviewEditorMediator;
 	import com.pentagram.instance.view.mediators.shell.BottomBarMediator;
 	import com.pentagram.instance.view.mediators.shell.BottomToolsMediator;
+	import com.pentagram.instance.view.mediators.shell.LoginPanelMediator;
 	import com.pentagram.instance.view.mediators.shell.RightToolsMediator;
 	import com.pentagram.instance.view.mediators.shell.SearchViewMediator;
 	import com.pentagram.instance.view.mediators.shell.ShellMediator;
-	import com.pentagram.instance.view.shell.BottomBarView;
-	import com.pentagram.instance.view.shell.BottomToolsView;
-	import com.pentagram.instance.view.shell.RightToolsView;
-	import com.pentagram.instance.view.shell.SearchView;
-	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.instance.view.shell.BottomBar;
+	import com.pentagram.instance.view.shell.BottomTools;
+	import com.pentagram.instance.view.shell.LoginPanel;
+	import com.pentagram.instance.view.shell.RightTools;
+	import com.pentagram.instance.view.shell.Search;
+	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.main.mediators.ExportSpreadSheetWindowMediator;
 	import com.pentagram.main.mediators.LoginWindowMediator;
 	import com.pentagram.main.mediators.MainMediator;
@@ -36,11 +38,13 @@ package com.pentagram.instance.controller.configuration
 		{
 			mediatorMap.mapView(InstanceWindow, ViewInstanceMediator);
 
-			mediatorMap.mapView(SearchView,	SearchViewMediator,null,true,false);
-			mediatorMap.mapView(BottomBarView,BottomBarMediator,null,true,false);
-			mediatorMap.mapView(ShellView,ShellMediator,null,true,false);
-			mediatorMap.mapView(RightToolsView, RightToolsMediator,null,true,false);
-			mediatorMap.mapView(BottomToolsView, BottomToolsMediator,null,true,false);
+			mediatorMap.mapView(Search,	SearchViewMediator,null,true,false);
+			mediatorMap.mapView(BottomBar,BottomBarMediator,null,true,false);
+			mediatorMap.mapView(Shell,ShellMediator,null,true,false);
+			mediatorMap.mapView(RightTools, RightToolsMediator,null,true,false);
+			mediatorMap.mapView(BottomTools, BottomToolsMediator,null,true,false);
+			mediatorMap.mapView(LoginPanel, LoginPanelMediator,null,true,false);
+			
 			
 			mediatorMap.mapView(EditorMainView,EditorMediator,null,true,false); 
 			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator,null,true,false);

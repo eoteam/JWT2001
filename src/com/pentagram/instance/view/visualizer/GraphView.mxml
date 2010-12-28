@@ -72,7 +72,7 @@
 				chart.newXAxis = hAxisRenderer;
 				chart.newYAxis = vAxisRenderer;
 				
-				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");
+				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");	
 				chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
 				//if(ds3)
 				//	chart.radiusAxis = createRadiusAxis(ds3);

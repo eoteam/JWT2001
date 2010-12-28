@@ -79,6 +79,7 @@
 			<fx:String>closedAndMap</fx:String>
 			<fx:String>closedAndGraph</fx:String>
 		</fx:Array>
+		<fx:Number id="toggleWidth">11</fx:Number>
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closedAndCluster" stateGroups="closed,cluster" />
@@ -89,15 +90,15 @@
 		<s:State name="openAndGraph" stateGroups="open,graph" />
 	</s:states>
 
-		<s:ToggleButton id="toggle" width="8" height="100%" change="toggle_changeHandler(event)"/>
+		<s:ToggleButton id="toggle" width="{toggleWidth}" height="100%" change="toggle_changeHandler(event)" skinClass="com.pentagram.view.skins.buttons.RightToolsButton"/>
 		
-		<s:Rect width.closed="0" left="8" height="100%" width="{toolContainer.width}">
+		<s:Rect width.closed="0" left="{toggleWidth}" height="100%" width="{toolContainer.width}">
 			<s:fill>
 				<s:SolidColor color="0x1A1A1A" alpha="0.85" />
 			</s:fill>
 		</s:Rect> 
 		
-		<s:VGroup width.closed="0" left="8" id="toolContainer" gap="0">
+		<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0">
 			<s:List borderVisible="false"  id="continentList"  change="handleChange(event)"  allowMultipleSelection="true"
 			itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer"  contentBackgroundAlpha="0">
 				<s:layout>

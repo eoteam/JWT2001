@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.TextInput")]</fx:Metadata>
+	<!-- states -->
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="disabled" stateGroups="disabledStates"/>
+		<s:State name="normalWithPrompt" />
+		<s:State name="disabledWithPrompt" stateGroups="disabledStates"/>
+	</s:states>
+	<s:Group id="group14" d:id="3" flm:knockout="false" d:userLabel="Search_field" x="0" y="0">
+		<s:Rect height="18" d:id="4" flm:variant="1" width="151" x="0" y="1">
+			<s:fill>
+				<s:LinearGradient rotation="90" scaleX="16.0078" x="75.5195" y="0.84082">
+					<s:GradientEntry ratio="0"/>
+					<s:GradientEntry color="#0F0F0F" ratio="0.0659366"/>
+					<s:GradientEntry color="#181818" ratio="0.143804"/>
+					<s:GradientEntry color="#1C1C1C" ratio="0.404908"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Rect height="18" width="151" x="0.5" y="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
+	</s:Group>
+	<s:RichEditableText color="#FFFFFF" 
+	fontSize="13" height="14" id="textDisplay" tabStops="S0 S50 S100 S150" x="5" y="1" width="142" heightInLines="1"/>
+</s:Skin>

@@ -4,7 +4,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
-	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.instance.view.visualizer.interfaces.IClusterView;
 	import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
 	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
@@ -31,7 +31,7 @@ package com.pentagram.instance.view.mediators.shell
 	public class ShellMediator extends Mediator
 	{
 		[Inject]
-		public var view:ShellView;
+		public var view:Shell;
 		
 		[Inject]
 		public var model:InstanceModel;
@@ -59,7 +59,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreen,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
-			eventMap.mapListener(view.darkPanel,ViewEvent.SAVE_EXPORT_SETTINGS,handleExportSettingsSave);
+			eventMap.mapListener(view.exportPanel,ViewEvent.SAVE_EXPORT_SETTINGS,handleExportSettingsSave);
 			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -287,7 +287,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.currentVisualizer.updateSize();
 		}
 		private function handleExportSettingsSave(event:ViewEvent):void {
-			view.darkPanel.visible = false;
+			view.exportPanel.visible = false;
 		}
 	}
 }

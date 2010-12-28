@@ -10,11 +10,11 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.editor.DatasetEditor;
 	import com.pentagram.instance.view.editor.EditorMainView;
 	import com.pentagram.instance.view.editor.OverviewEditor;
-	import com.pentagram.instance.view.shell.BottomBarView;
-	import com.pentagram.instance.view.shell.BottomToolsView;
-	import com.pentagram.instance.view.shell.RightToolsView;
-	import com.pentagram.instance.view.shell.SearchView;
-	import com.pentagram.instance.view.shell.ShellView;
+	import com.pentagram.instance.view.shell.BottomBar;
+	import com.pentagram.instance.view.shell.BottomTools;
+	import com.pentagram.instance.view.shell.RightTools;
+	import com.pentagram.instance.view.shell.Search;
+	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.User;
 	
@@ -49,7 +49,7 @@ package com.pentagram.instance.view.mediators
 			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
-			eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
+			//eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 			
@@ -124,11 +124,11 @@ package com.pentagram.instance.view.mediators
 			model.exportMenuItem = null;	
 			model.importMenuItem = null;
 			
-			mediatorMap.unmapView(SearchView);
-			mediatorMap.unmapView(BottomBarView);
-			mediatorMap.unmapView(ShellView);  
-			mediatorMap.unmapView(RightToolsView);
-			mediatorMap.unmapView(BottomToolsView);
+			mediatorMap.unmapView(Search);
+			mediatorMap.unmapView(BottomBar);
+			mediatorMap.unmapView(Shell);  
+			mediatorMap.unmapView(RightTools);
+			mediatorMap.unmapView(BottomTools);
 			
 			mediatorMap.unmapView(EditorMainView);
 			mediatorMap.unmapView(OverviewEditor);

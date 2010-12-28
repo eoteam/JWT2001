@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		width="15" heigh="11">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+
+	<s:Rect x="0" y="1" width="15"  radiusX="1.9919" radiusY="1.9919" height="10">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="1.459" x="7.446" y="0.901">
+				<s:GradientEntry color="#FFFFFF" ratio="0"/>
+				<s:GradientEntry color="#E3E3E3" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter blurX="1" blurY="1" distance="1" hideObject="false" color="#666666" inner="true" strength="1" alpha="0.45" quality="2" knockout="false" angle="45.0"/>
+		</s:filters>
+	</s:Rect>
+	
+	<s:Rect x="0.5" y="0.5" width="14" height="10" radiusX="1.9919" radiusY="1.9919">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+
+	<s:Path horizontalCenter="0" verticalCenter="0" data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" winding="nonZero">
+		<s:fill>
+			<s:SolidColor color="#58595B"/>
+		</s:fill>
+	</s:Path>
+	<s:BorderContainer
+</s:Skin>

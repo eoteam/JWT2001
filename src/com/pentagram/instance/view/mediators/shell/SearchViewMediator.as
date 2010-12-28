@@ -3,7 +3,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.instance.view.shell.SearchView;
+	import com.pentagram.instance.view.shell.Search;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Client;
 	
@@ -17,7 +17,7 @@ package com.pentagram.instance.view.mediators.shell
 	public class SearchViewMediator extends Mediator
 	{
 		[Inject]
-		public var view:SearchView;
+		public var view:Search;
 
 		[Inject]
 		public var model:InstanceModel;
