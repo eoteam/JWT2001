@@ -19,6 +19,8 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.FullScreenEvent;
+	import flash.events.MouseEvent;
+	import flash.filesystem.File;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
@@ -59,8 +61,9 @@ package com.pentagram.instance.view.mediators.shell
 			view.stage.addEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreen,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
-			eventMap.mapListener(view.exportPanel,ViewEvent.SAVE_EXPORT_SETTINGS,handleExportSettingsSave);
-			
+			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory);
+			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave);
+				
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 				model.exportMenuItem.enabled = true;
@@ -72,10 +75,19 @@ package com.pentagram.instance.view.mediators.shell
 				view.currentState = view.loggedOutState.name;
 			}
 			
+			model.exportDirectory = File.desktopDirectory;
+			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 		}
 
-		
+		private function selectedNewDirectory(event:MouseEvent):void {
+			model.exportDirectory = new File();
+			model.exportDirectory.addEventListener(Event.SELECT, file_select);
+			model.exportDirectory.browseForDirectory("Please select a directory...")
+		}
+		private function file_select(evt:Event):void {
+			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
+		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil;
 			if(event.newIndex == model.MAP_INDEX){
@@ -242,8 +254,7 @@ package com.pentagram.instance.view.mediators.shell
 				var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
 				var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
 				var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);
-				
+				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
 				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
 			}
 		}
@@ -286,7 +297,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();
 		}
-		private function handleExportSettingsSave(event:ViewEvent):void {
+		private function handleExportSettingsSave(event:MouseEvent):void {
 			view.exportPanel.visible = false;
 		}
 	}

@@ -114,37 +114,30 @@
 		<utils:RectInterpolator id="interpolator" />
 	</fx:Declarations>
 	
-	<!--       Transitions          -->
 	<s:transitions>
 		<s:Transition autoReverse="true">
-				<s:Animate target="{tOffsets}" duration="150">
-					<s:SimpleMotionPath property="scaleY"  />
-				</s:Animate>
+			<s:Animate target="{tOffsets}" duration="150">
+				<s:SimpleMotionPath property="scaleY"  />
+			</s:Animate>
 		</s:Transition>
-
 	</s:transitions>
 
-
-	
 	<s:Rect radiusX="1.9919" radiusY="1.9919" height="18" width="5" rotation="180" verticalCenter="0" id="bar" scaleX="1.2"  scaleY="1.2">
-	
-			<s:fill>
-				<s:LinearGradient rotation="270" scaleX="16.568" x="2.4751" y="17">
-					<s:GradientEntry color="#8C8C8C" ratio="0" color.selected="#983333" color.hovered="#983333"/>
-					<s:GradientEntry color="#A9A9A9" ratio="0.496393" 
-					color.hovered="#BB2A31" color.selected="#BB2A31" ratio.hovered="0.268915" ratio.selected="0.268915"/>
-					<s:GradientEntry color="#D4242F" ratio="0.528872" includeIn="hovered,selected"/>
-					<s:GradientEntry color="#E5202E" ratio="0.778039" includeIn="hovered,selected"/>
-					<s:GradientEntry color="#B3B3B3" ratio="1" color.selected="#EB1E2E" color.hovered="#EB1E2E"/>
-				</s:LinearGradient>
-			</s:fill>
-
-		<!--       The Zoom effect      -->
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="16.568" x="2.4751" y="17">
+				<s:GradientEntry color="#8C8C8C" ratio="0" color.selected="#983333" color.hovered="#983333"/>
+				<s:GradientEntry color="#A9A9A9" ratio="0.496393" 
+				color.hovered="#BB2A31" color.selected="#BB2A31" ratio.hovered="0.268915" ratio.selected="0.268915"/>
+				<s:GradientEntry color="#D4242F" ratio="0.528872" includeIn="hovered,selected"/>
+				<s:GradientEntry color="#E5202E" ratio="0.778039" includeIn="hovered,selected"/>
+				<s:GradientEntry color="#B3B3B3" ratio="1" color.selected="#EB1E2E" color.hovered="#EB1E2E"/>
+			</s:LinearGradient>
+		</s:fill>
 		<s:postLayoutTransformOffsets>
-			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"   />
+			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"/>
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
-	<s:PopUpAnchor  y="-13" popUpPosition="above" x="-35.5" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
+	<s:PopUpAnchor y="-13" popUpPosition="above" x="-35.5" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
 		<s:popUp>
 			<renderers:YearListRendererToolTip bodyText="{data.year}"/>
 		</s:popUp>

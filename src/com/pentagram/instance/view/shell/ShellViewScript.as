@@ -11,13 +11,16 @@ public var graphView:IGraphView;
 public  var mapView:IMapView;
 public var clusterView:IClusterView;
 
+private var infoOpen:Boolean = false;
 private function setInfoBtn_clickHandler(event:MouseEvent):void {
-	if(setInfoBtn.selected) {
+	if(!infoOpen) {
 		infoPanelContainer.visible = true;
 		showInfoPanelEffect.play();
+		infoOpen = true;
 	}	
 	else {
 		hideInfoPanelEffect.play();
+		infoOpen = false;
 	}
 }
 private function group1_creationCompleteHandler(event:FlexEvent):void {
@@ -25,7 +28,7 @@ private function group1_creationCompleteHandler(event:FlexEvent):void {
 }
 private function hideInfoPanel(event:MouseEvent):void {
 	hideInfoPanelEffect.play();
-	setInfoBtn.selected = false;
+	infoOpen = false;
 }
 private function mainStack_changeHandler(event:IndexChangedEvent):void {
 	if(mainStack.selectedIndex == 1) 

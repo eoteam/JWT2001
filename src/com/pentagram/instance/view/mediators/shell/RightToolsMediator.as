@@ -32,7 +32,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
-			view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
+			//view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
 		}
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {

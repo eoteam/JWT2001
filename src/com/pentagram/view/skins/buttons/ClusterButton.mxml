@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Rect height="35" id="rect4" includeIn="downAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect3" includeIn="overAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect2" includeIn="upAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect0" includeIn="down" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect11" includeIn="over" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect1" includeIn="disabled,disabledAndSelected,up" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="11.83" x="16.063" y="0">
+				<s:GradientEntry color="#707070" ratio="0"/>
+				<s:GradientEntry color="#4F4F4F" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group23" x="10" y="11">
+		<s:Ellipse height="8" id="ellipse2" width="8" x="0" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="5" id="ellipse1" width="5" x="4" y="8">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="4" id="ellipse3" width="4" x="8" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+	</s:Group>
+	<s:Line right="0" top="0" bottom="0">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#0000000"  weight="1"/>
+		</s:stroke>
+	</s:Line>
+</s:Skin>

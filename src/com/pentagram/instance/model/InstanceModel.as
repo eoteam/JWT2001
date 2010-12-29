@@ -8,6 +8,7 @@ package com.pentagram.instance.model
 	import com.pentagram.model.vo.User;
 	
 	import flash.display.NativeMenuItem;
+	import flash.filesystem.File;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
@@ -37,14 +38,18 @@ package com.pentagram.instance.model
 		
 		public var maxRadius:Number = 25;
 		
+		
+		public var exportDirectory:File;
+		public var includeHeader:Boolean = true;
+		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		
 		
 		
-		public const MAP_INDEX:int = 0;
-		public const CLUSTER_INDEX:int = 1;
-		public const GRAPH_INDEX:int = 2;
+		public const MAP_INDEX:int = 2;
+		public const CLUSTER_INDEX:int = 0;
+		public const GRAPH_INDEX:int = 1;
 		
 		public function parseData(data:Array,dataset:Dataset,client:Client):void {
 			var prop:String;

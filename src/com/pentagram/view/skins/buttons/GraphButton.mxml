@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Rect height="35" id="rect0" includeIn="over" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect4" includeIn="disabled,disabledAndSelected,up" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="11.83" x="16.063" y="0">
+				<s:GradientEntry color="#707070" ratio="0"/>
+				<s:GradientEntry color="#4F4F4F" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group0" includeIn="disabled,disabledAndSelected,over,up" x="9" y="10">
+		<s:Ellipse height="2" id="ellipse4" width="2" x="6" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse5" width="2" x="8" y="6">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse6" width="2" x="8" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Line id="line11" x="3.5" y="0.5" yTo="13">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line14" x="0.5" xTo="13" y="10.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	<s:Rect height="35" id="rect1" includeIn="down" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group1" includeIn="down" x="9" y="10">
+		<s:Ellipse height="2" id="ellipse0" width="2" x="6" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse1" width="2" x="8" y="6">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse2" width="2" x="8" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Line id="line0" x="3.5" y="0.5" yTo="13">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line1" x="0.5" xTo="13" y="10.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	<s:Rect height="35" id="rect2" includeIn="upAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group2" includeIn="upAndSelected" x="9" y="10">
+		<s:Ellipse height="2" id="ellipse3" width="2" x="6" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse7" width="2" x="8" y="6">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse8" width="2" x="8" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Line id="line2" x="3.5" y="0.5" yTo="13">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line3" x="0.5" xTo="13" y="10.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	<s:Rect height="35" id="rect3" includeIn="overAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group3" includeIn="overAndSelected" x="9" y="10">
+		<s:Ellipse height="2" id="ellipse9" width="2" x="6" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse10" width="2" x="8" y="6">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse11" width="2" x="8" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Line id="line4" x="3.5" y="0.5" yTo="13">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line5" x="0.5" xTo="13" y="10.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	<s:Rect height="35" id="rect5" includeIn="downAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Group id="group4" includeIn="downAndSelected" x="9" y="10">
+		<s:Ellipse height="2" id="ellipse12" width="2" x="6" y="4">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse13" width="2" x="8" y="6">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Ellipse height="2" id="ellipse14" width="2" x="8" y="0">
+			<s:fill>
+				<s:SolidColor color="#FFFFFF"/>
+			</s:fill>
+		</s:Ellipse>
+		<s:Line id="line6" x="3.5" y="0.5" yTo="13">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line7" x="0.5" xTo="13" y="10.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="10" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	<s:Line right="0" top="0" bottom="0">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#0000000"  weight="1"/>
+		</s:stroke>
+	</s:Line>
+</s:Skin>

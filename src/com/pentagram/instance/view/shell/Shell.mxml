@@ -8,7 +8,28 @@
 		 xmlns:primatives="ws.tink.spark.primatives.*"
 		 xmlns:graphics="ws.tink.spark.graphics.*" 
 		 xmlns:visualizer="com.pentagram.instance.view.visualizer.*"
-		  creationComplete="group1_creationCompleteHandler(event)" xmlns:assets="assets.*" xmlns:controls="com.pentagram.view.controls.*"> 
+		 xmlns:assets="assets.*" 
+		 xmlns:controls="com.pentagram.view.controls.*"
+		 creationComplete="group1_creationCompleteHandler(event)" click="group1_clickHandler(event)"> 
+
+	<fx:Script>
+		<![CDATA[
+			protected function group1_clickHandler(event:MouseEvent):void
+			{
+				if(event.target != tools.settingsBtn) {
+					if(event.target is DisplayObject && exportPanel.contains(DisplayObject(event.target)))
+						return;
+					tools.settingsBtn.selected = false;
+				}
+				if(event.target != bottomBarView.loginBtn) {
+					if(event.target is DisplayObject && loginPanel.contains(DisplayObject(event.target)))
+						return;
+					bottomBarView.loginBtn.selected = false;					
+				}
+			}
+		]]>
+	</fx:Script>
+
 	
 	<fx:Script source="ShellViewScript.as" />
 
@@ -37,15 +58,15 @@
 
 			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{tools.height}" />
 			<!-- viewing area -->
-			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="61" bottom="{tools.height}" id="visualizerArea" selectedIndex="0">
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" />
+			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="61" bottom="{tools.height}" id="visualizerArea" selectedIndex="2">
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" />
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" />
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" />
 			</mx:ViewStack>
 			
 			<s:HGroup verticalAlign="middle" height="60" left="5" right="5">
 				<s:Label fontSize="24" fontFamily="FlamaBold" text="Number of Branches by Region" />
-				<s:ToggleButton id="setInfoBtn" width="10" height="8" click="setInfoBtn_clickHandler(event)" />
+				<s:Button  skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton"  id="setInfoBtn"  click="setInfoBtn_clickHandler(event)" />
 			</s:HGroup>
 			<s:Line width="100%" height="1" y="60">
 				<s:stroke>
@@ -68,10 +89,6 @@
 			<!-- filters and tools -->
 			<shell:RightTools right="0" id="filterTools" top="61" visualizerArea="{visualizerArea}"/>
 			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" />
-			
-	
-			<shell:ExportSettingsPanel  right="10"  bottom="45" styleName="darkPanel" visible="false" id="exportPanel"/>
-
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
@@ -83,11 +100,12 @@
 	<shell:ClientBar width="100%" id="clientBar" client="{client}"/>
 	
 	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0"  
-	skinClass="com.pentagram.view.skins.components.BottomBarBackgroundSkin" id="bottomPanelContainer">	
+	skinClass="com.pentagram.view.skins.components.BottomBarBackground" id="bottomPanelContainer">	
 		<shell:BottomBar width="100%" height="40" bottom="10" id="bottomBarView"  />
 		<s:TabBar right="150" height="22" bottom="28" dataProvider="{mainStack}"  includeIn="loggedIn" />
 	</s:SkinnableContainer> 
 	
 
 	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" />
+	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel"/>
 </s:Group>

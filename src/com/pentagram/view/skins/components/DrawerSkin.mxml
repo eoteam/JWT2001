@@ -41,8 +41,8 @@
 
 	<s:Button id="openButton" left="0" top="0" width="100%"
 			label="{this.hostComponent.label}"
-			skinClass="com.pentagram.view.skins.buttons.DrawerOpenButtonSkin"
-			skinClass.opened="com.pentagram.view.skins.buttons.DrawerCloseButtonSkin" />
+			skinClass="com.pentagram.view.skins.buttons.DrawerOpenButton"
+			skinClass.opened="com.pentagram.view.skins.buttons.DrawerCloseButton" />
 
 	<s:Group id="contentGroup" left="0" right="0" top="20"  clipAndEnableScrolling="false"
 			minWidth="0" bottom="0" height.opened="{this.hostComponent.contentHeight}"

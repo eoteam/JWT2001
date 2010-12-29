@@ -9,13 +9,27 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Dataset;
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.display.IBitmapDrawable;
+	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
+	import mx.events.FlexEvent;
+	import mx.events.FlexMouseEvent;
 	import mx.events.IndexChangedEvent;
+	import mx.graphics.ImageSnapshot;
+	import mx.graphics.codec.PNGEncoder;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -43,12 +57,54 @@ package com.pentagram.instance.view.mediators.shell
 			view.fourthSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true); 
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
-			view.settingsBtn.addEventListener(MouseEvent.CLICK,handleSettingsBtn,false,0,true);
-			
+			view.pdfBtn.addEventListener(MouseEvent.CLICK,saveImage,false,0,true);
+			view.addEventListener(MouseEvent.CLICK,closeSettingsPanel,false,0,true);
 			yearTimer = new Timer(1000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
 		}
+		private var loader:Loader;
+		private function saveImage(event:MouseEvent):void {		
+			var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(view.parentApplication as IBitmapDrawable,72);
+			//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
+			loader = new Loader();	
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
+			loader.loadBytes(imageSnap.data);
+		}
+		private function getBitmapData(e:Event):void {
+			var content:Bitmap = loader.content as Bitmap;
+			var pt:Point = view.parent.localToGlobal(new Point(view.x,view.y));
+			
+			var bmd:BitmapData = new BitmapData(content.width,(pt.y /view.parentApplication.height) * content.height);
+			var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /view.parentApplication.height) * content.height);
+			
+			bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
+			content.bitmapData.dispose();
+	
+			var enc:PNGEncoder = new PNGEncoder();
+			//encode the bitmapdata object and keep the encoded ByteArray
+			var imgByteArray:ByteArray = enc.encode(bmd);
+			//				var UIMatrix:Matrix = new Matrix();
+			//				bmd.draw(content, UIMatrix);
+			var fs:FileStream = new FileStream();
+			var d:Date = new Date();
+			var fl:File = model.exportDirectory.resolvePath("viz"+d.time+".png");
+			try{
+				//open file in write mode
+				fs.open(fl,FileMode.WRITE); 
+				//write bytes from the byte array
+				fs.writeBytes(imgByteArray);
+				//close the file
+				fs.close();
+			}catch(e:Error){
+				trace(e.message);
+			}	
+		}
+		private function closeSettingsPanel(event:MouseEvent):void {
+			if(event.target != view.settingsBtn)
+				view.settingsBtn.selected = false;
+		} 			
+					
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
@@ -181,9 +237,6 @@ package com.pentagram.instance.view.mediators.shell
 				yearTimer.stop();
 				view.playBtn.label = "Play";
 			}					
-		}
-		private function handleSettingsBtn(event:MouseEvent):void {
-			InstanceWindow(view.parentApplication).shellView.exportPanel.visible = true;
 		}
 	}
 }

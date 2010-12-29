@@ -17,57 +17,7 @@
 				timelineContainer.visible = false;
 			}
 
-			public function generate ():void    
-			{   
-//				if(!dir) {
-//					selectedNewDirectory();
-//				}
-//				else doSaveImage();
-			} 
 
-//			private function file_select(evt:Event):void {
-//				dirButton.label = dir.nativePath;
-//				dirButton.enabled = true;
-//				if(!folderSelect)
-//					doSaveImage();
-//			}
-//			private var loader:Loader;
-//			private function doSaveImage():void {
-//				var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,72);
-//				//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
-//				loader = new Loader();	
-//				loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
-//				loader.loadBytes(imageSnap.data);
-//			}
-//			private function getBitmapData(e:Event):void {
-//				var content:Bitmap = loader.content as Bitmap;
-//				var pt:Point = this.parent.localToGlobal(new Point(x,y));
-//				
-//				var bmd:BitmapData = new BitmapData(content.width,(pt.y /this.parentApplication.height) * content.height);
-//				var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /this.parentApplication.height) * content.height);
-//				
-//				bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
-//				content.bitmapData.dispose();
-////				var UIMatrix:Matrix = new Matrix();
-////				bmd.draw(content, UIMatrix);
-//				var enc:PNGEncoder = new PNGEncoder();
-//				//encode the bitmapdata object and keep the encoded ByteArray
-//				var imgByteArray:ByteArray = enc.encode(bmd);
-//				
-//				var fs:FileStream = new FileStream();
-//				var d:Date = new Date();
-//				var fl:File = dir.resolvePath("viz"+d.time+".png");
-//				try{
-//					//open file in write mode
-//					fs.open(fl,FileMode.WRITE);
-//					//write bytes from the byte array
-//					fs.writeBytes(imgByteArray);
-//					//close the file
-//					fs.close();
-//				}catch(e:Error){
-//					trace(e.message);
-//				}	
-//			}
 
 		]]>
 	</fx:Script>
@@ -102,7 +52,7 @@
 		
 		<s:List id="yearSlider"  borderVisible="false" allowMultipleSelection="true"
 				itemRenderer="com.pentagram.view.renderers.YearsListRenderer" 
-				skinClass="com.pentagram.view.skins.controls.YearListSkin" requireSelection="true"
+				skinClass="com.pentagram.view.skins.controls.YearList" requireSelection="true"
 				rollOverColor="#C50E24" selectionColor="#C50E24">
 			<s:layout>
 				<s:HorizontalLayout gap="8" verticalAlign="middle" />
@@ -125,9 +75,9 @@
 		</s:stroke>
 	</s:Line> 
 	
-	<s:HGroup width="100%" verticalAlign="middle" height="34" gap="0"  bottom="0" paddingLeft="10">
+	<s:HGroup width="100%" verticalAlign="middle" height="34" gap="0"  bottom="0" paddingLeft="0">
 		
-		<s:TabBar dataProvider="{visualizerArea}" />
+		<s:TabBar dataProvider="{visualizerArea}" itemRenderer="com.pentagram.view.renderers.VisualizerTypeButton" />
 		
 		<s:Rect width="10" />
 		
@@ -188,12 +138,12 @@
 				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
 			</s:stroke>
 		</s:Line> 
-		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn" click="generate()" />
+		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn"/>
 		<s:Line height="100%" width="1" bottom="34">
 			<s:stroke>
 				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
 			</s:stroke>
 		</s:Line> 
-		<s:Button skinClass="com.pentagram.view.skins.buttons.GearButtonSkin" id="settingsBtn" />
+		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.GearButton" id="settingsBtn" />
 	</s:HGroup>
 </s:Group>

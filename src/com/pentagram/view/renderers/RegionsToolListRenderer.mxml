@@ -31,16 +31,16 @@
 
 		]]>
 	</fx:Script>
-	<s:CheckBox id="check" verticalCenter="0" label=" " width="22" selected="{data.selected}"  change="check_changeHandler(event)" enabled="{data.enabled}"/>
-	<s:Rect width="0.25" height="100%" left="22">
+	<s:CheckBox id="check" verticalCenter="0" label=" " width="16" selected="{data.selected}" left="4"  change="check_changeHandler(event)" enabled="{data.enabled}"/>
+	<s:Rect width="0.25" height="100%" left="20">
 		<s:stroke>
 			<s:SolidColorStroke weight="0.25" color="0x666666"/>
 		</s:stroke>
 	</s:Rect>
 	<s:Button verticalCenter="0" skinClass="com.pentagram.view.skins.buttons.ContinentToggleButton"  id="select"
-	label="{data.name}" left="23"  color="{data.color}" click="togglebutton1_changeHandler(event)"  />
+	label="{data.name}" left="21"  color="{data.color}" click="togglebutton1_changeHandler(event)"  />
 	
-	<s:Rect width="100%" height="0.25" bottom="0">
+	<s:Rect left="-4" right="0" height="0.25" bottom="0">
 		<s:stroke>
 			<s:SolidColorStroke color="0x666666" weight="0.25" />
 		</s:stroke>
