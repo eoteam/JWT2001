@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+
+    ADOBE SYSTEMS INCORPORATED
+    Copyright 2008 Adobe Systems Incorporated
+    All Rights Reserved.
+    
+    NOTICE: Adobe permits you to use, modify, and distribute this file
+    in accordance with the terms of the license agreement accompanying it.
+
+-->
+
+<!--- The default skin class for a Spark TitleWindow container.  
+
+     @see spark.skins.spark.TitleWindowCloseButtonSkin
+     @see spark.components.TitleWindow
+
+     @langversion 3.0
+     @playerversion Flash 10
+     @playerversion AIR 1.5
+     @productversion Flex 4
+-->
+<s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
+    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" blendMode="normal" mouseEnabled="false"
+    minWidth="76" minHeight="76" alpha.disabled="0.5" alpha.disabledWithControlBar="0.5">
+    
+    <fx:Metadata>
+        <![CDATA[ 
+        /** 
+         * @copy spark.skins.spark.ApplicationSkin#hostComponent
+         */
+        [HostComponent("com.pentagram.instance.view.visualizer.renderers.RendererInfo")]
+        ]]>
+    </fx:Metadata> 
+    
+    <fx:Script fb:purpose="styling">
+        
+		<![CDATA[
+
+		/* Define the skin elements that should not be colorized. 
+        For panel, border and title background are skinned, but the content area and title text are not. */
+        static private const exclusions:Array = ["background", "titleDisplay", "contentGroup"];
+        
+        /**
+         * @private 
+         */   
+        override public function get colorizeExclusions():Array {return exclusions;}
+        
+        /**
+         * @private
+         */
+        override protected function initializationComplete():void
+        {
+            useChromeColor = true;
+            super.initializationComplete();
+        }
+        
+        /**
+         * @private
+         */
+        override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+        {
+           /*  if (getStyle("borderVisible") == true)
+            {
+                border.visible = true;
+                background.left = background.top = background.right = background.bottom = 1;
+                contents.left = contents.top = contents.right = contents.bottom = 1;
+            }
+            else
+            {
+                border.visible = false;
+                background.left = background.top = background.right = background.bottom = 0;
+                contents.left = contents.top = contents.right = contents.bottom = 0;
+            } */
+            
+           //dropShadow.visible = getStyle("dropShadowVisible");
+            
+            var cr:Number = getStyle("cornerRadius");
+            var withControls:Boolean = 
+                (currentState == "disabledWithControlBar" || 
+                 currentState == "normalWithControlBar" ||
+                 currentState == "inactiveWithControlBar");
+            
+            if (cornerRadius != cr)
+            {
+                cornerRadius = cr;
+                
+/*                 dropShadow.tlRadius = cornerRadius;
+                dropShadow.trRadius = cornerRadius;
+                dropShadow.blRadius = withControls ? cornerRadius : 0;
+                dropShadow.brRadius = withControls ? cornerRadius : 0; */
+                
+/*                 setPartCornerRadii(topMaskRect, withControls); 
+                setPartCornerRadii(border, withControls); 
+                setPartCornerRadii(background, withControls); */
+            }
+            
+            //if (bottomMaskRect) setPartCornerRadii(bottomMaskRect, withControls); 
+            
+ /*            borderStroke.color = getStyle("borderColor");
+            borderStroke.alpha = getStyle("borderAlpha");
+            backgroundFill.color = getStyle("backgroundColor");
+            backgroundFill.alpha = getStyle("backgroundAlpha"); */
+            
+            super.updateDisplayList(unscaledWidth, unscaledHeight);
+        }
+        
+        /**
+         * @private
+         */  
+        private function setPartCornerRadii(target:Rect, includeBottom:Boolean):void
+        {            
+            target.topLeftRadiusX = cornerRadius;
+            target.topRightRadiusX = cornerRadius;
+            target.bottomLeftRadiusX = includeBottom ? cornerRadius : 0;
+            target.bottomRightRadiusX = includeBottom ? cornerRadius : 0;
+        }
+        
+        private var cornerRadius:Number;
+		]]>
+    </fx:Script>
+    
+    <s:states>
+        <s:State name="normal" />
+        <s:State name="inactive" stateGroups="inactiveGroup" />
+        <s:State name="disabled" />
+        <s:State name="normalWithControlBar" stateGroups="withControls" />
+        <s:State name="inactiveWithControlBar" stateGroups="withControls, inactiveGroup" />
+        <s:State name="disabledWithControlBar" stateGroups="withControls" />
+    </s:states>
+    
+    <s:Group left="0" right="0" top="0" bottom="0">
+
+		<s:Path rotation="90" y="39" id="path12"  winding="nonZero" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1" visible="{hostComponent.tipVisible}">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter id="dropShadow" alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Path>
+		
+		
+		<s:Rect bottomLeftRadiusX="4" bottomRightRadiusX="4" top="15" bottom="0" left="0" right="0">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Rect>
+        
+        <s:Group left="0" right="0" top="0" bottom="0" id="contents">
+            <s:layout>
+                <s:VerticalLayout gap="0" horizontalAlign="justify" />
+            </s:layout>
+            
+			<s:Group id="topGroup" height="15">
+				<s:Rect  topLeftRadiusX="4"  topRightRadiusX="4" top="0" bottom="0" left="0" right="0">
+					<s:fill>
+						<s:SolidColor color="#B3B3B3" alpha="0.9"/>
+					</s:fill>
+				</s:Rect>	
+                <s:Group id="moveArea" left="0" right="0" top="0" bottom="0" />
+                <s:Button id="closeButton" skinClass="com.pentagram.view.skins.buttons.CloseButton"  left="7" verticalCenter="0" />
+            </s:Group>
+
+            <s:Group id="contentGroup" width="100%" height="100%"  minWidth="0" minHeight="0" />            
+    
+            <s:Group id="bottomGroup" minWidth="0" minHeight="0" includeIn="withControls">  
+                <s:Group id="controlBarGroup" left="0" right="0" top="1" bottom="1" minWidth="0" minHeight="0">
+                    <s:layout>
+                        <s:HorizontalLayout paddingLeft="10" paddingRight="10" paddingTop="7" paddingBottom="7" gap="10" />
+                    </s:layout>
+                </s:Group>
+            </s:Group>
+        </s:Group>
+    </s:Group>
+</s:SparkSkin>

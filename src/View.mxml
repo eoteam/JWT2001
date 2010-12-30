@@ -56,6 +56,7 @@
 				context.contextView = this;		
 				TextLineRecycler.textLineRecyclerEnabled = false;
 				ToolTipManager.showDelay = 0;
+				//flash.profiler.showRedrawRegions ( true, 0);
 			}  
 			
 			protected function init():void

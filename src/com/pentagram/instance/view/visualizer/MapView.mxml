@@ -12,7 +12,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-
+			
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -136,10 +136,10 @@
 			public function updateYear(year:int):void {
 				this.currentYear = year;
 				update();
-			
+				
 			}
 			public function update():void {
-			
+				
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
 					if(dataset.time == 1)
@@ -193,7 +193,7 @@
 					map.percentHeight = 100;
 					map.percentWidth = 100;
 				}
-
+				
 			}
 			private function onFinishTween(map:FXGLoader):void {
 				map.percentHeight = map.percentWidth = 100;
@@ -233,7 +233,7 @@
 					loadWorldMap();
 				}
 				else {
-				 	if(mapHolder.numElements == 1 && FXGLoader(mapHolder.getChildAt(0)).region.fxgmap == "world_map.xml")
+					if(mapHolder.numElements == 1 && FXGLoader(mapHolder.getChildAt(0)).region.fxgmap == "world_map.xml")
 						return;
 					
 					total = region.coeff;
@@ -283,26 +283,26 @@
 					for (i=0;i<mapHolder.numElements;i++) {
 						child = mapHolder.getElementAt(i) as FXGLoader;
 						fxgSprite = child.fxgSprite;
-//						child.graphics.clear();
-//						child.graphics.beginFill(0xff6666,1);
-//						child.graphics.drawRect(0,0,child.width,child.height);
-//						child.graphics.endFill();
+						//						child.graphics.clear();
+						//						child.graphics.beginFill(0xff6666,1);
+						//						child.graphics.drawRect(0,0,child.width,child.height);
+						//						child.graphics.endFill();
 						var g:Sprite = fxgSprite.getChildAt(0) as Sprite;  
 						if(g.width > maxW) {
 							maxW = g.width;
 							widestSprite = g;
 							widestRegion = child.region;							
 						}
-//						if(g.width < minW) {
-//
-//						}
+						//						if(g.width < minW) {
+						//
+						//						}
 					}
 					if(mapHolder.numElements > 0) {
 						var nw:Number; var nh:Number;   
 						trace(widestRegion.width , widestRegion.height, widestRegion.coeff);
 						fxgRatio = widestRegion.width / widestRegion.height;
 						ratio = (mapHolder.width/(slice*widestRegion.coeff/100))/ mapHolder.height;  
-					
+						
 						if(ratio >= fxgRatio) {
 							nh = mapHolder.height;
 							nw = nh*fxgRatio;
@@ -400,10 +400,10 @@
 	<fx:Declarations>
 		<s:Fade alphaTo="1" duration="500" id="fadeIn" />
 		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
-
+		
 	</fx:Declarations>
 	
 	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2" />
 	<s:Group id="holder" width="100%" height="100%" />
-
+	
 </modules:Module>

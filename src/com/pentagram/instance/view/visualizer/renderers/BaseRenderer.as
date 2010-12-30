@@ -8,8 +8,10 @@ package com.pentagram.instance.view.visualizer.renderers
 	
 	import mx.containers.Canvas;
 	import mx.core.UIComponent;
+	
+	import org.cove.ape.DataSprite;
 
-	internal class BaseRenderer extends UIComponent
+	internal class BaseRenderer extends DataSprite
 	{
 		protected var label:TextField;
 		protected var textFormat:TextFormat;

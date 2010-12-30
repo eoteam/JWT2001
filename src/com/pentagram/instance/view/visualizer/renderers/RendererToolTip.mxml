@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		xmlns:s="library://ns.adobe.com/flex/spark" 
-		implements="mx.core.IToolTip"
-		xmlns:mx="library://ns.adobe.com/flex/mx">
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 implements="mx.core.IToolTip" width="255" height="120"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Script>
 		<![CDATA[
 			[Bindable]
@@ -20,10 +20,10 @@
 			}
 		]]>
 	</fx:Script>
-
+	
 	<s:Path rotation="90" y="39"	
-	id="path12"  winding="nonZero"
-	data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
+			id="path12"  winding="nonZero"
+			data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
 		<s:fill>
 			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
 		</s:fill>
@@ -39,11 +39,11 @@
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 		</s:filters>
 	</s:Rect>
-		<s:Line x="13.5" xTo="201" y="101.5">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
-			</s:stroke>
-		</s:Line>
-		<s:Label fontSize="20" text="{bodyText}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
+	<s:Line x="13.5" xTo="201" y="101.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Label fontSize="20" text="{bodyText}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
 </s:Group>	
 

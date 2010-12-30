@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="270" height="120"
+		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)"
+		 skinClass="com.pentagram.view.skins.controls.TooltipSkin" move="titlewindow1_moveHandler(event)"
+		xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.MoveEvent;
+			import mx.managers.PopUpManager;
+			
+			import spark.skins.spark.TitleWindowSkin;
+			[Bindable]
+			public var bodyText:String = "";
+
+			[Bindable] public var tipVisible:Boolean = true;
+			protected function titlewindow1_closeHandler(event:CloseEvent):void
+			{
+				tipVisible = true;
+				PopUpManager.removePopUp(this);
+			}
+
+
+			protected function titlewindow1_moveHandler(event:MoveEvent):void
+			{
+				if(event.oldX != 0 && event.oldX != 0)
+					tipVisible = false;
+			}
+
+		]]>
+	</fx:Script>
+
+	<s:layout>
+		<s:VerticalLayout />
+	</s:layout>
+	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35">
+		<s:Label fontSize="14" text="{bodyText}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
+		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" />
+	</s:HGroup>
+
+	<s:Line  width="100%" height="1">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Line>
+</s:TitleWindow>

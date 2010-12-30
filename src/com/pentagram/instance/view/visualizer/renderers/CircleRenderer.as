@@ -7,19 +7,23 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import mx.events.CloseEvent;
 	import mx.events.ToolTipEvent;
 	import mx.graphics.IStroke;
 	import mx.graphics.Stroke;
+	import mx.managers.PopUpManager;
 	
 	public class CircleRenderer extends BaseRenderer
 	{
 
 		private var _hovered:Boolean = false; 
 		private var _mouseCaptured:Boolean = false;  
-		
+		private var info:RendererInfo;
+		private var infoVisible:Boolean = false;
 		public function CircleRenderer():void {
 			super();
 			
@@ -31,10 +35,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			label = new TextField();
 			label.selectable = false;
-			
+//			label.border = true;
+//			label.borderColor = 0xff0000;
 			label.embedFonts = true;
 			label.mouseEnabled = false;
 			label.defaultTextFormat = textFormat;
+			label.width = 30; label.height = 20;	
 			this.addChild(label);
 			
 			addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
@@ -55,11 +61,10 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var stateFlag:Boolean = false;
 		protected var dirtyFlag:Boolean = false;
 		protected var dirtyCoordFlag:Boolean = false;
-		protected var _data:DataRow;
+		
 	
 	
-		public function get data():DataRow { return _data; }
-		public function set data(d:DataRow):void { 
+		override public function set data(d:DataRow):void { 
 			_data = d; 
 			fillColor = textColor = d.country.region.color;
 		}
@@ -122,10 +127,12 @@ package com.pentagram.instance.view.visualizer.renderers
 //			graphics.endFill();
 			//textFormat.color = _fillColor;
 			
-			textFormat.color = _textColor;
+			textFormat.color = _textColor;			
+			label.text = _data.country.shortname
 			label.x = -label.textWidth/2;
 			label.y = -label.textHeight/2;
-			label.text = _data.country.shortname;
+			label.width = label.textWidth+4;
+			label.height = label.textHeight+4;	
 			label.defaultTextFormat = textFormat;
 			label.visible = true;
 			if(this.alpha == 0) {
@@ -134,9 +141,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 		}	
 		protected function createToolTip(event:ToolTipEvent):void {
-			var ptt:RendererToolTip = new RendererToolTip();
+			var ptt:RendererTooltip = new RendererTooltip();
 			ptt.bodyText = _data.country.shortname;
 			event.toolTip = ptt;	
+			var pt:Point = this.localToGlobal(new Point(x,y));
+			ptt.x = pt.x;
+			ptt.y = pt.y;
 			//trace(x,y,width,height);
 		}
 		
@@ -176,9 +186,20 @@ package com.pentagram.instance.view.visualizer.renderers
 				}
 				case MouseEvent.CLICK:
 				{
-					
+					if(!infoVisible) {
+						info = new RendererInfo();
+						info.bodyText = _data.country.name;
+						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
+						var pt:Point = this.parent.localToGlobal(new Point(x,y));
+						info.x = pt.x+radius; info.y = pt.y +60;
+						PopUpManager.addPopUp(info, this.parent, false);
+						infoVisible = true;
+					}
 				}
 			}
+		}
+		private function handleInfoClose(event:CloseEvent):void {
+			infoVisible = false;
 		}
 		private function addedToStageHandler(event:Event):void {
 
