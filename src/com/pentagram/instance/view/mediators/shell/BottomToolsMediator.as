@@ -64,22 +64,23 @@ package com.pentagram.instance.view.mediators.shell
 			
 		}
 		private var loader:Loader;
-		private function saveImage(event:MouseEvent):void {		
-			var imageSnap:ImageSnapshot = ImageSnapshot.captureImage(view.parentApplication as IBitmapDrawable,72);
+		private function saveImage(event:MouseEvent):void {	
+			Shell(view.parentApplication.shellView).savingPanel.visible = true;
+			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.parentApplication as IBitmapDrawable);
 			//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
-			loader = new Loader();	
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
-			loader.loadBytes(imageSnap.data);
-		}
-		private function getBitmapData(e:Event):void {
-			var content:Bitmap = loader.content as Bitmap;
+//			loader = new Loader();	
+//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
+//			loader.loadBytes(imageSnap.data);
+//		}
+//		private function getBitmapData(e:Event):void {
+			//var content:Bitmap = loader.content as Bitmap;
 			var pt:Point = view.parent.localToGlobal(new Point(view.x,view.y));
 			
-			var bmd:BitmapData = new BitmapData(content.width,(pt.y /view.parentApplication.height) * content.height);
-			var rect:Rectangle = new Rectangle(0,0,content.width,(pt.y /view.parentApplication.height) * content.height);
+			var bmd:BitmapData = new BitmapData(imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
+			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
 			
-			bmd.copyPixels(content.bitmapData,rect,new Point( 0, 0 ));
-			content.bitmapData.dispose();
+			bmd.copyPixels(imageSnap,rect,new Point( 0, 0 ));
+			imageSnap.dispose();
 	
 			var enc:PNGEncoder = new PNGEncoder();
 			//encode the bitmapdata object and keep the encoded ByteArray
@@ -96,9 +97,10 @@ package com.pentagram.instance.view.mediators.shell
 				fs.writeBytes(imgByteArray);
 				//close the file
 				fs.close();
-			}catch(e:Error){
+			}catch(e:Error){	
 				trace(e.message);
 			}	
+			Shell(view.parentApplication.shellView).savingPanel.visible = false;
 		}
 		private function closeSettingsPanel(event:MouseEvent):void {
 			if(event.target != view.settingsBtn)
