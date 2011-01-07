@@ -23,6 +23,7 @@
 			import mx.charts.AxisRenderer;
 			import mx.charts.CategoryAxis;
 			import mx.charts.LinearAxis;
+			
 			import mx.charts.chartClasses.IAxis;
 			import mx.charts.series.BubbleSeries;
 			import mx.collections.ArrayCollection;
@@ -198,7 +199,7 @@
 		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0" />
 		
 		<mx:AxisRenderer  id="vAxisRenderer" axisTitleStyleName="axisTitle" tickPlacement="none" placement="left"
-		tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true">
+		tickLength="0" canDropLabels="true"  showLabels="true" labelAlign="left" labelRotation="90"	>
 			<mx:axisStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
 			</mx:axisStroke>
@@ -207,7 +208,7 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 		
-		<mx:AxisRenderer id="hAxisRenderer"  
+		<mx:AxisRenderer id="hAxisRenderer"   labelAlign="left"
 		 axisTitleStyleName="axisTitle" tickPlacement="none" placement="bottom"
 		 tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true"> 
 			<mx:axisStroke>
@@ -218,14 +219,14 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	
 	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
-	gutterTop="-20" gutterRight="-20" paddingTop="20" paddingRight="20" dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
+	paddingTop="20" paddingRight="20" gutterTop="-25" gutterRight="-25"  
+	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
 		<chart:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
 			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>
 		</chart:series>
 		<chart:backgroundElements />
 	</chart:ViewBubbleChart>
-	
+
 </modules:Module>

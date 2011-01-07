@@ -11,6 +11,8 @@
 			import mx.core.UIComponent;
 			public var newXAxis:AxisRenderer;
 			public var newYAxis:AxisRenderer;
+			import mx.charts.LinearAxis;
+			
 			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
 				super.updateDisplayList(unscaledWidth,unscaledHeight);
 				var children:Array = []
@@ -27,6 +29,25 @@
 				for each(c in children)
 				this.removeChild(c);
 			} 
+			override protected function updateAxisLayout(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateAxisLayout(unscaledWidth,unscaledHeight);
+				var vAxis:AxisRenderer = AxisRenderer(verticalAxisRenderers[0]);
+				var hAxis:AxisRenderer = AxisRenderer(horizontalAxisRenderers[0]);
+				if(vAxis && hAxis) {
+					if(hAxis.axis is LinearAxis) {
+						if(LinearAxis(hAxis.axis).minimum < 0 && LinearAxis(hAxis.axis).maximum > 0) //negative range
+							vAxis.move(vAxis.x - unscaledWidth / 2, vAxis.y);
+						//else
+						//	vAxis.move(0,vAxis.y);
+					}
+					if(vAxis.axis is LinearAxis) {
+						if(LinearAxis(vAxis.axis).minimum < 0 && LinearAxis(vAxis.axis).maximum > 0) //negative range
+							hAxis.move(hAxis.x,hAxis.y - unscaledHeight / 2);
+						//else
+						//	hAxis.move(hAxis.x,hAxis.y);
+					}
+				}
+			}
 		]]>
 	</fx:Script>
 </mx:BubbleChart>

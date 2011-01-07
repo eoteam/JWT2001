@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"  hideEffect="{fadeIn}" 
-		 xmlns:s="library://ns.adobe.com/flex/spark"   show="spinner.play()" hide="spinner.stop()"
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="130" height="60" xmlns:controls="com.pentagram.view.controls.*">
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"  showEffect="{fade}"  
+		 xmlns:s="library://ns.adobe.com/flex/spark"  
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="110" height="40" xmlns:controls="com.pentagram.view.controls.*">
 	<fx:Declarations>
-		<s:Fade  id="fadeIn" alphaFrom="0" alphaTo="1" />
-		<s:Fade  id="fadeOut" alphaFrom="1" alphaTo="0" />
+		<s:Sequence id="fade">
+			<s:Fade alphaFrom="0" alphaTo="1" />
+			<s:Fade alphaFrom="1" alphaTo="0" startDelay="1000" effectEnd="this.visible=false"/>
+		</s:Sequence>
+		
+		
 	</fx:Declarations>
 	
 	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
@@ -25,8 +29,8 @@
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 		</s:filters>
 	</s:Path>
-	<s:VGroup verticalAlign="middle" verticalCenter="0" horizontalAlign="center">
-		<s:Label text="Saving Image ..." />
-		<controls:Spinner id="spinner" tickColor="0xffffff" size="20" tickWidth="2" numTicks="10" autoPlay="true" /> 		
-	</s:VGroup>
+<!--	<s:VGroup verticalAlign="middle" verticalCenter="0" horizontalAlign="center">-->
+		<s:Label text="Image Saved" verticalCenter="0" horizontalCenter="0" />
+		<!--<controls:Spinner id="spinner" tickColor="0xffffff" size="20" tickWidth="2" numTicks="10" autoPlay="true" /> 	-->	
+<!--	</s:VGroup>-->
 </s:Group>

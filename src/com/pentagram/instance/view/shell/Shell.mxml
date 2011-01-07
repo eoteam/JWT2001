@@ -108,5 +108,5 @@
 
 	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" />
 	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel"/>
-	<shell:SavingImagePanel right="80"  bottom="95" styleName="darkPanel" visible="false" id="savingPanel"/>
+	<shell:SavingImagePanel right="70"  bottom="95" styleName="darkPanel" visible="false" id="savingPanel"/>
 </s:Group>
