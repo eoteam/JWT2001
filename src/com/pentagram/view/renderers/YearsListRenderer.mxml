@@ -6,11 +6,8 @@
 				width="8"
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
-				xmlns:utils="com.pentagram.utils.*"
+				xmlns:utils="com.pentagram.utils.*" clipAndEnableScrolling="false"
 				xmlns:renderers="com.pentagram.view.renderers.*">
-	<!-- 				rollOver="itemrenderer1_rollOverHandler(event)" 
-	rollOut="itemrenderer1_rollOutHandler(event)"
-	click="itemrenderer1_clickHandler(event)" -->
 	<fx:Script>
 		<![CDATA[
 			import flash.geom.Point;
@@ -137,9 +134,9 @@
 			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"/>
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
-	<s:PopUpAnchor y="-13" popUpPosition="above" x="-35.5" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
-		<s:popUp>
-			<renderers:YearListRendererToolTip bodyText="{data.year}"/>
-		</s:popUp>
-	</s:PopUpAnchor>
+<!--	<s:PopUpAnchor popUpPosition="above" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
+		<s:popUp>-->
+			<renderers:YearListRendererToolTip bodyText="{data.year}" includeInLayout="false" depth.selected="0" depth.hovered="{List(this.owner).dataProvider.length}"  y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
+<!--		</s:popUp>
+	</s:PopUpAnchor>-->
 </s:ItemRenderer>

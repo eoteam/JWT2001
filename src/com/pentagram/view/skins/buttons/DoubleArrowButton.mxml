@@ -7,46 +7,29 @@
 		<s:State name="down"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<s:Group id="group13" x="0" y="0">
-		<s:Group x="0" y="0">
-			<s:Group x="0" y="0">
-				<s:Rect height="18" radiusX="1.9919" radiusY="1.9919" width="15" x="0" y="1">
-					<s:fill>
-						<s:LinearGradient rotation="90" scaleX="1.459" x="7.446" y="0.901">
-							<s:GradientEntry color="#FFFFFF" ratio="0"/>
-							<s:GradientEntry color="#E3E3E3" ratio="1"/>
-						</s:LinearGradient>
-					</s:fill>
-					<s:filters>
-						<s:DropShadowFilter includeIn="down" blurX="1" blurY="1" distance="1" hideObject="false" color="#666666" inner="true" strength="1" alpha="0.45" quality="2" knockout="false" angle="45.0"/>
-					</s:filters>
-				</s:Rect>
-				<s:Rect height="18" radiusX="1.9919" radiusY="1.9919" width="14" x="0.5" y="0.5">
-					<s:stroke>
-						<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="1"/>
-					</s:stroke>
-				</s:Rect>
-				<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" winding="nonZero" x="4.747" y="11.083">
-					<s:fill>
-						<s:SolidColor color="#58595B"/>
-					</s:fill>
-				</s:Path>
-				<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" winding="nonZero" x="4.747" y="5.483">
-					<s:fill>
-						<s:SolidColor color="#58595B"/>
-					</s:fill>
-				</s:Path>
-			</s:Group>
-		</s:Group>
+	<s:Group id="group24" x="0" y="0">
+		<s:Rect height="17" id="rect15" radiusX="1.9919" radiusY="1.9919" width="15" x="0" y="1">
+			<s:fill>
+				<s:LinearGradient rotation="90" scaleX="2.027" x="7.447" y="0.851">
+					<s:GradientEntry alpha="1.0" color="#2E2E2E" ratio="0"/>
+					<s:GradientEntry alpha="1.0" color="#000000" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Rect height="18" id="rect16" radiusX="1.9919" radiusY="1.9919" width="14" x="0.5" y="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
 	</s:Group>
-	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path11" includeIn="down,over" winding="nonZero" x="4.747" y="11.083">
+	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path16" winding="nonZero" x="4.46" y="10.546">
 		<s:fill>
-			<s:SolidColor color="#999999"/>
+			<s:SolidColor color="#E6E6E6" color.over="#999999" color.down="#999999"/>
 		</s:fill>
 	</s:Path>
-	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path10" includeIn="down,over" winding="nonZero" x="4.747" y="5.483">
+	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path15" winding="nonZero" x="4.46" y="4.946">
 		<s:fill>
-			<s:SolidColor color="#999999"/>
+			<s:SolidColor color="#E6E6E6" color.over="#999999" color.down="#999999"/>
 		</s:fill>
 	</s:Path>
 </s:Skin>

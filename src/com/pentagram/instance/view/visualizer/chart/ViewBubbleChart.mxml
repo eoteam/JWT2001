@@ -33,18 +33,15 @@
 				super.updateAxisLayout(unscaledWidth,unscaledHeight);
 				var vAxis:AxisRenderer = AxisRenderer(verticalAxisRenderers[0]);
 				var hAxis:AxisRenderer = AxisRenderer(horizontalAxisRenderers[0]);
+								
 				if(vAxis && hAxis) {
 					if(hAxis.axis is LinearAxis) {
-						if(LinearAxis(hAxis.axis).minimum < 0 && LinearAxis(hAxis.axis).maximum > 0) //negative range
-							vAxis.move(vAxis.x - unscaledWidth / 2, vAxis.y);
-						//else
-						//	vAxis.move(0,vAxis.y);
+						if(LinearAxis(hAxis.axis).minimum < 0 && LinearAxis(hAxis.axis).maximum > 0)
+							vAxis.move(vAxis.x - unscaledWidth / 2-120, vAxis.y);
 					}
 					if(vAxis.axis is LinearAxis) {
-						if(LinearAxis(vAxis.axis).minimum < 0 && LinearAxis(vAxis.axis).maximum > 0) //negative range
+						if(LinearAxis(vAxis.axis).minimum < 0 && LinearAxis(vAxis.axis).maximum > 0)
 							hAxis.move(hAxis.x,hAxis.y - unscaledHeight / 2);
-						//else
-						//	hAxis.move(hAxis.x,hAxis.y);
 					}
 				}
 			}

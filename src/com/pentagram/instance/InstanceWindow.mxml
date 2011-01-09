@@ -68,8 +68,8 @@
 	
 	
 	<shell:Search id="searchView" width="100%" height="100%" includeIn="search" horizontalCenter="0" verticalCenter="0"/>
-	<shell:Shell id="shellView" width="100%" height="100%"  includeIn="visualizer" horizontalCenter="0" verticalCenter="0"/>
 	<assets:CircularProgress includeIn="loading" verticalCenter="0" horizontalCenter="0" />
+	<shell:Shell id="shellView" width="100%" height="100%"  includeIn="visualizer" horizontalCenter="0" verticalCenter="0"/>
 	
 	<s:HGroup bottom="4" verticalAlign="middle" width="100%" paddingLeft="10" paddingRight="10" includeIn="search">
 		<s:ToggleButton id="loginBtn"  skinClass="com.pentagram.view.skins.buttons.LoginButton"/> 
@@ -84,4 +84,6 @@
 		</s:Group>
 	</s:HGroup>	
 	<shell:LoginPanel id="loginPanel" bottom="50" left="10" tipPadding="-102" visible="{loginBtn.selected}" />
+	
+
 </s:Window>

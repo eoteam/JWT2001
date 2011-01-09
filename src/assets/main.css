@@ -89,13 +89,16 @@ flashcommander|AutoComplete#editorInput s|TextInput {
 	verticalCenter:0;
 	horizontalCenter: 0 ;
 }
-bxf|HotTextNumber {
+/*bxf|HotTextNumber {
 	fontFamily: FlamaBookMx;
 	embedFonts:true;	
 	color:				#FFFFFF;
 	backColor:			#1A1A1A;
 	text-decoration:	none;
 	border-bottom:		solid 1px;
+}*/
+s|DropDownList {
+	skinClass: ClassReference("com.pentagram.view.skins.controls.DropDown");
 }
 .darkPanel s|Label {
 	color: #ffffff;	

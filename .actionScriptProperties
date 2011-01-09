@@ -9,6 +9,9 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/Common/"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject/"/>
+      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LOCALE_LOCATION}/version4locale/"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -44,10 +47,13 @@
         <airExcludes>
           <pathEntry path="bxf"/>
           <pathEntry path="com/ericfeminella"/>
+          <pathEntry path="com/pentagram/instance/view/visualizer/.DS_Store"/>
           <pathEntry path="flex"/>
           <pathEntry path="assets/fonts"/>
+          <pathEntry path="com/pentagram/instance/view/visualizer/renderers"/>
           <pathEntry path="com/pentagram/view"/>
           <pathEntry path="com/pentagram/instance/view/.DS_Store"/>
+          <pathEntry path="com/pentagram/services"/>
           <pathEntry path="assets/.DS_Store"/>
           <pathEntry path="server"/>
           <pathEntry path="ws"/>
@@ -56,6 +62,7 @@
           <pathEntry path="com/.DS_Store"/>
           <pathEntry path="assets/maps/.DS_Store"/>
           <pathEntry path=".DS_Store"/>
+          <pathEntry path="com/pentagram/events"/>
           <pathEntry path="org"/>
         </airExcludes>
       </airSettings>
