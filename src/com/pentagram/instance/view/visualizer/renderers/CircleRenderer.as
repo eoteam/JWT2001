@@ -126,7 +126,16 @@ package com.pentagram.instance.view.visualizer.renderers
 //			graphics.drawRect(0,-_radius,1,_radius*2);
 //			graphics.endFill();
 			//textFormat.color = _fillColor;
-			
+			if(_radius < 30 && _radius > 10)  {
+				textFormat.size = 10;
+				label.visible = true;
+			}
+			else if(_radius <= 10)
+				label.visible = false;
+			else {
+				textFormat.size = 12;
+				label.visible = true;	
+			}
 			textFormat.color = _textColor;			
 			label.text = _data.country.shortname
 			label.x = -label.textWidth/2;
@@ -134,14 +143,14 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.width = label.textWidth+4;
 			label.height = label.textHeight+4;	
 			label.defaultTextFormat = textFormat;
-			label.visible = true;
+
 			if(this.alpha == 0) {
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
 				
 			}
 		}	
 		protected function createToolTip(event:ToolTipEvent):void {
-			var ptt:RendererTooltip = new RendererTooltip();
+			var ptt:RendererToolTip = new RendererToolTip();
 			ptt.bodyText = _data.country.shortname;
 			event.toolTip = ptt;	
 			var pt:Point = this.localToGlobal(new Point(x,y));
