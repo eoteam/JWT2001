@@ -197,7 +197,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				{
 					if(!infoVisible) {
 						info = new RendererInfo();
-						info.bodyText = _data.country.name;
+						info.country = _data.country;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 						var pt:Point = this.parent.localToGlobal(new Point(x,y));
 						info.x = pt.x+radius; info.y = pt.y +60;

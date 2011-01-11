@@ -1,5 +1,6 @@
 package com.pentagram.controller.startup
 {
+	import com.pentagram.controller.Constants;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
@@ -80,6 +81,8 @@ package com.pentagram.controller.startup
 			for each(var country:Country in countries)
 			{
 				country.region = region;
+				country.thumb = Constants.FILES_URL+country.thumb;
+				trace(country.thumb);
 				appModel.countries.addItem(country);
 			}
 			checkCount();

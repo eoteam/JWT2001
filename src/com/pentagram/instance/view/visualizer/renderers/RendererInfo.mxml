@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="270" height="120"
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120"
 		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)"
 		 skinClass="com.pentagram.view.skins.controls.TooltipSkin" move="titlewindow1_moveHandler(event)"
-		xmlns:mx="library://ns.adobe.com/flex/mx">
+		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
 		<![CDATA[
 			import mx.events.CloseEvent;
@@ -10,8 +10,6 @@
 			import mx.managers.PopUpManager;
 			
 			import spark.skins.spark.TitleWindowSkin;
-			[Bindable]
-			public var bodyText:String = "";
 
 			[Bindable] public var tipVisible:Boolean = true;
 			protected function titlewindow1_closeHandler(event:CloseEvent):void
@@ -29,13 +27,18 @@
 
 		]]>
 	</fx:Script>
-
+	<fx:Declarations>
+		<vo:Country id="country" />
+	</fx:Declarations>
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
-	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35">
-		<s:Label fontSize="14" text="{bodyText}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
+	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
+		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" />
+		<s:Rect width="100%" />
+		
+		<s:Image source="{country.thumb}" skinClass="com.pentagram.view.skins.controls.FlagSkin" />
 	</s:HGroup>
 
 	<s:Line  width="100%" height="1">

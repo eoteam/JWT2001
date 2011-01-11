@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
 	import flash.geom.Point;
@@ -9,9 +10,11 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.containers.Canvas;
 	import mx.core.UIComponent;
 	
-	import org.cove.ape.DataSprite;
+	import spark.components.supportClasses.SkinnableComponent;
+	
 
-	internal class BaseRenderer extends DataSprite
+
+	internal class BaseRenderer extends UIComponent
 	{
 		protected var label:TextField;
 		protected var textFormat:TextFormat;
@@ -22,6 +25,12 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _fillAlpha:Number = 0.25;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
+		protected var _data:DataRow;
+		
+		public function get data():DataRow { return _data; }
+		public function set data(d:DataRow):void { 
+			_data = d; 
+		}
 		[Bindable] protected var _radius:Number = 1;
 		
 		public function BaseRenderer():void {
