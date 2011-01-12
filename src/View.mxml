@@ -12,10 +12,11 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-
-			
 			import air.net.URLMonitor;
 			import air.update.ApplicationUpdaterUI;
+			import air.update.events.StatusFileUpdateEvent;
+			import air.update.events.StatusUpdateErrorEvent;
+			import air.update.events.StatusUpdateEvent;
 			import air.update.events.UpdateEvent;
 			
 			import com.pentagram.ViewContext;
@@ -40,7 +41,7 @@
 			protected var monitor:URLMonitor;
 			protected var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
 			protected var file:File; // Used for preferences file
-			protected var currentVersion:String="2.0"
+			protected var currentVersion:String="2.0.0"
 			
 			
 			
@@ -135,12 +136,16 @@
 			protected function checkUpdate():void
 			{
 				// set the URL for the update.xml file
-				appUpdater.updateURL = "http://www.myappurl.com/update.xml";
+				appUpdater.updateURL = "http://208.99.179.45/update.xml";
 				appUpdater.addEventListener(UpdateEvent.INITIALIZED, onUpdate);
 				appUpdater.addEventListener(ErrorEvent.ERROR, onUpdaterError);
+				appUpdater.addEventListener(StatusUpdateEvent.UPDATE_STATUS,handleStatusUpdate);
+				appUpdater.addEventListener(StatusFileUpdateEvent.FILE_UPDATE_STATUS,handleStatusUpdate);
+				appUpdater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, handleStatusUpdate);
+				appUpdater.addEventListener(UpdateEvent.BEFORE_INSTALL,handleStatusUpdate);
 				// Hide the dialog asking for permission for checking for a new update.
 				// If you want to see it just leave the default value (or set true).
-				appUpdater.isCheckForUpdateVisible = false;
+				appUpdater.isCheckForUpdateVisible = true;
 				appUpdater.initialize();
 			}
 			
@@ -150,8 +155,11 @@
 			{
 				// start the process of checking for a new update and to install
 				appUpdater.checkNow();
+				//
 			}
-			
+			private function handleStatusUpdate(event:Event):void {
+				trace("Update");
+			}
 			// Handler function for error events triggered by the ApplicationUpdater.initialize
 			protected function onUpdaterError(event:ErrorEvent):void
 			{

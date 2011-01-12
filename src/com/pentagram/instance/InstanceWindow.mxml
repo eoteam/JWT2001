@@ -84,6 +84,4 @@
 		</s:Group>
 	</s:HGroup>	
 	<shell:LoginPanel id="loginPanel" bottom="50" left="10" tipPadding="-102" visible="{loginBtn.selected}" />
-	
-
 </s:Window>

@@ -42,7 +42,7 @@
 				else return false;
 			}
 			public function handleChange(event:IndexChangeEvent):void {
-				trace("SELECTION");
+				check.selected = false;
 			}
 			public function get selectedCategories():Array {
 				var results:Array = [];
@@ -52,6 +52,15 @@
 				}
 				return results;
 			}
+
+			protected function check_changeHandler(event:Event):void
+			{
+				check.selected = true;
+				for each(var item:Category in continentList.dataProvider.toArray()) {
+					item.selected = true;
+				}
+			}
+
 		]]>
 	</fx:Script>
 
@@ -101,7 +110,8 @@
 		<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0">
 			
 			<s:Group right="0" left="6">
-				<buttons:EyeButton id="check" verticalCenter="0" width="16" left="7"/>
+				<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.EyeButton" click="check_changeHandler(event)" 
+				selected="true" id="check" verticalCenter="0" width="16" left="7"/>
 				<s:Rect width="0.25" height="100%" left="24">
 					<s:stroke>
 						<s:SolidColorStroke weight="0.25" color="0x666666"/>
