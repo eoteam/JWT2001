@@ -7,13 +7,15 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.utils.ViewUtils;
 	
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.utils.getQualifiedClassName;
 	
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	import mx.events.StateChangeEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
-
+	
 	public class RightToolsMediator extends Mediator
 	{
 		[Inject]
@@ -29,6 +31,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
 			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
 			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
@@ -137,6 +140,19 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				default:
 					break;
+			}
+		}
+		private function handleCloseTooltips(event:MouseEvent):void {
+//			while(FlexGlobals.topLevelApplication.systemManager.popUpChildren.numChildren > 0){   
+//				PopUpManager.removePopUp(Popup(systemManager.popUpChildren.getChildAt(0))); this
+//			}
+			// if you scope your popups to other than PopUpManagerChildList.POPUP
+			// you need to scan this and check the class name to decide if you need to remove the child
+			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
+				trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
+				if(getQualifiedClassName(view.systemManager.getChildAt(i))=='com.pentagram.instance.view.visualizer.renderers::RendererInfo'){
+					view.systemManager.removeChildAt(i);
+				}
 			}
 		}
 	}

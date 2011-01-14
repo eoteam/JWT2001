@@ -76,12 +76,12 @@
 			<s:Group width="100%"   top="61"  visible="false" id="infoPanelContainer">
 				<s:clipAndEnableScrolling>true</s:clipAndEnableScrolling>
 				<s:SkinnableContainer id="infoPanel" width="100%"  backgroundColor="0xFAFCFB" backgroundAlpha="0.8" y="-120">
-					<s:RichEditableText width="100%"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedIn="true" right="120" left="10" >
+					<s:RichEditableText focusedTextSelectionColor="0x999999" unfocusedTextSelectionColor="0xcccccc" width="600"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedIn="true" left="10" >
 						<s:text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae convallis nibh. Morbi congue sollicitudin diam, vel facilisis nibh placerat hendrerit. Suspendisse faucibus orci id ligula malesuada mattis. Praesent eget purus ligula, quis scelerisque sapien. Ut pellentesque nisi in turpis pulvinar iaculis. Fusce dapibus vestibulum nisl, non consequat nunc mollis vel. Cras rutrum dictum dui, eu aliquet elit sodales vitae. Donec scelerisque suscipit mauris tincidunt pharetra. Donec nec nisi vel augue adipiscing dignissim sed vel leo. Cras vel diam a justo laoreet luctus vitae eu justo.</s:text>
 					</s:RichEditableText>
 					<s:VGroup right="10">
 						<s:Button label="close" click="hideInfoPanel(event)"/>
-						<s:Button label="Edit" includeIn="loggedIn" />
+						<!--<s:Button label="Edit" includeIn="loggedIn" />-->
 					</s:VGroup>		
 				</s:SkinnableContainer>
 			</s:Group>
@@ -110,7 +110,7 @@
 	
 	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" />
 	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel"/>
-	<shell:SavingImagePanel right="70"  bottom="95" styleName="darkPanel" visible="false" id="savingPanel"/>
+	<shell:SavingImagePanel right="60"  bottom="95" styleName="darkPanel" visible="false" id="savingPanel"/>
 	
 	
 </s:Group>

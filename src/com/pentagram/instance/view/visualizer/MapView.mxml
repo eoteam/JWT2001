@@ -143,12 +143,14 @@
 				
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
-					if(dataset.time == 1)
-						r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-					else 
-						r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-					TweenNano.to(c, .5, {radius: r});
-					c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
+					if(c.data) {
+						if(dataset.time == 1)
+							r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+						else 
+							r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+						TweenNano.to(c, .5, {radius: r});
+						c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
+					}
 				}
 				
 			}

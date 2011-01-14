@@ -37,7 +37,6 @@
 		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" />
 		<s:Rect width="100%" />
-		
 		<s:Image source="{country.thumb}" skinClass="com.pentagram.view.skins.controls.FlagSkin" />
 	</s:HGroup>
 

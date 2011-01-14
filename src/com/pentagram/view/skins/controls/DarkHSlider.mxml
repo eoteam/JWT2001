@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.HSlider")]</fx:Metadata>
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Button skinClass="com.pentagram.view.skins.controls.DarkSliderTrack" x="0" y="4" id="track"/>
+	<s:Button skinClass="com.pentagram.view.skins.controls.DarkSliderThumb"  x="20" y="0" id="thumb"/>
+</s:Skin>

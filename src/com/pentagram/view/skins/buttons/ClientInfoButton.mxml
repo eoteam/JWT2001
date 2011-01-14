@@ -81,10 +81,10 @@
     
     <!-- states -->
     <s:states>
-        <s:State name="up" />
-        <s:State name="over" stateGroups="overStates" />
-        <s:State name="down" stateGroups="downStates" />
-        <s:State name="disabled" stateGroups="disabledStates" />
+        <s:State name="up" stateGroups="deselectedStates"/>
+        <s:State name="over" stateGroups="overStates,deselectedStates" />
+        <s:State name="down" stateGroups="downStates,deselectedStates" />
+        <s:State name="disabled" stateGroups="disabledStates,deselectedStates" />
         <s:State name="upAndSelected" stateGroups="selectedStates, selectedUpStates" />
         <s:State name="overAndSelected" stateGroups="overStates, selectedStates" />
         <s:State name="downAndSelected" stateGroups="downStates, selectedStates" />
@@ -93,21 +93,43 @@
     
 	<s:Rect id="fill" left="1" right="1" top="1" bottom="1" radiusX="2">
 		<s:fill>
-			<s:SolidColor color="0x666666" alpha="0" alpha.selectedStates="1" />
+			<s:LinearGradient rotation="90" scaleX="40.049" x="50.028" y="2">
+				<s:GradientEntry alpha="0" alpha.selectedStates="1.0" color="#404040" color.overStates="#494A4A" ratio="0" ratio.overStates="0.03529411764705882"/>
+				<s:GradientEntry alpha="0" alpha.selectedStates="1.0" color="#262626" color.overStates="#444545" ratio="1"/>
+			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
     
     
-    
-    <!-- layer 8: text -->
-    <!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay -->
-    <s:Label id="labelDisplay"
-             textAlign="center" text="more info" text.selectedStates="close"
+    <s:Label id="labelDisplay" fontFamily="FlamaBold"
+             textAlign="left" text="more info" text.selectedStates="close"
 			 focusEnabled="false" color.selectedStates="0xffffff"
              verticalAlign="middle"
-             maxDisplayedLines="1"
-             horizontalCenter="0" verticalCenter="1"
-             left="10" right="10" top="2" bottom="2">
+             maxDisplayedLines="1" verticalCenter="0"
+             horizontalCenter="0" 
+             left="10" right="15" top="2" bottom="2">
     </s:Label>
     
+
+	
+	<s:Group verticalCenter="0"  right="8">
+		<s:Line id="line4" includeIn="selectedStates" x="0.5" xTo="8" y="0.5" yTo="8">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#ffffff" joints="miter" miterLimit="10" weight="2"/>
+			</s:stroke>
+		</s:Line>
+		<s:Line id="line3" includeIn="selectedStates" x="0.5" xFrom="8" y="0.5" yTo="8">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#ffffff"  joints="miter" miterLimit="10" weight="2"/>
+			</s:stroke>
+		</s:Line>
+		<s:Path data="M 7.584 0 L 3.792 6.568 L 0 0 L 7.584 0 Z" id="path1" includeIn="deselectedStates" 
+				winding="nonZero" x="3.82" y="4.298">
+			<s:fill>
+				<s:SolidColor color="#333333"/>
+			</s:fill>
+		</s:Path>
+	</s:Group>
+
+
 </s:SparkSkin>

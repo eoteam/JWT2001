@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Group d:id="4" flm:knockout="false" d:userLabel="Elipse_track" x="0" y="0">
+		<s:Path data="M 75.991 1.989 C 75.991 3.083 75.091 3.979 73.991 3.979 L 2 3.979 C 0.9 3.979 0 3.083 0 1.989 C 0 0.895 0.9 0 2 0 L 73.991 0 C 75.091 0 75.991 0.895 75.991 1.989 Z" winding="nonZero" x="0.954" y="0.312">
+			<s:fill>
+				<s:LinearGradient rotation="90" scaleX="4.01432" x="37.995" y="0.296">
+					<s:GradientEntry ratio="0"/>
+					<s:GradientEntry color="#616161" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Path>
+		<s:Path data="M 76.241 2.239 C 76.241 3.333 75.341 4.229 74.241 4.229 L 2.25 4.229 C 1.15 4.229 0.25 3.333 0.25 2.239 C 0.25 1.145 1.15 0.25 2.25 0.25 L 74.241 0.25 C 75.341 0.25 76.241 1.145 76.241 2.239 Z" winding="nonZero" x="0.704" y="0.062">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#808080" joints="miter" miterLimit="4" weight="0.5"/>
+			</s:stroke>
+		</s:Path>
+	</s:Group>
+</s:Skin>

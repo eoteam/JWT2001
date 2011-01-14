@@ -7,14 +7,15 @@
 		<s:BasicLayout clipAndEnableScrolling="true" />
 	</s:layout>
 	<fx:Declarations>
-		<fx:Number id="barHeight">60</fx:Number>
+		<fx:Number id="barHeight">45</fx:Number>
 	</fx:Declarations>
 	<s:SkinnableContainer backgroundColor="0xE3E4E4" height="{barHeight}" width="100%">
 		
 		<s:layout>
 			<s:HorizontalLayout gap="0" verticalAlign="middle"  paddingLeft="5"/>
 		</s:layout>
-		<mx:Image id="logo" height="{barHeight-5}"  source="{Constants.FILES_URL+client.thumbs}" scaleContent="true" maintainAspectRatio="true"/>
+		<s:Image id="logo" height="{barHeight-5}"  smooth="true" smoothingQuality="high"  scaleMode="letterbox"  fillMode="scale" 
+		source="{Constants.FILES_URL+client.thumbs}" />
 		
 		<s:Rect width="15" excludeFrom="editor" />
 		<s:Line height="100%" excludeFrom="editor">
@@ -27,22 +28,22 @@
 		
 		<s:Label text="Full Name:" excludeFrom="editor"/>
 		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.name}"  excludeFrom="editor"/>
+		<s:Label text="{client.name}"  excludeFrom="editor"  fontFamily="FlamaBold"/>
 		<s:Rect width="10" excludeFrom="editor"/>
 		
-		<s:Label text="Founded:" excludeFrom="editor"/>
+		<s:Label text="Founded:" excludeFrom="editor" />
 		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.founded.toString()}"  excludeFrom="editor"/>
+		<s:Label text="{client.founded.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>
 		<s:Rect width="10" excludeFrom="editor"/>
 		
-		<s:Label text="Industry:" excludeFrom="editor"/>
+		<s:Label text="Industry:" excludeFrom="editor" />
 		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.tags.toString()}"  excludeFrom="editor"/>		
+		<s:Label text="{client.tags.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>		
 		<s:Rect width="10" excludeFrom="editor"/>
 		
 		<s:Label text="Website:" excludeFrom="editor"/>
 		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.website}" excludeFrom="editor" />
+		<s:Label text="{client.website}" excludeFrom="editor"  fontFamily="FlamaBold"/>
 		<s:Rect width="100%" excludeFrom="editor"/>
 		
 		<s:Rect width="1" height="100%" excludeFrom="editor">
@@ -53,7 +54,7 @@
 		
 		<s:ToggleButton id="infoBtn" excludeFrom="editor" selected.editor="false"
 		click="togglebutton1_clickHandler(event)" skinClass="com.pentagram.view.skins.buttons.ClientInfoButton" 
-		width="100" height="100%" focusEnabled="false" />
+		width="120" height="100%" focusEnabled="false" />
 	</s:SkinnableContainer>											
 
 	<s:Rect width="100%" height="1" top="{barHeight}">
@@ -79,7 +80,7 @@
 					</s:Line>
 					
 					<s:Label text="Full Name" />
-					<s:Label text="{client.name}"  />
+					<s:Label text="{client.name}" fontFamily="FlamaBold"/>
 					<s:Rect height="4" />
 
 					<s:Line width="100%" height="1">
@@ -89,7 +90,7 @@
 					</s:Line>
 									
 					<s:Label text="Founded" />
-					<s:Label text="{client.founded.toString()}"  />
+					<s:Label text="{client.founded.toString()}" fontFamily="FlamaBold"/>
 					<s:Rect height="4" />
 
 					<s:Line width="100%" height="1">
@@ -98,12 +99,12 @@
 						</s:stroke>
 					</s:Line>
 										
-					<s:HGroup width="100%" verticalAlign="middle">
+					<!--<s:HGroup width="100%" verticalAlign="middle">-->
 						<s:Label text="Headquarters" />
-						<s:Rect width="100%" />
-						<s:Button label="map" />
-					</s:HGroup>
-					<s:Label text="{client.headquarters}"  />		
+					<!--	<s:Rect width="100%" />
+						<s:Button label="map"  fontFamily="FlamaBold"/>
+					</s:HGroup>-->
+					<s:Label text="{client.headquarters}" fontFamily="FlamaBold"/>		
 					<s:Rect height="4" />
 					
 					<s:Line width="100%" height="1">
@@ -112,8 +113,8 @@
 						</s:stroke>
 					</s:Line>
 										
-					<s:Label text="Employees" />
-					<s:Label text="{client.employees.toString()}"  />		
+					<s:Label text="Employees"/>
+					<s:Label text="{client.employees.toString()}" fontFamily="FlamaBold"/>		
 					<s:Rect height="4" />
 					
 				</s:VGroup>
@@ -134,7 +135,7 @@
 					</s:Line>
 					
 					<s:Label text="Website" />
-					<s:Button label="{client.website}" />
+					<s:Button label="{client.website}" fontFamily="FlamaBold" click="button1_clickHandler(event)"/>
 					<s:Rect height="4" />
 					
 					<s:Line width="100%" height="1">
@@ -176,10 +177,20 @@
 				this.currentState = infoBtn.selected ? "opened":"closed";
 			}
 
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var url:String = client.website;
+				if(client.website.substr(0,7) != 'http://')
+					url = "http://"+client.website;
+				var req:URLRequest = new URLRequest(url);
+				navigateToURL(req, "_blank");
+			}
+
 		]]>
 	</fx:Script>
 	<s:filters>
-		<s:DropShadowFilter   alpha="0.5" angle="90" blurX="4.0" blurY="4.0" color="0x000000" distance="4.0" 
+		<s:DropShadowFilter   alpha="0.5" angle="90" blurX="4.0" blurY="4.0" color="0x666666" distance="4.0" 
 		hideObject="false"  inner="false" knockout="false" quality="2" strength="1"/>
 	</s:filters>
 	<s:states>

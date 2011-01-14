@@ -52,6 +52,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			this.toolTip = " ";
 			this.addEventListener(ToolTipEvent.TOOL_TIP_CREATE,createToolTip);
 			this.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
+			this.addEventListener(ToolTipEvent.TOOL_TIP_END,checkTooltip);
 		}
 		
 		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
@@ -149,19 +150,25 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 			}
 		}	
+		private var ptt:RendererToolTip;
 		protected function createToolTip(event:ToolTipEvent):void {
-			var ptt:RendererToolTip = new RendererToolTip();
-			ptt.bodyText = _data.country.shortname;
+			if(!ptt) 
+				ptt = new RendererToolTip();
+			
+			ptt.country = _data.country;
 			event.toolTip = ptt;	
-			var pt:Point = this.localToGlobal(new Point(x,y));
-			ptt.x = pt.x;
-			ptt.y = pt.y;
+			var pt:Point = localToGlobal(new Point(x,y));
+			ptt.x = x;
+			ptt.y = y;
 			//trace(x,y,width,height);
 		}
 		
 		private function positionTip(event:ToolTipEvent):void{
-//			event.toolTip.x=event.currentTarget.x + event.currentTarget.width + 10;
-//			event.toolTip.y=event.currentTarget.y;
+			ptt.x = x;
+			ptt.y = y;
+		}
+		private function checkTooltip(event:ToolTipEvent):void {
+			
 		}
 		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
@@ -190,7 +197,6 @@ package com.pentagram.instance.view.visualizer.renderers
 					
 				case MouseEvent.MOUSE_UP:
 				{
-
 					break;
 				}
 				case MouseEvent.CLICK:

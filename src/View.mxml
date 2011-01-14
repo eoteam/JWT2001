@@ -14,6 +14,7 @@
 		<![CDATA[
 			import air.net.URLMonitor;
 			import air.update.ApplicationUpdaterUI;
+			import air.update.events.DownloadErrorEvent;
 			import air.update.events.StatusFileUpdateEvent;
 			import air.update.events.StatusUpdateErrorEvent;
 			import air.update.events.StatusUpdateEvent;
@@ -26,6 +27,7 @@
 			import flash.filesystem.File;
 			import flash.filesystem.FileMode;
 			import flash.filesystem.FileStream;
+			import flash.utils.getQualifiedClassName;
 			
 			import flashx.textLayout.compose.TextLineRecycler;
 			
@@ -41,10 +43,7 @@
 			protected var monitor:URLMonitor;
 			protected var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
 			protected var file:File; // Used for preferences file
-			protected var currentVersion:String="2.0.0"
-			
-			
-			
+			protected var currentVersion:String="2.0.0";			
 			public var context:ViewContext;
 			
 			public function get applicationEventDispatcher():IEventDispatcher
@@ -57,186 +56,120 @@
 				context.contextView = this;		
 				TextLineRecycler.textLineRecyclerEnabled = false;
 				ToolTipManager.showDelay = 0;
-				//flash.profiler.showRedrawRegions ( true, 0);
-			}  
-			
-			protected function init():void
-			{
-				
-				// Request to be notified when this application is activated (brought forward as the active window)
-				// or deactivated
-				addEventListener(AIREvent.APPLICATION_ACTIVATE, onAppActivate);
-				addEventListener(AIREvent.APPLICATION_DEACTIVATE, onAppDeactivate);
-				
-				
-				// Invoke listener - request to be notified when the AIR app is invoked (started), this could occur from the command line, UI or
-				// from opening an associated file
-				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
-				
-				// Detecting online/offline network connectivity with a URLMonitor
+			}  	
+			private function init():void {
+				setupListeners();
+				checkUpdate();
+				setupNetworking();
+				setupIdle();
+				loadPreferences();
+			}
+			private function setupNetworking():void {
 				monitor = new URLMonitor(new URLRequest("http://www.google.com")); // change URL to URL desired
 				monitor.addEventListener(StatusEvent.STATUS, onStatusChange);
 				monitor.pollInterval = 20000;// Milliseconds
 				monitor.start();
-				
-				// Check for update
-				this.checkUpdate();
-				
-				// Detects a general change in network status
 				NativeApplication.nativeApplication.addEventListener(Event.NETWORK_CHANGE,onNetworkChange);
-				
-				// Detecting if user is present
+			}
+			private function setupIdle():void {
 				NativeApplication.nativeApplication.idleThreshold = 5;
 				NativeApplication.nativeApplication.addEventListener(Event.USER_IDLE, onUserIdle);
 				NativeApplication.nativeApplication.addEventListener (Event.USER_PRESENT, onUserPresent);
-								
-				// Get notified whan a global error occurs
+			}
+			private function setupListeners():void {
+				addEventListener(AIREvent.APPLICATION_ACTIVATE, onAppActivate);
+				addEventListener(AIREvent.APPLICATION_DEACTIVATE, onAppDeactivate);		
+				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
 				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, errorHandler);
-				
-				loadPreferences();
 			}
 			private function loadPreferences():void {
 				file = File.applicationStorageDirectory;
 				file = file.resolvePath("Preferences/version.txt");
-				//trace("Preferences file location: " + file.nativePath);
 				if (file.exists)
 					checkVersion();
 				else firstRun();
 			}
-			// The application is now in the foreground and active
-			protected function onAppActivate(event:Event):void {
-				//trace("Handling application activate event");
-			}
-			
-			// Handle the application being sent to the background
-			protected function onAppDeactivate(event:Event):void {
-				//trace("Handling application deactivate event");
-			}
-			
-			// Called when application is first invoked
-			protected function onInvoke(invokeEvt:InvokeEvent):void 
-			{
-				//trace("Handling invoke event");
-			}
-			
-			// Handles when the HTTP Network status has changed.
-			protected function onStatusChange(e:StatusEvent):void
-			{
-				if (monitor.available) 
-				{
+			private function onStatusChange(e:StatusEvent):void {
+				if (monitor.available) {
 					visible = false;
 					this.dispatchEvent(new Event("networkOn"));
 				} else {
 					visible = true;
 				}
 			}
-			
-			// This function is triggered when the application finished loading.
-			// Initialize appUpdater and set some properties
-			protected function checkUpdate():void
-			{
-				// set the URL for the update.xml file
+			private function checkUpdate():void {
 				appUpdater.updateURL = "http://208.99.179.45/update.xml";
+				
 				appUpdater.addEventListener(UpdateEvent.INITIALIZED, onUpdate);
 				appUpdater.addEventListener(ErrorEvent.ERROR, onUpdaterError);
 				appUpdater.addEventListener(StatusUpdateEvent.UPDATE_STATUS,handleStatusUpdate);
-				appUpdater.addEventListener(StatusFileUpdateEvent.FILE_UPDATE_STATUS,handleStatusUpdate);
 				appUpdater.addEventListener(StatusUpdateErrorEvent.UPDATE_ERROR, handleStatusUpdate);
+				appUpdater.addEventListener(StatusFileUpdateEvent.FILE_UPDATE_STATUS,handleStatusUpdate);
+				appUpdater.addEventListener(DownloadErrorEvent.DOWNLOAD_ERROR,handleStatusUpdate);
 				appUpdater.addEventListener(UpdateEvent.BEFORE_INSTALL,handleStatusUpdate);
-				// Hide the dialog asking for permission for checking for a new update.
-				// If you want to see it just leave the default value (or set true).
-				appUpdater.isCheckForUpdateVisible = true;
+				appUpdater.addEventListener(UpdateEvent.DOWNLOAD_COMPLETE,handleStatusUpdate);
+				appUpdater.addEventListener(UpdateEvent.CHECK_FOR_UPDATE,handleStatusUpdate);
+				appUpdater.addEventListener(UpdateEvent.INITIALIZED,handleStatusUpdate);
+				appUpdater.addEventListener(ProgressEvent.PROGRESS,handleStatusUpdate);
+				
 				appUpdater.initialize();
 			}
-			
-			// Handler function triggered by the ApplicationUpdater.initialize.
-			// The updater was initialized and it is ready to take commands.
-			protected function onUpdate(event:UpdateEvent):void 
-			{
-				// start the process of checking for a new update and to install
+			private function onUpdate(event:UpdateEvent):void {
 				appUpdater.checkNow();
-				//
 			}
 			private function handleStatusUpdate(event:Event):void {
-				trace("Update");
+				trace(event.type + "-----" + flash.utils.getQualifiedClassName(event));		
+				if(event is DownloadErrorEvent) {
+					trace("Error");
+				}
 			}
-			// Handler function for error events triggered by the ApplicationUpdater.initialize
-			protected function onUpdaterError(event:ErrorEvent):void
-			{
+			private function onUpdaterError(event:ErrorEvent):void {
 				Alert.show(event.toString());
 			}
-			
-			// The network status has changed
-			protected function onNetworkChange(e:Event):void
-			{
+			private function onNetworkChange(e:Event):void {
 				trace("Network State Changed");
 			}
-			
-			// Called when the user is idle 
-			protected function onUserIdle(event:Event):void {
-				//trace("Handling user idle event");
+			private function onUserIdle(event:Event):void {
+
 			}
-			
-			// Called when the user is active again - status will change if idle for more than 5 seconds
-			protected function onUserPresent(event:Event):void
-			{
-				//trace("Handling user present event");
+			private function onUserPresent(event:Event):void {
+
 			}
-			// Handle Global Errors
-			protected function errorHandler(e:UncaughtErrorEvent):void
-			{
+			private function errorHandler(e:UncaughtErrorEvent):void {
 				e.preventDefault();
 				Alert.show("An error has occurred and been caught by the global error handler: " + e.error.toString(), "My Global Error Handler");
 			}
-			
-			
-			
-			// Check for current version from saved prefs file. If no file exists, this is the first time run
-			protected function checkVersion():void
-			{
+			private function checkVersion():void {
 				var stream:FileStream = new FileStream();
 				stream.open(file, FileMode.READ);
 				var prevVersion:String = stream.readUTFBytes(stream.bytesAvailable);
 				stream.close();
 				if (prevVersion == currentVersion) {
-					//trace("Current version running");
+					return;
 				}
 				else
-				{
 					writeVersionFile();
-				}
-			}
-			
-			protected function firstRun():void
-			{
+			}	
+			private function firstRun():void {
 				trace("First time the application has been run, save to the file.");
 				writeVersionFile();
 			}
-			
-			protected function writeVersionFile():void
-			{
+			private function writeVersionFile():void {
 				var stream:FileStream = new FileStream();
 				stream.open(file, FileMode.WRITE);
 				stream.writeUTFBytes(currentVersion);
 				stream.close();
 			}
+			private function onAppActivate(event:Event):void {
+				
+			}
+			private function onAppDeactivate(event:Event):void {
+				
+			}	
+			private function onInvoke(invokeEvt:InvokeEvent):void  {
+				
+			}
 		]]>
 	</fx:Script>
-	<!--	
-	<s:Label fontSize="14" text='LaunchPad'/>
-	<mx:ViewStack width="100%" height="100%" id="stack" top="25">
-	<samples:SampleOpenWithDefault width="100%" height="100%" />
-	<samples:SampleDatabase width="100%" height="100%" />
-	<samples:SampleClipboard width="100%" height="100%" />
-	<samples:SampleDragDrop width="100%" height="100%" />
-	<samples:SampleNativeProcess width="100%" height="100%" />
-	<samples:SampleHTML width="100%" height="100%" />
-	<samples:SampleSocketClient/>
-	<samples:SampleSocketServer/>
-	<samples:SamplePDFContent/>
-	<samples:SampleDetectStorageDevice/>
-	<samples:SampleNativeWindows width="100%" height="100%" />
-	</mx:ViewStack>
-	<s:TabBar dataProvider="{stack}" />-->
 	<s:Label fontSize="20" verticalCenter="0" horizontalCenter="0" text="You seem to be working offline, please check your network connection" />
 </s:WindowedApplication>

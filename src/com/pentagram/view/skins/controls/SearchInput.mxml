@@ -23,7 +23,7 @@
 	<s:Group id="group22" d:id="4" flm:knockout="false" left="0" right="0" y="0" height="24">
 		<s:Rect radiusX="1.9919" radiusY="1.9919" left="0" right="0" top="0" bottom="0">
 			<s:fill>
-				<s:SolidColor color="#1A1A1A"/>
+				<s:SolidColor color="#232323"/>
 			</s:fill>
 		</s:Rect>
 	</s:Group>

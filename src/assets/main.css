@@ -111,10 +111,15 @@ s|DropDownList {
 .darkPanel s|Button {
 	skinClass: ClassReference("com.pentagram.view.skins.buttons.DarkButton");
 }
+.darkButton {
+	skinClass: ClassReference("com.pentagram.view.skins.buttons.DarkButton");
+}
 .darkPanel s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.BlackTextInput');
 }
-
+s|HSlider {
+	skinClass: ClassReference('com.pentagram.view.skins.controls.DarkHSlider');
+}
 .hotTextStyle {
 	embedFonts: true;
 	color:				#FFFFFF;
