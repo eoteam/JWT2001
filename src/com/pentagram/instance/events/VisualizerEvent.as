@@ -19,7 +19,7 @@ package com.pentagram.instance.events
 		public static const STOP_TIMELINE:String = "stopTimeline";
 		
 		public static const CATEGORY_CHANGE:String = "categoryChange";
-		
+	
 		public static const UPDATE_VISUALIZER_VIEW:String = "updateVisualizerView";
 		
 		public static const WINDOW_RESIZE:String = "windowResize";

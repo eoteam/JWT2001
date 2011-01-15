@@ -12,14 +12,7 @@
 			
 			import spark.events.IndexChangeEvent;
 			import spark.skins.spark.CheckBoxSkin;
-			protected function toggle_changeHandler(event:Event):void
-			{
-				if(toggle.selected) {
-					currentState = "openAnd"+state;
-					
-				}
-				else currentState = "closedAnd"+state;
-			}
+			
 			public function set state(value:String):void {
 				if(openStates.indexOf(currentState) != -1)
 					currentState = 'openAnd'+value;
@@ -52,15 +45,15 @@
 				}
 				return results;
 			}
-
-			protected function check_changeHandler(event:Event):void
+			protected function toggle_changeHandler(event:Event):void
 			{
-				check.selected = true;
-				for each(var item:Category in continentList.dataProvider.toArray()) {
-					item.selected = true;
+				if(toggle.selected) {
+					currentState = "openAnd"+state;
+					
 				}
+				else currentState = "closedAnd"+state;
 			}
-
+			
 		]]>
 	</fx:Script>
 
@@ -110,7 +103,7 @@
 		<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0">
 			
 			<s:Group right="0" left="6">
-				<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.EyeButton" click="check_changeHandler(event)" 
+				<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.EyeButton" 
 				selected="true" id="check" verticalCenter="0" width="16" left="7"/>
 				<s:Rect width="0.25" height="100%" left="24">
 					<s:stroke>

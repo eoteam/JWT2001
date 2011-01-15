@@ -33,6 +33,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
 			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
+			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			//view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
@@ -155,5 +156,14 @@ package com.pentagram.instance.view.mediators.shell
 				}
 			}
 		}
+		private function check_changeHandler(event:Event):void
+		{
+			view.check.selected = true;
+			for each(var item:Category in view.continentList.dataProvider.toArray()) {
+				item.selected = true;
+			}
+			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));
+		}
+
 	}
 }

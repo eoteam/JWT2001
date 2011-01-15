@@ -401,7 +401,11 @@
 
 			protected function button4_clickHandler(event:MouseEvent):void
 			{
-				holder.physicsEnabled=true
+				//holder.physicsEnabled=true
+			}
+			public function selectAllCategories():void {
+				mapHolder.removeAllElements();
+				loadWorldMap();
 			}
 
 		]]>
@@ -412,6 +416,7 @@
 		
 	</fx:Declarations>
 	
-	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2" />
-	<visualizer:SkinnablePhysicsContainer physicsEnabled="true" id="holder" width="100" height="100%"/>
+	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2"  />
+	<s:Group id="holder" width="100" height="100%"  />
+<!--	<visualizer:Box2DContainer width="100%" height="100%" />-->
 </modules:Module>

@@ -175,6 +175,8 @@
 				if(ds3) result +=  ds3.name + ": " + Math.round(item.radius*ds3.max) + "\n";
 				if(ds4) result +=  ds4.name + ": " + item.category;
 				return result;
+			}
+			public function selectAllCategories():void {
 				
 			}
 		]]>

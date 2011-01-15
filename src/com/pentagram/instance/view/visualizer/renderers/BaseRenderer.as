@@ -3,6 +3,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
+	import flash.display.Sprite;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -26,6 +27,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
 		protected var _data:DataRow;
+		protected var _graphic:Sprite;
 		
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { 
@@ -35,6 +37,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		public function BaseRenderer():void {
 			this.mouseChildren = false;
+			_graphic = new Sprite();
+			this.addChild(_graphic);
 		}
 		public function get fixed():Boolean { return _fixed > 0; }
 		public function fix(num:uint=1):void { _fixed += num; } 

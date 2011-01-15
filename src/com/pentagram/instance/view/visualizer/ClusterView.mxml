@@ -203,7 +203,9 @@
 					}
 				}
 			}
-			
+			public function selectAllCategories():void {
+				
+			}
 
 		]]>
 	</fx:Script>

@@ -31,5 +31,8 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function selectCategory(value:Category):void;
 		
 		function updateSize():void;
+		
+		function selectAllCategories():void;
+		
 	}
 }

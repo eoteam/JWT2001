@@ -4,6 +4,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import com.pentagram.model.vo.DataRow;
 	
 	import flash.display.GradientType;
+	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
@@ -43,12 +44,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.width = 30; label.height = 20;	
 			this.addChild(label);
 			
-			addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
-			addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
-			addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			_graphic.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
+			_graphic.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
+			_graphic.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
+			_graphic.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
+			_graphic.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			_graphic.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.toolTip = " ";
 			this.addEventListener(ToolTipEvent.TOOL_TIP_CREATE,createToolTip);
 			this.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
@@ -108,15 +109,16 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 		}
 		protected function draw():void {
+			var g:Graphics = _graphic.graphics;
 			dirtyFlag = false;
-			graphics.clear();
+			g.clear();
 			var stroke:IStroke = new Stroke(_fillColor,1,1);
-			stroke.apply(graphics,null,null);
+			stroke.apply(g,null,null);
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
-			graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,[_fillColor,_fillColor],[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
-			graphics.drawCircle(0, 0, _radius);
-			graphics.endFill();	
+			g.beginGradientFill(DEFAULT_GRADIENTTYPE,[_fillColor,_fillColor],[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+			g.drawCircle(0, 0, _radius);
+			g.endFill();	
 			
 //			graphics.lineStyle(1,0,1);
 //			graphics.beginFill(0xff0000,1);

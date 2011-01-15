@@ -12,17 +12,21 @@
 			import spark.skins.spark.TitleWindowSkin;
 
 			[Bindable] public var tipVisible:Boolean = true;
-			protected function titlewindow1_closeHandler(event:CloseEvent):void
-			{
+			protected function titlewindow1_closeHandler(event:CloseEvent):void {
 				tipVisible = true;
 				PopUpManager.removePopUp(this);
 			}
 
 
-			protected function titlewindow1_moveHandler(event:MoveEvent):void
-			{
+			protected function titlewindow1_moveHandler(event:MoveEvent):void {
 				if(event.oldX != 0 && event.oldX != 0)
 					tipVisible = false;
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				//this.
 			}
 
 		]]>
@@ -30,16 +34,22 @@
 	<fx:Declarations>
 		<vo:Country id="country" />
 	</fx:Declarations>
+	<s:states>
+		<s:State name="closed"/>
+		<s:State name="open" />
+	</s:states>
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
 		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
-		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" />
+		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" click="button1_clickHandler(event)" />
 		<s:Rect width="100%" />
 		<s:Image source="{country.thumb}" skinClass="com.pentagram.view.skins.controls.FlagSkin" />
 	</s:HGroup>
-
+	<s:VGroup width="100%" includeIn="open" height="250">
+		
+	</s:VGroup>
 	<s:Line  width="100%" height="1">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
