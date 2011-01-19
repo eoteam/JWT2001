@@ -34,7 +34,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
-			
+			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			//view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
 		}
@@ -55,6 +55,7 @@ package com.pentagram.instance.view.mediators.shell
 
 		private function handleRegionSelect(event:Event):void {
 			var item:Category = view.continentList.selectedItem as Category;
+			view.check.selected = false;	
 			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item));
 			switch(event.type) {
 				case "addRegion":
@@ -105,7 +106,7 @@ package com.pentagram.instance.view.mediators.shell
 		}	
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
 			if(view.state == 'Map') {		
-				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+				
 				view.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
 			}
 			else if(view.state == 'Graph') {

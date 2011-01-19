@@ -5,12 +5,13 @@
 				xmlns:modules="ws.tink.spark.modules.*"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
 				creationComplete="module1_creationCompleteHandler(event)"
-				resize="handleResize(event)">
+				resize="updateSize()">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenNano;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -144,10 +145,28 @@
 				this.doVisualize();
 			}
 			public function toggleOpacity(value:Number):void {
-
+				for (var i:int=0;i<this.numElements;i++) {
+					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+					for (var j:int=0;j<c.numChildren;j++) {
+						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
+						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
+						TweenNano.to(renderer, .5, {fillAlpha: value});
+					}
+				}
 			}	
+		
+			protected var resizeFlag:Boolean = false
 			public function updateSize():void {
-				this.callLater(handleResize);
+				resizeFlag = true;
+				this.invalidateDisplayList();
+			}
+			override protected function updateDisplayList(w:Number, h:Number):void {
+				super.updateDisplayList(w,h);
+				if(resizeFlag) {
+					resizeFlag = false;
+					handleResize();
+				}
 			}
 			public function addCategory(value:Category):void {
 				for (var i:int=0;i<this.numElements;i++) {
@@ -159,7 +178,7 @@
 						break;
 					}
 				}
-				this.callLater(handleResize);
+				updateSize();
 			}
 			
 			public function removeCategory(value:Category):void {
@@ -172,7 +191,7 @@
 						break;
 					}
 				}
-				this.callLater(handleResize);
+				updateSize();
 			}
 			public function selectCategory(value:Category):void {
 				for (var i:int=0;i<this.numElements;i++) {
@@ -188,6 +207,7 @@
 						c.resize();
 					}
 				}
+				this.updateSize();
 			}
 			private function handleResize(event:Event=null):void
 			{

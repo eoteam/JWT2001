@@ -2,8 +2,7 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				autoDrawBackground="false"
-				depth="0" depth.hovered="1" depth.selected="2" 
-				width="8"
+				width="8" depth.hovered="2"
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
 				xmlns:utils="com.pentagram.utils.*" clipAndEnableScrolling="false"
@@ -109,6 +108,18 @@
 	
 	<fx:Declarations>
 		<utils:RectInterpolator id="interpolator" />
+		<s:LinearGradient id="redFill" rotation="270" scaleX="16.568" x="2.4751" y="17">
+			<s:GradientEntry color="#EB1E2E" ratio="0"/>
+			<s:GradientEntry color="#E5202E" ratio="0.268915"/>
+			<s:GradientEntry color="#D4242F" ratio="0.5450980392156862"/>
+			<s:GradientEntry color="#BB2A31" ratio="0.778039"/>
+			<s:GradientEntry color="#983333" ratio="1" />
+		</s:LinearGradient>
+		<s:LinearGradient id="grayFill" rotation="270" scaleX="16.568" x="2.4751" y="17">
+			<s:GradientEntry color="#B3B3B3" ratio="0"/>
+			<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+			<s:GradientEntry color="#8C8C8C" ratio="1"/>	
+		</s:LinearGradient>
 	</fx:Declarations>
 	
 	<s:transitions>
@@ -119,24 +130,16 @@
 		</s:Transition>
 	</s:transitions>
 
-	<s:Rect radiusX="1.9919" radiusY="1.9919" height="18" width="5" rotation="180" verticalCenter="0" id="bar" scaleX="1.2"  scaleY="1.2">
-		<s:fill>
-			<s:LinearGradient rotation="270" scaleX="16.568" x="2.4751" y="17">
-				<s:GradientEntry color="#8C8C8C" ratio="0" color.selected="#983333" color.hovered="#983333"/>
-				<s:GradientEntry color="#A9A9A9" ratio="0.496393" 
-				color.hovered="#BB2A31" color.selected="#BB2A31" ratio.hovered="0.268915" ratio.selected="0.268915"/>
-				<s:GradientEntry color="#D4242F" ratio="0.528872" includeIn="hovered,selected"/>
-				<s:GradientEntry color="#E5202E" ratio="0.778039" includeIn="hovered,selected"/>
-				<s:GradientEntry color="#B3B3B3" ratio="1" color.selected="#EB1E2E" color.hovered="#EB1E2E"/>
-			</s:LinearGradient>
-		</s:fill>
+	<s:Rect radiusX="1.9919" radiusY="1.9919" height="18" width="5" rotation="180" verticalCenter="0" id="bar" scaleX="1.2" scaleY="1.2"
+	fill.hovered="{redFill}" fill.normal="{grayFill}" fill.selected="{redFill}">
+
 		<s:postLayoutTransformOffsets>
 			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"/>
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
 <!--	<s:PopUpAnchor popUpPosition="above" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
 		<s:popUp>-->
-			<renderers:YearListRendererToolTip bodyText="{data.year}" includeInLayout="false" depth.selected="0" depth.hovered="{List(this.owner).dataProvider.length}"  y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
+			<renderers:YearListRendererToolTip bodyText="{data.year}" includeInLayout="false"   y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
 <!--		</s:popUp>
 	</s:PopUpAnchor>-->
 </s:ItemRenderer>

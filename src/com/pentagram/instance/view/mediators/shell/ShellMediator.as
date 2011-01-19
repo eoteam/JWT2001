@@ -194,7 +194,7 @@ package com.pentagram.instance.view.mediators.shell
 				case "removeRegion":
 					view.currentVisualizer.removeCategory(item);
 				break;
-				case "selectedAll":
+				case "selectAll":
 					view.currentVisualizer.selectAllCategories();
 				break;
 			}

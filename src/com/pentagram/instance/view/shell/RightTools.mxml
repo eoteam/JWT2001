@@ -111,7 +111,7 @@
 					</s:stroke>
 				</s:Rect>
 				<s:Button verticalCenter="0" skinClass="com.pentagram.view.skins.buttons.ContinentToggleButton"  id="select"
-				label="Region" left="25"  color="#FFFFFF" />
+				label="Categories" left="25"  color="#FFFFFF" />
 				<s:Rect left="0" right="0" height="0.25" bottom="0">
 					<s:stroke>
 						<s:SolidColorStroke color="0x666666" weight="0.25" />
@@ -139,7 +139,7 @@
 				</s:stroke>
 			</s:Rect>
 			
-			<s:CheckBox  label="X-Ray Mode" id="xrayToggle"  includeIn="map,graph" textAlign="center"  height="25" selected="true" color="0xffffff"/>
+			<s:CheckBox  label="X-Ray Mode" id="xrayToggle"  includeIn="map,cluster" textAlign="center"  height="25" selected="true" color="0xffffff"/>
 			<s:Rect height="4" />
 			<s:CheckBox label="Show Map" textAlign="center" height="25" selected="true" id="mapToggle" includeIn="map" color="0xffffff"   />
 			<s:Rect height="4" />

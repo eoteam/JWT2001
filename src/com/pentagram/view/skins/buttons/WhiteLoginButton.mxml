@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected" stateGroups="selected"/>
+		<s:State name="overAndSelected" stateGroups="selected"/>
+		<s:State name="downAndSelected" stateGroups="selected"/>
+		<s:State name="disabledAndSelected" stateGroups="selected"/>
+	</s:states>
+	
+	
+	<s:Path data="M 0 13.833 C 0 12.637 0 12.711 0 11.515 C 0.54 11.021 1.152 10.696 1.78 10.441 C 3.052 9.927 4.388 9.708 5.324 8.999 C 5.521 8.85 5.391 8.116 5.384 7.852 C 4.77 7.533 4.392 6.148 4.213 5.208 C 3.851 3.303 4.319 1.347 5.384 0.674 C 5.953 0.206 6.635 0 7.261 0 C 7.886 0 8.568 0.206 9.137 0.674 C 10.202 1.347 10.67 3.303 10.308 5.208 C 10.129 6.148 9.752 7.533 9.137 7.852 C 9.13 8.116 9 8.85 9.197 8.999 C 10.133 9.708 11.469 9.927 12.741 10.441 C 13.369 10.696 13.981 11.021 14.521 11.515 C 14.521 12.711 14.521 12.637 14.521 13.833 L 0 13.833 Z" height="13.833" id="path0" d:id="14" includeIn="over,selected" flm:variant="5" width="14.521" winding="nonZero" x="1" y="0">
+		<s:fill>
+			<s:SolidColor color="#999999"/>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 16.106 1 L 15.158 1 L 15.158 0 L 16.106 0 L 16.106 1 Z M 14.211 1 L 13.263 1 L 13.263 0 L 14.211 0 L 14.211 1 Z M 12.315 1 L 11.368 1 L 11.368 0 L 12.315 0 L 12.315 1 Z M 10.421 1 L 9.474 1 L 9.474 0 L 10.421 0 L 10.421 1 Z M 8.526 1 L 7.579 1 L 7.579 0 L 8.526 0 L 8.526 1 Z M 6.632 1 L 5.685 1 L 5.685 0 L 6.632 0 L 6.632 1 Z M 4.737 1 L 3.789 1 L 3.789 0 L 4.737 0 L 4.737 1 Z M 2.842 1 L 1.895 1 L 1.895 0 L 2.842 0 L 2.842 1 Z M 0.947 1 L 0 1 L 0 0 L 0.947 0 L 0.947 1 Z" height="1" id="path3" includeIn="over,selected" width="17.106" winding="nonZero" x="0" y="16">
+		<s:fill>
+			<s:SolidColor color="#999999"/>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 0 13.833 C 0 12.637 0 12.711 0 11.515 C 0.54 11.021 1.152 10.696 1.78 10.441 C 3.052 9.927 4.388 9.708 5.324 8.999 C 5.521 8.85 5.391 8.116 5.384 7.852 C 4.77 7.533 4.392 6.148 4.213 5.208 C 3.851 3.303 4.319 1.347 5.384 0.674 C 5.953 0.206 6.635 0 7.261 0 C 7.886 0 8.568 0.206 9.137 0.674 C 10.202 1.347 10.67 3.303 10.308 5.208 C 10.129 6.148 9.752 7.533 9.137 7.852 C 9.13 8.116 9 8.85 9.197 8.999 C 10.133 9.708 11.469 9.927 12.741 10.441 C 13.369 10.696 13.981 11.021 14.521 11.515 C 14.521 12.711 14.521 12.637 14.521 13.833 L 0 13.833 Z" height="13.833" id="path5" d:id="14" includeIn="up" flm:variant="5" width="14.521" winding="nonZero" x="1" y="0">
+		<s:fill>
+			<s:SolidColor color="#333333"/>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 16.106 1 L 15.158 1 L 15.158 0 L 16.106 0 L 16.106 1 Z M 14.211 1 L 13.263 1 L 13.263 0 L 14.211 0 L 14.211 1 Z M 12.315 1 L 11.368 1 L 11.368 0 L 12.315 0 L 12.315 1 Z M 10.421 1 L 9.474 1 L 9.474 0 L 10.421 0 L 10.421 1 Z M 8.526 1 L 7.579 1 L 7.579 0 L 8.526 0 L 8.526 1 Z M 6.632 1 L 5.685 1 L 5.685 0 L 6.632 0 L 6.632 1 Z M 4.737 1 L 3.789 1 L 3.789 0 L 4.737 0 L 4.737 1 Z M 2.842 1 L 1.895 1 L 1.895 0 L 2.842 0 L 2.842 1 Z M 0.947 1 L 0 1 L 0 0 L 0.947 0 L 0.947 1 Z" height="1" id="path6" includeIn="up" width="17.106" winding="nonZero" x="0" y="16">
+		<s:fill>
+			<s:SolidColor color="#333333"/>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 0 13.833 C 0 12.637 0 12.711 0 11.515 C 0.54 11.021 1.152 10.696 1.78 10.441 C 3.052 9.927 4.388 9.708 5.324 8.999 C 5.521 8.85 5.391 8.116 5.384 7.852 C 4.77 7.533 4.392 6.148 4.213 5.208 C 3.851 3.303 4.319 1.347 5.384 0.674 C 5.953 0.206 6.635 0 7.261 0 C 7.886 0 8.568 0.206 9.137 0.674 C 10.202 1.347 10.67 3.303 10.308 5.208 C 10.129 6.148 9.752 7.533 9.137 7.852 C 9.13 8.116 9 8.85 9.197 8.999 C 10.133 9.708 11.469 9.927 12.741 10.441 C 13.369 10.696 13.981 11.021 14.521 11.515 C 14.521 12.711 14.521 12.637 14.521 13.833 L 0 13.833 Z" height="13.833" id="path1" d:id="14" includeIn="down" flm:variant="5" width="14.521" winding="nonZero" x="1" y="0">
+		<s:fill>
+			<s:SolidColor color="#999999"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="4.0" blurY="4.0" color="#666666" distance="3" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Path>
+	<s:Path data="M 16.106 1 L 15.158 1 L 15.158 0 L 16.106 0 L 16.106 1 Z M 14.211 1 L 13.263 1 L 13.263 0 L 14.211 0 L 14.211 1 Z M 12.315 1 L 11.368 1 L 11.368 0 L 12.315 0 L 12.315 1 Z M 10.421 1 L 9.474 1 L 9.474 0 L 10.421 0 L 10.421 1 Z M 8.526 1 L 7.579 1 L 7.579 0 L 8.526 0 L 8.526 1 Z M 6.632 1 L 5.685 1 L 5.685 0 L 6.632 0 L 6.632 1 Z M 4.737 1 L 3.789 1 L 3.789 0 L 4.737 0 L 4.737 1 Z M 2.842 1 L 1.895 1 L 1.895 0 L 2.842 0 L 2.842 1 Z M 0.947 1 L 0 1 L 0 0 L 0.947 0 L 0.947 1 Z" height="1" id="path4" includeIn="down" width="17.106" winding="nonZero" x="0" y="16">
+		<s:fill>
+			<s:SolidColor color="#999999"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="4.0" blurY="4.0" color="#666666" distance="3" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Path>
+	<s:Path data="M 0 13.833 C 0 12.637 0 12.711 0 11.515 C 0.54 11.021 1.152 10.696 1.78 10.441 C 3.052 9.927 4.388 9.708 5.324 8.999 C 5.521 8.85 5.391 8.116 5.384 7.852 C 4.77 7.533 4.392 6.148 4.213 5.208 C 3.851 3.303 4.319 1.347 5.384 0.674 C 5.953 0.206 6.635 0 7.261 0 C 7.886 0 8.568 0.206 9.137 0.674 C 10.202 1.347 10.67 3.303 10.308 5.208 C 10.129 6.148 9.752 7.533 9.137 7.852 C 9.13 8.116 9 8.85 9.197 8.999 C 10.133 9.708 11.469 9.927 12.741 10.441 C 13.369 10.696 13.981 11.021 14.521 11.515 C 14.521 12.711 14.521 12.637 14.521 13.833 L 0 13.833 Z" height="13.833" id="path2" d:id="14" includeIn="disabled" flm:variant="5" width="14.521" winding="nonZero" x="1" y="0">
+		<s:fill>
+			<s:SolidColor color="#333333"/>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 16.106 1 L 15.158 1 L 15.158 0 L 16.106 0 L 16.106 1 Z M 14.211 1 L 13.263 1 L 13.263 0 L 14.211 0 L 14.211 1 Z M 12.315 1 L 11.368 1 L 11.368 0 L 12.315 0 L 12.315 1 Z M 10.421 1 L 9.474 1 L 9.474 0 L 10.421 0 L 10.421 1 Z M 8.526 1 L 7.579 1 L 7.579 0 L 8.526 0 L 8.526 1 Z M 6.632 1 L 5.685 1 L 5.685 0 L 6.632 0 L 6.632 1 Z M 4.737 1 L 3.789 1 L 3.789 0 L 4.737 0 L 4.737 1 Z M 2.842 1 L 1.895 1 L 1.895 0 L 2.842 0 L 2.842 1 Z M 0.947 1 L 0 1 L 0 0 L 0.947 0 L 0.947 1 Z" height="1" id="path7" includeIn="disabled" width="17.106" winding="nonZero" x="0" y="16">
+		<s:fill>
+			<s:SolidColor color="#333333"/>
+		</s:fill>
+	</s:Path>
+</s:Skin>

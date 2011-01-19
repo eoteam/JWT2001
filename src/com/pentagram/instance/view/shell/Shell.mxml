@@ -11,25 +11,6 @@
 		 xmlns:assets="assets.*" 
 		 xmlns:controls="com.pentagram.view.controls.*"
 		 creationComplete="group1_creationCompleteHandler(event)" click="group1_clickHandler(event)"> 
-
-	<fx:Script>
-		<![CDATA[
-			protected function group1_clickHandler(event:MouseEvent):void
-			{
-				if(event.target != tools.settingsBtn) {
-					if(event.target is DisplayObject && exportPanel.contains(DisplayObject(event.target)))
-						return;
-					tools.settingsBtn.selected = false;
-				}
-				if(event.target != bottomBarView.loginBtn) {
-					if(event.target is DisplayObject && loginPanel.contains(DisplayObject(event.target)))
-						return;
-					bottomBarView.loginBtn.selected = false;					
-				}
-			}
-		]]>
-	</fx:Script>
-
 	
 	<fx:Script source="ShellViewScript.as" />
 
@@ -79,10 +60,9 @@
 					<s:RichEditableText focusedTextSelectionColor="0x999999" unfocusedTextSelectionColor="0xcccccc" width="600"  paddingTop="3" paddingBottom="6" editable="false" editable.loggedIn="true" left="10" >
 						<s:text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae convallis nibh. Morbi congue sollicitudin diam, vel facilisis nibh placerat hendrerit. Suspendisse faucibus orci id ligula malesuada mattis. Praesent eget purus ligula, quis scelerisque sapien. Ut pellentesque nisi in turpis pulvinar iaculis. Fusce dapibus vestibulum nisl, non consequat nunc mollis vel. Cras rutrum dictum dui, eu aliquet elit sodales vitae. Donec scelerisque suscipit mauris tincidunt pharetra. Donec nec nisi vel augue adipiscing dignissim sed vel leo. Cras vel diam a justo laoreet luctus vitae eu justo.</s:text>
 					</s:RichEditableText>
-					<s:VGroup right="10">
+<!--					<s:VGroup right="10">
 						<s:Button label="close" click="hideInfoPanel(event)"/>
-						<!--<s:Button label="Edit" includeIn="loggedIn" />-->
-					</s:VGroup>		
+					</s:VGroup>-->		
 				</s:SkinnableContainer>
 			</s:Group>
 			

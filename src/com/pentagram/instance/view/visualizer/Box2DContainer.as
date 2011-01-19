@@ -86,9 +86,9 @@ package com.pentagram.instance.view.visualizer {
 			var x:Number;
 			
 			{
-				var cd1:b2CircleShape = new b2CircleShape();
-				cd1.SetRadius(15.0/m_physScale);
-				cd1.SetLocalPosition(new b2Vec2( -15.0 / m_physScale, 15.0 / m_physScale));
+//				var cd1:b2CircleShape = new b2CircleShape();
+//				cd1.SetRadius(15.0/m_physScale);
+//				cd1.SetLocalPosition(new b2Vec2( -15.0 / m_physScale, 15.0 / m_physScale));
 				
 				var cd2:b2CircleShape = new b2CircleShape();
 				cd2.SetRadius(15.0/m_physScale);
@@ -198,9 +198,9 @@ package com.pentagram.instance.view.visualizer {
 		}		
 		public function updatePhysics():void {
 			// Update mouse joint
-			UpdateMouseWorld()
-			MouseDestroy();
-			MouseDrag();
+			//UpdateMouseWorld()
+			//MouseDestroy();
+			//MouseDrag();
 			
 			// Update physics
 			var physStart:uint = getTimer();

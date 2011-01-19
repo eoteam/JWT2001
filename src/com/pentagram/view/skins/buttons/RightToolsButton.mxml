@@ -13,7 +13,7 @@
 	</s:states>
 	<s:Rect alpha="0.9"  id="rect14" width="11" x="0" y="0" top="0" bottom="0">
 		<s:fill>
-			<s:SolidColor color="#B3B3B3"/>
+			<s:SolidColor color="#B3B3B3" color.over="#4F4F4F" color.overAndSelected="#4F4F4F"/>
 		</s:fill>
 	</s:Rect>
 	<s:Path data="M 0 0 L 4.677 2.602 L 0 5.207 L 0 0 Z" id="path14" includeIn="disabledAndSelected,overAndSelected,upAndSelected" winding="nonZero" x="2.845" y="3.99">

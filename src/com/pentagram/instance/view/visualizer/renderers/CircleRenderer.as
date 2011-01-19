@@ -2,6 +2,7 @@ package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
 	import com.pentagram.model.vo.DataRow;
+	import com.pentagram.utils.Colors;
 	
 	import flash.display.GradientType;
 	import flash.display.Graphics;
@@ -103,7 +104,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(dirtyFlag && stateFlag)
 				draw();
 			else if(!stateFlag) {
-				this.graphics.clear();
+				_graphic.graphics.clear();
 				if(label)
 					label.visible = false;
 			}
@@ -116,24 +117,20 @@ package com.pentagram.instance.view.visualizer.renderers
 			stroke.apply(g,null,null);
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
-			g.beginGradientFill(DEFAULT_GRADIENTTYPE,[_fillColor,_fillColor],[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+			var colors:Array;
+			if(_fillAlpha > 0.2)
+				colors = [_fillColor,Colors.darker(_fillColor)];
+			else
+				colors =  [_fillColor,_fillColor];
+			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
-//			graphics.lineStyle(1,0,1);
-//			graphics.beginFill(0xff0000,1);
-//			graphics.moveTo(-_radius,0);
-//			graphics.drawRect(-_radius,0,_radius*2,1);
-			
-//			graphics.moveTo(0,-_radius);
-//			graphics.drawRect(0,-_radius,1,_radius*2);
-//			graphics.endFill();
-			//textFormat.color = _fillColor;
-			if(_radius < 30 && _radius > 10)  {
+			if(_radius < 30 && _radius > 15)  {
 				textFormat.size = 10;
 				label.visible = true;
 			}
-			else if(_radius <= 10)
+			else if(_radius <= 15)
 				label.visible = false;
 			else {
 				textFormat.size = 12;

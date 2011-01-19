@@ -127,3 +127,12 @@ s|HSlider {
 	text-decoration:	none;
 	border-bottom:		solid 1px;
 }
+mx|ToolTip {
+	backgroundAlpha: 0.9;
+	backgroundColor: #1a1a1a;
+	color: white;
+	cornerRadius: 4;
+	fontSize: 12;
+	font-family: "FlamaBold";
+}
+
