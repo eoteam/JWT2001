@@ -8,12 +8,12 @@
 				implements="com.pentagram.instance.view.visualizer.interfaces.IMapView" 
 				xmlns:assets="assets.*" 
 				xmlns:maps="assets.maps.*" 
-				xmlns:visualizer="com.pentagram.instance.view.visualizer.*" xmlns:layouts="com.pentagram.view.layouts.*" xmlns:views="com.pentagram.instance.view.visualizer.views.*">
+				xmlns:visualizer="com.pentagram.instance.view.visualizer.*"
+				xmlns:layouts="com.pentagram.view.layouts.*"
+				xmlns:views="com.pentagram.instance.view.visualizer.views.*">
 	
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.instance.view.visualizer.renderers.PhysicsParticle;
-			
 			import org.cove.ape.APEngine;
 			
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
@@ -61,19 +61,11 @@
 				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
 				for each(var country:Country in value.countries.source) {
-					
 					var c:MapRenderer = new MapRenderer();
 					c.id = country.shortname;						
 					renderers.push(c);
-					//holder.addElement(c);
 					renderersDictionary[country.shortname] = c;
-					c.state = false;
-					var p:PhysicsParticle = new PhysicsParticle(0,0,1);
-					//p.sprite = c;
-					holder.balls.addParticle(p);
-					c.particle = p;
 				}
-				//holder.addComponent(c);
 			}
 			public function visualize(dataset:Dataset):void {
 				
@@ -101,22 +93,18 @@
 					c = renderersDictionary[row.country.shortname];
 					if(c) {
 						if(world.countries[row.country.shortname]) {
-							c.countrySprite = world.countries[row.country.shortname];
+							c.data = row;
+							c.country = world.countries[row.country.shortname];
 							if(firstLoad)
-								c.alpha = 0;
-							c.state = true;
-							c.textColor == c.fillAlpha == 1 ? 0xffffffff : c.fillColor;
-							c.dirtyCoordinates();
-							c.dirty();
-						}	
-						c.data = row;
+								c.sprite.alpha = 0;		
+						}
+						holder.balls.addParticle(c);
 						c.radius = r;
-						c.particle.radius = r;
-						c.particle.mass = (r/maxRadius)*4+0.3;
 					}
 				}
 				firstLoad = false;
 				firstPass = false;
+				holder.start();
 			}
 			private var _continous:Boolean = false;
 			public function get continous():Boolean{
@@ -150,7 +138,7 @@
 				
 			}
 			public function update():void {
-				holder.balls.collideInternal = false;
+				//holder.balls.collideInternal = false;
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
 					if(c.data) {
@@ -158,8 +146,8 @@
 							r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
 						else 
 							r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-						TweenNano.to(c, .5, {radius: r,onComplete:function r():void {holder.balls.collideInternal=true} });
-						c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
+						TweenNano.to(c, .5, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
+						c.redraw();
 					}
 				}
 				
@@ -211,7 +199,6 @@
 			private function onFinishTween(map:FXGLoader):void {
 				map.percentHeight = map.percentWidth = 100;
 			}
-			//priv
 			private function adjustRenderers():void {
 				if(!firstPass) {
 					var visibleItems:Array = [];
@@ -221,18 +208,17 @@
 						for each(var countrySprite:Shape in map.countries) {
 							c = renderersDictionary[countrySprite.name];						
 							if(c && c.data.country.region.fxgmap == map.region.fxgmap) {
-								c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
 								c.countrySprite = countrySprite;
-								c.state = true;
-								c.dirtyCoordinates();
-								c.dirty();
+								c.sprite.alpha = 1;
+								c.updateCoord();
+								c.redraw();
 								visibleItems.push(c);
 							}
 						}
 					}
 					for each(c in renderers) {
 						if(visibleItems.indexOf(c) == -1)
-							c.state = false;
+							c.sprite.alpha=0;
 					}
 				}
 			}
@@ -269,10 +255,15 @@
 			}
 			public function toggleOpacity(value:Number):void {
 				for each(var renderer:MapRenderer in renderers) {
-					renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-					TweenNano.to(renderer, .5, {fillAlpha: value});
+					TweenNano.to(renderer, .5, {fillAlpha:value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 				}
-				value == 1 ?  holder.start() : holder.stop();
+				if(value != 1)
+					holder.balls.collideInternal = false
+				else
+					holder.balls.collideInternal = true;
+			}
+			private function updateRenderer(renderer:MapRenderer):void {
+				renderer.redraw();
 			}
 			private function handleResize(event:ResizeEvent=null):void {
 				//var maxW:Number = 0;
@@ -289,8 +280,7 @@
 				var matr:Matrix;
 				if(!firstPass) {
 					for each(var c:MapRenderer in renderers) {
-						if(c.state)
-							c.dirtyCoordinates();
+						c.updateCoord();
 					}
 				}
 				if(mapHolder.numElements > 1) {					
@@ -313,7 +303,7 @@
 					}
 					if(mapHolder.numElements > 0) {
 						var nw:Number; var nh:Number;   
-						trace(widestRegion.width , widestRegion.height, widestRegion.coeff);
+						//trace(widestRegion.width , widestRegion.height, widestRegion.coeff);
 						fxgRatio = widestRegion.width / widestRegion.height;
 						ratio = (mapHolder.width/(slice*widestRegion.coeff/100))/ mapHolder.height;  
 						
@@ -389,10 +379,8 @@
 						var c:MapRenderer = renderersDictionary[countrySprite.name];
 						if(c) {
 							c.countrySprite = countrySprite;
-							c.state = true;
-							c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
-							c.dirtyCoordinates();
-							c.dirty();
+							c.sprite.alpha = 1;
+							c.redraw();
 						}
 					}
 				}
@@ -424,7 +412,6 @@
 	<fx:Declarations>
 		<s:Fade alphaTo="1" duration="500" id="fadeIn" />
 		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
-		
 	</fx:Declarations>
 	
 	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2"  />

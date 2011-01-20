@@ -132,7 +132,7 @@ package org.cove.ape {
 				var h:Number = extents[1] * 2;
 				
 				sprite.graphics.clear();
-				sprite.graphics.lineStyle(lineThickness, lineColor, lineAlpha);
+				sprite.graphics.lineStyle(lineWidth, lineColor, lineAlpha);
 				sprite.graphics.beginFill(fillColor, fillAlpha);
 				sprite.graphics.drawRect(-w/2, -h/2, w, h);
 				sprite.graphics.endFill();

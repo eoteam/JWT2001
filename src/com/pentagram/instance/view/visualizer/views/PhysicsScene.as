@@ -11,18 +11,29 @@ package com.pentagram.instance.view.visualizer.views
 
 	public class PhysicsScene extends SpriteVisualElement
 	{
-		public var balls:org.cove.ape.APEGroup;
+		public var balls:APEGroup;
+		private var walls:Walls;
+		
 		private var timer:Timer;
 		public function PhysicsScene()
 		{
 			APEngine.init(0);
 			APEngine.container = this;
 			APEngine.addForce(new VectorForce(false,0, 0));//Massless
-			balls = new org.cove.ape.APEGroup();
+			this.addEventListener(Event.ADDED_TO_STAGE,handleAddedStage);
+			
+			//timer.addEventListener(TimerEvent.TIMER,enterFrameHandler);
+		}
+		public function handleAddedStage(event:Event):void {
+			walls = new Walls( stage.stageWidth, stage.stageHeight);
+			balls = new APEGroup();
 			APEngine.addGroup(balls);
-			balls.collideInternal=true;
-			timer = new Timer(10);
-			timer.addEventListener(TimerEvent.TIMER,enterFrameHandler);
+			APEngine.addGroup(walls); 
+			balls.addCollidable ( walls );
+			//balls.collideInternal=true;
+			addEventListener(Event.ENTER_FRAME, enterFrameHandler);		
+			
+			//			timer = new Timer(10);
 		}
 		public function reset():void
 		{
@@ -38,18 +49,19 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		public function start():void
 		{
-			timer.start();
-			//addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			//timer.start();
+			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		public function stop():void
 		{
-			timer.stop();
-			//this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			//timer.stop();
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		private function enterFrameHandler(event:Event):void
 		{
 			APEngine.step();
 			APEngine.paint();
+			walls.update(stage.stageWidth, stage.stageHeight);
 		}                 
 	}
 }

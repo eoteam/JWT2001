@@ -25,8 +25,8 @@ TODO:
 
 package org.cove.ape {
 	
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	
 	/** 
@@ -40,17 +40,14 @@ package org.cove.ape {
 		private var _visible:Boolean;
 		private var _alwaysRepaint:Boolean;
 		
-	
-		/** @private */
-		public var lineThickness:Number;
-		/** @private */
-		public var lineColor:uint;
-		/** @private */
-		public var lineAlpha:Number;
-		/** @private */
-		public var fillColor:uint;
-		/** @private */
-		public var fillAlpha:Number;
+		protected var dirty:Boolean = false;
+		protected var _fillColor:uint = 0xff0000;
+		protected var _textColor:uint = 0xffffff;
+		protected var _fillAlpha:Number = 0.2;
+		protected var _lineColor:uint = 0xff0000;
+		protected var _lineWidth:Number = 0;
+		protected var _lineAlpha:Number = 0;	
+		
 		/** @private */
 		internal var displayObject:DisplayObject;
 		/** @private */
@@ -72,7 +69,7 @@ package org.cove.ape {
 		 */
 		public function init():void {}
 		
-				
+		
 		/**
 		 * The default painting method for this item. This method is called automatically
 		 * by the <code>APEngine.paint()</code> method. 
@@ -113,7 +110,7 @@ package org.cove.ape {
 			_alwaysRepaint = b;
 		}	
 		
-				
+		
 		/**
 		 * The visibility of the item. 
 		 */	
@@ -129,8 +126,8 @@ package org.cove.ape {
 			_visible = v;
 			sprite.visible = v;
 		}
-
-
+		
+		
 		/**
 		 * Sets the solidity of the item. If an item is not solid, then other items colliding
 		 * with it will not respond to the collision. This property differs from 
@@ -161,17 +158,17 @@ package org.cove.ape {
 		public function set solid(s:Boolean):void {
 			_solid = s;
 		}
-
-
+		
+		
 		/**
 		 * Sets the line and fill of this Item.
 		 */ 		
 		public function setStyle(
-				lineThickness:Number=0, lineColor:uint=0x000000, lineAlpha:Number=1,
-				fillColor:uint=0xffffff, fillAlpha:Number=1):void {
+			lineThickness:Number=0, lineColor:uint=0x000000, lineAlpha:Number=1,
+			fillColor:uint=0xffffff, fillAlpha:Number=1):void {
 			
-			setLine(lineThickness, lineColor, lineAlpha);		
-			setFill(fillColor, fillAlpha);		
+			//setLine(lineThickness, lineColor, lineAlpha);		
+			//setFill(fillColor, fillAlpha);		
 		}		
 		
 		
@@ -179,12 +176,12 @@ package org.cove.ape {
 		 * Sets the style of the line for this Item. 
 		 */ 
 		public function setLine(thickness:Number=0, color:uint=0x000000, alpha:Number=1):void {
-			lineThickness = thickness;
+			lineWidth = thickness;
 			lineColor = color;
 			lineAlpha = alpha;
 		}
-			
-			
+		
+		
 		/**
 		 * Sets the style of the fill for this Item. 
 		 */ 
@@ -211,6 +208,25 @@ package org.cove.ape {
 			APEngine.container.addChild(_sprite);
 			return _sprite;
 		}	
+				
+		public function get fillColor():uint { return _fillColor; }
+		public function set fillColor(c:uint):void { _fillColor = c;dirty=true;}
+		
+		public function get textColor():uint { return _textColor; }
+		public function set textColor(c:uint):void { _textColor = c;dirty=true;	}
+		
+		public function get fillAlpha():Number { return _fillAlpha; }
+		public function set fillAlpha(a:Number):void {_fillAlpha = a;dirty=true;}
 
+		public function get lineAlpha():Number { return _lineAlpha; }
+		public function set lineAlpha(a:Number):void { _lineAlpha = a;dirty=true}
+			
+		public function get lineColor():uint { return _lineColor; }
+		public function set lineColor(c:uint):void { _lineColor = c;dirty=true; }
+		
+		public function get lineWidth():Number { return _lineWidth; }
+		public function set lineWidth(c:Number):void { _lineWidth = c;dirty=true; }
+		
+		
 	}
 }

@@ -185,7 +185,7 @@ package org.cove.ape {
 				
 				inner.graphics.clear();
 				inner.graphics.lineStyle(
-						parent.lineThickness, parent.lineColor, parent.lineAlpha);
+						parent.lineWidth, parent.lineColor, parent.lineAlpha);
 				inner.graphics.beginFill(parent.fillColor, parent.fillAlpha);
 				inner.graphics.drawRect(-w/2, -h/2, w, h);
 				inner.graphics.endFill();

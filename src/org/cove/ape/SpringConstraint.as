@@ -280,7 +280,7 @@ package org.cove.ape {
 				sprite.rotation = angle;
 			} else {
 				sprite.graphics.clear();
-				sprite.graphics.lineStyle(lineThickness, lineColor, lineAlpha);
+				sprite.graphics.lineStyle(lineWidth, lineColor, lineAlpha);
 				sprite.graphics.moveTo(p1.px, p1.py);
 				sprite.graphics.lineTo(p2.px, p2.py);	
 			}
