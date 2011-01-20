@@ -41,6 +41,9 @@ package com.pentagram.utils
 			}
 			return arr;
 		}
+		public static function map(value:Number,istart:Number, istop:Number,ostart:Number,ostop:Number):Number {
+			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
+		}    
 //		public static function normalizeValue(dataset:Dataset,index:int,year:int=0):Number {
 //			if(dataset.type == 1) {
 //				var row:DataRow = dataset.rows.getItemAt(index) as DataRow;

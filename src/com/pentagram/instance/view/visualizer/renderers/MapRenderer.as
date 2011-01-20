@@ -1,4 +1,4 @@
-package com.pentagram.instance.view.visualizer.renderers
+	package com.pentagram.instance.view.visualizer.renderers
 {
 	import flash.display.Shape;
 	import flash.geom.Point;
@@ -11,6 +11,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 	
 		public var countrySprite:Shape;
+		public var particle:PhysicsParticle;
 		override protected function updateCoordinates():void {
 			if(countrySprite) {
 				dirtyCoordFlag = false;
@@ -25,6 +26,21 @@ package com.pentagram.instance.view.visualizer.renderers
 			super.fillAlpha = value;
 			if(value == 1)
 				textColor = 0xffffffff;
+		}
+		override public function set x(value:Number):void {
+			super.x = value;
+			if(particle)
+				particle.px = x;
+		}
+		override public function set y(value:Number):void {
+			super.y = value;
+			if(particle)
+				particle.py = y;
+		}
+		override public function set radius(r:Number):void {
+			super.radius = r;
+			if(particle)
+				particle.radius = r;
 		}
 	}
 }

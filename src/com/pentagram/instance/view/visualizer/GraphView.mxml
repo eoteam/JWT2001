@@ -8,7 +8,7 @@
 				 xmlns:modules="ws.tink.spark.modules.*" 
 				 creationComplete="module1_creationCompleteHandler(event)"
 				 width="100%" height="100%" 
-				 contentBackgroundAlpha="0"  >
+				 contentBackgroundAlpha="0" xmlns:views="com.pentagram.instance.view.visualizer.views.*"  >
 	<fx:Script>
 		<![CDATA[
 			import mx.charts.HitData;
@@ -221,13 +221,13 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	<chart:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
+	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
 	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18">
-		<chart:series>
+		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
 			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>
-		</chart:series>
-		<chart:backgroundElements />
-	</chart:ViewBubbleChart>
+		</views:series>
+		<views:backgroundElements />
+	</views:ViewBubbleChart>
 
 </modules:Module>

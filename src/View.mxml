@@ -4,7 +4,7 @@
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
 					   xmlns:samples="samples.*" visible="false"
 					   xmlns:view="com.pentagram.view.*" showStatusBar="false"
-					   creationComplete="handleCreationComplete()"  frameRate="60"
+					   creationComplete="handleCreationComplete()"  
 					   applicationComplete="init()" xmlns:modules="ws.tink.spark.modules.*" xmlns:instance="com.pentagram.instance.*" >
 	
 	<fx:Style source="assets/main.css" />

@@ -8,10 +8,13 @@
 				implements="com.pentagram.instance.view.visualizer.interfaces.IMapView" 
 				xmlns:assets="assets.*" 
 				xmlns:maps="assets.maps.*" 
-				xmlns:visualizer="com.pentagram.instance.view.visualizer.*" xmlns:layouts="com.pentagram.view.layouts.*">
+				xmlns:visualizer="com.pentagram.instance.view.visualizer.*" xmlns:layouts="com.pentagram.view.layouts.*" xmlns:views="com.pentagram.instance.view.visualizer.views.*">
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.instance.view.visualizer.renderers.PhysicsParticle;
+			
+			import org.cove.ape.APEngine;
 			
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
@@ -58,12 +61,17 @@
 				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
 				for each(var country:Country in value.countries.source) {
+					
 					var c:MapRenderer = new MapRenderer();
-					c.id = country.shortname;				
-					holder.addElement(c);				
+					c.id = country.shortname;						
 					renderers.push(c);
+					//holder.addElement(c);
 					renderersDictionary[country.shortname] = c;
 					c.state = false;
+					var p:PhysicsParticle = new PhysicsParticle(0,0,1);
+					//p.sprite = c;
+					holder.balls.addParticle(p);
+					c.particle = p;
 				}
 				//holder.addComponent(c);
 			}
@@ -103,6 +111,8 @@
 						}	
 						c.data = row;
 						c.radius = r;
+						c.particle.radius = r;
+						c.particle.mass = (r/maxRadius)*4+0.3;
 					}
 				}
 				firstLoad = false;
@@ -140,7 +150,7 @@
 				
 			}
 			public function update():void {
-				
+				holder.balls.collideInternal = false;
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
 					if(c.data) {
@@ -148,7 +158,7 @@
 							r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
 						else 
 							r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-						TweenNano.to(c, .5, {radius: r});
+						TweenNano.to(c, .5, {radius: r,onComplete:function r():void {holder.balls.collideInternal=true} });
 						c.textColor = c.fillAlpha == 1 ? 0xffffffff : c.fillColor ;
 					}
 				}
@@ -262,6 +272,7 @@
 					renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
 					TweenNano.to(renderer, .5, {fillAlpha: value});
 				}
+				value == 1 ?  holder.start() : holder.stop();
 			}
 			private function handleResize(event:ResizeEvent=null):void {
 				//var maxW:Number = 0;
@@ -417,6 +428,5 @@
 	</fx:Declarations>
 	
 	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2"  />
-	<s:Group id="holder" width="100" height="100%"  />
-
+	<views:PhysicsScene id="holder" width="100" height="100%"  />
 </modules:Module>

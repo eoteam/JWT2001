@@ -11,6 +11,7 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			import com.greensock.TweenNano;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;

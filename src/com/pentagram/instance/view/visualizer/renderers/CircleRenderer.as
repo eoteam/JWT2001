@@ -45,12 +45,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.width = 30; label.height = 20;	
 			this.addChild(label);
 			
-			_graphic.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			_graphic.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			_graphic.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
-			_graphic.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
-			_graphic.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			_graphic.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
+			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
+			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
+			this.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
+			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
 			this.toolTip = " ";
 			this.addEventListener(ToolTipEvent.TOOL_TIP_CREATE,createToolTip);
 			this.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
@@ -104,13 +104,13 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(dirtyFlag && stateFlag)
 				draw();
 			else if(!stateFlag) {
-				_graphic.graphics.clear();
+				graphics.clear();
 				if(label)
 					label.visible = false;
 			}
 		}
 		protected function draw():void {
-			var g:Graphics = _graphic.graphics;
+			var g:Graphics = this.graphics;//this.graphics;
 			dirtyFlag = false;
 			g.clear();
 			var stroke:IStroke = new Stroke(_fillColor,1,1);

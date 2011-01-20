@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009"  width="1024" height="1024"
+					   xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="windowedapplication1_creationCompleteHandler(event)"
+					   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:views="com.pentagram.instance.view.visualizer.views.*">
+
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenNano;
+			import com.greensock.easing.Back;
+			import com.greensock.easing.Expo;
+			import com.greensock.easing.Quart;
+			
+			
+			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
+			private var _flamaBook:Class;
+			
+			protected function hslider1_changeHandler(event:Event):void
+			{
+				for each(var p:PhysicsParticle in arr) {
+					p.radius = Math.random()*slider.value;
+					p.mass = 1;
+//					p.px = Math.random()*width;
+//					p.py = Math.random()*height;
+					p.redraw();
+				}
+			}
+			private var counter:int = 0;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+//				container.balls.collideInternal = false;
+//				counter = 0;
+
+				for each(var p:PhysicsParticle in arr) {
+//					p.px = Math.random()*width;
+//					p.py = Math.random()*height;
+				TweenNano.to(p,0.5,{px:Math.random()*width,py:Math.random()*height,onComplete:resume,ease:Quart.easeIn}); 
+				}
+			}
+			private function resume():void {
+				counter++;
+				if(counter == arr.length)
+					container.balls.collideInternal = true;
+			}
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.instance.view.visualizer.renderers.CircleRenderer;
+			import com.pentagram.instance.view.visualizer.renderers.PhysicsParticle;
+			
+			import mx.events.FlexEvent;
+			
+			private var arr:Array = [];
+			protected function windowedapplication1_creationCompleteHandler(event:FlexEvent):void
+			{
+				for (var i:int=0;i<100;i++) {
+					var p:PhysicsParticle = new PhysicsParticle(Math.random()*width,
+																Math.random()*height,
+																Math.random()*50,
+																false,
+																1);
+					p.setStyle(1,0,1,0xff0000,1);
+					//p.setDisplay(new CircleRenderer());
+					container.balls.addParticle(p);
+					arr.push(p);
+				}
+				container.start();
+			}
+
+		]]>
+	</fx:Script>
+	<views:PhysicsScene width="100%" height="100%" id="container" />
+	<s:HGroup>
+		<s:HSlider minimum="0" maximum="100"   thumbRelease="hslider1_changeHandler(event)" id="slider" />
+		<s:Button click="button1_clickHandler(event)" />
+	</s:HGroup>
+
+	
+</s:WindowedApplication>
