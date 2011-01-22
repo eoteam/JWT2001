@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120"
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180"
 		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)"
 		 skinClass="com.pentagram.view.skins.controls.TooltipSkin" move="titlewindow1_moveHandler(event)"
 		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
@@ -26,7 +26,10 @@
 
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
-				//this.
+				if(this.currentState == "closed")
+					this.currentState = "open";
+				else
+					this.currentState = "closed";
 			}
 
 		]]>
@@ -38,6 +41,11 @@
 		<s:State name="closed"/>
 		<s:State name="open" />
 	</s:states>
+	<s:transitions>
+		<s:Transition toState="*">
+			<s:Resize targets="{[infoContainer,this]}" duration="500" />
+		</s:Transition>
+	</s:transitions>
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
@@ -47,7 +55,7 @@
 		<s:Rect width="100%" />
 		<s:Image source="{country.thumb}" skinClass="com.pentagram.view.skins.controls.FlagSkin" />
 	</s:HGroup>
-	<s:VGroup width="100%" includeIn="open" height="250">
+	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer">
 		
 	</s:VGroup>
 	<s:Line  width="100%" height="1">

@@ -85,7 +85,7 @@ package org.cove.ape {
 		 * @param p The particle to be added.
 		 */
 		public function addParticle(p:AbstractParticle):void {
-			particles.push(p);
+				particles.push(p);
 			if (isParented) p.init();
 		}
 		

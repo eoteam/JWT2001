@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx"
-				xmlns:modules="ws.tink.spark.modules.*"
+				xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
+				xmlns:modules="ws.tink.spark.modules.*"  clipAndEnableScrolling="true"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
 				creationComplete="module1_creationCompleteHandler(event)"
 				resize="updateSize()">
@@ -46,14 +46,10 @@
 				}
 			}
 			private function doVisualize():void {
-				this.removeAllElements();
+				holder.removeAllElements();
 				if(ds1.type == 0) { //quantitative
 					for each(var item:Category in ds1.optionsArray) {
 						item.selected = item.enabled = true;
-						var parent:SpriteVisualElement = new SpriteVisualElement();
-						parent.percentHeight = parent.percentWidth = 100;
-						this.addElement(parent);
-						
 						var arr:Array = [];
 						var r:Number = 1;
 						for each(var row:DataRow in ds1.rows) {
@@ -69,13 +65,15 @@
 								arr.push({data:row,radius:r,color:item.color,data2:row2});
 							}	
 						}
-						var circle:CirclePacking = new CirclePacking(arr);
+						var circle:CirclePacking = new CirclePacking(arr,this);
+						circle.percentHeight = circle.percentWidth = 100;
 						circle.name = item.name;
-						circle.x = width/(ds1.optionsArray.length*2);
-						circle.width = width/ds1.optionsArray.length;
-						circle.y = height/2;
-						circle.height = height;
-						parent.addChild(circle);
+						//circle.x = width/(ds1.optionsArray.length*2);
+						//circle.width = width/ds1.optionsArray.length;
+						//circle.y = height/2;
+						//circle.height = height;
+						holder.addElement(circle);
+						circle.refresh();
 						this.callLater(function resumeDraw(c:CirclePacking):void {c.doLayout()},[circle]);
 					} 
 				}
@@ -86,9 +84,9 @@
 			}
 			
 			public function updateMaxRadius(value:Number):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking =  holder.getElementAt(i) as CirclePacking;
 //					for each(var r:ClusterRenderer in c.spriteArray) {
 //						r.radiusBeforeRendering = r.radiusBeforeRendering / maxRadius * newRadius;
 //					}
@@ -119,9 +117,9 @@
 			}
 			
 			public function updateYear(year:int):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
 						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[1]) {
@@ -146,9 +144,9 @@
 				this.doVisualize();
 			}
 			public function toggleOpacity(value:Number):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
 						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
@@ -170,12 +168,12 @@
 				}
 			}
 			public function addCategory(value:Category):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
-						parent.visible = true;
-						parent.includeInLayout = true;
+						c.visible = true;
+						c.includeInLayout = true;
 						break;
 					}
 				}
@@ -183,28 +181,31 @@
 			}
 			
 			public function removeCategory(value:Category):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
-						parent.visible = false;
-						parent.includeInLayout = false;
+						c.visible = false;
+						c.includeInLayout = false;
 						break;
 					}
 				}
 				updateSize();
 			}
 			public function selectCategory(value:Category):void {
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name != value.name) {
-						parent.visible = false;
-						parent.includeInLayout = false;
+						c.visible = false;
+						c.includeInLayout = false;
 					}
 					else {
-						parent.visible = true;
-						parent.includeInLayout = true;
+						c.visible = true;
+						c.includeInLayout = true;
+						c.percentHeight = c.percentWidth = 100;
+						c.height = holder.height;
+						c.width = holder.width/holder.numElements;
 						c.resize();
 					}
 				}
@@ -212,14 +213,11 @@
 			}
 			private function handleResize(event:Event=null):void
 			{
-				for (var i:int=0;i<this.numElements;i++) {
-					var parent:SpriteVisualElement = this.getElementAt(i) as SpriteVisualElement;
-					if(parent.visible) {
-						var c:CirclePacking = parent.getChildAt(0) as CirclePacking;
-						c.x = parent.width/2;
-						c.width = parent.width;
-						c.y = parent.height/2;
-						c.height = parent.height;
+				for (var i:int=0;i<holder.numElements;i++) {
+					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
+					if(c.visible) {
+						c.percentHeight = c.percentWidth = 100;
 						c.draw();
 					}
 				}
@@ -231,8 +229,6 @@
 		]]>
 	</fx:Script>
 
-		<modules:layout>
-			<s:HorizontalLayout gap="2" verticalAlign="middle" />
-		</modules:layout>		
+	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
 
 </modules:Module>

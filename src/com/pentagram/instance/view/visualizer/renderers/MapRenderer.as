@@ -22,6 +22,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	
 	import org.cove.ape.CircleParticle;
 	
+	import spark.components.Group;
+	
 	public class MapRenderer extends CircleParticle
 	{
 		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR
@@ -33,22 +35,24 @@ package com.pentagram.instance.view.visualizer.renderers
 		private var label:TextField;
 		private var textFormat:TextFormat;
 		private var info:RendererInfo;
+		private var tooltip:RendererToolTip;
 		private var infoVisible:Boolean = false;
 		
 		protected var _data:DataRow;
-
+		protected var tooltipContainer:Group;
 		
 
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { _data = d;fillColor=d.country.region.color }	
 		
 		
-		public function MapRenderer(radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
+		public function MapRenderer(parent:Group,radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
 		{
 			
 			super(0, 0, radius, fixed, mass, elasticity, friction);
 			this.collidable = true;
 			this.alwaysRepaint = true;
+			this.tooltipContainer = parent;
 			
 			textFormat = new TextFormat();
 			textFormat.font = "FlamaBookMx2";
@@ -75,6 +79,11 @@ package com.pentagram.instance.view.visualizer.renderers
 			//			sprite.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
 			//			sprite.addEventListener(ToolTipEvent.TOOL_TIP_END,checkTooltip);
 			
+			
+			tooltip = new RendererToolTip();
+			tooltipContainer.addElement(tooltip);
+			tooltip.visible = false;
+			
 		}
 		public function set country(value:Shape):void
 		{
@@ -88,11 +97,11 @@ package com.pentagram.instance.view.visualizer.renderers
 				px = pt.x;
 				py = pt.y;
 			}
+			dirty = true;
 		}
 		override public function redraw():void {
 			if(dirty) {
-				updateCoord();
-				dirty = false;
+				//updateCoord();
 				var g:Graphics = this.sprite.graphics;
 				g.clear();	
 				var stroke:IStroke = new Stroke(fillColor,1,1);
@@ -101,15 +110,14 @@ package com.pentagram.instance.view.visualizer.renderers
 				matr.createGradientBox(radius*2, radius*2, Math.PI/1.7, 0, 0);
 				var colors:Array;
 				
-				if(fillAlpha > 0.2) {
+				if(_fillAlpha > 0.2) {
 					colors = [_fillColor,Colors.darker(_fillColor)];
-					_textColor = 0xffffff;
+					textColor = 0xffffff;
 				}
 				else {
 					colors =  [_fillColor,_fillColor];
-					_textColor = _fillColor;
+					textColor = _fillColor;
 				}
-
 				g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
 				g.drawCircle(0, 0, radius);
 				g.endFill(); 
@@ -124,15 +132,19 @@ package com.pentagram.instance.view.visualizer.renderers
 					textFormat.size = 12;
 					label.visible = true;	
 				}
+				textFormat.color = _textColor;
+				label.defaultTextFormat = textFormat;
 				if(_data) {
-					textFormat.color = _textColor;			
 					label.text = _data.country.shortname;
-					label.x = -label.textWidth/2;
-					label.y = -label.textHeight/2;
-					label.width = label.textWidth+4;
-					label.height = label.textHeight+4;	
-					label.defaultTextFormat = textFormat;
 				}
+								
+				label.x = -label.textWidth/2;
+				label.y = -label.textHeight/2;
+				label.width = label.textWidth+4;
+				label.height = label.textHeight+4;	
+				label.defaultTextFormat = textFormat;
+		
+				dirty = false;				
 			}
 		}
 		protected function mouseEventHandler(event:Event):void {
@@ -141,17 +153,16 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					//popUp.displayPopUp = true;	
+					tooltip.x = this.px + radius;
+					tooltip.y = this.py - tooltip.height/2;
+					tooltip.visible = true;	
+					tooltip.country = data.country;
 					break;
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-					//trace(this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true),popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,true));
-					//var v1:Boolean = this.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-					//					var v2:Boolean = popUp.popUp.hitTestPoint(this.parentApplication.mouseX,this.parentApplication.mouseY,false);
-					//					if(!v2)
-					//	popUp.displayPopUp = false;
+					tooltip.visible = false;
 					break;
 				}
 					
@@ -167,12 +178,13 @@ package com.pentagram.instance.view.visualizer.renderers
 				case MouseEvent.CLICK:
 				{
 					if(!infoVisible) {
+						tooltip.visible = false;
 						info = new RendererInfo();
 						info.country = _data.country;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-						var pt:Point = sprite.parent.localToGlobal(new Point(px,py));
-						info.x = pt.x+radius; info.y = pt.y +60;
-						PopUpManager.addPopUp(info, sprite.parent, false);
+						info.x = this.px + radius;
+						info.y = this.py+60;
+						PopUpManager.addPopUp(info, this.tooltipContainer, false);
 						infoVisible = true;
 					}
 				}

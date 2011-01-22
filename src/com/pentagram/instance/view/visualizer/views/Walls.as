@@ -31,6 +31,11 @@ package com.pentagram.instance.view.visualizer.views
 			r = new RectangleParticle(bw, bh / 2, 10, bh, 0, true,100);
 			r.alwaysRepaint = true;
 			addParticle(r);
+			
+			r.setFill(0xffffff,0);
+			t.setFill(0xffffff,0);
+			b.setFill(0xffffff,0);
+			l.setFill(0xffffff,0);
 
 		}
 		public function update(bw:Number, bh:Number):void {

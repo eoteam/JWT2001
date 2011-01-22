@@ -105,11 +105,12 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}	
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
-			if(view.state == 'Map') {		
-				
-				view.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
-			}
-			else if(view.state == 'Graph') {
+//			if(view.state == 'Map') {		
+//				
+//				view.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
+//			}
+//			else
+			if(view.state == 'Graph') {
 				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			}	
 		}
@@ -118,7 +119,7 @@ package com.pentagram.instance.view.mediators.shell
 			dispatchPropEvent('alpha',alpha);
 		}
 		private function handleMapToggle(event:Event):void {
-			dispatchPropEvent('mapToggle',view.mapToggle.selected);
+			///dispatchPropEvent('mapToggle',view.mapToggle.selected);
 //			if(view.visualizerArea.selectedIndex == 1) {
 //				IMapView(view.currentVisualizer).toggleMap();
 //			}

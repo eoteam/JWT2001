@@ -17,7 +17,7 @@ package com.pentagram.instance.view.visualizer.views
 		private var timer:Timer;
 		public function PhysicsScene()
 		{
-			APEngine.init(0);
+			APEngine.init(1/2);
 			APEngine.container = this;
 			APEngine.addForce(new VectorForce(false,0, 0));//Massless
 			this.addEventListener(Event.ADDED_TO_STAGE,handleAddedStage);

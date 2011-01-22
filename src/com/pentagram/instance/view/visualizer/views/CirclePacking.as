@@ -23,17 +23,18 @@ package com.pentagram.instance.view.visualizer.views
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var numberList:Array = [];
 		public var scaler:Number = 1;
+		protected var tooltipContainer:Group;
 		
-		public function CirclePacking(arr:Array)
+		public function CirclePacking(arr:Array,parent:Group)
 		{
 			super();			
 			this.numberList = arr;
-			refresh();
+			this.tooltipContainer = parent;
 		}
 		public function refresh():void {
 			var counter:uint = 0;
 			while(counter < numberList.length) {
-				var sprite:ClusterRenderer = new  ClusterRenderer(); 
+				var sprite:ClusterRenderer = new  ClusterRenderer(tooltipContainer,this); 
 				sprite.data = numberList[counter].data;
 				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
@@ -98,7 +99,7 @@ package com.pentagram.instance.view.visualizer.views
 			return true;
 		}
 		
-		public function draw() : void {
+		public function draw() : void {			
 			var c:ClusterRenderer;
 			if (this.numberList.length < 2){
 				return;
@@ -108,10 +109,9 @@ package com.pentagram.instance.view.visualizer.views
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
 				c.state = true;
-				trace(this.circlePositions[i].z * _loc_2 * scaler);
 				TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
-								   x: this.circlePositions[i].x * _loc_2,
-								   y: this.circlePositions[i].y * _loc_2});
+								   x: this.circlePositions[i].x * _loc_2 + width/2,
+								   y: this.circlePositions[i].y * _loc_2+ height/2});
 				i++;
 			}
 			//cacheAsBitmap = true;

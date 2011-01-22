@@ -267,6 +267,7 @@ package org.cove.ape {
 		public static function paint():void {
 			for (var j:int = 0; j < numGroups; j++) {
 				var g:APEGroup = groups[j];
+
 				g.paint();
 			}
 		}

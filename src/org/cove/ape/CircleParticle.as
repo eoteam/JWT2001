@@ -74,7 +74,6 @@ package org.cove.ape {
 		public function set radius(r:Number):void {
 			_radius = r;
 			dirty = true;
-			redraw();
 		}
 		
 		
@@ -90,12 +89,8 @@ package org.cove.ape {
 				initDisplay();
 			} else {
 				sprite.graphics.clear();
-				sprite.graphics.lineStyle(lineWidth, lineColor, lineAlpha);
-				sprite.graphics.beginFill(fillColor, fillAlpha);
-				sprite.graphics.drawCircle(0, 0, radius);
-				sprite.graphics.endFill();
 			}
-			paint();
+			//paint();
 		}
 		
 		
