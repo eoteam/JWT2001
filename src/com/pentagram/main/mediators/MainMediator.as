@@ -55,7 +55,8 @@ package com.pentagram.main.mediators
 		}
 		// Handle Menu item selection
 		private function handleLogin(event:AppEvent):void {
-			instanceWindowModel.clientMenuItem.enabled = true;
+			instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled =
+				instanceWindowModel.countriesMenuItem.enabled = true;
 		}
 
 		// Called when application window closes

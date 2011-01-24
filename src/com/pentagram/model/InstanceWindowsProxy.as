@@ -43,6 +43,8 @@ package com.pentagram.model
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		public const CLIENT_WINDOW:String = "clientWindow";
+		public const COUNTRIES_WINDOW:String = "countriesWindow";
+		public const USERS_WINDOW:String = "userWindow";
 		
 		public function InstanceWindowsProxy()
 		{
@@ -291,7 +293,10 @@ package com.pentagram.model
 		}	
 		public var exportMenuItem:NativeMenuItem;
 		public var importMenuItem:NativeMenuItem;
-		public var clientMenuItem:NativeMenuItem
+		public var clientMenuItem:NativeMenuItem;
+		public var userMenuItem:NativeMenuItem;
+		public var countriesMenuItem:NativeMenuItem;
+		
 		public	function buildMenu(window:Window=null):Array {
 			//Arrange memu
 			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
@@ -315,6 +320,14 @@ package com.pentagram.model
 			var clients:NativeMenuItem = new NativeMenuItem("Clients");
 			clients.addEventListener(Event.SELECT,handleClient);
 			clients.enabled = false;
+			
+			var countries:NativeMenuItem = new NativeMenuItem("Countries");
+			countries.addEventListener(Event.SELECT,handleCountries);
+			countries.enabled = false;
+			
+			var users:NativeMenuItem = new NativeMenuItem("Users");
+			users.addEventListener(Event.SELECT,handleUsers);
+			users.enabled = false;
 			
 			//Item within Window Menu
 			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
@@ -367,6 +380,9 @@ package com.pentagram.model
 				window.stage.nativeWindow.menu.addItem(mroot);
 			}
 			clientMenuItem = clients;
+			userMenuItem = users;
+			countriesMenuItem = countries;
+			
 			windowMenu.submenu.addItemAt(arrange,0);
 			windowMenu.submenu.addItem(fullScreen);
 			windowMenu.submenu.addItem(newWindow);		
@@ -375,6 +391,9 @@ package com.pentagram.model
 			fileMenu.submenu.addItemAt(imp,0);
 			
 			managers.addItem(clients);
+			managers.addItem(countries);
+			managers.addItem(users);
+			
 			
 			
 			return [exp,imp];
@@ -408,6 +427,12 @@ package com.pentagram.model
 		}
 		private function handleClient(event:Event):void {
 			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,CLIENT_WINDOW));
+		}
+		private function handleCountries(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,COUNTRIES_WINDOW));
+		}
+		private function handleUsers(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW));
 		}
 									 
 	}

@@ -21,6 +21,8 @@ package com.pentagram.model
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		public const CLIENT_WINDOW:String = "clientWindow";
+		public const COUNTRIES_WINDOW:String = "countriesWindow";
+		public const USERS_WINDOW:String = "userWindow";
 		/**
 		 * Hash of currently open windows
 		 */
@@ -34,6 +36,7 @@ package com.pentagram.model
 			viewsMap.put(LOGIN_WINDOW,"com.pentagram.main.windows.LoginWindow");
 			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.main.windows.ExportSpreadSheetWindow");
 			viewsMap.put(CLIENT_WINDOW,"com.pentagram.main.windows.ClientListWindow");
+			viewsMap.put(COUNTRIES_WINDOW,"com.pentagram.main.windows.CountriesWindow");
 		}
 		
 		/**

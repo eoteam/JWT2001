@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:windows="com.pentagram.main.windows.*"
+					width="400" height="300" xmlns:editor="com.pentagram.instance.view.editor.*">
+	<fx:Declarations>
+		<fx:int id="LABEL_WIDTH">90</fx:int>
+		<fx:int id="FIELD_WIDTH">400</fx:int>
+		
+	</fx:Declarations>
+	<mx:HDividedBox width="100%" height="100%" paddingRight="12"  paddingLeft="12" paddingTop="8" paddingBottom="8">
+		<s:List width="30%" height="100%" id="countryList" labelField="name"/>
+		<s:Group width="100%" height="100%">
+			<s:Rect left="0" right="0" top="0" bottom="0">
+				<s:stroke>
+					<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
+				</s:stroke>
+			</s:Rect>
+			<s:VGroup id="countryEditor" width="100%" top="15" left="16" right="16" bottom="52">
+				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+					<s:Label width="{LABEL_WIDTH}" text="Full Name" />
+					<s:Rect width="8" />
+					<s:TextInput width="{FIELD_WIDTH}" text="{countryList.selectedItem.name}"/>
+				</s:HGroup>
+				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+					<s:Label width="{LABEL_WIDTH}" text="Region" />
+					<s:Rect width="8" />
+					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Select a Region" selectedItem="{countryList.selectedItem.region}" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+					<s:Label width="{LABEL_WIDTH}" text="Image" />
+					<s:Rect width="8" />
+					<s:Group width="{FIELD_WIDTH}" id="logoHolder">
+						<s:Rect left="0" right="0" top="0" bottom="0">
+							<s:stroke>
+								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+							</s:stroke>
+						</s:Rect>
+						<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+}" />
+						<s:Group left="1" right="1" top="1" height="30">
+							<s:Rect left="0" right="0" top="0" bottom="0">
+								<s:fill>
+									<s:LinearGradient>
+										<s:GradientEntry color="#FFFFFF" />
+										<s:GradientEntry color="#F5F6F6" />
+									</s:LinearGradient>
+								</s:fill>
+								<s:stroke>
+									<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
+								</s:stroke>
+							</s:Rect>
+							<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
+								<s:Button label="Change Image" />
+							</s:HGroup>
+						</s:Group>		
+					</s:Group>
+				</s:HGroup>	
+			</s:VGroup>
+			<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
+				<s:Button label="Save Changes" id="saveBtn" />
+				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
+				<editor:StatusModule id="statusModule" width="100%" />
+				<s:Button label="- Delete Country" color="0xC61023" id="deleteBtn" />
+			</s:HGroup>	
+		</s:Group>
+	</mx:HDividedBox>
+	
+</windows:BaseWindow>
