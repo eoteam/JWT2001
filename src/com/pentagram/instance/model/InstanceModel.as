@@ -41,6 +41,7 @@ package com.pentagram.instance.model
 		
 		public var exportDirectory:File;
 		public var includeHeader:Boolean = true;
+		public var includeTools:Boolean = true;
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";

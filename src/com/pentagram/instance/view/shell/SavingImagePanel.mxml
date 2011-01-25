@@ -7,30 +7,26 @@
 			<s:Fade alphaFrom="0" alphaTo="1" />
 			<s:Fade alphaFrom="1" alphaTo="0" startDelay="1000" effectEnd="this.visible=false"/>
 		</s:Sequence>
-		
-		
+		<fx:Number id="labelFontSize">12</fx:Number>
+		<fx:Number id="rectWidth">100</fx:Number>
+		<fx:Number id="tipPlacement">45</fx:Number>
 	</fx:Declarations>
+	<s:Group width="{rectWidth}" height="30">
+		<s:Rect id="bg"  left="0" right="0" top="0" bottom="0" radiusX="3" radiusY="3" >
+			<s:fill>
+				<s:SolidColor id="bgColor" color="0x121212" />
+			</s:fill>
+		</s:Rect>
+		<s:Label text="Image Saved" fontFamily="FlamaBold" fontSize="{labelFontSize}" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
+	</s:Group>
 	
-	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+	<s:Path id="arrow" x="{tipPlacement}" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
 		<s:fill>
-			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+			<s:SolidColor id="arrowColor" color="0"/>
 		</s:fill>
-		<s:filters>
-			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
-		</s:filters>
-	</s:Rect>
-	<s:Path   horizontalCenter="0"
-			  id="path12"  winding="nonZero"
-			  data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" top="{height}" >
-		<s:fill>
-			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
-		</s:fill>
-		<s:filters>
-			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
-		</s:filters>
 	</s:Path>
-<!--	<s:VGroup verticalAlign="middle" verticalCenter="0" horizontalAlign="center">-->
-		<s:Label text="Image Saved" verticalCenter="0" horizontalCenter="0" />
-		<!--<controls:Spinner id="spinner" tickColor="0xffffff" size="20" tickWidth="2" numTicks="10" autoPlay="true" /> 	-->	
-<!--	</s:VGroup>-->
+	
+	<s:filters>
+		<s:DropShadowFilter quality="1" strength=".75" color="0" />
+	</s:filters>	
 </s:Group>

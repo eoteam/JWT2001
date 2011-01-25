@@ -6,99 +6,9 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
 				xmlns:utils="com.pentagram.utils.*" clipAndEnableScrolling="false"
-				xmlns:renderers="com.pentagram.view.renderers.*" xmlns:controls="com.pentagram.view.controls.*">
-	<fx:Script>
-		<![CDATA[
-			import flash.geom.Point;
-			
-			import mx.events.EffectEvent;
-			import mx.events.FlexEvent;
-			import mx.events.ToolTipEvent;
-			import mx.managers.ToolTipManager;
-			
-			import spark.components.List;
+				xmlns:renderers="com.pentagram.view.renderers.*" 
+				xmlns:controls="com.pentagram.view.controls.*">
 
-			protected function itemrenderer1_rollOverHandler(event:MouseEvent):void
-			{
-				var yearSlider:List = this.owner as List;
-				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
-					yearSlider.dataProvider.getItemAt(i).selection = 1;
-				}
-				var index:int =  this.itemIndex;
-				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
-				if(index-1 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
-				
-				if(index-2 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
-				
-				if(index+1 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
-				
-				if(index+2 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
-				
-				index =  yearSlider.selectedIndex;
-				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
-				if(index-1 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
-				
-				if(index-2 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
-				
-				if(index+1 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
-				
-				if(index+2 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
-			}
-
-
-			protected function itemrenderer1_rollOutHandler(event:MouseEvent):void
-			{
-				var yearSlider:List = this.owner as List;
-				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
-					yearSlider.dataProvider.getItemAt(i).selection = 1;
-				}
-				var index:int =  yearSlider.selectedIndex;
-				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
-				if(index-1 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
-				
-				if(index-2 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
-				
-				if(index+1 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
-				
-				if(index+2 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
-			}
-
-
-			protected function itemrenderer1_clickHandler(event:MouseEvent):void
-			{
-				var yearSlider:List = this.owner as List;
-				for (var i:int=0; i < yearSlider.dataProvider.length; i++) {
-					yearSlider.dataProvider.getItemAt(i).selection = 1;
-				}
-				var index:int =  yearSlider.dataProvider.getItemIndex(data);
-				yearSlider.dataProvider.getItemAt(index).selection = 1.5;
-				if(index-1 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-1).selection  = 1.3;
-				
-				if(index-2 >= 0) 
-					yearSlider.dataProvider.getItemAt(index-2).selection  = 1.1;
-				
-				if(index+1 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+1).selection  = 1.3;
-				
-				if(index+2 < yearSlider.dataProvider.length) 
-					yearSlider.dataProvider.getItemAt(index+2).selection  = 1.1;
-			}
-
-		]]>
-	</fx:Script>
 	
 	<s:states>
 		<s:State name="normal" />
@@ -137,9 +47,6 @@
 			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"/>
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
-<!--	<s:PopUpAnchor popUpPosition="above" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
-		<s:popUp>-->
-			<controls:ButtonToolTip bodyText="{data.year}" includeInLayout="false"   y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
-<!--		</s:popUp>
-	</s:PopUpAnchor>-->
+	<controls:ButtonToolTip bodyText="{data.year}" includeInLayout="false"  alpha="{data.alpha}"
+	y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
 </s:ItemRenderer>

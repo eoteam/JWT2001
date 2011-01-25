@@ -24,7 +24,6 @@
 	<fx:Declarations>
 		<vo:Client id="client" />
 		<mx:ViewStack id="visualizerArea" />
-		<s:NavigatorContent id="viewArea" />
 	</fx:Declarations>
 	
 	<s:states>

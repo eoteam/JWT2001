@@ -8,53 +8,42 @@
 		]]>
 	</fx:Script>
 
-		<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
-			<s:fill>
-				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
-			</s:fill>
-			<s:filters>
-				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
-			</s:filters>
-		</s:Rect>
-		<s:Path  
-				id="path12"  winding="nonZero"
-				data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" top="{height}" right="15">
-			<s:fill>
-				<s:SolidColor color="#1A1A1A" alpha="0.9"/>
-			</s:fill>
-			<s:filters>
-				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
-			</s:filters>
-		</s:Path>
+	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Path id="path12"  winding="nonZero" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" top="{height}" right="15">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Path>
 
-		<s:VGroup horizontalCenter="0" gap="2" width="100%" paddingLeft="5" paddingRight="5" paddingTop="5" height="100%" paddingBottom="5">
-			<s:Label text="Export Settings" fontFamily="FlamaBold" />
-			<s:Line width="100%">
-				<s:stroke>
-					<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
-				</s:stroke>
-			</s:Line>
-			<s:Rect height="10" />
-			
-			<s:CheckBox label="Include Header" color="0xffffff" fontFamily="FlamaBook" />
-			<s:Rect height="8" />
-			
-<!--			<s:Label text="Dimensions:" />
-			<s:HGroup width="100%" verticalAlign="middle">
-				<s:NumericStepper color="0xffffff" contentBackgroundColor="0x1a1a1a" skinClass="spark.skins.spark.NumericStepperSkin" />
-				<controls:HotTextNumber value="0" height="25" minValue="1"  maxValue="100" increment="1" textLabel="Width: " width="100%"
-				labelColor="0xffffff"  />
-			</s:HGroup>
-			<s:Rect height="8" />-->
-			
-			<s:HGroup verticalAlign="middle">
-				<s:Label text="Browse for Directory:" />
-				<s:Button id="dirButton" scaleX="0.75" scaleY="0.75" skinClass="com.pentagram.view.skins.buttons.FolderButton"/>
-			</s:HGroup>
-			<s:RichText id="dirPath" maxDisplayedLines="3" width="100%" />
-			<s:Rect height="100%" />
-			
-			<s:Button label="Save" id="saveBtn" width="100%" />
-		</s:VGroup>
+	<s:VGroup horizontalCenter="0" gap="2" width="100%" paddingLeft="5" paddingRight="5" paddingTop="5" height="100%" paddingBottom="5">
+		<s:Label text="Export Settings" fontFamily="FlamaBold" />
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Rect height="10" />
 		
+		<s:CheckBox label="Include Header" color="0xffffff" fontFamily="FlamaBook" id="includeHeader" />
+		<s:CheckBox label="Include Tools" color="0xffffff" fontFamily="FlamaBook" id="includeTools"  />
+		<s:Rect height="8" />			
+		<s:HGroup verticalAlign="middle">
+			<s:Label text="Browse for Directory:" />
+			<s:Button id="dirButton" scaleX="0.75" scaleY="0.75" skinClass="com.pentagram.view.skins.buttons.FolderButton"/>
+		</s:HGroup>
+		<s:RichText id="dirPath" maxDisplayedLines="3" width="100%" />
+		<s:Rect height="100%" />
+		
+		<s:Button label="Save" id="saveBtn" width="100%" />
+	</s:VGroup>		
 </s:Group>

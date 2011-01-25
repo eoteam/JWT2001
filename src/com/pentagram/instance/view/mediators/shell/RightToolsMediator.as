@@ -3,6 +3,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightTools;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.utils.ViewUtils;
 	
@@ -35,8 +36,15 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
-			//view.colorList.dataProvider = new ArrayList(ViewUtils.vectorToArray(model.colors));
+			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			
+		}
+		private function handleImageSaveStart(event:ViewEvent):void {
+			if(!model.includeTools)
+				view.visible == false;
 		}
 		private function handleIndexChanged(event:IndexChangedEvent):void {
 			switch(view.visualizerArea.selectedIndex) {

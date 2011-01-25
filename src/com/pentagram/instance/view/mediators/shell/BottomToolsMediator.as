@@ -62,19 +62,30 @@ package com.pentagram.instance.view.mediators.shell
 			yearTimer = new Timer(1000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
+			//eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			//eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			
 		}
-		private var loader:Loader;
-		private function saveImage(event:MouseEvent):void {	
-			eventDispatcher.dispatchEvent(new ViewEvent
-			//Shell(view.parentApplication.shellView).savingPanel.visible = true;
-			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
-			//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
-//			loader = new Loader();	
-//			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);
-//			loader.loadBytes(imageSnap.data);
+		
+		
+//		private function handleImageSaveStart(event:ViewEvent):void {
+//			var a:int = event.type == ViewEvent.START_IMAGE_SAVE ? 0:1;
+//			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
+//				year.alpha = a;
+//			}
 //		}
-//		private function getBitmapData(e:Event):void {
-			//var content:Bitmap = loader.content as Bitmap;
+		private function saveImage(event:MouseEvent):void {	
+			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
+				year.alpha = 0;
+			}
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
+			view.callLater(resumeImageSave);
+		}
+		private function resumeImageSave():void {
+			view.callLater(doSaveImage);
+		}
+		private function doSaveImage():void {
+			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
 			var pt:Point = view.parent.localToGlobal(new Point(view.x,view.y));
 			
 			var bmd:BitmapData = new BitmapData(imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
@@ -82,26 +93,23 @@ package com.pentagram.instance.view.mediators.shell
 			
 			bmd.copyPixels(imageSnap,rect,new Point( 0, 0 ));
 			imageSnap.dispose();
-	
 			var enc:PNGEncoder = new PNGEncoder();
-			//encode the bitmapdata object and keep the encoded ByteArray
 			var imgByteArray:ByteArray = enc.encode(bmd);
-			//				var UIMatrix:Matrix = new Matrix();
-			//				bmd.draw(content, UIMatrix);
 			var fs:FileStream = new FileStream();
 			var d:Date = new Date();
 			var fl:File = model.exportDirectory.resolvePath("viz"+d.time+".png");
 			try{
-				//open file in write mode
 				fs.open(fl,FileMode.WRITE); 
-				//write bytes from the byte array
 				fs.writeBytes(imgByteArray);
-				//close the file
 				fs.close();
 			}catch(e:Error){	
 				trace(e.message);
 			}	
 			Shell(view.parentApplication.shellView).savingPanel.visible = true;
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.END_IMAGE_SAVE));
+			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
+				year.alpha = 1;
+			}
 		}
 		private function closeSettingsPanel(event:MouseEvent):void {
 			if(event.target != view.settingsBtn)

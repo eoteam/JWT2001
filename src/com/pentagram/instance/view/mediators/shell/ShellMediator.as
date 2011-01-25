@@ -64,6 +64,7 @@ package com.pentagram.instance.view.mediators.shell
 		
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
 			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory);
+			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools);
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave);
 				
 			if(model.user) {
@@ -81,7 +82,9 @@ package com.pentagram.instance.view.mediators.shell
 			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 		}
-
+		private function handleIncludeTools(event:Event):void {
+			model.includeTools = view.exportPanel.includeTools.selected;
+		}
 		private function selectedNewDirectory(event:MouseEvent):void {
 			model.exportDirectory = new File();
 			model.exportDirectory.addEventListener(Event.SELECT, file_select);

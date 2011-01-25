@@ -91,5 +91,5 @@
 	</s:Group>
 	</s:Group>
 	<controls:ButtonToolTip bodyText="{hostComponent.label}" includeInLayout="false"   y="{-height-5}"   x="{width-125}" tipPlacement="80"
-							visible="false" visible.overAndSelected="true"  visible.over="true" labelFontSize="12" rectWidth="120"/>
+	visible="false" visible.overAndSelected="true"  visible.over="true" labelFontSize="12" rectWidth="120"/>
 </s:Skin>

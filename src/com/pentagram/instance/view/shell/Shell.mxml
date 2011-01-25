@@ -68,7 +68,8 @@
 			
 			<!-- filters and tools -->
 			<shell:RightTools right="0" id="filterTools" top="61" visualizerArea="{visualizerArea}"/>
-			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false"  viewArea="{viewArea}"  />
+			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" 
+							   clipAndEnableScrolling="false"   />
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
@@ -90,7 +91,7 @@
 	
 	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" />
 	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel"/>
-	<shell:SavingImagePanel right="60"  bottom="95" styleName="darkPanel" visible="false" id="savingPanel"/>
+	<shell:SavingImagePanel right="49"  bottom="83" styleName="darkPanel" visible="false" id="savingPanel"/>
 	
 	
 </s:Group>
