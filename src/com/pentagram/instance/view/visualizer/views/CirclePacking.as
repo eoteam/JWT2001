@@ -38,7 +38,8 @@ package com.pentagram.instance.view.visualizer.views
 				sprite.data = numberList[counter].data;
 				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
-				sprite.textColor = 0xffffffff;
+				sprite.fillAlpha = 0.2;
+				sprite.textColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				sprite.scaleX= -1;
 				spriteArray.push(sprite);

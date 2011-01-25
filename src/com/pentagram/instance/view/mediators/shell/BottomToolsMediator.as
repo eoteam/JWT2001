@@ -65,8 +65,9 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private var loader:Loader;
 		private function saveImage(event:MouseEvent):void {	
+			eventDispatcher.dispatchEvent(new ViewEvent
 			//Shell(view.parentApplication.shellView).savingPanel.visible = true;
-			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.parentApplication as IBitmapDrawable);
+			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
 			//var imageSnap2:ImageSnapshot = ImageSnapshot.captureImage(this.parentApplication as IBitmapDrawable,300);
 //			loader = new Loader();	
 //			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, getBitmapData);

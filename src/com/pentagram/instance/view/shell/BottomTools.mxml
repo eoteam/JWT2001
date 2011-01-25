@@ -24,6 +24,7 @@
 	<fx:Declarations>
 		<vo:Client id="client" />
 		<mx:ViewStack id="visualizerArea" />
+		<s:NavigatorContent id="viewArea" />
 	</fx:Declarations>
 	
 	<s:states>
@@ -137,12 +138,12 @@
 				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
 			</s:stroke>
 		</s:Line> 
-		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn" toolTip="Save Image"/>
+		<s:Button  skinClass="com.pentagram.view.skins.buttons.AddSlideButton" id="pdfBtn" label="Save Image"/>
 		<s:Line height="100%" width="1" bottom="34">
 			<s:stroke>
 				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
 			</s:stroke>
 		</s:Line> 
-		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.GearButton" id="settingsBtn" toolTip="Export Settings" />
+		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.GearButton" id="settingsBtn" label="Export Settings" />
 	</s:HGroup>
 </s:Group>

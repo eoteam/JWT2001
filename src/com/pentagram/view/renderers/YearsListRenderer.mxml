@@ -6,7 +6,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:interpolate="flare.animate.interpolate.*" 
 				xmlns:utils="com.pentagram.utils.*" clipAndEnableScrolling="false"
-				xmlns:renderers="com.pentagram.view.renderers.*">
+				xmlns:renderers="com.pentagram.view.renderers.*" xmlns:controls="com.pentagram.view.controls.*">
 	<fx:Script>
 		<![CDATA[
 			import flash.geom.Point;
@@ -139,7 +139,7 @@
 	</s:Rect>
 <!--	<s:PopUpAnchor popUpPosition="above" displayPopUp.hovered="true" displayPopUp.selected="true" displayPopUp="false">
 		<s:popUp>-->
-			<renderers:YearListRendererToolTip bodyText="{data.year}" includeInLayout="false"   y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
+			<controls:ButtonToolTip bodyText="{data.year}" includeInLayout="false"   y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
 <!--		</s:popUp>
 	</s:PopUpAnchor>-->
 </s:ItemRenderer>

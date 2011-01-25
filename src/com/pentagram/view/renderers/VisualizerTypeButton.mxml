@@ -11,7 +11,7 @@
 			override public function set data(value:Object):void {
 				super.data = value;
 				if(value) {
-					this.toolTip = value.label;
+					//this.toolTip = value.label;
 					switch(value.label) {
 						case "Cluster":
 							this.setStyle("skinClass",ClusterButton);

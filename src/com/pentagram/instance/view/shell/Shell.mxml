@@ -35,7 +35,7 @@
 	
 	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack"  
 	backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
-		<s:NavigatorContent width="100%" height="100%" label="Visualizer" >
+		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea">
 
 			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{tools.height}" />
 			<!-- viewing area -->
@@ -68,7 +68,7 @@
 			
 			<!-- filters and tools -->
 			<shell:RightTools right="0" id="filterTools" top="61" visualizerArea="{visualizerArea}"/>
-			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false"  />
+			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false"  viewArea="{viewArea}"  />
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">

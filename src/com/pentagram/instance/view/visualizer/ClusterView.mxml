@@ -11,8 +11,8 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			import com.greensock.TweenNano;
+			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -68,16 +68,17 @@
 						var circle:CirclePacking = new CirclePacking(arr,this);
 						circle.percentHeight = circle.percentWidth = 100;
 						circle.name = item.name;
-						//circle.x = width/(ds1.optionsArray.length*2);
-						//circle.width = width/ds1.optionsArray.length;
-						//circle.y = height/2;
-						//circle.height = height;
 						holder.addElement(circle);
 						circle.refresh();
-						this.callLater(function resumeDraw(c:CirclePacking):void {c.doLayout()},[circle]);
+						circle.doLayout();
+						updateSize();
 					} 
 				}
 				firstLoad = false;
+				this.callLater(updateSize);
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
 			public function update():void {
 				
@@ -85,13 +86,8 @@
 			
 			public function updateMaxRadius(value:Number):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking =  holder.getElementAt(i) as CirclePacking;
-//					for each(var r:ClusterRenderer in c.spriteArray) {
-//						r.radiusBeforeRendering = r.radiusBeforeRendering / maxRadius * newRadius;
-//					}
 					c.scaler = value/100;
-					//c.layout();
 					c.draw();
 				}
 			}
@@ -124,17 +120,12 @@
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
 						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[1]) {
 							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-							trace(circle.radiusBeforeRendering);
+							//trace(circle.radiusBeforeRendering);
 						}	
-//						if(ds1.time == 1 && year >= ds2.years[0] && year <= ds2.years[1])
-//						{
-//							circle.includeInLayout = false;
-//						}
 							
 					}
 					c.doLayout();
-					//c.draw();
-					
+					//c.draw();				
 				}
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
@@ -154,7 +145,9 @@
 					}
 				}
 			}	
-		
+			private function handleTimer(event:TimerEvent):void {
+				updateSize();
+			}
 			protected var resizeFlag:Boolean = false
 			public function updateSize():void {
 				resizeFlag = true;
@@ -177,7 +170,9 @@
 						break;
 					}
 				}
-				updateSize();
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
 			
 			public function removeCategory(value:Category):void {
@@ -190,7 +185,9 @@
 						break;
 					}
 				}
-				updateSize();
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
 			public function selectCategory(value:Category):void {
 				for (var i:int=0;i<holder.numElements;i++) {
@@ -209,7 +206,9 @@
 						c.resize();
 					}
 				}
-				this.updateSize();
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
 			private function handleResize(event:Event=null):void
 			{

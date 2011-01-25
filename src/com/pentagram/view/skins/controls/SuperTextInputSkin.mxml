@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
-	<fx:Metadata>[HostComponent("spark.components.TextInput")]</fx:Metadata>
+<s:SparkSkin
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		minWidth="100" minHeight="22"
+		alpha.disabled="0.5"
+		blendMode="normal">
+
+	<fx:Metadata>
+		[HostComponent("com.pentagram.view.controls.SuperTextInput")]
+	</fx:Metadata> 
+
 	<s:states>
 		<s:State name="normal"/>
 		<s:State name="disabled" stateGroups="disabledStates"/>
 		<s:State name="normalWithPrompt"/>
 		<s:State name="disabledWithPrompt" stateGroups="disabledStates"/>
 	</s:states>
-	<s:Group id="group10" d:id="3" flm:knockout="false" left="0" right="0" top="0" bottom="0" >
+	<s:Group id="group10"  left="0" right="0" top="0" bottom="0" >
 		<s:Rect height="24" radiusX="1.9919" radiusY="1.9919" left="0" right="0" top="0" bottom="0">
 			<s:fill>
 				<s:SolidColor color="#F2F2F2"/>
 			</s:fill>
 		</s:Rect>
 	</s:Group>
-	<s:Group id="group12" d:id="4" flm:knockout="false"  left="1" right="1" top="0" bottom="0">
+	<s:Group id="group12" left="1" right="1" top="0" bottom="0">
 		<s:Rect height="22" radiusX="1.9919" radiusY="1.9919" left="0" right="0" top="0" bottom="0">
 			<s:fill>
 				<s:LinearGradient rotation="90" scaleX="23.3345" x="241.83" y="-0.769043">
@@ -30,11 +39,19 @@
 			</s:stroke>
 		</s:Rect>
 	</s:Group>
-	<s:RichEditableText fontSize="13" id="textDisplay" tabStops="S0 S50 S100 S150" 
-	left="7" right="7" top="3" bottom="3" heightInLines="1"/>
-	
+
+	<!-- text -->
+	<s:RichEditableText id="textDisplay" left="4" right="24" top="1" bottom="0"
+			color="#333333"
+			verticalAlign="middle" />
+
+	<!-- prompt -->
 	<s:Label id="promptDisplay" left="4" right="4" top="1" bottom="0" includeIn="normalWithPrompt"
-			 color="#aaaaaa" fontStyle="italic"
-			 maxDisplayedLines="1"
-			 verticalAlign="middle" />
-</s:Skin>
+			color="#aaaaaa" fontStyle="italic"
+			maxDisplayedLines="1"
+			verticalAlign="middle" />
+
+	<!-- clear button -->
+	<s:Button id="clearButton" right="4" verticalCenter="0" excludeFrom="normalWithPrompt"
+			skinClass="com.pentagram.view.skins.controls.SuperTextInputClearButtonSkin" />
+</s:SparkSkin>

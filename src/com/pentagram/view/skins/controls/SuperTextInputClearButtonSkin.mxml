@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark" 
+		width="16" height="16"
+		alpha.disabled="0.5">
+
+
+	<fx:Metadata>
+		[HostComponent("spark.components.Button")]
+	</fx:Metadata>
+
+	<!-- states -->
+	<s:states>
+		<s:State name="up" />
+		<s:State name="over" />
+		<s:State name="down" />
+		<s:State name="disabled" />
+	</s:states>
+
+	<!-- transitions -->
+	<s:transitions>
+		<s:Transition fromState="up" toState="over">
+			<s:Parallel duration="250">
+				<s:AnimateColor target="{circleFill}" />
+				<s:Animate target="{xFill}">
+					<s:SimpleMotionPath property="alpha" />
+				</s:Animate>
+			</s:Parallel>
+		</s:Transition>
+		<s:Transition fromState="over" toState="up">
+			<s:Parallel duration="250">
+				<s:AnimateColor target="{circleFill}" />
+				<s:Animate target="{xFill}">
+					<s:SimpleMotionPath property="alpha" />
+				</s:Animate>
+			</s:Parallel>
+		</s:Transition>
+	</s:transitions>
+
+	<!-- circle -->
+	<s:Ellipse width="16" height="16">
+		<s:fill>
+			<s:SolidColor id="circleFill" color="#bbbbbb" color.over="#cccccc" color.down="#cccccc" />
+		</s:fill>
+	</s:Ellipse>
+
+	<!-- x -->
+	<s:Path x="3" y="3">
+		<s:data>M 0,0 L 2,0 5,3 8,0 10,0 10,2 7,5 10,8 10,10 8,10 5,7 2,10 0,10 0,8 3,5 0,2 Z</s:data>
+		<s:fill>
+			<s:SolidColor id="xFill" color="#ffffff" alpha="0.8" alpha.over="1" alpha.down="1" />
+		</s:fill>
+	</s:Path>
+</s:SparkSkin>

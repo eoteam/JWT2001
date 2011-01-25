@@ -10,17 +10,21 @@
 
 		]]>
 	</fx:Script>
-
-		<s:Group width="60" height="30">
+	<fx:Declarations>
+		<fx:Number id="labelFontSize">18</fx:Number>
+		<fx:Number id="rectWidth">60</fx:Number>
+		<fx:Number id="tipPlacement">25</fx:Number>
+	</fx:Declarations>
+		<s:Group width="{rectWidth}" height="30">
 			<s:Rect id="bg"  left="0" right="0" top="0" bottom="0" radiusX="3" radiusY="3" >
 				<s:fill>
 					<s:SolidColor id="bgColor" color="0x121212" />
 				</s:fill>
 			</s:Rect>
-			<s:Label text="{bodyText}" fontFamily="FlamaBold" fontSize="18" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
+			<s:Label text="{bodyText}" fontFamily="FlamaBold" fontSize="{labelFontSize}" color="0xffffff" verticalCenter="0" horizontalCenter="0" />
 		</s:Group>
 	
-		<s:Path id="arrow" x="25" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
+		<s:Path id="arrow" x="{tipPlacement}" y="30" width="10" height="10" data="M 0 0 L 5 10 L 10 0 Z">
 			<s:fill>
 				<s:SolidColor id="arrowColor" color="0"/>
 			</s:fill>

@@ -3,6 +3,8 @@ package com.pentagram.main.mediators
 	import com.pentagram.main.windows.CountriesWindow;
 	import com.pentagram.model.AppModel;
 	
+	import mx.collections.ArrayCollection;
+	
 	import org.robotlegs.mvcs.Mediator;
 	
 	public class CountriesMediator extends Mediator
@@ -14,7 +16,7 @@ package com.pentagram.main.mediators
 		public var model:AppModel;
 		
 		override public function onRegister():void {
-			view.countryList.dataProvider = model.countries;
+			view.countryList.dataProvider = new ArrayCollection(model.countries.source);
 			view.continentList.dataProvider = model.regions;
 		}
 	}

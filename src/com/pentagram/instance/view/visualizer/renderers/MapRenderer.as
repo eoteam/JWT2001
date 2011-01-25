@@ -21,6 +21,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.managers.PopUpManager;
 	
 	import org.cove.ape.CircleParticle;
+	import org.hamcrest.mxml.object.Null;
 	
 	import spark.components.Group;
 	
@@ -147,13 +148,23 @@ package com.pentagram.instance.view.visualizer.renderers
 				dirty = false;				
 			}
 		}
+		private var offset:int = 15;
 		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					tooltip.x = this.px + radius;
+					if(sprite.parent.x + this.px + radius + tooltip.width > this.tooltipContainer.width) {
+						tooltip.leftTip.visible = false;
+						tooltip.rightTp.visible = true;
+						tooltip.x = sprite.parent.x + this.px - radius - tooltip.width - offset;
+					}
+					else { 
+						tooltip.leftTip.visible = true;
+						tooltip.rightTp.visible = false;
+						tooltip.x = sprite.parent.x + this.px + radius + offset;
+					}
 					tooltip.y = this.py - tooltip.height/2;
 					tooltip.visible = true;	
 					tooltip.country = data.country;
@@ -182,7 +193,16 @@ package com.pentagram.instance.view.visualizer.renderers
 						info = new RendererInfo();
 						info.country = _data.country;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-						info.x = this.px + radius;
+						if(sprite.parent.x + this.px + radius + info.width > this.tooltipContainer.width) {
+							info.leftTipVisible = false;
+							info.rightTipVisible = true;
+							info.x = sprite.parent.x + this.px - radius - info.width - offset;
+						}
+						else { 
+							info.leftTipVisible = true;
+							info.rightTipVisible = false;
+							info.x = sprite.parent.x + this.px + radius + offset;
+						}
 						info.y = this.py+60;
 						PopUpManager.addPopUp(info, this.tooltipContainer, false);
 						infoVisible = true;

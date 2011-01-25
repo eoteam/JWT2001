@@ -155,6 +155,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 			}
 		}	
+		private var offset:int = 15;
 		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
@@ -164,12 +165,12 @@ package com.pentagram.instance.view.visualizer.renderers
 					if(this.directParent.x + this.x + radius + tooltip.width > this.tooltipContainer.width) {
 						tooltip.leftTip.visible = false;
 						tooltip.rightTp.visible = true;
-						tooltip.x = this.directParent.x +this.x - radius - tooltip.width;
+						tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
 					}
 					else { 
 						tooltip.leftTip.visible = true;
 						tooltip.rightTp.visible = false;
-						tooltip.x = this.directParent.x + this.x + radius;
+						tooltip.x = this.directParent.x + this.x + radius + offset;
 					}
 					tooltip.y = this.y - tooltip.height/2;
 					tooltip.visible = true;	
@@ -199,14 +200,14 @@ package com.pentagram.instance.view.visualizer.renderers
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
 						if(this.directParent.x + this.x + radius + info.width > this.tooltipContainer.width) {
-							//info.leftTip.visible = false;
-							//info.rightTp.visible = true;
-							info.x = this.directParent.x +this.x - radius - info.width;
+							info.leftTipVisible = false;
+							info.rightTipVisible = true;
+							info.x = this.directParent.x +this.x - radius - info.width - offset;
 						}
 						else { 
-							//info.leftTip.visible = true;
-							//info.rightTp.visible = false;
-							info.x = this.directParent.x + this.x + radius;
+							info.leftTipVisible = true;
+							info.rightTipVisible = false;
+							info.x = this.directParent.x + this.x + radius + offset;
 						}
 						
 						info.y = this.y+60;

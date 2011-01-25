@@ -68,19 +68,19 @@ in accordance with the terms of the license agreement accompanying it.
     </fx:Metadata>
     
     <!-- Defines the appearance of the image background. -->
-    <s:Rect id="background" left="0" right="0" top="0" bottom="0">
+    <s:Rect id="background" left="0" right="0" top="0" bottom="0" excludeFrom="invalid">
 		<s:stroke>
-			<s:SolidColorStroke weight="0.25" color="0x868686" />
+			<s:SolidColorStroke weight="1" color="0x868686" />
 		</s:stroke>
     </s:Rect>
     
     <!-- Primary image display part -->
-    <s:BitmapImage id="imageDisplay" left="0" top="0" right="0" bottom="0"/>
+    <s:BitmapImage id="imageDisplay" left="1" top="1" right="1" bottom="1"/>
     
     <!-- Progress indicator part -->
     <s:Range id="progressIndicator" skinClass="spark.skins.spark.ImageLoadingSkin" verticalCenter="0" horizontalCenter="0" includeIn="loading" layoutDirection="ltr" />
     
     <!-- Invalid image icon -->
-    <s:BitmapImage includeIn="invalid" source="@Embed(source='Assets.swf',symbol='__brokenImage')" verticalCenter="0" horizontalCenter="0"/>
+   <!-- <s:BitmapImage includeIn="invalid" source="@Embed(source='Assets.swf',symbol='__brokenImage')" verticalCenter="0" horizontalCenter="0"/>-->
     
 </s:Skin>

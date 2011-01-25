@@ -14,6 +14,8 @@ package com.pentagram.main.event
 		
 		public static const SAVE_EXPORT_SETTINGS:String = "saveExportSettings";
 		
+		public static const START_IMAGE_SAVE:String = "startSaveImage";
+		
 		public var args:Array;
 		public function ViewEvent(type:String,...args)
 		{
