@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:ai="http://ns.adobe.com/ai/2009">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Rect alpha="0.9" height="2" id="rect4" d:id="3" includeIn="disabled,disabledAndSelected,downAndSelected" width="94" y="24" x="0">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha.disabled="0.45" angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Group id="group4" d:id="4" includeIn="disabled,disabledAndSelected,down,downAndSelected,overAndSelected,upAndSelected" flm:knockout="false" y.disabled="1" y.disabledAndSelected="1" y.down="0" y.downAndSelected="1" y.overAndSelected="0" y.upAndSelected="0" x="0">
+		<s:Rect height="24" id="rect7" includeIn="disabled,disabledAndSelected,downAndSelected" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="0">
+			<s:fill>
+				<s:SolidColor color="#FAFAFA"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Group id="group0" includeIn="disabled,disabledAndSelected,downAndSelected,over,overAndSelected,up,upAndSelected" y="31" x="10">
+	</s:Group>
+	<s:Rect height="5" id="rect14" includeIn="disabled" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="0xFAFAFA"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="2" id="rect2" includeIn="upAndSelected" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor alpha="0.9" color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="4.0" blurY="4.0" color="#333333" distance="4.0" hideObject="false" inner="false" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect17" d:id="3" includeIn="upAndSelected" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="24" id="rect18" includeIn="upAndSelected" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect19" d:id="3" includeIn="upAndSelected" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Group id="group1" d:id="4" includeIn="upAndSelected" flm:knockout="false" x="0" y="1">
+		<s:Rect height="24" id="rect20" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="0">
+			<s:fill>
+				<s:SolidColor color="#FAFAFA"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Rect alpha="0.9" height="2" id="rect3" d:id="3" includeIn="overAndSelected" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="24" id="rect5" includeIn="overAndSelected" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect6" d:id="3" includeIn="overAndSelected" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Group id="group7" d:id="4" includeIn="overAndSelected" flm:knockout="false" x="0" y="1">
+		<s:Rect height="24" id="rect21" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="0">
+			<s:fill>
+				<s:SolidColor color="#FAFAFA"/>
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	<s:Rect height="3" id="rect16" includeIn="disabledAndSelected" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="#FAFAFA"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect15" includeIn="downAndSelected" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="#FAFAFA"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect25" includeIn="overAndSelected" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="#FAFAFA"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect26" includeIn="upAndSelected" width="94" x="0" y="1">
+		<s:fill>
+			<s:SolidColor color="#FAFAFA"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect0" d:id="3" includeIn="up" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect1" d:id="3" includeIn="up" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="21" id="rect24" includeIn="up" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect29" includeIn="up" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect27" d:id="3" includeIn="over" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect30" d:id="3" includeIn="over" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="21" id="rect31" includeIn="over" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect32" includeIn="over" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect9" d:id="3" includeIn="down" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect alpha="0.9" height="2" id="rect10" d:id="3" includeIn="down" width="94" x="0" y="24">
+		<s:fill>
+			<s:SolidColor color="#0F0F0F"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter angle="90" blurX="2" blurY="2" color="#58595B" distance="1" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="21" id="rect12" includeIn="down" radiusX="1.99102" radiusY="1.99102" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="3" id="rect28" includeIn="down" width="94" x="0" y="4">
+		<s:fill>
+			<s:SolidColor color="0xB8B8B8"/>
+		</s:fill>
+	</s:Rect>
+
+	<s:Rect height="4" id="rect22" includeIn="up" width="94" x="0" y="2">
+		<s:fill>
+			<s:LinearGradient rotation="270">
+				<s:GradientEntry alpha="0.55" color="#B8B8B8" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#474747" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="4" id="rect8" includeIn="down" width="94" x="0" y="2">
+		<s:fill>
+			<s:LinearGradient rotation="270">
+				<s:GradientEntry alpha="0.55" color="#B8B8B8" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#474747" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="4" id="rect11" includeIn="over" width="94" x="0" y="2">
+		<s:fill>
+			<s:LinearGradient rotation="270">
+				<s:GradientEntry alpha="0.55" color="#B8B8B8" ratio="0"/>
+				<s:GradientEntry alpha="1.0" color="#474747" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 fontFamily="FlamaBold" 
+			 maxDisplayedLines="1"
+			 horizontalCenter="0"
+			 left="10" right="10" top="5" >
+	</s:Label>
+</s:Skin>

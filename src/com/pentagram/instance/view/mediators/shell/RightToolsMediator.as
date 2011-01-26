@@ -27,19 +27,20 @@ package com.pentagram.instance.view.mediators.shell
 		
 		override public function onRegister():void
 		{	
-			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-			view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
-			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
-			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
-			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
-			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
-			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
-			eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+				view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
+				view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
+				view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
+				view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
+				view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+				view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
+				view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
+				view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
+				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+				view.comparator.categoryHolder.dataProvider = model.regions;
+				
+				eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+				eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+				eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
 			
 		}
 		private function handleImageSaveStart(event:ViewEvent):void {

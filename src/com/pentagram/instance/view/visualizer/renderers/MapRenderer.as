@@ -21,7 +21,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.managers.PopUpManager;
 	
 	import org.cove.ape.CircleParticle;
-	import org.hamcrest.mxml.object.Null;
+	//import org.hamcrest.mxml.object.Null;
 	
 	import spark.components.Group;
 	

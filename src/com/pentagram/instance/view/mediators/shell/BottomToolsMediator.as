@@ -102,7 +102,8 @@ package com.pentagram.instance.view.mediators.shell
 				fs.open(fl,FileMode.WRITE); 
 				fs.writeBytes(imgByteArray);
 				fs.close();
-			}catch(e:Error){	
+			}
+			catch(e:Error){	
 				trace(e.message);
 			}	
 			Shell(view.parentApplication.shellView).savingPanel.visible = true;

@@ -117,6 +117,9 @@ s|DropDownList {
 .darkPanel s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.BlackTextInput');
 }
+.darkPanel s|DropDownList {
+	skinClass: ClassReference("com.pentagram.view.skins.controls.DarkDropDown");
+}
 s|HSlider {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.DarkHSlider');
 }

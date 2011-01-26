@@ -33,6 +33,12 @@
 				ArrayCollection(countryList.dataProvider).refresh();
 			}
 
+
+			protected function logoHolder_nativeDragDropHandler(event:NativeDragEvent):void
+			{
+				trace("TRRRRRRRR");
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -76,7 +82,7 @@
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Image" />
 					<s:Rect width="8" />
-					<s:Group width="{FIELD_WIDTH}" id="logoHolder">
+					<s:Group width="{FIELD_WIDTH}" id="logoHolder" minHeight="75" nativeDragDrop="logoHolder_nativeDragDropHandler(event)">
 						<s:Rect left="0" right="0" top="0" bottom="0">
 							<s:stroke>
 								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
@@ -96,7 +102,7 @@
 								</s:stroke>
 							</s:Rect>
 							<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
-								<s:Button label="Change Image" />
+								<s:Button label="Change Image" id="changeImageBtn" />
 							</s:HGroup>
 						</s:Group>		
 					</s:Group>
