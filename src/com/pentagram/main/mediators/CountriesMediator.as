@@ -4,6 +4,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.main.windows.CountriesWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.MimeType;
+	import com.pentagram.services.interfaces.IService;
 	import com.pentagram.utils.Uploader;
 	
 	import flash.desktop.ClipboardFormats;
@@ -26,6 +27,9 @@ package com.pentagram.main.mediators
 		[Inject]
 		public var model:AppModel;
 		
+		[Inject]
+		public var fileService:IService;
+		
 		override public function onRegister():void {
 			view.countryList.dataProvider = new ArrayCollection(model.countries.source);
 			view.continentList.dataProvider = model.regions;
@@ -34,7 +38,7 @@ package com.pentagram.main.mediators
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 		}
-		private var fileToUpload:File;
+	
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
@@ -61,7 +65,7 @@ package com.pentagram.main.mediators
 			uploader.addEventListener(Event.COMPLETE, uploadCompleteHandler);
 			uploader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
 			uploader.addFile(fileToUpload);       
-			var newURL:String = Constants.UPLOAD_URL + "?directory=/flags/&fileType=images";
+			var newURL:String = Constants.UPLOAD_URL + "?directory=/&fileType=images";
 			uploader.start(newURL);       
 		}
 		private function progressHandler(event:ProgressEvent):void

@@ -68,7 +68,7 @@ package com.pentagram.utils
 			file.addEventListener(SecurityErrorEvent.SECURITY_ERROR, uploadError);
 			file.addEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);	
 			file.addEventListener(IOErrorEvent.IO_ERROR, uploadError);
-			file.upload(urlRequest, "FileData");
+			file.upload(urlRequest, "Filedata");
 		}
 		
 		/*

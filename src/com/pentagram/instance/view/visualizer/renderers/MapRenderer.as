@@ -155,6 +155,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
+					if(sprite.alpha == 1) {
 					if(sprite.parent.x + this.px + radius + tooltip.width > this.tooltipContainer.width) {
 						tooltip.leftTip.visible = false;
 						tooltip.rightTp.visible = true;
@@ -169,6 +170,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					tooltip.visible = true;	
 					tooltip.country = data.country;
 					break;
+					}
 				}
 					
 				case MouseEvent.ROLL_OUT:
@@ -188,7 +190,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				}
 				case MouseEvent.CLICK:
 				{
-					if(!infoVisible) {
+					if(!infoVisible && sprite.alpha == 1) {
 						tooltip.visible = false;
 						info = new RendererInfo();
 						info.country = _data.country;
