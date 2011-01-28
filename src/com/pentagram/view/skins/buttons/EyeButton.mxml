@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:fx="http://ns.adobe.com/mxml/2009" mouseChildren="false"
+		xmlns:d="http://ns.adobe.com/fxg/2008/dt">
 	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>
@@ -11,7 +13,7 @@
 		<s:State name="downAndSelected"/>
 		<s:State name="disabledAndSelected"/>
 	</s:states>
-	<s:Group id="group2" includeIn="disabled,disabledAndSelected,up,over,downAndSelected" x="0" y="0">
+	<s:Group id="group2" includeIn="disabled,disabledAndSelected,up,overAndSelected,downAndSelected" x="0" y="0">
 		<s:Group d:userLabel="eye_dark" x="0" y="0">
 			<s:Path data="M 5.443 0 C 1.089 0.025 0.043 2.202 0 2.296 L 0.911 2.71 C 0.935 2.661 1.338 1.835 2.81 1.349 C 2.415 1.804 2.169 2.371 2.169 2.997 C 2.169 4.467 3.475 5.66 5.084 5.66 C 6.693 5.66 7.999 4.467 7.999 2.997 C 7.999 2.346 7.734 1.759 7.311 1.296 C 9.077 1.872 9.922 3.146 10.208 3.691 C 9.635 4.379 7.716 6.416 5.084 6.416 C 3.449 6.416 2.601 5.987 1.779 5.573 C 1.51 5.437 1.249 5.306 0.979 5.197 L 0.604 6.124 C 0.85 6.223 1.084 6.342 1.329 6.466 C 2.167 6.889 3.211 7.416 5.084 7.416 C 8.757 7.416 11.101 4.187 11.198 4.049 L 11.355 3.83 L 11.258 3.579 C 11.201 3.434 9.834 0.025 5.443 0 Z M 4.124 3.912 C 3.619 3.912 3.207 3.502 3.207 2.997 C 3.207 2.49 3.619 2.081 4.124 2.081 C 4.629 2.081 5.041 2.49 5.041 2.997 C 5.041 3.502 4.629 3.912 4.124 3.912 Z" winding="nonZero" x="0.876" y="2.24">
 				<s:fill>
@@ -25,7 +27,7 @@
 			</s:Path>
 		</s:Group>
 	</s:Group>
-	<s:Group id="group0" includeIn="down,upAndSelected,overAndSelected" x="0" y="0">
+	<s:Group id="group0" includeIn="down,upAndSelected,over" x="0" y="0">
 		<s:Group d:userLabel="eye_light" x="0" y="0">
 			<s:Group x="0" y="0">
 				<s:Path data="M 5.443 0 C 1.089 0.004 0.043 2.201 0 2.296 L 0.911 2.71 C 0.935 2.662 1.336 1.846 2.801 1.359 C 2.411 1.812 2.169 2.375 2.169 2.997 C 2.169 4.467 3.475 5.66 5.084 5.66 C 6.693 5.66 7.999 4.467 7.999 2.997 C 7.999 2.346 7.734 1.759 7.311 1.296 C 9.077 1.872 9.922 3.146 10.208 3.691 C 9.635 4.379 7.716 6.416 5.084 6.416 C 3.449 6.416 2.601 5.987 1.779 5.573 C 1.51 5.437 1.249 5.306 0.979 5.197 L 0.604 6.124 C 0.85 6.223 1.084 6.342 1.329 6.466 C 2.167 6.889 3.211 7.416 5.084 7.416 C 8.757 7.416 11.101 4.187 11.198 4.049 L 11.355 3.83 L 11.258 3.579 C 11.201 3.434 9.834 0.025 5.443 0 Z" winding="nonZero" x="0.876" y="2.24">

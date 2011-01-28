@@ -21,7 +21,7 @@
 			import spark.events.TextOperationEvent;
 
 
-			protected function handlePropChange(event:Event,prop:String):void {
+			private function handlePropChange(event:Event,prop:String):void {
 				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,prop,event.target.text));
 			}
 		]]>

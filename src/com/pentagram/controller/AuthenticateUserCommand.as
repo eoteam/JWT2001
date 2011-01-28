@@ -26,18 +26,9 @@ package com.pentagram.controller
 		}
 		private function handleUserAuthentication(event:ResultEvent):void {	
 			var results:Array = event.token.results as Array;
-			if(results.length > 0) {
+			if(results.length > 0 && Object(results[0]).success) {
 				appModel.user = results[0];
 				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
-				
-				//update last login
-//				var today:Date = new Date();
-//				var params:Object = new Object();
-//				params.lastlogin = Math.round(today.time/1000).toString();
-//				params.action = "updateRecord";
-//				params.tablename = "user";
-//				params.id = appModel.user.id;
-//				this.createService(params,ResponseType.STATUS)
 			}
 			else
 				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGIN_ERROR));

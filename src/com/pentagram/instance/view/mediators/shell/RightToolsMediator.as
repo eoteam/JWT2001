@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.mediators.shell
 {
+	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightTools;
@@ -8,6 +9,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.utils.ViewUtils;
 	
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
@@ -25,6 +27,9 @@ package com.pentagram.instance.view.mediators.shell
 		[Inject]
 		public var model:InstanceModel;
 		
+		[Inject(name="ApplicationEventDispatcher")]
+		public var appEventDispatcher:EventDispatcher; 
+		
 		override public function onRegister():void
 		{	
 				view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
@@ -36,7 +41,9 @@ package com.pentagram.instance.view.mediators.shell
 				view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 				view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-				view.comparator.categoryHolder.dataProvider = model.regions;
+				//view.comparator.categoryHolder.dataProvider = model.regions;
+				
+				view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 				
 				eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 				eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
@@ -72,16 +79,27 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				
 				case "selectRegion":
+					var newDP:ArrayList = new ArrayList();
 					for each(var category:Category in  ArrayList(view.continentList.dataProvider).source) {
-						if(category != item)
+						if(category != item) {
 							category.selected = false;
+							var item2:Category = new Category();
+							item2.name = category.name;
+							item2.color = category.color;
+							item2.enabled = true;
+							item2.selected = false;
+							newDP.addItem(item2);
+						}
 					}
+					
+					view.comparator.categoryHolder.dataProvider = newDP;
 				break;
 				
 				case "removeRegion":
 					adjustSelection();
 				break;
 			}
+			view.comparator.enabled = true;
 		}
 		private function adjustSelection():void {
 			var region:Category;
@@ -174,7 +192,15 @@ package com.pentagram.instance.view.mediators.shell
 				item.selected = true;
 			}
 			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));
+			view.comparator.enabled = false;
+			view.comparator.currentState = "closed";
 		}
-
+		private function handleCompareBtn(event:ViewEvent):void {
+			for each(var item:Category in  ArrayList(view.comparator.categoryHolder.dataProvider).source) {
+				if(item.selected)
+					appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
+			}
+			
+		}
 	}
 }

@@ -59,9 +59,13 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		private function enterFrameHandler(event:Event):void
 		{
-			APEngine.step();
-			APEngine.paint();
-			walls.update(stage.stageWidth, stage.stageHeight);
+			if(stage) {
+				APEngine.step();
+				APEngine.paint();
+				walls.update(stage.stageWidth, stage.stageHeight);
+			}
+			else
+				stop();
 		}                 
 	}
 }

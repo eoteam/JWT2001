@@ -52,10 +52,11 @@
 		<s:VerticalLayout />
 	</s:layout>
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
-		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" />
+		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" click="button1_clickHandler(event)" />
-		<s:Rect width="100%" />
-		<s:Image source="{country.thumb}" skinClass="com.pentagram.view.skins.controls.FlagSkin" />
+		<s:Image source="{country.thumb}" id="flag"  skinClass="com.pentagram.view.skins.controls.FlagSkin"
+		maxHeight="30"  smooth="true" height="30" smoothingQuality="high" scaleMode="stretch"  fillMode="scale"
+		complete="flag.width=flag.sourceWidth*30/flag.sourceHeight"/>
 	</s:HGroup>
 	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer">
 		

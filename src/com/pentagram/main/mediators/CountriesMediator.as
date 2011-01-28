@@ -1,13 +1,19 @@
-package com.pentagram.main.mediators
+	package com.pentagram.main.mediators
 {
+	import com.adobe.serialization.json.JSON;
 	import com.pentagram.controller.Constants;
+	import com.pentagram.events.EditorEvent;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.main.windows.CountriesWindow;
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
-	import com.pentagram.services.interfaces.IService;
+	import com.pentagram.services.StatusResult;
+	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.utils.Uploader;
 	
 	import flash.desktop.ClipboardFormats;
+	import flash.events.DataEvent;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
@@ -16,9 +22,12 @@ package com.pentagram.main.mediators
 	import flash.net.FileFilter;
 	
 	import mx.collections.ArrayCollection;
+	import mx.rpc.events.ResultEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
+	import spark.events.IndexChangeEvent;
+
 	public class CountriesMediator extends Mediator
 	{
 		[Inject]
@@ -26,31 +35,60 @@ package com.pentagram.main.mediators
 		
 		[Inject]
 		public var model:AppModel;
-		
+
 		[Inject]
-		public var fileService:IService;
+		public var appService:IAppService;
+		
+		private var uploader:Uploader;
+		private var currentCountry:Country;
 		
 		override public function onRegister():void {
 			view.countryList.dataProvider = new ArrayCollection(model.countries.source);
+			view.countryList.addEventListener(IndexChangeEvent.CHANGE,handleSelection);
 			view.continentList.dataProvider = model.regions;
-			
+			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSave,false,0,true);
+			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
+			
+			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
+			
+			uploader = new Uploader(Constants.UPLOAD_URL);
+			uploader.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
+			uploader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
+			
+			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_UPDATED,handleCountryUpdated,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_CREATED,handleCountryUpdated,EditorEvent);
 		}
-	
+		private var fileToUpload:File;
+		
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				trace("file:///" + File(files[0]).nativePath); 
 				if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
 					view.logo.source = "file:///" + File(files[0]).nativePath;
+					//var country:Country = view.countryList.selectedItem as Country;
+					currentCountry.modified = true;
+					if(currentCountry.modifiedProps.indexOf("thumb") == -1)
+						currentCountry.modifiedProps.push("thumb");
 					fileToUpload = files[0] as File;
 				}
 				else {
 					
 				}
 			}
+		}
+		private function handlePropChange(event:ViewEvent):void {
+			var prop:String = event.args[1] as String;
+			var value:* = event.args[2];
+			if(currentCountry.modifiedProps.indexOf(prop) == -1) {
+				currentCountry.modifiedProps.push(prop);
+			}
+			currentCountry[prop] = value;
+			currentCountry.modified = true;
+			if(prop == "region" && view.currentState == "add") 
+				view.saveBtn.enabled = true;
 		}
 		private function handleChangeImage(event:MouseEvent):void {
 			fileToUpload = File.desktopDirectory; 
@@ -60,21 +98,41 @@ package com.pentagram.main.mediators
 		private function onFileLoad(event:Event):void {
 			view.logo.source = "file:///" + fileToUpload.nativePath;
 		}
-		private function handleSave(event:MouseEvent):void {
-			var uploader:Uploader = new Uploader();
-			uploader.addEventListener(Event.COMPLETE, uploadCompleteHandler);
-			uploader.addEventListener(ProgressEvent.PROGRESS, progressHandler);
-			uploader.addFile(fileToUpload);       
-			var newURL:String = Constants.UPLOAD_URL + "?directory=/&fileType=images";
-			uploader.start(newURL);       
+
+		private function handleUploadProgress(event:ProgressEvent):void {
+			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal);
 		}
-		private function progressHandler(event:ProgressEvent):void
-		{
-			trace("Progress", event.bytesLoaded, event.bytesTotal);
+		private function handleUploadComplete(event:DataEvent):void {
+			view.uploadView.updateStatus(1);
 		}
-		private function uploadCompleteHandler(event:Event):void
-		{
-			trace("complete");
-		}     
+		private function handleCountryUpdated(event:EditorEvent):void {
+			view.statusModule.updateStatus("Update Completed");
+			fileToUpload = null;
+			if(event.type == EditorEvent.COUNTRY_CREATED)
+				view.countryList.selectedItem = currentCountry;
+		}
+
+		private function handleSave(event:MouseEvent):void {	
+			if(view.currentState == "edit") {
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_COUNTRY,fileToUpload,currentCountry,uploader));
+			}
+			else {
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_COUNTRY,fileToUpload,currentCountry,uploader));
+			}
+		} 
+		private function handleCancel(event:MouseEvent):void {
+			view.currentState = "edit";
+		}
+		private function handleSelection(event:IndexChangeEvent):void {
+			currentCountry = view.countryList.selectedItem;
+			view.country = currentCountry;
+			view.saveBtn.enabled = true;
+		}
+		private function handleAdd(event:MouseEvent):void {
+			view.currentState = "add";
+			view.saveBtn.enabled = false;
+			currentCountry = new Country();
+			view.country = currentCountry;
+		}
 	}
 }

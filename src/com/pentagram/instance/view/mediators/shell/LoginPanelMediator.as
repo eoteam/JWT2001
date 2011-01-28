@@ -34,6 +34,7 @@ package com.pentagram.instance.view.mediators.shell
 			//eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, logout, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGIN_ERROR, handleError, AppEvent);
 			
 			eventMap.mapListener(view.loginBtn, MouseEvent.CLICK,handleLoginClick,MouseEvent,false,0,true);
 			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChanged,StateChangeEvent,false,0,true);
@@ -63,6 +64,9 @@ package com.pentagram.instance.view.mediators.shell
 			if(view.currentState == "loggedin") {
 					eventMap.mapListener(view.logoutBtn,MouseEvent.CLICK,handleLogoutClick,MouseEvent,false,0,true);
 			}	
+		}
+		private function handleError(event:AppEvent):void {
+			view.errorMsg.visible = true; 
 		}
 	}
 }

@@ -9,7 +9,7 @@ package com.pentagram.model.vo
 		public var descriptiom:String;
 		public var thumb:String;
 		public var region:Region;
-
+		//public var width:Number
 		
 		//session info,
 		public var isNew:Boolean = true;

@@ -12,10 +12,7 @@ package com.pentagram.utils
 	
 	public class ViewUtils
 	{
-
-
-		public static function instantiateClass(className:String):*
-		{
+		public static function instantiateClass(className:String):* {
 			var instance:*;
 			
 			try
@@ -44,13 +41,5 @@ package com.pentagram.utils
 		public static function map(value:Number,istart:Number, istop:Number,ostart:Number,ostop:Number):Number {
 			return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
 		}    
-//		public static function normalizeValue(dataset:Dataset,index:int,year:int=0):Number {
-//			if(dataset.type == 1) {
-//				var row:DataRow = dataset.rows.getItemAt(index) as DataRow;
-//				var value:Number;
-//				value = dataset.t
-//			}
-//			else return 0;
-//		}
 	}
 }

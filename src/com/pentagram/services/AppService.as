@@ -54,6 +54,61 @@ package com.pentagram.services
 		public function logOut():void {
 			
 		}
+		public function saveCountry(country:Country):void {
+			var params:Object = new  Object();
+			for each(var prop:String in country.modifiedProps) {
+				if(prop != "region")
+					params[prop] = country[prop];
+				else
+					params.parentid = country.region.id;
+			}
+			params.action = "updateRecord";
+			params.tablename = "content";
+			params.id = country.id;
+			var d:Date = new Date();
+			params.modifiedby = appModel.user.id;
+			params.modifieddate = Math.floor(d.time / 1000);
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function addFileToDatabase(file:Object,path:String):void{
+			var params:Object = new  Object();
+			params.action = "insertRecord";
+			params.tablename = 'media';
+			params.name = file.name;
+			params.path = path;
+			params.extension = file.extension;
+			params.size = file.size;
+			params.width = file.width;
+			params.height = file.height;
+			params.mimetypeid = 1;
+			params.createdby = params.modifiedby = appModel.user.id;
+			var d:Date = new Date();
+			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function addFileToContent(contentid:int,mediaid:int):void {
+			var params:Object = new  Object();
+			params.action = "insertRecord";
+			params.tablename = 'content_media';
+			params.contentid = contentid;
+			params.mediaid = mediaid;
+			params.statusid = 4;
+			this.createService(params,ResponseType.STATUS);			
+		}
+		public function createCountry(country:Country):void {
+			var params:Object = new  Object();
+			params.action = "insertRecord";
+			params.tablename = 'content';
+			params.name = country.name;
+			params.shortname = country.shortname;
+			params.parentid = country.region.id;
+			params.templateid = 4;
+			params.migtitle = country.name;
+			params.createdby = params.modifiedby = appModel.user.id;
+			var d:Date = new Date();
+			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
+			this.createService(params,ResponseType.STATUS);
+		}
 		
 	}
 }

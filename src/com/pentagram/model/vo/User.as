@@ -10,7 +10,8 @@ package com.pentagram.model.vo
 		public var lastname:String;
 		public var password:String;
 		public var lastlogin:Number;
-				
+		public var success:Boolean = true;
+		
 		public function toString():String {
 			return firstname+" " +lastname;
 		}

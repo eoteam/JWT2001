@@ -119,7 +119,7 @@
 			</s:Rect>	
 		</s:Group>
 		
-		<s:List borderVisible="false"  id="continentList"  change="handleChange(event)"  allowMultipleSelection="true" itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer"  contentBackgroundAlpha="0">
+		<s:List borderVisible="false"  id="continentList"  change="handleChange(event)"  allowMultipleSelection="false" itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer"  contentBackgroundAlpha="0">
 			<s:layout>
 				<s:VerticalLayout paddingLeft="4" gap="0" />
 			</s:layout>
@@ -131,7 +131,7 @@
 			</s:fill>
 		</s:Rect>
 		
-		<shell:CategoriesComparator width="100%"  id="comparator"/>
+		<shell:CategoriesComparator width="100%"  id="comparator" enabled="false"/>
 		
 		<s:Rect width="100%" height="4">
 			<s:fill>

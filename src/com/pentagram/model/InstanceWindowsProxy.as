@@ -45,6 +45,7 @@ package com.pentagram.model
 		public const CLIENT_WINDOW:String = "clientWindow";
 		public const COUNTRIES_WINDOW:String = "countriesWindow";
 		public const USERS_WINDOW:String = "userWindow";
+		public const UPLOADER_WINDOW:String = "uploaderWindow";
 		
 		public function InstanceWindowsProxy()
 		{
@@ -329,6 +330,10 @@ package com.pentagram.model
 			users.addEventListener(Event.SELECT,handleUsers);
 			users.enabled = false;
 			
+			var uploader:NativeMenuItem = new NativeMenuItem("Uploader");
+			uploader.addEventListener(Event.SELECT,handleUploader);
+			//uploader.enabled = false;
+			
 			//Item within Window Menu
 			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
 			newWindow.keyEquivalent = "n";
@@ -393,6 +398,7 @@ package com.pentagram.model
 			managers.addItem(clients);
 			managers.addItem(countries);
 			managers.addItem(users);
+			managers.addItem(uploader);
 			
 			
 			
@@ -434,6 +440,8 @@ package com.pentagram.model
 		private function handleUsers(event:Event):void {
 			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW));
 		}
-									 
+		private function handleUploader(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW));
+		}					 
 	}
 }

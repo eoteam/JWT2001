@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:windows="com.pentagram.main.windows.*"
+					minWidth="800" minHeight="600"
+					creationComplete="currentState = 'browse'" xmlns:layouts="com.pentagram.view.layouts.*">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.managers.PopUpManagerChildList;
+			
+			private var fileBrowser:FileReferenceList;
+			public var selectedFiles:Array;
+			
+			[Bindable] public var uploadProgress:Number;
+			
+			private function browseFiles():void {			
+				fileBrowser = new FileReferenceList();
+				fileBrowser.addEventListener(Event.CANCEL, cancelHandler);
+				fileBrowser.addEventListener(Event.SELECT, selectHandler);	
+				fileBrowser.browse([new FileFilter("Files (*.*)", "*.*")]);	
+			}
+			private function cancelHandler(event:Event):void  {
+				currentState = "browse";
+			} 
+			private function selectHandler(event:Event):void {
+				selectedFiles = fileBrowser.fileList;
+				currentState = "upload";
+			}
+			private function addYoutubeVideo():void {
+				//var ui:AddYoutubeView = PopUpManager.createPopUp(this,AddYoutubeView,false,PopUpManagerChildList.POPUP) as AddYoutubeView;
+				//PopUpManager.centerPopUp(ui);
+			}
+		]]>
+	</fx:Script>
+	<windows:states>
+		<s:State name="browse" />
+		<s:State name="upload" basedOn="browse" />
+		<s:State name="uploading"/>
+	</windows:states>
+	
+	
+	<s:Group width="100%" id="buttonHolder">
+		<s:layout>
+			<layouts:FlowLayout gap="4" id="flowLayout"/>
+		</s:layout>
+			
+		<s:Button  label="Choose File(s)" id="browseBtn" click="browseFiles()" enabled.uploading="false"/>
+		<s:Button  label="Upload File(s)" id="uploadBtn" 
+				  visible.uploading="true" visible.upload="true" visible.browse="false"
+				  enabled.upload="true" enabled.uploading="false"  enabled.browse="true"/>				
+		<s:Button  label="Cancel" id="stopBtn"
+				  visible.uploading="true" visible.upload="true" visible.browse="false"
+				  enabled.upload="true" enabled.uploading="false"  enabled.browse="true"/>
+	</s:Group>
+	
+	<s:Rect height="{flowLayout.runningHeight}" />
+	
+	<s:Group id="progressBar" width="100%" height="2" alpha="0" hideEffect="fadeOut" showEffect="fadeIn" visible.browse="false" visible.uploading="true">
+		<s:Rect id="bg" width="100%" height="1">
+			<s:fill>
+				<s:SolidColor color="0x000000" />
+			</s:fill>
+		</s:Rect>			
+		<s:Rect id="progressCanvas" width="{uploadProgress*bg.width}" height="18">
+			<s:fill>
+				<s:SolidColor color="0x1a1a1a" />
+			</s:fill>
+		</s:Rect>
+	</s:Group>
+	
+	<s:HGroup verticalAlign="middle" visible.browse="false" visible.uploading="true" alpha="0" hideEffect="fadeOut" showEffect="fadeIn">
+		<s:Label  id="progressText1" height="20" />	
+		<s:Label  id="progressText2" height="20" />			
+	</s:HGroup>
+	<s:TextArea alpha="0" width="100%" height="100%" color="0x1a1a1a" 
+				borderVisible="false" hideEffect="fadeOut" showEffect="fadeIn" 
+				id="completedFilesList" visible.browse="false" visible.uploading="true" />
+	
+	<fx:Declarations>
+		<s:Fade alphaFrom="0" alphaTo="1" id="fadeIn"/>			
+		<s:Fade alphaFrom="1" alphaTo="0" id="fadeOut"/>		
+	</fx:Declarations>
+	
+</windows:BaseWindow>

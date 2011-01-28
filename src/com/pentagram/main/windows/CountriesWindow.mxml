@@ -5,16 +5,17 @@
 					xmlns:windows="com.pentagram.main.windows.*"
 					xmlns:editor="com.pentagram.instance.view.editor.*"
 					xmlns:controls="com.pentagram.view.controls.*"
-					minWidth="800" minHeight="600">
+					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.main.event.ViewEvent;
 			import com.pentagram.model.vo.Country;
 			
 			import mx.collections.ArrayCollection;
 			
 			import spark.events.TextOperationEvent;
 
-			protected function textinput1_changeHandler(event:TextOperationEvent):void
+			private function textinput1_changeHandler(event:TextOperationEvent):void
 			{
 				if(searchInput.text != '') 
 					ArrayCollection(countryList.dataProvider).filterFunction = filterCountries; 
@@ -23,37 +24,47 @@
 				ArrayCollection(countryList.dataProvider).refresh();
 			}
 			private function filterCountries(item:Country):Boolean {
-				return item.name.indexOf(searchInput.text) > -1;
+				return item.name.toLowerCase().indexOf(searchInput.text.toLowerCase()) > -1;
 			}
 
 
-			protected function searchInput_clearHandler(event:Event):void
+			private function searchInput_clearHandler(event:Event):void
 			{
 				ArrayCollection(countryList.dataProvider).filterFunction = null; 
 				ArrayCollection(countryList.dataProvider).refresh();
 			}
 
 
-			protected function logoHolder_nativeDragDropHandler(event:NativeDragEvent):void
+			private function logoHolder_nativeDragDropHandler(event:NativeDragEvent):void
 			{
 				trace("TRRRRRRRR");
+			}
+			private function handlePropChange(event:Event,prop:String,tprop:String):void {
+				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,country,prop,event.target[tprop]));
 			}
 
 		]]>
 	</fx:Script>
-	
 	<fx:Declarations>
 		<fx:int id="LABEL_WIDTH">90</fx:int>
 		<fx:int id="FIELD_WIDTH">400</fx:int>
-		
+		<vo:Country id="country" />
 	</fx:Declarations>
+	<windows:states>
+		<s:State name="edit" />
+		<s:State name="add" />
+	</windows:states>
 	<mx:HDividedBox width="100%" height="100%" paddingRight="12"  paddingLeft="12" paddingTop="8" paddingBottom="8">
 		<s:VGroup width="30%" height="100%">
 			<controls:SuperTextInput width="100%"  id="searchInput" prompt="Filter" 
 			change="textinput1_changeHandler(event)"  clear="searchInput_clearHandler(event)"
 			skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />
 			<controls:MiGList width="100%" height="100%"  id="countryList" labelField="name" sortField="name" headerText="Countries"
-			skinClass="com.pentagram.view.skins.controls.MiGListSkin"/>	
+			skinClass="com.pentagram.view.skins.controls.MiGListSkin"	 keyboardLookUp="true" selectedIndex.add="-1"/>	
+			<s:HGroup width="100%" gap="0">
+				<s:Button width="100%" label="+ Add Country" id="addButton" />
+				<s:Button width="100%" label="- Delete" id="deleteListBtn" />
+			</s:HGroup>
 		</s:VGroup>
 		
 		<s:Group width="100%" height="100%">
@@ -66,29 +77,29 @@
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{countryList.selectedItem.name}"/>
+					<s:TextInput width="{FIELD_WIDTH}" text="{country.name}" change="handlePropChange(event,'name','text')"/>
 				</s:HGroup>
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Short Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{countryList.selectedItem.shortname}"/>
+					<s:TextInput width="{FIELD_WIDTH}" text="{country.shortname}" change="handlePropChange(event,'shortname','text')"/>
 				</s:HGroup>
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Region" />
 					<s:Rect width="8" />
-					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Select a Region" selectedItem="{countryList.selectedItem.region}" />
+					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Select a Region" selectedItem="{country.region}" change="handlePropChange(event,'region','selectedItem')" />
 				</s:HGroup>
 				
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Image" />
 					<s:Rect width="8" />
-					<s:Group width="{FIELD_WIDTH}" id="logoHolder" minHeight="75" nativeDragDrop="logoHolder_nativeDragDropHandler(event)">
+					<s:Group width="{FIELD_WIDTH}" id="logoHolder" nativeDragDrop="logoHolder_nativeDragDropHandler(event)">
 						<s:Rect left="0" right="0" top="0" bottom="0">
 							<s:stroke>
 								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 							</s:stroke>
 						</s:Rect>
-						<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{countryList.selectedItem.thumb}" />
+						<s:Image id="logo"  top="30" left="1" right="1" bottom="1" scaleMode="letterbox" source="{country.thumb}" />
 						<s:Group left="1" right="1" top="1" height="30">
 							<s:Rect left="0" right="0" top="0" bottom="0">
 								<s:fill>
@@ -115,8 +126,11 @@
 			</s:Rect>
 			<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
 				<s:Button label="Save Changes" id="saveBtn" />
-				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
-				<editor:StatusModule id="statusModule" width="100%" />
+				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" visible="false" visible.add="true" />
+				<s:Group width="100%">
+					<editor:StatusModule id="statusModule" width="100%" />
+					<editor:UploadView id="uploadView" width="100%" />
+				</s:Group>
 				<s:Button label="- Delete Country" color="0xC61023" id="deleteBtn" />
 			</s:HGroup>	
 		</s:Group>
