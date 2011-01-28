@@ -29,6 +29,7 @@ package com.pentagram.controller
 				window = windowProxy.createWindow();
 				//mediatorMap.createMediator(window);
 			}
+			window.compareArgs = event.args;
 			window.appEventDispatcher = FlexGlobals.topLevelApplication.applicationEventDispatcher;
 			window.open();
 			window.orderToFront();

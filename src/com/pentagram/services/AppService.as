@@ -1,6 +1,7 @@
 package com.pentagram.services
 {
 	import com.pentagram.model.AppModel;
+	import com.pentagram.model.vo.BaseVO;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Region;
@@ -107,6 +108,13 @@ package com.pentagram.services
 			params.createdby = params.modifiedby = appModel.user.id;
 			var d:Date = new Date();
 			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function deleteVO(vo:BaseVO):void { //country,client,user
+			var params:Object = new  Object();
+			params.action = "deleteRecord";
+			params.tablename = 'content';
+			params.id = vo.id;
 			this.createService(params,ResponseType.STATUS);
 		}
 		

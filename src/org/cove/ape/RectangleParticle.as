@@ -56,7 +56,7 @@ package org.cove.ape {
 		 * changed.
 		 * </p>
 		 */
-		public function RectangleParticle (
+		public function RectangleParticle (engine:APEngine,
 				x:Number, 
 				y:Number, 
 				width:Number, 
@@ -68,7 +68,7 @@ package org.cove.ape {
 				friction:Number = 0) {
 			
 			super(x, y, fixed, mass, elasticity, friction);
-			
+			this.engine = engine;
 			_extents = new Array(width/2, height/2);
 			_axes = new Array(new APEVector(0,0), new APEVector(0,0));
 			radian = rotation;

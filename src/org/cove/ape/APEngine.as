@@ -40,20 +40,20 @@ package org.cove.ape {
 	 * The main engine class. 
 	 * 
 	 */
-	public final class APEngine {
+	public class APEngine {
 		
 		/**@private */
-		internal static var forces:Array;
+		internal  var forces:Array;
 			
-		private static var groups:Array;
-		private static var numGroups:int;
-		private static var timeStep:Number;
+		private  var groups:Array;
+		private  var numGroups:int;
+		private  var timeStep:Number;
 		
-		private static var _damping:Number;
-		private static var _container:DisplayObjectContainer;
-		
-		private static var _constraintCycles:int;
-		private static var _constraintCollisionCycles:int;
+		private  var _damping:Number;
+		private  var _container:DisplayObjectContainer;
+	
+		private  var _constraintCycles:int;
+		private  var _constraintCollisionCycles:int;
 		
 	
 		/**
@@ -68,7 +68,7 @@ package org.cove.ape {
 		 * forces added to particles. If you do not add any forces, the <code>dt</code> 
 		 * value won't matter.
 		 */
-		public static function init(dt:Number = 0.25):void {
+		public  function init(dt:Number = 0.25):void {
 			timeStep = dt * dt;
 			
 			numGroups = 0;
@@ -93,7 +93,7 @@ package org.cove.ape {
 		 * 
 		 * @param d The damping value. Values should be >=0 and <=1.
 		 */
-		public static function get damping():Number {
+		public  function get damping():Number {
 			return _damping;
 		}
 		
@@ -101,7 +101,7 @@ package org.cove.ape {
 		/**
 		 * @private
 		 */
-		public static function set damping(d:Number):void {
+		public  function set damping(d:Number):void {
 			_damping = d;
 		}
 
@@ -124,7 +124,7 @@ package org.cove.ape {
 		 * </p>
 		 * 
 		 */
-		public static function get constraintCycles():int {
+		public  function get constraintCycles():int {
 			return _constraintCycles;
 		}
 		
@@ -132,7 +132,7 @@ package org.cove.ape {
 		/**
 		 * @private
 		 */
-		public static function set constraintCycles(numCycles:int):void {
+		public  function set constraintCycles(numCycles:int):void {
 			_constraintCycles = numCycles;
 		}	
 		
@@ -151,7 +151,7 @@ package org.cove.ape {
 		 * as opposed to just the constraints. The default value is 1.
 		 * </p>
 		 */
-		public static function get constraintCollisionCycles():int {
+		public  function get constraintCollisionCycles():int {
 			return _constraintCollisionCycles;
 		}
 		
@@ -159,7 +159,7 @@ package org.cove.ape {
 		/**
 		 * @private
 		 */
-		public static function set constraintCollisionCycles(numCycles:int):void {
+		public  function set constraintCollisionCycles(numCycles:int):void {
 			_constraintCollisionCycles = numCycles;
 		}			
 		
@@ -172,7 +172,7 @@ package org.cove.ape {
 		 * @param s An instance of the Sprite class that will be used as the default 
 		 * container.
 		 */
-		public static function get container():DisplayObjectContainer {
+		public  function get container():DisplayObjectContainer {
 			return _container;
 		}
 			
@@ -180,7 +180,7 @@ package org.cove.ape {
 		/**
 		 * @private
 		 */
-		public static function set container(d:DisplayObjectContainer):void {
+		public  function set container(d:DisplayObjectContainer):void {
 			_container = d;
 		}
 		
@@ -192,7 +192,7 @@ package org.cove.ape {
 		 * 
 		 * @param f A IForce object
 		 */ 
-		public static function addForce(f:IForce):void {
+		public  function addForce(f:IForce):void {
 			forces.push(f);
 		}
 		
@@ -200,7 +200,7 @@ package org.cove.ape {
 		/**
 		 * Removes a force from the engine.
 		 */
-		public static function removeForce(f:IForce):void {
+		public  function removeForce(f:IForce):void {
 			var fpos:int = forces.indexOf(f);
 			if (fpos == -1) return;
 			forces.splice(fpos, 1);
@@ -210,7 +210,7 @@ package org.cove.ape {
 		/**
 		 * Removes all forces from the engine.
 		 */
-		public static function removeAllForce():void {
+		public  function removeAllForce():void {
 			forces = new Array();
 		}			
 		
@@ -218,7 +218,7 @@ package org.cove.ape {
 		/**
 		 * Adds a Group to the engine.
 		 */
-		public static function addGroup(g:APEGroup):void {
+		public  function addGroup(g:APEGroup):void {
 			groups.push(g);
 			g.isParented = true;
 			numGroups++;
@@ -229,7 +229,7 @@ package org.cove.ape {
 		/**
 		 * Removes a Group from the engine.
 		 */
-		public static function removeGroup(g:APEGroup):void {
+		public  function removeGroup(g:APEGroup):void {
 			
 			var gpos:int = groups.indexOf(g);
 			if (gpos == -1) return;
@@ -247,7 +247,7 @@ package org.cove.ape {
 		 * called, the faster the simulation will run. Usually you would call
 		 * this in your main program loop. 
 		 */			
-		public static function step():void {
+		public  function step():void {
 			integrate();
 			for (var j:int = 0; j < _constraintCycles; j++) {
 				satisfyConstraints();
@@ -264,7 +264,7 @@ package org.cove.ape {
 		 * Generally you would call this method after stepping the engine in
 		 * the main program cycle.
 		 */			
-		public static function paint():void {
+		public  function paint():void {
 			for (var j:int = 0; j < numGroups; j++) {
 				var g:APEGroup = groups[j];
 
@@ -273,7 +273,7 @@ package org.cove.ape {
 		}
 				
 
-		private static function integrate():void {	
+		private  function integrate():void {	
 			for (var j:int = 0; j < numGroups; j++) {
 				var g:APEGroup = groups[j];
 				g.integrate(timeStep);
@@ -281,7 +281,7 @@ package org.cove.ape {
 		}
 	
 		
-		private static function satisfyConstraints():void {
+		private  function satisfyConstraints():void {
 			for (var j:int = 0; j < numGroups; j++) {
 				var g:APEGroup = groups[j];
 				g.satisfyConstraints();
@@ -289,7 +289,7 @@ package org.cove.ape {
 		}
 
 
-		private static function checkCollisions():void {
+		private  function checkCollisions():void {
 			for (var j:int = 0; j < numGroups; j++) {
 				var g:APEGroup = groups[j];
 				g.checkCollisions();

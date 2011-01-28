@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.visualizer.views
 {
 	import org.cove.ape.APEGroup;
+	import org.cove.ape.APEngine;
 	import org.cove.ape.RectangleParticle;
 	
 	public class Walls extends APEGroup
@@ -10,25 +11,26 @@ package com.pentagram.instance.view.visualizer.views
 		public var l:RectangleParticle;
 		public var r:RectangleParticle;
 		
-		public function Walls(bw:Number, bh:Number)
+		public function Walls(engine:APEngine,bw:Number, bh:Number)
 		{
 			// top
-			t= new RectangleParticle(bw/2, 0, bw, 10, 0, true,100);
+			super(engine);
+			t= new RectangleParticle(engine,bw/2, 0, bw, 10, 0, true,100);
 			t.alwaysRepaint = true;
 			addParticle(t);
 			
 			// this is the bottom
-			b = new RectangleParticle(bw/2, bh, bw, 100, 0, true,100);
+			b = new RectangleParticle(engine,bw/2, bh, bw, 100, 0, true,100);
 			b.alwaysRepaint = true;
 			addParticle(b);
 			
 			// left
-			l = new RectangleParticle(0, bh / 2, 10, bh, 0, true,100);
+			l = new RectangleParticle(engine,0, bh / 2, 10, bh, 0, true,100);
 			l.alwaysRepaint = true;
 			addParticle(l);  
 			
 			// right
-			r = new RectangleParticle(bw, bh / 2, 10, bh, 0, true,100);
+			r = new RectangleParticle(engine,bw, bh / 2, 10, bh, 0, true,100);
 			r.alwaysRepaint = true;
 			addParticle(r);
 			

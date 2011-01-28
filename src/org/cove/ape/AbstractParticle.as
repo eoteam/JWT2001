@@ -30,8 +30,8 @@ TODO:
 
 package org.cove.ape {
 	
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 
 	 	
@@ -81,11 +81,11 @@ package org.cove.ape {
 				mass:Number, 
 				elasticity:Number,
 				friction:Number) {
-			
+
 			if (getQualifiedClassName(this) == "org.cove.ape::AbstractParticle") {
 				throw new ArgumentError("AbstractParticle can't be instantiated directly");
 			}
-			
+			this.engine = engine;
 			interval = new Interval(0,0);
 			
 			curr = new APEVector(x,y);
@@ -411,7 +411,7 @@ package org.cove.ape {
 	
 			temp.copy(curr);			
 			var nv:APEVector = velocity.plus(forces.multEquals(dt2));
-			curr.plusEquals(nv.multEquals(APEngine.damping));
+			curr.plusEquals(nv.multEquals(engine.damping));
 			prev.copy(temp);
 
 			clearForces();
@@ -507,7 +507,7 @@ package org.cove.ape {
 				forces.plusEquals(f.getValue(_invMass));
 			}
 			
-			var globalForces:Array = APEngine.forces;
+			var globalForces:Array = engine.forces;
 			len = globalForces.length;
 			for (i = 0; i < len; i++) {
 				f = globalForces[i];

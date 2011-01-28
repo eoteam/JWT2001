@@ -47,6 +47,7 @@
 			view.countryList.addEventListener(IndexChangeEvent.CHANGE,handleSelection);
 			view.continentList.dataProvider = model.regions;
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
+			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSave,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
@@ -60,6 +61,7 @@
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_UPDATED,handleCountryUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_CREATED,handleCountryUpdated,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_DELETED,handleCountryDeleted,EditorEvent);
 		}
 		private var fileToUpload:File;
 		
@@ -108,10 +110,24 @@
 		private function handleCountryUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Update Completed");
 			fileToUpload = null;
-			if(event.type == EditorEvent.COUNTRY_CREATED)
+			if(event.type == EditorEvent.COUNTRY_CREATED) {
 				view.countryList.selectedItem = currentCountry;
+				ArrayCollection(view.countryList.dataProvider).filterFunction = null;
+				ArrayCollection(view.countryList.dataProvider).refresh(); 
+			}
 		}
-
+		private function handleCountryDeleted(event:EditorEvent):void {
+			view.statusModule.updateStatus("Update Completed");
+			if(ArrayCollection(view.countryList.dataProvider).length == 0) {
+				ArrayCollection(view.countryList.dataProvider).filterFunction = null;
+			}
+			ArrayCollection(view.countryList.dataProvider).refresh();
+			view.countryList.selectedIndex = 0;
+			currentCountry = view.countryList.selectedItem;
+			view.country = currentCountry;
+			view.saveBtn.enabled = true;
+			view.currentState = "edit";
+		}
 		private function handleSave(event:MouseEvent):void {	
 			if(view.currentState == "edit") {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_COUNTRY,fileToUpload,currentCountry,uploader));
@@ -127,12 +143,17 @@
 			currentCountry = view.countryList.selectedItem;
 			view.country = currentCountry;
 			view.saveBtn.enabled = true;
+			view.currentState = "edit";
 		}
 		private function handleAdd(event:MouseEvent):void {
 			view.currentState = "add";
 			view.saveBtn.enabled = false;
 			currentCountry = new Country();
 			view.country = currentCountry;
+		}
+		private function handleDelete(event:MouseEvent):void {
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_COUNTRY,currentCountry));
+			
 		}
 	}
 }

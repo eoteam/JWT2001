@@ -287,6 +287,9 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					view.tools.yearSlider.dataProvider = years;
 				}
+				if(model.isCompare) {
+					
+				}
 			}
 		}
 		private function handleClusterLoaded(event:Event):void {

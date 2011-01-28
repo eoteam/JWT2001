@@ -360,7 +360,7 @@
 				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
 				for each(var country:Country in _client.countries.source) {
-					var c:MapRenderer = new MapRenderer(this);
+					var c:MapRenderer = new MapRenderer(holder.engine,this);
 					c.id = country.shortname;						
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;

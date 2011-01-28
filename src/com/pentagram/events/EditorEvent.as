@@ -30,6 +30,8 @@ package com.pentagram.events
 		public static const COUNTRY_UPDATED:String = "countryUpdated";
 		public static const CREATE_COUNTRY:String = "createCountry";
 		public static const COUNTRY_CREATED:String = "countryCreated";
+		public static const DELETE_COUNTRY:String = "deleteCountry";
+		public static const COUNTRY_DELETED:String = "countryDeleted";
 		
 		public var args:Array;
 		public function EditorEvent(type:String,...args)

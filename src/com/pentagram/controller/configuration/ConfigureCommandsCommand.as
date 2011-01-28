@@ -5,6 +5,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.CreateCountryCommand;
 	import com.pentagram.controller.CreateInstanceWindowCommand;
 	import com.pentagram.controller.CreateWindowCommand;
+	import com.pentagram.controller.DeleteCountryCommand;
 	import com.pentagram.controller.InitInstanceCommand;
 	import com.pentagram.controller.RemoveInstanceWindowCommand;
 	import com.pentagram.controller.RemoveWindowCommand;
@@ -33,6 +34,7 @@ package com.pentagram.controller.configuration
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.UPDATE_COUNTRY,UpdateCountryCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.CREATE_COUNTRY,CreateCountryCommand,EditorEvent);
+			commandMap.mapEvent(EditorEvent.DELETE_COUNTRY,DeleteCountryCommand,EditorEvent);
 			
 			//instance commands
 			commandMap.mapEvent(InstanceWindowEvent.INIT_INSTANCE, InitInstanceCommand , InstanceWindowEvent );

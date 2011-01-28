@@ -25,8 +25,8 @@ TODO:
 
 package org.cove.ape {
 	
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	/**
@@ -48,6 +48,7 @@ package org.cove.ape {
 			if (getQualifiedClassName(this) == "org.cove.ape::AbstractConstraint") {
 				throw new ArgumentError("AbstractConstraint can't be instantiated directly");
 			}
+			
 			this.stiffness = stiffness;
 			setStyle();
 		}

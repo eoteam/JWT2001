@@ -21,7 +21,7 @@
     </application>
   </applications>
   <modules>
-    <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/MapView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/MapView.mxml"/>
+    <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/MapView.swf" optimize="false" sourcePath="src/com/pentagram/instance/view/visualizer/MapView.mxml"/>
     <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/ClusterView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/ClusterView.mxml"/>
     <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/GraphView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/GraphView.mxml"/>
   </modules>

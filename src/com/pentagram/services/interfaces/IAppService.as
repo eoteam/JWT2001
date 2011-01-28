@@ -1,5 +1,6 @@
 package com.pentagram.services.interfaces
 {
+	import com.pentagram.model.vo.BaseVO;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
@@ -24,10 +25,11 @@ package com.pentagram.services.interfaces
 		
 		function createCountry(country:Country):void;
 		
+		function deleteVO(vo:BaseVO):void;
+		
 		function addFileToDatabase(file:Object,path:String):void;
 		
 		function addFileToContent(contentid:int,mediaid:int):void;
-		
 		
 	}
 }

@@ -20,8 +20,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.graphics.Stroke;
 	import mx.managers.PopUpManager;
 	
+	import org.cove.ape.APEngine;
 	import org.cove.ape.CircleParticle;
-	//import org.hamcrest.mxml.object.Null;
 	
 	import spark.components.Group;
 	
@@ -47,10 +47,10 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function set data(d:DataRow):void { _data = d;fillColor=d.country.region.color }	
 		
 		
-		public function MapRenderer(parent:Group,radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
+		public function MapRenderer(engine:APEngine,parent:Group,radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
 		{
 			
-			super(0, 0, radius, fixed, mass, elasticity, friction);
+			super(engine,0, 0, radius, fixed, mass, elasticity, friction);
 			this.collidable = true;
 			this.alwaysRepaint = true;
 			this.tooltipContainer = parent;

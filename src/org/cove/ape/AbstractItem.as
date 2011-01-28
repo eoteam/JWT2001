@@ -55,6 +55,8 @@ package org.cove.ape {
 		/** @private */
 		internal var displayObjectRotation:Number;
 		
+		protected var engine:APEngine;
+		
 		
 		public function AbstractItem() {
 			_solid = true;
@@ -200,12 +202,12 @@ package org.cove.ape {
 			
 			if (_sprite != null) return _sprite;
 			
-			if (APEngine.container == null) {
+			if (engine.container == null) {
 				throw new Error("The container property of the APEngine class has not been set");
 			}
 			
 			_sprite = new Sprite();
-			APEngine.container.addChild(_sprite);
+			engine.container.addChild(_sprite);
 			return _sprite;
 		}	
 				

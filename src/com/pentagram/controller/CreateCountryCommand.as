@@ -74,6 +74,8 @@ package com.pentagram.controller
 					uploader.upload(fileToUpload,"/flags/");
 					total++;
 				}
+				else
+					checkCount();
 			}			
 		}
 		private function checkCount():void {

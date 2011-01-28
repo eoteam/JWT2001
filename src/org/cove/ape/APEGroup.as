@@ -49,10 +49,11 @@ package org.cove.ape {
 		 * added to the APEngine. Groups may contain particles, constraints, and 
 		 * composites. Composites may only contain particles and constraints.
 		 */
-		public function APEGroup(collideInternal:Boolean = false) {
+		public function APEGroup(engine:APEngine,collideInternal:Boolean = false) {
 			_composites = new Array();
 			_collisionList = new Array();
 			this.collideInternal = collideInternal;
+			this.engine = engine;
 		}
 		
 		

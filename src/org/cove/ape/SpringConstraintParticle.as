@@ -41,8 +41,8 @@ TODO:
 
 package org.cove.ape {
 	
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	
 	internal class SpringConstraintParticle extends RectangleParticle {
 		
@@ -63,7 +63,7 @@ package org.cove.ape {
 		private var _rectHeight:Number;
 		private var _fixedEndLimit:Number;
 				
-		public function SpringConstraintParticle(
+		public function SpringConstraintParticle(engine:APEngine,
 				p1:AbstractParticle, 
 				p2:AbstractParticle, 
 				p:SpringConstraint, 
@@ -71,7 +71,7 @@ package org.cove.ape {
 				rectScale:Number,
 				scaleToLength:Boolean) {
 			
-			super(0,0,0,0,0,false);
+			super(engine,0,0,0,0,0,false);
 			
 			this.p1 = p1;
 			this.p2 = p2;

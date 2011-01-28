@@ -198,7 +198,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleCompareBtn(event:ViewEvent):void {
 			for each(var item:Category in  ArrayList(view.comparator.categoryHolder.dataProvider).source) {
 				if(item.selected)
-					appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
+					appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,model.selectedSet,item));
 			}
 			
 		}

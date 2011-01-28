@@ -126,7 +126,7 @@
 			</s:Rect>
 			<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
 				<s:Button label="Save Changes" id="saveBtn" />
-				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" visible="false" visible.add="true" />
+				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" visible="false" visible.add="true" includeInLayout="false" includeInLayout.add="true" />
 				<s:Group width="100%">
 					<editor:StatusModule id="statusModule" width="100%" />
 					<editor:UploadView id="uploadView" width="100%" />

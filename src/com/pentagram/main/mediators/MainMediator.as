@@ -1,15 +1,21 @@
 package com.pentagram.main.mediators
 {
+	import com.adobe.serialization.json.JSON;
+	import com.darronschall.serialization.ObjectTranslator;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.OpenWindowsProxy;
+	import com.pentagram.model.vo.User;
 	
 	import flash.desktop.NativeApplication;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	import flash.system.System;
 	import flash.utils.Timer;
 	
@@ -42,6 +48,19 @@ package com.pentagram.main.mediators
 			// Manually close all open Windows when app closes.
 			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
 			view.addEventListener("networkOn",handleNetworkOn);
+			
+			
+			var file:File = File.applicationStorageDirectory;
+			file = file.resolvePath("Preferences/user.txt");
+			if(file.exists) {
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.READ);
+				var userInfo:String = stream.readUTFBytes(stream.bytesAvailable);
+				stream.close();
+				appModel.user = ObjectTranslator.objectToInstance(JSON.decode(userInfo),User);
+				appModel.user.persisted = true;
+				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
+			}
 		}
 		private function handleNetworkOn(event:Event):void {
 			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
@@ -55,8 +74,16 @@ package com.pentagram.main.mediators
 		}
 		// Handle Menu item selection
 		private function handleLogin(event:AppEvent):void {
-			instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled =
-				instanceWindowModel.countriesMenuItem.enabled = true;
+			instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled = instanceWindowModel.countriesMenuItem.enabled = true;
+			if(!appModel.user.persisted) {
+				var userJson:String = event.args[1] as String;
+				var file:File = File.applicationStorageDirectory;
+				file = file.resolvePath("Preferences/user.txt");
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.WRITE);
+				stream.writeUTFBytes(userJson.substr(1,userJson.length-2));
+				stream.close();
+			}
 		}
 
 		// Called when application window closes

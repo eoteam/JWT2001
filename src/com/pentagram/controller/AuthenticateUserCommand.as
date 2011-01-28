@@ -21,14 +21,17 @@ package com.pentagram.controller
 		
 		override public function execute():void
 		{
-			appService.authenticateUser(event.args[0],event.args[1]);
-			appService.addHandlers(handleUserAuthentication);
+			if(!appModel.user) { //not persisted 
+				appService.authenticateUser(event.args[0],event.args[1]);
+				appService.addHandlers(handleUserAuthentication);
+			}
 		}
 		private function handleUserAuthentication(event:ResultEvent):void {	
 			var results:Array = event.token.results as Array;
 			if(results.length > 0 && Object(results[0]).success) {
 				appModel.user = results[0];
-				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
+				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user,event.result.toString()));
+				
 			}
 			else
 				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGIN_ERROR));

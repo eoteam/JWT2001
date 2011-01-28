@@ -15,36 +15,40 @@ package com.pentagram.instance.view.visualizer.views
 		private var walls:Walls;
 		
 		private var timer:Timer;
+		public var engine:APEngine;
+		
 		public function PhysicsScene()
 		{
-			APEngine.init(1/2);
-			APEngine.container = this;
-			APEngine.addForce(new VectorForce(false,0, 0));//Massless
+			engine = new APEngine();
+			engine.init(1/2);
+			engine.container = this;
+			engine.addForce(new VectorForce(false,0, 0));//Massless
 			this.addEventListener(Event.ADDED_TO_STAGE,handleAddedStage);
 			
 			//timer.addEventListener(TimerEvent.TIMER,enterFrameHandler);
 		}
 		public function handleAddedStage(event:Event):void {
-			walls = new Walls( stage.stageWidth, stage.stageHeight);
-			balls = new APEGroup();
-			APEngine.addGroup(balls);
-			APEngine.addGroup(walls); 
+			walls = new Walls(engine,stage.stageWidth, stage.stageHeight);
+			balls = new APEGroup(engine);
+			engine.addGroup(balls);
+			engine.addGroup(walls); 
 			balls.addCollidable ( walls );
 			//balls.collideInternal=true;
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);		
-			
-			//			timer = new Timer(10);
+			timer = new Timer(5000,1);
+			timer.addEventListener(TimerEvent.TIMER,stop);
+			timer.start();
 		}
 		public function reset():void
 		{
 			balls.cleanup();
-			APEngine.removeGroup(balls);
+			engine.removeGroup(balls);
 			for(var i:int = 0;i<this.numChildren;i++)			
 			{
 				this.removeChildAt(i);
 			}			
-			balls = new org.cove.ape.APEGroup();
-			APEngine.addGroup(balls);
+			balls = new org.cove.ape.APEGroup(engine);
+			engine.addGroup(balls);
 			balls.collideInternal=true;
 		}
 		public function start():void
@@ -52,7 +56,7 @@ package com.pentagram.instance.view.visualizer.views
 			//timer.start();
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
-		public function stop():void
+		public function stop(event:Event=null):void
 		{
 			//timer.stop();
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
@@ -60,8 +64,8 @@ package com.pentagram.instance.view.visualizer.views
 		private function enterFrameHandler(event:Event):void
 		{
 			if(stage) {
-				APEngine.step();
-				APEngine.paint();
+				engine.step();
+				engine.paint();
 				walls.update(stage.stageWidth, stage.stageHeight);
 			}
 			else

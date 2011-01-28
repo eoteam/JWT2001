@@ -47,7 +47,7 @@ package org.cove.ape {
 		 * @param elasticity The elasticity of the particle. Higher values mean more elasticity or 'bounciness'.
 		 * @param friction The surface friction of the particle.
 		 */
-		public function CircleParticle (
+		public function CircleParticle (engine:APEngine,
 				x:Number, 
 				y:Number, 
 				radius:Number, 
@@ -57,6 +57,7 @@ package org.cove.ape {
 				friction:Number = 0) {
 					
 			super(x, y, fixed, mass, elasticity, friction);
+			this.engine = engine;
 			_radius = radius;
 		}
 

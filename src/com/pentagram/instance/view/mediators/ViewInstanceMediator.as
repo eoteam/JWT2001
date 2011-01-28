@@ -45,18 +45,13 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
-			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
-			
+			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			
-			//eventMap.mapListener(view.loginBtn,MouseEvent.CLICK,handleUserButton,MouseEvent,false,0,true);
-			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
-			
-			//view.systemManager.stage.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize);
-			//this.addViewListener("widthChanged",handleWindowResize			
+					
 			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize,false,0,true);
-			//mediatorMap.createMediator(view.searchView);
+
 		} 
 		private function handleLogin(event:AppEvent):void
 		{
@@ -73,7 +68,6 @@ package com.pentagram.instance.view.mediators
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
-			//eventMap.mapListener(view.gripper,MouseEvent.MOUSE_UP,handleGripperButton,MouseEvent,false,0,true);
 			if(NativeWindow.supportsMenu) {
 				
 				view.showStatusBar = false;
@@ -81,12 +75,17 @@ package com.pentagram.instance.view.mediators
 			else {
 				view.showStatusBar = true;
 			}
-			//view.nativeWindow.addEventListener(
-			
+			if(view.compareArgs.length > 0) {
+				model.client = view.compareArgs[0];
+				model.selectedSet = view.compareArgs[1];
+				model.isCompare = true;
+				model.compareArgs = view.compareArgs;
+				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
+			}
 		}
-		//
 		private function handleWindowFocus(event:AIREvent):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
+		
 		}
 		private function handleClientSelected(event:ViewEvent):void {
 			if(!model.client.loaded)

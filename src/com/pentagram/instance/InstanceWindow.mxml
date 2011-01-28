@@ -61,6 +61,7 @@
 					loginBtn.selected = false;					
 				}
 			}
+			public var compareArgs:Array;
 		]]>
 	</fx:Script>
 	<fx:Declarations>

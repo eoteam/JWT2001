@@ -11,6 +11,7 @@ package com.pentagram.model.vo
 		public var password:String;
 		public var lastlogin:Number;
 		public var success:Boolean = true;
+		public var persisted:Boolean = false;
 		
 		public function toString():String {
 			return firstname+" " +lastname;

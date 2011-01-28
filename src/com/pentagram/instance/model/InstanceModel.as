@@ -43,6 +43,9 @@ package com.pentagram.instance.model
 		public var includeHeader:Boolean = true;
 		public var includeTools:Boolean = true;
 		
+		public var isCompare:Boolean = false;
+		public var compareArgs:Array;
+		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		

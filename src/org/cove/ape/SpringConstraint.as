@@ -30,8 +30,8 @@ TODO:
 
 package org.cove.ape {
 	
-	import flash.display.Sprite;
 	import flash.display.DisplayObject;
+	import flash.display.Sprite;
 	
 	/**
 	 * A Spring-like constraint that connects two particles
@@ -59,7 +59,7 @@ package org.cove.ape {
 		 * @param scaleToLength If the constraint is collidable and this value is true, the 
 		 * collidable area will scale based on changes in the distance of the two particles. 
 		 */
-		public function SpringConstraint(
+		public function SpringConstraint(engine:APEngine,
 				p1:AbstractParticle, 
 				p2:AbstractParticle, 
 				stiffness:Number = 0.5,
@@ -69,7 +69,7 @@ package org.cove.ape {
 				scaleToLength:Boolean = false) {
 			
 			super(stiffness);
-			
+			this.engine = engine;
 			this.p1 = p1;
 			this.p2 = p2;
 			checkParticlesLocation();
@@ -226,7 +226,7 @@ package org.cove.ape {
 			_scp = null;
 			
 			if (_collidable) {
-				_scp = new SpringConstraintParticle(p1, p2, this, rectHeight, rectScale, scaleToLength);			
+				_scp = new SpringConstraintParticle(engine,p1, p2, this, rectHeight, rectScale, scaleToLength);			
 			}
 		}
 		
