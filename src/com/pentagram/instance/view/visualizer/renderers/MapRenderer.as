@@ -98,8 +98,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				px = pt.x; py = pt.y;
 				//TweenNano.to(this,0.5,{px:pt.x,py:pt.y});
 				if(this.sprite) {
-					sprite.x = pt.x; sprite.y = pt.y;
-					//TweenNano.to(sprite,0.5,{x:pt.x,y:pt.y});
+						sprite.x = pt.x; sprite.y = pt.y;
+					//	TweenNano.to(sprite,0.5,{x:pt.x,y:pt.y});
 				}
 			}
 			dirty = true;

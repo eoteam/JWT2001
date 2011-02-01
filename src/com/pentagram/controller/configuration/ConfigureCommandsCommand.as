@@ -12,6 +12,7 @@ package com.pentagram.controller.configuration
 	import com.pentagram.controller.UpdateClientCommand;
 	import com.pentagram.controller.UpdateCountryCommand;
 	import com.pentagram.controller.UserLogoutCommand;
+	import com.pentagram.controller.WindowLayoutCommand;
 	import com.pentagram.controller.startup.StartupCommand;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
@@ -41,7 +42,8 @@ package com.pentagram.controller.configuration
 			
 			//window commands
 			commandMap.mapEvent(InstanceWindowEvent.CREATE_WINDOW, CreateInstanceWindowCommand , InstanceWindowEvent );
-			commandMap.mapEvent(InstanceWindowEvent.WINDOW_CLOSED, RemoveInstanceWindowCommand , InstanceWindowEvent );  
+			commandMap.mapEvent(InstanceWindowEvent.WINDOW_CLOSED, RemoveInstanceWindowCommand , InstanceWindowEvent ); 
+			commandMap.mapEvent(InstanceWindowEvent.WINDOW_TILE,   WindowLayoutCommand , 		 InstanceWindowEvent ); 
 		
 			commandMap.mapEvent(BaseWindowEvent.CREATE_WINDOW, CreateWindowCommand, BaseWindowEvent );
 			commandMap.mapEvent(BaseWindowEvent.WINDOW_CLOSED, RemoveWindowCommand, BaseWindowEvent );   

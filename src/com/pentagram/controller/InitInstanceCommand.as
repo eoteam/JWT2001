@@ -30,8 +30,8 @@ package com.pentagram.controller
 			 	var temp:Array = windowModel.buildMenu(windowModel.getWindowFromUID(event.uid));
 				exp = temp[0]; imp = temp[1];
 			}
-			var arr:Array = appModel.cloneRegions();
-			callback.call(null,appModel.clients,arr[0],arr[1],appModel.user,appModel.colors,exp,imp);
+			//var arr:Array = appModel.cloneRegions();
+			callback.call(null,appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.user,appModel.colors,exp,imp);
 		}
 	}
 }

@@ -12,6 +12,8 @@ package com.pentagram.events
 		public static const INIT_INSTANCE:String = "initInstance";
 		
 		public static const WINDOW_FOCUS:String = "windowFocus";
+		
+		public static const WINDOW_TILE:String = "windowTile";
 		public var uid:String;
 		public var args:Array;
 		

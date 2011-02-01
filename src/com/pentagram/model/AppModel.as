@@ -30,18 +30,19 @@ package com.pentagram.model
 		
 		public var user:User;	
 		
-		public function cloneRegions():Array {
+		public function cloneRegions():ArrayList {
 			var result:ArrayList = new ArrayList();
-			var countries:ArrayList = new ArrayList();
+			//var countries:ArrayList = new ArrayList();
 			for each(var region:Region in regions.source) {
 				var r:Region = ViewUtils.clone(region) as Region;
-				r.countries = new ArrayList();
-				for each(var country:Country in region.countries.source) {
-					var c:Country = ViewUtils.clone(country) as Country;
-					c.region = r;
-					countries.addItem(c);
-					r.countries.addItem(c);
-				}
+//				r.countries = new ArrayList();
+//				for each(var country:Country in region.countries.source) {
+//					var c:Country = ViewUtils.clone(country) as Country;
+//					c.region = r;
+//					countries.addItem(c);
+//					r.countries.addItem(c);
+//				}
+				r.countries = region.countries;
 				r.selected = true;
 				result.addItem(r);
 			}
@@ -53,7 +54,8 @@ package com.pentagram.model
 //			r.id = region.id;
 //			r.name = region.name;
 //			r.selected = true;
-			return [result,countries];
+			//return [result,countries];
+			return result;
 		}
 	}
 }

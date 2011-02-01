@@ -42,8 +42,6 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			//view.comparator.categoryHolder.dataProvider = model.regions;
-			
 			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
@@ -112,7 +110,6 @@ package com.pentagram.instance.view.mediators.shell
 							newDP.addItem(item2);
 						}
 					}
-					
 					view.comparator.categoryHolder.dataProvider = newDP;
 					view.comparator.enabled = true;
 				break;
@@ -132,11 +129,6 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}	
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
-//			if(view.state == 'Map') {		
-//				
-//				view.mapToggle.addEventListener(Event.CHANGE,handleMapToggle,false,0,true);
-//			}
-//			else
 			if(view.state == 'Graph') {
 				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			}	
@@ -146,15 +138,11 @@ package com.pentagram.instance.view.mediators.shell
 			dispatchPropEvent('alpha',alpha);
 		}
 		private function handleMapToggle(event:Event):void {
-			///dispatchPropEvent('mapToggle',view.mapToggle.selected);
-//			if(view.visualizerArea.selectedIndex == 1) {
-//				IMapView(view.currentVisualizer).toggleMap();
-//			}
+
 		}
 		private function handleMaxRadius(event:Event):void {
 			model.maxRadius = view.maxRadiusSlider.value;
 			dispatchPropEvent('maxRadius',view.maxRadiusSlider.value);
-			//view.currentVisualizer.updateMaxRadius();
 		}
 		private function dispatchPropEvent(prop:String,value:*):void {
 			dispatch(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,prop,value));
@@ -173,11 +161,6 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function handleCloseTooltips(event:MouseEvent):void {
-//			while(FlexGlobals.topLevelApplication.systemManager.popUpChildren.numChildren > 0){   
-//				PopUpManager.removePopUp(Popup(systemManager.popUpChildren.getChildAt(0))); this
-//			}
-			// if you scope your popups to other than PopUpManagerChildList.POPUP
-			// you need to scan this and check the class name to decide if you need to remove the child
 			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
 				trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
 				if(getQualifiedClassName(view.systemManager.getChildAt(i))=='com.pentagram.instance.view.visualizer.renderers::RendererInfo'){
@@ -185,8 +168,7 @@ package com.pentagram.instance.view.mediators.shell
 				}
 			}
 		}
-		private function check_changeHandler(event:Event):void
-		{
+		private function check_changeHandler(event:Event):void {
 			view.check.selected = true;
 			for each(var item:Category in view.continentList.dataProvider.toArray()) {
 				item.selected = true;

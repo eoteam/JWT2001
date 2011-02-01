@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
@@ -288,7 +289,7 @@ package com.pentagram.instance.view.mediators.shell
 						else
 							r.selected = false;
 					}
-					
+					//appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_TILE));
 				}				
 				view.mapView.visualize(dataset);
 				view.tools.thirdSet.selectedItem = dataset;
