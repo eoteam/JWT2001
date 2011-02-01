@@ -120,14 +120,14 @@
 			public function updateMaxRadius(value:Number):void {
 				this.maxRadius = value;
 			}
-			public function addCategory(value:Category):void {
+			public function addCategory(value:Category,count:int):void {
 				for each(var item:NormalizedVO in _visdata) {
 					if(item.category == value.name)
 						item.radius = item.prevRadius;
 				}				
 			}
 			
-			public function removeCategory(value:Category):void {
+			public function removeCategory(value:Category,count:int):void {
 				for each(var item:NormalizedVO in _visdata) {
 					if(item.category == value.name)
 						item.radius = 0;

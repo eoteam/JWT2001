@@ -6,6 +6,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.ViewUtils;
 	
 	import flash.events.Event;
@@ -32,23 +33,38 @@ package com.pentagram.instance.view.mediators.shell
 		
 		override public function onRegister():void
 		{	
-				view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-				view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-				view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-				view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-				view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
-				view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
-				view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
-				view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
-				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-				//view.comparator.categoryHolder.dataProvider = model.regions;
-				
-				view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
-				
-				eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
-				eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
-				eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
+			view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
+			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
+			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
+			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
+			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
+			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
+			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+			//view.comparator.categoryHolder.dataProvider = model.regions;
 			
+			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
+			
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			if(model.isCompare) {
+				var newDP:ArrayList = new ArrayList();
+				view.comparator.enabled = true;
+				for each(var region:Region in  model.regions.source) {
+					if(model.compareArgs[2].name != region.name) {
+						region.selected = false;
+						var item2:Category = new Category();
+						item2.name = region.name;
+						item2.color = region.color;
+						item2.selected = false;
+						newDP.addItem(item2);
+					}
+				}
+				view.comparator.categoryHolder.dataProvider = newDP;
+				view.check.selected = false;
+			}
 		}
 		private function handleImageSaveStart(event:ViewEvent):void {
 			if(!model.includeTools)
@@ -70,12 +86,18 @@ package com.pentagram.instance.view.mediators.shell
 		}
 
 		private function handleRegionSelect(event:Event):void {
-			var item:Category = view.continentList.selectedItem as Category;
+			var item:Category = event.target.data as Category;
 			view.check.selected = false;	
-			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item));
+			var region:Category;
+			var selectCount:int = 0;
+			for each(region in ArrayList(view.continentList.dataProvider).source) {
+				if(region.selected)
+					selectCount++;
+			} 
+			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item,selectCount));
 			switch(event.type) {
 				case "addRegion":
-					adjustSelection();
+					adjustSelection(selectCount);
 				break;
 				
 				case "selectRegion":
@@ -86,49 +108,27 @@ package com.pentagram.instance.view.mediators.shell
 							var item2:Category = new Category();
 							item2.name = category.name;
 							item2.color = category.color;
-							item2.enabled = true;
 							item2.selected = false;
 							newDP.addItem(item2);
 						}
 					}
 					
 					view.comparator.categoryHolder.dataProvider = newDP;
+					view.comparator.enabled = true;
 				break;
 				
 				case "removeRegion":
-					adjustSelection();
+					adjustSelection(selectCount);
 				break;
 			}
-			view.comparator.enabled = true;
 		}
-		private function adjustSelection():void {
-			var region:Category;
-			var selectCount:int = 0;
-			for each(region in ArrayList(view.continentList.dataProvider).source) {
-				if(region.selected)
-					selectCount++;
-			} 
-			switch(selectCount) {
-				case selectCount >= 4:
-					for each(region in ArrayList(view.continentList.dataProvider).source) {
-					region.enabled = true;
-					region.selected = true;
-				}
-					break;
-				case selectCount > 1:
-					for each(region in ArrayList(view.continentList.dataProvider).source) {
-					if(region.selected)
-						region.enabled = true;
-				}
-					break;
-				case selectCount == 1:
-					for each(region in ArrayList(view.continentList.dataProvider).source) {
-					if(region.selected)
-						region.enabled = false;
-					else
-						region.enabled = true;
-				}
-					break;
+		private function adjustSelection(count:int):void {
+			if(count == view.continentList.dataProvider.length) {
+				view.check.selected = true;
+			}
+			if(count > 1) {
+				view.comparator.enabled = false;
+				view.comparator.currentState = "closed";
 			}
 		}	
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {

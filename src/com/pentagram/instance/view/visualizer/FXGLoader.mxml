@@ -19,7 +19,7 @@
 			public var countries:Dictionary = new Dictionary();
 			public var region:Region;
 			private var fxgxml:XML;
-
+			
 			public function load(file:File,region:Region):void {
 				XML.ignoreWhitespace = true;	//to preserve spaces inside texts			
 				var fs:FileStream = new FileStream();

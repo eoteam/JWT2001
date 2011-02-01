@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180"
-		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)"
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180" alpha="0"
+		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
 		 skinClass="com.pentagram.view.skins.controls.TooltipSkin" move="titlewindow1_moveHandler(event)"
 		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
@@ -38,6 +38,7 @@
 		<fx:Boolean id="tipVisible">true</fx:Boolean>
 		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
 		<fx:Boolean id="rightTipVisible">true</fx:Boolean>
+		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closed"/>

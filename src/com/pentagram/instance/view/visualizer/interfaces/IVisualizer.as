@@ -24,9 +24,9 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function get datasets():Array;
 		
-		function addCategory(value:Category):void;
+		function addCategory(value:Category,count:int):void;
 		
-		function removeCategory(value:Category):void;
+		function removeCategory(value:Category,count:int):void;
 		
 		function selectCategory(value:Category):void;
 		

@@ -49,7 +49,7 @@
 				holder.removeAllElements();
 				if(ds1.type == 0) { //quantitative
 					for each(var item:Category in ds1.optionsArray) {
-						item.selected = item.enabled = true;
+						item.selected = true;
 						var arr:Array = [];
 						var r:Number = 1;
 						for each(var row:DataRow in ds1.rows) {
@@ -160,7 +160,7 @@
 					handleResize();
 				}
 			}
-			public function addCategory(value:Category):void {
+			public function addCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
@@ -175,7 +175,7 @@
 				t.start();
 			}
 			
-			public function removeCategory(value:Category):void {
+			public function removeCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;

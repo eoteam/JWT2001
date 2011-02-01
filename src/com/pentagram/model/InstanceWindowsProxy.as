@@ -184,7 +184,7 @@ package com.pentagram.model
 				var col:int = 0;
 				var row:int = 0;
 				var availWidth:Number =  Capabilities.screenResolutionX;
-				var availHeight:Number = Capabilities.screenResolutionY
+				var availHeight:Number = Capabilities.screenResolutionY;
 				var maxTiles:int = availWidth / (this.tileMinimizeWidth + this.minTilePadding);
 				var targetWidth:Number = availWidth / numCols - ((gap * (numCols - 1)) / numCols);
 				var targetHeight:Number = availHeight / numRows - ((gap * (numRows - 1)) / numRows);

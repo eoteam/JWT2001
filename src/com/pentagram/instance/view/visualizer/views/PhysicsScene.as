@@ -53,7 +53,7 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		public function start():void
 		{
-			//timer.start();
+			timer.start();
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		public function stop(event:Event=null):void

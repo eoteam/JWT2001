@@ -99,7 +99,7 @@
 								<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 							</s:stroke>
 						</s:Rect>
-						<s:Image id="logo"  top="30" left="1" right="1" bottom="1" scaleMode="letterbox" source="{country.thumb}" />
+						<s:Image id="logo"  top="30" left="1" right="1" bottom="1" scaleMode="letterbox" source="{country.thumb}" smooth="true"  smoothingQuality="high" />
 						<s:Group left="1" right="1" top="1" height="30">
 							<s:Rect left="0" right="0" top="0" bottom="0">
 								<s:fill>

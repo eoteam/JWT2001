@@ -13,7 +13,7 @@
 			private function check_changeHandler(event:Event):void
 			{
 				data.selected = check.selected;
-				List(this.owner).selectedItem = this.data;
+				//List(this.owner).selectedItem = this.data;
 				if(check.selected)
 					this.callLater(resumeUpdate,["addRegion"]);
 				else
@@ -26,12 +26,12 @@
 				this.callLater(resumeUpdate,["selectRegion"]);
 			}
 			private function resumeUpdate(type:String):void {
-				this.owner.dispatchEvent(new Event(type));
+				this.dispatchEvent(new Event(type,true));
 			}
 
 		]]>
 	</fx:Script>
-	<s:CheckBox id="check" verticalCenter="0" label=" " width="16" selected="{data.selected}" left="4"  change="check_changeHandler(event)" enabled="{data.enabled}"/>
+	<s:CheckBox id="check" verticalCenter="0" label=" " width="16" selected="{data.selected}" left="4"  change="check_changeHandler(event)"/>
 	<s:Rect width="0.25" height="100%" left="20">
 		<s:stroke>
 			<s:SolidColorStroke weight="0.25" color="0x666666"/>

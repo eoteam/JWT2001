@@ -95,8 +95,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(countrySprite) {
 				var pt:Point = countrySprite.parent.localToGlobal(new Point(countrySprite.x,countrySprite.y));
 				pt = sprite.parent.globalToLocal(pt);
-				px = pt.x;
-				py = pt.y;
+				px = pt.x; py = pt.y;
+				//TweenNano.to(this,0.5,{px:pt.x,py:pt.y});
+				if(this.sprite) {
+					sprite.x = pt.x; sprite.y = pt.y;
+					//TweenNano.to(sprite,0.5,{x:pt.x,y:pt.y});
+				}
 			}
 			dirty = true;
 		}

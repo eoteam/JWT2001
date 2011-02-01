@@ -12,6 +12,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ModuleUtil;
 	import com.pentagram.utils.ViewUtils;
@@ -185,9 +186,10 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleCategoryChange(event:VisualizerEvent):void {
 			var type:String = event.args[0];
 			var item:Category = event.args[1] as Category;	
+			var count:int = event.args[2] as int;
 			switch(type) {
 				case "addRegion":
-					view.currentVisualizer.addCategory(item);
+					view.currentVisualizer.addCategory(item,count);
 					break;
 				
 				case "selectRegion":
@@ -195,7 +197,7 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				
 				case "removeRegion":
-					view.currentVisualizer.removeCategory(item);
+					view.currentVisualizer.removeCategory(item,count);
 				break;
 				case "selectAll":
 					view.currentVisualizer.selectAllCategories();
@@ -273,8 +275,21 @@ package com.pentagram.instance.view.mediators.shell
 				view.filterTools.continentList.dataProvider = model.regions;
 				this.view.mapView = util.view as IMapView;
 				IMapView(util.view).client = model.client;
+				IMapView(util.view).categories = model.regions;
+				IMapView(util.view).isCompare = model.isCompare;
 				view.mapHolder.addElement(util.view as Group);
-				var dataset:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
+				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(0) as Dataset;
+				
+				if(model.isCompare) {
+					for each(var r:Region in model.regions.source) {
+						if(r.name == model.compareArgs[2].name) {
+							r.selected = true;
+						}
+						else
+							r.selected = false;
+					}
+					
+				}				
 				view.mapView.visualize(dataset);
 				view.tools.thirdSet.selectedItem = dataset;
 				
@@ -286,9 +301,6 @@ package com.pentagram.instance.view.mediators.shell
 						years.addItem(new Year(i,1)); 
 					}
 					view.tools.yearSlider.dataProvider = years;
-				}
-				if(model.isCompare) {
-					
 				}
 			}
 		}
