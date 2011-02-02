@@ -850,7 +850,7 @@
         </Ellipse>
       </Group>
     </Group>
-    <Group ai:seqID="173" d:type="layer" d:userLabel="countries">
+    <Group ai:seqID="173" d:type="layer" d:userLabel="countries" visible="false">
       <Rect x="36.9297" y="60.1753" width="2" height="2" ai:seqID="174" d:userLabel="PER">
         <fill>
           <SolidColor/>

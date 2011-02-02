@@ -29,8 +29,23 @@
   <flashCatalyst validateFlashCatalystCompatibility="false"/>
   <buildTargets>
     <buildTarget buildTargetName="default">
-      <airSettings airCertificatePath="/Users/raed/Sites/JWT2001/View/view-certificate.p12" airTimestamp="true" version="1">
-        <airExcludes/>
+      <airSettings airCertificatePath="/Users/raed/Sites/Pentagram/View/view-certificate.p12" airTimestamp="true" version="1">
+        <airExcludes>
+          <pathEntry path="bxf"/>
+          <pathEntry path="com/ericfeminella"/>
+          <pathEntry path="flex"/>
+          <pathEntry path="assets/fonts"/>
+          <pathEntry path="assets/icons/cursor_resize.gif"/>
+          <pathEntry path="fxgparser"/>
+          <pathEntry path="com/pentagram/view"/>
+          <pathEntry path="com/pentagram/services"/>
+          <pathEntry path="assets/.DS_Store"/>
+          <pathEntry path="ws"/>
+          <pathEntry path="com/adobe"/>
+          <pathEntry path="com/.DS_Store"/>
+          <pathEntry path=".DS_Store"/>
+          <pathEntry path="assets/icons/cursor_move.gif"/>
+        </airExcludes>
       </airSettings>
       <actionScriptSettings version="1"/>
     </buildTarget>

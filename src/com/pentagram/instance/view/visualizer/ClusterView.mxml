@@ -4,7 +4,7 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 				xmlns:modules="ws.tink.spark.modules.*"  clipAndEnableScrolling="true"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
-				creationComplete="module1_creationCompleteHandler(event)"
+				creationComplete="creationCompleteHandler(event)"
 				resize="updateSize()">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -26,16 +26,13 @@
 			
 			import spark.core.SpriteVisualElement;
 			
-			protected var _nodes:Vector.<MapRenderer> = new Vector.<MapRenderer>;  
-			private var iterationCounter:int = 0;
-			private var CENTER:Point;
-			private var v:Vector3D;
-			private var ds:Dataset;
+			private var _continous:Boolean = false;
 			private var maxRadius:Number = 25;
 			private var firstLoad:Boolean = true;
 			private var ds1:Dataset;
 			private var ds2:Dataset;
-			
+			protected var resizeFlag:Boolean = false
+				
 			public function get datasets():Array {
 				return [null,null,ds1,ds2];
 			}
@@ -45,45 +42,9 @@
 					doVisualize();
 				}
 			}
-			private function doVisualize():void {
-				holder.removeAllElements();
-				if(ds1.type == 0) { //quantitative
-					for each(var item:Category in ds1.optionsArray) {
-						item.selected = true;
-						var arr:Array = [];
-						var r:Number = 1;
-						for each(var row:DataRow in ds1.rows) {
-							var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
-							if(value == item.name) {
-								if(ds2 && ds2.type == 1) {
-									var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
-									if(ds2.time == 1)
-										r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-									else
-										r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-								}	
-								arr.push({data:row,radius:r,color:item.color,data2:row2});
-							}	
-						}
-						var circle:CirclePacking = new CirclePacking(arr,this);
-						circle.percentHeight = circle.percentWidth = 100;
-						circle.name = item.name;
-						holder.addElement(circle);
-						circle.refresh();
-						circle.doLayout();
-						updateSize();
-					} 
-				}
-				firstLoad = false;
-				this.callLater(updateSize);
-				var t:Timer = new Timer(100,1);
-				t.addEventListener(TimerEvent.TIMER,handleTimer);
-				t.start();
-			}
 			public function update():void {
 				
 			}
-			
 			public function updateMaxRadius(value:Number):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking =  holder.getElementAt(i) as CirclePacking;
@@ -91,12 +52,9 @@
 					c.draw();
 				}
 			}
-			
 			public function unload():void {
 				
 			}
-						
-			private var _continous:Boolean = false;
 			public function get continous():Boolean{
 				return _continous;
 			}			
@@ -114,29 +72,23 @@
 			
 			public function updateYear(year:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
 						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[1]) {
 							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-							//trace(circle.radiusBeforeRendering);
+							circle.content = this.generateContent(circle.data2[year.toString()],year);
 						}	
 							
 					}
-					c.doLayout();
-					//c.draw();				
+					c.doLayout();			
 				}
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
 				
 			}
-			private function module1_creationCompleteHandler(event:FlexEvent):void {
-				this.doVisualize();
-			}
 			public function toggleOpacity(value:Number):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
@@ -145,24 +97,12 @@
 					}
 				}
 			}	
-			private function handleTimer(event:TimerEvent):void {
-				updateSize();
-			}
-			protected var resizeFlag:Boolean = false
 			public function updateSize():void {
 				resizeFlag = true;
 				this.invalidateDisplayList();
 			}
-			override protected function updateDisplayList(w:Number, h:Number):void {
-				super.updateDisplayList(w,h);
-				if(resizeFlag) {
-					resizeFlag = false;
-					handleResize();
-				}
-			}
 			public function addCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
 						c.visible = true;
@@ -177,7 +117,7 @@
 			
 			public function removeCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
 						c.visible = false;
@@ -191,7 +131,7 @@
 			}
 			public function selectCategory(value:Category):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
+					
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name != value.name) {
 						c.visible = false;
@@ -210,10 +150,65 @@
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
 				t.start();
 			}
-			private function handleResize(event:Event=null):void
-			{
+			public function selectAllCategories():void {
+				
+			}
+			private function creationCompleteHandler(event:FlexEvent):void {
+				this.doVisualize();
+			}
+			private function handleTimer(event:TimerEvent):void {
+				updateSize();
+			}			
+			private function doVisualize():void {
+				holder.removeAllElements();
+				if(ds1.type == 0) { //quantitative
+					for each(var item:Category in ds1.optionsArray) {
+						item.selected = true;
+						var arr:Array = [];
+						var r:Number = 1;
+						for each(var row:DataRow in ds1.rows) {
+							var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
+							if(value == item.name) {
+								if(ds2 && ds2.type == 1) {
+									var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
+									var content:String;
+									if(ds2.time == 1) {
+										r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+										content = generateContent(row2[ds2.years[0]],ds2.years[0]);
+									}
+									else {
+										r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+										content = generateContent(row2.value);
+									}
+								}
+								arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
+							}	
+						}
+						var circle:CirclePacking = new CirclePacking(arr,this);
+						circle.percentHeight = circle.percentWidth = 100;
+						circle.name = item.name;
+						holder.addElement(circle);
+						circle.refresh();
+						circle.doLayout();
+						updateSize();
+					} 
+				}
+				firstLoad = false;
+				this.callLater(updateSize);
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
+			}
+			override protected function updateDisplayList(w:Number, h:Number):void {
+				super.updateDisplayList(w,h);
+				if(resizeFlag) {
+					resizeFlag = false;
+					handleResize();
+				}
+			}
+			
+			private function handleResize(event:Event=null):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					//var parent:SpriteVisualElement = holder.getElementAt(i) as SpriteVisualElement;
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.visible) {
 						c.percentHeight = c.percentWidth = 100;
@@ -221,8 +216,14 @@
 					}
 				}
 			}
-			public function selectAllCategories():void {
-				
+			private function generateContent(value:String,year:int=-1):String {
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result += '<span color="#cccccc">'+ds2.name;
+				if(year != -1)
+					result += '('+year+')';
+				result += ': </span><span color="#ffffff">'+value+'</span>';
+				result += "</p></TextFlow>";
+				return result;
 			}
 
 		]]>

@@ -39,6 +39,7 @@ package com.pentagram.instance.view.visualizer.views
 				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
 				sprite.fillAlpha = 0.2;
+				sprite.content = numberList[counter].content;
 				sprite.textColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				sprite.scaleX= -1;
@@ -110,9 +111,9 @@ package com.pentagram.instance.view.visualizer.views
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
 				c.state = true;
-				TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
-								   x: this.circlePositions[i].x * _loc_2 + width/2,
-								   y: this.circlePositions[i].y * _loc_2+ height/2});
+				c.x =  this.circlePositions[i].x * _loc_2 + width/2;
+				c.y = this.circlePositions[i].y * _loc_2+ height/2;
+				TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
 				i++;
 			}
 			//cacheAsBitmap = true;

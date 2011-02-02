@@ -3,7 +3,7 @@
 				xmlns:s="library://ns.adobe.com/flex/spark"  width="100%" height="100%"
 				xmlns:mx="library://ns.adobe.com/flex/mx"  clipAndEnableScrolling="true"
 				xmlns:modules="ws.tink.spark.modules.*" contentBackgroundColor="0xff0000" 
-				resize="handleResize(event)"  
+				resize="updateSize()"  
 				creationComplete="creationCompleteHandler(event)"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IMapView" 
 				xmlns:assets="assets.*" 
@@ -58,9 +58,10 @@
 				}
 			}
 			public function updateSize():void {
-				this.callLater(handleResize);
+				doResize();
+				resizeFlag = true;
+				this.invalidateDisplayList();
 			}
-
 			public function set client(value:Client):void {
 				_client  = value;
 			}
@@ -263,15 +264,10 @@
 						c.collidable = false;
 					}
 				}
-				handleResize();
+				updateSize();
 			}
 			private function updateRenderer(renderer:MapRenderer):void {
 				renderer.draw();
-			}
-			private function handleResize(event:ResizeEvent=null):void {
-				doResize();
-				resizeFlag = true;
-				this.invalidateDisplayList();
 			}
 			private function doResize():void {
 				var maxW:Number = 0;
