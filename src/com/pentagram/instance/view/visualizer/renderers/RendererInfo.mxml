@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180" alpha="0"
-		xmlns:s="library://ns.adobe.com/flex/spark"  close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
-		 skinClass="com.pentagram.view.skins.controls.TooltipSkin" move="titlewindow1_moveHandler(event)"
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180" alpha="0" 
+		xmlns:s="library://ns.adobe.com/flex/spark"  
+		close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
+		skinClass="com.pentagram.view.skins.controls.TooltipSkin" 
+		move="titlewindow1_moveHandler(event)"
 		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
 		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
 			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
 			import mx.events.MoveEvent;
 			import mx.managers.PopUpManager;
 			
@@ -30,7 +35,9 @@
 				else
 					this.currentState = "closed";
 			}
-
+			public function set content(value:String):void {
+				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -39,6 +46,7 @@
 		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
 		<fx:Boolean id="rightTipVisible">true</fx:Boolean>
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
+		<s:TextFlow id="ctf" />
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closed"/>
@@ -52,6 +60,7 @@
 	<s:layout>
 		<s:VerticalLayout />
 	</s:layout>
+	
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
 		<s:Label fontSize="14" text="{country.name}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" click="button1_clickHandler(event)" />
@@ -59,7 +68,7 @@
 		maxHeight="30"  smooth="true" height="30" smoothingQuality="high" scaleMode="stretch"  fillMode="scale"
 		complete="flag.width=flag.sourceWidth*30/flag.sourceHeight"/>
 	</s:HGroup>
-	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer">
+	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer" >
 		
 	</s:VGroup>
 	<s:Line  width="100%" height="1">
@@ -67,4 +76,5 @@
 			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Line>
+	<s:RichText width="100%" height="100%" id="dataText" fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6" textFlow="{ctf}" />	
 </s:TitleWindow>

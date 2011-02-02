@@ -12,12 +12,12 @@
 	embedAsCFF: true;
 	advancedAntiAliasing: true;      
 }
-/* @font-face {
+ @font-face {
 	src: url("/assets/fonts/FlamaBookIta.ttf");
     font-family: "FlamaBookItalic";
 	embedAsCFF: true;
 	advancedAntiAliasing: true;     	
-} */
+} 
 @font-face {
 	src: url("/assets/fonts/FlamaMedium.ttf");
     font-family: "FlamaMedium";
@@ -72,7 +72,9 @@ s|TextInput {
 #editorInput {
 	skinClass: ClassReference('spark.skins.spark.TextInputSkin');
 }
-
+s|RichText {
+	fontFamily: FlamaBook;
+}
 s|CheckBox {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }

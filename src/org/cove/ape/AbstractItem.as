@@ -37,10 +37,10 @@ package org.cove.ape {
 		private var _sprite:Sprite;
 		
 		private var _solid:Boolean;
-		private var _visible:Boolean;
+		protected var _visible:Boolean = true;
 		private var _alwaysRepaint:Boolean;
 		
-		protected var dirty:Boolean = false;
+		//protected var dirty:Boolean = false;
 		protected var _fillColor:uint = 0xff0000;
 		protected var _textColor:uint = 0xffffff;
 		protected var _fillAlpha:Number = 0.2;
@@ -212,22 +212,22 @@ package org.cove.ape {
 		}	
 				
 		public function get fillColor():uint { return _fillColor; }
-		public function set fillColor(c:uint):void { _fillColor = c;dirty=true;}
+		public function set fillColor(c:uint):void { _fillColor = c;}
 		
 		public function get textColor():uint { return _textColor; }
-		public function set textColor(c:uint):void { _textColor = c;dirty=true;	}
+		public function set textColor(c:uint):void { _textColor = c;	}
 		
 		public function get fillAlpha():Number { return _fillAlpha; }
-		public function set fillAlpha(a:Number):void {_fillAlpha = a;dirty=true;}
+		public function set fillAlpha(a:Number):void {_fillAlpha = a;}
 
 		public function get lineAlpha():Number { return _lineAlpha; }
-		public function set lineAlpha(a:Number):void { _lineAlpha = a;dirty=true}
+		public function set lineAlpha(a:Number):void { _lineAlpha = a;}
 			
 		public function get lineColor():uint { return _lineColor; }
-		public function set lineColor(c:uint):void { _lineColor = c;dirty=true; }
+		public function set lineColor(c:uint):void { _lineColor = c; }
 		
 		public function get lineWidth():Number { return _lineWidth; }
-		public function set lineWidth(c:Number):void { _lineWidth = c;dirty=true; }
+		public function set lineWidth(c:Number):void { _lineWidth = c; }
 		
 		
 	}

@@ -40,6 +40,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var stateFlag:Boolean = false;
 		protected var dirtyFlag:Boolean = false;
 		protected var dirtyCoordFlag:Boolean = false;
+		protected var _content:String;
 		
 		public function ClusterRenderer(parent:Group,parent2:SpriteVisualElement) {
 			super();
@@ -174,6 +175,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					}
 					tooltip.y = this.y - tooltip.height/2;
 					tooltip.visible = true;	
+					tooltip.content = _content;
 					tooltip.country = data.country;
 					break;
 				}
@@ -197,6 +199,7 @@ package com.pentagram.instance.view.visualizer.renderers
 						tooltip.visible = false;
 						info = new RendererInfo();
 						info.country = _data.country;
+						info.content = _content;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
 						if(this.directParent.x + this.x + radius + info.width > this.tooltipContainer.width) {
@@ -222,6 +225,12 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		private function addedToStageHandler(event:Event):void {
 			
+		}
+		public function set content(v:String):void {
+			_content = v;
+			if(this.infoVisible) {
+				info.content = v;
+			}
 		}
 	}
 	

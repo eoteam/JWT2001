@@ -110,12 +110,18 @@
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
 					if(c.data) {
-						if(dataset.time == 1)
+						var content:String;
+						if(dataset.time == 1) {
 							r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-						else 
+							content = generateContent(c.data[currentYear],currentYear);
+						}
+						else {
 							r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+							content = generateContent(c.data.value);
+						}
 						TweenNano.to(c, .5, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
-						c.redraw();
+						c.content = content;
+						c.draw();
 					}
 				}
 			}
@@ -123,19 +129,23 @@
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				if(map.region.fxgmap != "world_map.xml")
 					loadWorldMap();
-
+				for each(var c:MapRenderer in renderers) {
+					if(c && c.data) {
+						c.visible = true;
+						c.collidable = true;
+					}
+				}
 				var timer:CallTimer = new CallTimer(adjustRenderers,null,250,1);
 				timer.start();	
 			}
 			public function addCategory(value:Category,count:int):void {
 				var region:Region = value as Region;
 				var map:FXGLoader =  mapHolder.getElementAt(0) as FXGLoader
-				for each(var countrySprite:Shape in map.countries) {
-					var c:MapRenderer= renderersDictionary[countrySprite.name];						
+				for each(var c:MapRenderer in renderers) {					
 					if(c && c.data && c.data.country.region.name == region.name) {
-						c.countrySprite = countrySprite;
-						TweenNano.to(c.sprite,.5,{alpha:1});
-						c.collidable = true;						
+						c.visible = true;
+						c.collidable = true;	
+						c.draw();
 					}
 				}
 				if(count > 1 && map.region.fxgmap != "world_map.xml")  {
@@ -145,12 +155,11 @@
 			public function removeCategory(value:Category,count:int):void {
 				var region:Region = value as Region;
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				for each(var countrySprite:Shape in map.countries) {
-					 var c:MapRenderer= renderersDictionary[countrySprite.name];						
+				for each(var c:MapRenderer in renderers) {			
 					if(c && c.data && c.data.country.region.name == region.name) {
-						c.countrySprite = countrySprite;
-						TweenNano.to(c.sprite,.5,{alpha:0});
+						c.visible = false;
 						c.collidable = false;
+						c.draw();
 					}
 				}
 			}
@@ -160,7 +169,6 @@
 				var map:FXGLoader;
 				mapHolder.removeAllElements();
 				map = new FXGLoader();
-				//map.setStyle("removedEffect",fadeOut);
 				map.addEventListener(Event.COMPLETE,handleMapLoaded);
 				mapHolder.addElement(map);
 				var file:File = File.applicationDirectory;
@@ -168,7 +176,15 @@
 				map.load(file,region);
 				map.percentHeight = 100;
 				map.percentWidth = 100;
-
+				
+				for each(var c:MapRenderer in renderers) {
+					if(c && c.data && c.data.country.region.name != region.name) {
+						c.collidable = c .visible = false;
+					}
+					if(c && c.data && c.data.country.region.name == region.name) {
+						c.collidable = c.visible = true;
+					}
+				}
 			}
 			public function toggleOpacity(value:Number):void {
 				if(mapHolder) {
@@ -195,76 +211,62 @@
 				
 				for each(row in dataset.rows) {
 					if(dataset.type == 1) {
+						var content:String;
 						if(dataset.time == 1) {
 							r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
 							currentYear = dataset.years[0];
+							content =  generateContent(row[dataset.years[0]],dataset.years[0]);
 						}
-						else
+						else {
 							r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+							content = generateContent(row.value);
+						}
 					}
 					c = renderersDictionary[row.country.shortname];
 					if(c) {
-						c.sprite.alpha = 0;
-						if(world.countries[row.country.shortname]) {
-							c.data = row;
-							c.country = world.countries[row.country.shortname];	
-							var region:Region;
-							for each(var reg:Region in _categories.source) {
-								if(c.data.country.region.name == reg.name) {
-									region = reg;
-								}
+						c.data = row;
+						c.content = content;
+						var region:Region;
+						for each(var reg:Region in _categories.source) {
+							if(c.data.country.region.name == reg.name) {
+								region = reg;
 							}
-							if(region.selected)
-								TweenNano.to(c.sprite, 1, {alpha:1,onUpdate:updateRenderer,onUpdateParams:[c]});
-						}			
+						}
+						if(region.selected) {
+							c.collidable = c.visible = true;
+						}
+						else {
+							c.collidable = c.visible = false;
+						}								
 						c.radius = r;
-						c.redraw();
 					}
 				}
 				firstPass = false;
 				var timer:CallTimer = new CallTimer(adjustRenderers,null,250,1);
 				timer.start();	
 			}			
-			private function onFinishTween(map:FXGLoader):void {
-				map.percentHeight = map.percentWidth = 100;
-			}
 			private function adjustRenderers():void {
 				var visibleItems:Array = [];
 				var c:MapRenderer;
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				//for each(
 				for each(var countrySprite:Shape in map.countries) {
 					c = renderersDictionary[countrySprite.name];						
-					if(c) 
+					if(c)  {
 						c.countrySprite = countrySprite;
-					if(c && c.data) {
-						var region:Region;
-						for each(var r:Region in _categories.source) {
-							if(c.data.country.region.name == r.name) {
-								region = r; //break;
-							}
-						}
-						if(region.selected) {
-							TweenNano.to(c.sprite,1,{alpha:1});
-							c.collidable = true;
-							c.radius = c.radius;
-							c.updateCoord();
-							c.redraw();
-							visibleItems.push(c);
-						}
+						c.draw();
+						visibleItems.push(c);
 					}
 				}
 				for each(c in renderers) {
 					if(visibleItems.indexOf(c) == -1) {
-						c.sprite.alpha = 0;
+						c.visible = false;
 						c.collidable = false;
 					}
 				}
 				handleResize();
 			}
 			private function updateRenderer(renderer:MapRenderer):void {
-				renderer.updateCoord();
-				renderer.redraw();
+				renderer.draw();
 			}
 			private function handleResize(event:ResizeEvent=null):void {
 				doResize();
@@ -286,12 +288,13 @@
 				var nw:Number; var nh:Number;  
 
 				for each(var c:MapRenderer in renderers) {
-					c.updateCoord();
+					c.draw();
 				}
 				
 				if(mapHolder.numElements == 1) {
 					child = FXGLoader(mapHolder.getElementAt(0)) as FXGLoader;
-					TweenNano.to(child,0.5,{alpha:1});
+					if(!holder.balls.collideInternal)
+						TweenNano.to(child,0.5,{alpha:1});
 					fxgSprite = child.fxgSprite;
 					widestSprite = fxgSprite.getChildAt(0) as Sprite;
 					fxgRatio = fxgSprite.width / fxgSprite.height;
@@ -323,7 +326,7 @@
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;
 					holder.balls.addParticle(c);
-					c.sprite.alpha = 0;
+					c.visible = false;
 				}
 				if(!_isCompare)
 					loadWorldMap();
@@ -350,7 +353,6 @@
 				if(!firstPass)
 					mapHolder.removeAllElements();
 				var map:FXGLoader = new FXGLoader();
-				//map.setStyle("removedEffect",fadeOut);
 				map.addEventListener(Event.COMPLETE,handleMapLoaded);
 				mapHolder.addElement(map);				
 				var file:File = File.applicationDirectory;
@@ -369,6 +371,15 @@
 					if(holder.balls.collideInternal)
 						holder.start();
 				}
+			}
+			private function generateContent(value:String,year:int=-1):String {
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result += '<span color="#cccccc">'+dataset.name;
+				if(year != -1)
+					result += '('+year+')';
+				result += ': </span><span color="#ffffff">'+value+'</span>';
+				result += "</p></TextFlow>";
+				return result;
 			}
 		]]>
 	</fx:Script>

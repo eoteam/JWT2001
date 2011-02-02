@@ -32,6 +32,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		public const FILL_RATIO:Array = [0,255];
 		public var countrySprite:Shape;
 		public var id:String;
+		protected var _content:String;
 		
 		private var label:TextField;
 		private var textFormat:TextFormat;
@@ -68,45 +69,31 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.defaultTextFormat = textFormat;
 			label.width = 30; label.height = 20;	
 			sprite.addChild(label);
-				
+			sprite.mouseChildren = false;
 			sprite.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			//this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			//			sprite.toolTip = " ";
-			//			sprite.addEventListener(ToolTipEvent.TOOL_TIP_CREATE,createToolTip);
-			//			sprite.addEventListener(ToolTipEvent.TOOL_TIP_SHOW,positionTip);
-			//			sprite.addEventListener(ToolTipEvent.TOOL_TIP_END,checkTooltip);
-			
 			
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(tooltip);
 			tooltip.visible = false;
 			
 		}
-		public function set country(value:Shape):void
-		{
-			countrySprite = value;
-			updateCoord();
-		}
-		public function updateCoord():void {
+		public function draw():void {
 			if(countrySprite) {
 				var pt:Point = countrySprite.parent.localToGlobal(new Point(countrySprite.x,countrySprite.y));
 				pt = sprite.parent.globalToLocal(pt);
 				px = pt.x; py = pt.y;
-				//TweenNano.to(this,0.5,{px:pt.x,py:pt.y});
-				if(this.sprite) {
-						sprite.x = pt.x; sprite.y = pt.y;
-					//	TweenNano.to(sprite,0.5,{x:pt.x,y:pt.y});
-				}
+				if(this.sprite) 
+					sprite.x = pt.x; sprite.y = pt.y;
+				redraw();
 			}
-			dirty = true;
+
 		}
-		override public function redraw():void {
-			if(dirty) {
-				//updateCoord();
+		protected function redraw():void {
+			if(_visible) {
 				var g:Graphics = this.sprite.graphics;
 				g.clear();	
 				var stroke:IStroke = new Stroke(fillColor,1,1);
@@ -148,8 +135,15 @@ package com.pentagram.instance.view.visualizer.renderers
 				label.width = label.textWidth+4;
 				label.height = label.textHeight+4;	
 				label.defaultTextFormat = textFormat;
-		
-				dirty = false;				
+			}
+			
+			if(sprite.visible != _visible) {
+				if(_visible) {
+					sprite.visible = true;
+					TweenNano.to(sprite,0.5,{alpha:1});
+				}	
+				else
+					TweenNano.to(sprite,0.1,{alpha:0,onComplete:hide});
 			}
 		}
 		private var offset:int = 15;
@@ -160,27 +154,30 @@ package com.pentagram.instance.view.visualizer.renderers
 				case MouseEvent.ROLL_OVER:
 				{
 					if(sprite.alpha == 1) {
-					if(sprite.parent.x + this.px + radius + tooltip.width > this.tooltipContainer.width) {
-						tooltip.leftTip.visible = false;
-						tooltip.rightTp.visible = true;
-						tooltip.x = sprite.parent.x + this.px - radius - tooltip.width - offset;
-					}
-					else { 
-						tooltip.leftTip.visible = true;
-						tooltip.rightTp.visible = false;
-						tooltip.x = sprite.parent.x + this.px + radius + offset;
-					}
-					tooltip.y = this.py - tooltip.height/2;
-					tooltip.visible = true;	
-					tooltip.country = data.country;
-					break;
+						if(sprite.parent.x + this.px + radius + tooltip.width > this.tooltipContainer.width) {
+							tooltip.leftTip.visible = false;
+							tooltip.rightTp.visible = true;
+							tooltip.x = sprite.parent.x + this.px - radius - tooltip.width - offset;
+						}
+						else { 
+							tooltip.leftTip.visible = true;
+							tooltip.rightTp.visible = false;
+							tooltip.x = sprite.parent.x + this.px + radius + offset;
+						}
+						tooltip.y = this.py - tooltip.height/2;
+						tooltip.visible = true;
+						tooltip.content = _content;
+						tooltip.country = data.country;
+						break;
 					}
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-					tooltip.visible = false;
-					break;
+					if(sprite.alpha == 1) {
+						tooltip.visible = false;
+						break;
+					}
 				}
 					
 				case MouseEvent.MOUSE_DOWN:
@@ -198,6 +195,7 @@ package com.pentagram.instance.view.visualizer.renderers
 						tooltip.visible = false;
 						info = new RendererInfo();
 						info.country = _data.country;
+						info.content = _content;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 						if(sprite.parent.x + this.px + radius + info.width > this.tooltipContainer.width) {
 							info.leftTipVisible = false;
@@ -218,6 +216,18 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
+		}
+		override public function set visible(v:Boolean):void {
+			_visible = v;
+		}
+		private function hide():void {
+			sprite.visible = false;
+		}
+		public function set content(v:String):void {
+			_content = v;
+			if(this.infoVisible) {
+				info.content = v;
+			}
 		}
 	}
 }	

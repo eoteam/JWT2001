@@ -11,6 +11,8 @@
 				<!--    -->
 	<fx:Script>
 		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
 			import mx.events.AIREvent;
 			import mx.events.FlexEvent;
 			public var context:InstanceContext;  
@@ -62,6 +64,7 @@
 				}
 			}
 			public var compareArgs:Array;
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>

@@ -74,7 +74,6 @@ package org.cove.ape {
 		 */
 		public function set radius(r:Number):void {
 			_radius = r;
-			dirty = true;
 		}
 		
 		
@@ -135,13 +134,6 @@ package org.cove.ape {
 			interval.min = samp.y - _radius;
 			interval.max = samp.y + _radius;
 			return interval;
-		}
-		public function redraw():void {
-			sprite.graphics.clear();
-			sprite.graphics.lineStyle(lineWidth, lineColor, lineAlpha);
-			sprite.graphics.beginFill(fillColor, fillAlpha);
-			sprite.graphics.drawCircle(0, 0, radius);
-			sprite.graphics.endFill();
 		}
 	}
 }
