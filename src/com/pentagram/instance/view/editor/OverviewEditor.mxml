@@ -56,7 +56,7 @@
 					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
 				</s:stroke>
 			</s:Rect>
-			<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+client.thumbs}" />
+			<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{Constants.FILES_URL+client.thumb}" />
 			<s:Group left="1" right="1" top="1" height="30">
 				<s:Rect left="0" right="0" top="0" bottom="0">
 					<s:fill>

@@ -31,7 +31,7 @@
 
 
 	<fx:Declarations>
-		<s:Resize target="{categoryHolder}" duration="500" />
+
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closed" />
@@ -42,6 +42,7 @@
 			<s:Resize target="{categoryHolder}" duration="500" />
 		</s:Transition>
 	</s:transitions>
+	
 	<s:Group width="100%">
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" left="6" top="2" bottom="2" click="button1_clickHandler(event)"/>
 		<s:Rect width="0.25" height="100%" left="24">
@@ -51,51 +52,18 @@
 		</s:Rect>
 		<s:Label verticalCenter="0" text="Compare Categories" left="25" right="0"  color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" />		
 	</s:Group>
+	
 	<s:Rect width="100%" height="0.25" top="24">
 		<s:stroke>
 			<s:SolidColorStroke color="0x666666" weight="0.25" />
 		</s:stroke>
-	</s:Rect>		
-	<s:List id="categoryHolder" width="100%" contentBackgroundAlpha="0" borderVisible="false" height.closed="0" height.open="180" 
+	</s:Rect>	
+	
+	<s:List id="categoryHolder" width="100%" contentBackgroundAlpha="0" borderVisible="false" height.closed="0" height.open="160" 
 	 top="25" bottom.open="24" itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer" >
-		<!--<s:itemRenderer>
-			<fx:Component>
-				<s:ItemRenderer width="100%" autoDrawBackground="false" creationComplete="itemrenderer1_creationCompleteHandler(event)">
-					<fx:Script>
-						<![CDATA[
-							import mx.events.FlexEvent;
-							
-							import spark.events.IndexChangeEvent;
-
-							protected function itemrenderer1_creationCompleteHandler(event:FlexEvent):void
-							{
-								dropDown.dataProvider = spark.components.List(owner).dataProvider;
-							}
-
-
-							protected function dropDown_changeHandler(event:IndexChangeEvent):void
-							{
-								spark.components.Label(dropDown.labelDisplay).setStyle("color",dropDown.selectedItem.color);
-							}
-
-						]]>
-					</fx:Script>
-					<s:DropDownList contentBackgroundAlpha="1" contentBackgroundColor="#1a1a1a"  left="10" id="dropDown" labelField="name" change="dropDown_changeHandler(event)">
-						<s:itemRenderer>
-							<fx:Component>
-								<s:ItemRenderer rollOverColor="0xcccccc">
-									<s:Label text="{data.name}" color="{data.color}" fontFamily="FlamaBold" />
-								</s:ItemRenderer>
-							</fx:Component>
-						</s:itemRenderer>
-					</s:DropDownList>
-				</s:ItemRenderer>					
-			</fx:Component>
-		</s:itemRenderer> -->
 		<s:layout>
 			<s:VerticalLayout  clipAndEnableScrolling="false"  gap="0" paddingLeft="4"  horizontalAlign="center"/>
 		</s:layout>
-
 	</s:List>
 	<s:Button label="Create Comparaisons"  width="100%" includeIn="open" bottom="0" 
 	id="compareBtn" click="compareBtn_clickHandler(event)" styleName="darkButton"/>

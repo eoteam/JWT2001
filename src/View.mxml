@@ -113,12 +113,19 @@
 				appUpdater.addEventListener(ProgressEvent.PROGRESS,handleStatusUpdate);
 				
 				appUpdater.initialize();
+				appUpdater.isCheckForUpdateVisible = false;
 			}
 			private function onUpdate(event:UpdateEvent):void {
 				appUpdater.checkNow();
 			}
 			private function handleStatusUpdate(event:Event):void {
 				trace(event.type + "-----" + flash.utils.getQualifiedClassName(event));		
+				if(event is StatusUpdateEvent) {
+					var version:String = StatusUpdateEvent(event).version;
+					if(version != currentVersion) {
+						this.currentVersion = version;
+					}
+				}
 				if(event is DownloadErrorEvent) {
 					trace("Error");
 				}

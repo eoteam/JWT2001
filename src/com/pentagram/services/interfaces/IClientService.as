@@ -21,6 +21,7 @@ package com.pentagram.services.interfaces
 		function addDatasetCountries(dataset:Dataset,countries:ArrayList):void;
 		function removeDatasetCountries(dataset:Dataset,countries:ArrayList):void;
 		
-	
+		function createClient(client:Client):void;	
+		
 	}
 }

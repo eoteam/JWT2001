@@ -1,6 +1,7 @@
 package com.pentagram.services
 {
 	import com.pentagram.instance.model.InstanceModel;
+	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
@@ -10,8 +11,8 @@ package com.pentagram.services
 
 	public class ClientService extends AbstractService implements IClientService
 	{
-//		[Inject]
-//		public var model:InstanceModel;
+		[Inject]
+		public var model:AppModel;
 		
 		public function loadClientDatasets(client:Client):void {
 			var params:Object = new Object();
@@ -89,6 +90,24 @@ package com.pentagram.services
 			manyids = manyids.substr(0,manyids.length-1);
 			params.idvalues = manyids;
 			this.createService(params,ResponseType.DATA);			
-		}	
+		}
+		public function createClient(client:Client):void {
+			var params:Object = new  Object();
+			params.action = "insertRecord";
+			params.tablename = 'content';
+			params.name = client.name;
+			params.shortname = client.shortname;
+			params.parentid = 2
+			params.templateid = 2;
+			params.migtitle = client.name;
+			params.website = client.website;
+			params.employees = client.employees;
+			params.headquarters = client.headquarters;
+			params.founded = client.founded;
+			params.createdby = params.modifiedby = model.user.id;
+			var d:Date = new Date();
+			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
+			this.createService(params,ResponseType.STATUS);
+		}
 	}
 }

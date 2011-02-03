@@ -46,7 +46,7 @@ package com.pentagram.main.mediators
 			index++; 
 			if(index < view.selectedFiles.length) {
 				
-				uploader.upload2(FileReference(view.selectedFiles[index]), "/flags/");
+				uploader.upload2(FileReference(view.selectedFiles[index]), view.path.text);
 			}
 			else {
 				view.progressText2.text = view.progressText1.text = view.completedFilesList.text = '';

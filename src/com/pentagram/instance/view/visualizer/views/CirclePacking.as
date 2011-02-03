@@ -24,14 +24,14 @@ package com.pentagram.instance.view.visualizer.views
 		public var numberList:Array = [];
 		public var scaler:Number = 1;
 		protected var tooltipContainer:Group;
-		
+		protected var animateCoord:Boolean = false;
 		public function CirclePacking(arr:Array,parent:Group)
 		{
 			super();			
 			this.numberList = arr;
 			this.tooltipContainer = parent;
 		}
-		public function refresh():void {
+		public function build():void {
 			var counter:uint = 0;
 			while(counter < numberList.length) {
 				var sprite:ClusterRenderer = new  ClusterRenderer(tooltipContainer,this); 
@@ -47,8 +47,10 @@ package com.pentagram.instance.view.visualizer.views
 				this.addChild(sprite);
 				counter++;
 			}
+			doLayout();
 		}
-		public function doLayout():void {
+		public function doLayout(animate:Boolean=false):void {
+			animateCoord = animate;
 			var disposeCounter:int = 2;
 			var c:ClusterRenderer = null;
 			var _loc_2:Number = NaN;
@@ -88,6 +90,7 @@ package com.pentagram.instance.view.visualizer.views
 				pos.z = pos.z / _loc_5;
 			}
 			draw();
+			animateCoord = false;
 		}
 		protected function testCircleAtPoint(point:Point, radius:Number) : Boolean {
 			var _loc_3:uint = 1;
@@ -111,15 +114,28 @@ package com.pentagram.instance.view.visualizer.views
 			while (i < this.circlePositions.length){
 				c = this.spriteArray[i];
 				c.state = true;
-				c.x =  this.circlePositions[i].x * _loc_2 + width/2;
-				c.y = this.circlePositions[i].y * _loc_2+ height/2;
-				TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
+				if(animateCoord) {
+					c.alpha = 0;
+					TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
+									   alpha:1,
+									   x:this.circlePositions[i].x * _loc_2 + width/2,
+									   y:this.circlePositions[i].y * _loc_2+ height/2});					
+				}
+				else {
+					c.x =  this.circlePositions[i].x * _loc_2 + width/2;
+					c.y = this.circlePositions[i].y * _loc_2+ height/2;
+					TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
+				}
 				i++;
 			}
-			//cacheAsBitmap = true;
+			cacheAsBitmap = true;
 		}
-		public function resize():void {
-			//this.invalidateParentSizeAndDisplayList();
+		public function hide():void {
+			this.includeInLayout = this.visible = animateCoord =false;
+		}
+		public function show():void {
+			this.includeInLayout = this.visible = true;
+			animateCoord = false;
 		}
 	}
 }		

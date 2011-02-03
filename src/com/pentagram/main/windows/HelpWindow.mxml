@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<windows:BaseWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark"  title="Help" resize="onReload()" width="800" height="600"
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:windows="com.pentagram.main.windows.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			protected var pdf:HTMLLoader = new HTMLLoader(); 
+			
+			protected function init():void {
+				// Check to see if Adobe Reader 8.1 or higher is installed
+				// Possible values:
+				//         HTMLPDFCapability.STATUS_OK 
+				//         HHTMLPDFCapability.ERROR_INSTALLED_READER_NOT_FOUND
+				//         HTMLPDFCapability.ERROR_INSTALLED_READER_TOO_OLD 
+				//         HTMLPDFCapability.ERROR_PREFERRED_READER_TOO_OLD 
+				if (HTMLLoader.pdfCapability == HTMLPDFCapability.STATUS_OK)  
+				{ 
+					var request:URLRequest = new URLRequest("http://208.99.179.45/files/View_help.pdf"); 
+					pdf.load(request); 
+					pdf.addEventListener(Event.COMPLETE,handleComplete);
+					pdf.width = this.width; 
+					pdf.height = this.height; 
+					myWin.addChild(pdf); // Add the HTMLLoader to my HTML component
+				} else { 
+					Alert.show("PDF cannot be displayed. Error code:" + HTMLLoader.pdfCapability); 
+				} 
+			}
+			
+			// Reload the PDF, called when resize of the window occurs or by user click
+			protected function onReload():void {
+				pdf.width = this.width; 
+				pdf.height = this.height; 
+				pdf.reload();
+			}
+			private function handleComplete(event:Event):void {
+//				var data:ByteArray = new ByteArray();
+//				pdf.s (fileData,0,pdf.bytesAvailable);
+//				var file:File = File.documentsDirectory.resolvePath("help.pdf");
+//				var fileStream:FileStream = new FileStream();
+//				fileStream.open(file, FileMode.WRITE);
+//				fileStream.writeBytes(fileData,0,fileData.length);
+//				fileStream.close();
+			}
+		]]>
+	</fx:Script>
+	
+		<mx:HTML id="myWin" width="100%" height="100%" creationComplete="init()"/>
+
+</windows:BaseWindow>

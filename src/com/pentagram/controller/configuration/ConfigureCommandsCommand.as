@@ -2,6 +2,7 @@ package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
 	import com.pentagram.controller.AuthenticateUserCommand;
+	import com.pentagram.controller.CreateClientCommand;
 	import com.pentagram.controller.CreateCountryCommand;
 	import com.pentagram.controller.CreateInstanceWindowCommand;
 	import com.pentagram.controller.CreateWindowCommand;
@@ -33,6 +34,7 @@ package com.pentagram.controller.configuration
 			
 			//managers commands
 			commandMap.mapEvent(EditorEvent.UPDATE_CLIENT_DATA,UpdateClientCommand,EditorEvent);
+			commandMap.mapEvent(EditorEvent.CREATE_CLIENT,CreateClientCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.UPDATE_COUNTRY,UpdateCountryCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.CREATE_COUNTRY,CreateCountryCommand,EditorEvent);
 			commandMap.mapEvent(EditorEvent.DELETE_COUNTRY,DeleteCountryCommand,EditorEvent);

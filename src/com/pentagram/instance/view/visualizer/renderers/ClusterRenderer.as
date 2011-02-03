@@ -163,7 +163,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					if(this.directParent.x + this.x + radius + tooltip.width > this.tooltipContainer.width) {
+					if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
 						tooltip.leftTip.visible = false;
 						tooltip.rightTp.visible = true;
 						tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
@@ -202,7 +202,7 @@ package com.pentagram.instance.view.visualizer.renderers
 						info.content = _content;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
-						if(this.directParent.x + this.x + radius + info.width > this.tooltipContainer.width) {
+						if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
 							info.leftTipVisible = false;
 							info.rightTipVisible = true;
 							info.x = this.directParent.x +this.x - radius - info.width - offset;

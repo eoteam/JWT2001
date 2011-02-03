@@ -1,17 +1,20 @@
 package com.pentagram.controller.configuration
 {
 	import com.pentagram.AppConfigStateConstants;
-	import com.pentagram.main.mediators.ClientWindowMediator;
 	import com.pentagram.main.mediators.BatchUploaderMediator;
+	import com.pentagram.main.mediators.ClientWindowMediator;
 	import com.pentagram.main.mediators.CountriesMediator;
 	import com.pentagram.main.mediators.ExportSpreadSheetWindowMediator;
+	import com.pentagram.main.mediators.HelpWindowMediator;
 	import com.pentagram.main.mediators.LoginWindowMediator;
 	import com.pentagram.main.mediators.MainMediator;
+	import com.pentagram.main.windows.BatchUploader;
 	import com.pentagram.main.windows.ClientListWindow;
 	import com.pentagram.main.windows.CountriesWindow;
 	import com.pentagram.main.windows.ExportSpreadSheetWindow;
+	import com.pentagram.main.windows.HelpWindow;
 	import com.pentagram.main.windows.LoginWindow;
-	import com.pentagram.main.windows.BatchUploader;
+	
 	import org.robotlegs.mvcs.Command;
 	import org.robotlegs.utilities.statemachine.StateEvent;
 
@@ -26,6 +29,7 @@ package com.pentagram.controller.configuration
 			mediatorMap.mapView(ClientListWindow, ClientWindowMediator);
 			mediatorMap.mapView(CountriesWindow, CountriesMediator);
 			mediatorMap.mapView(BatchUploader, BatchUploaderMediator);
+			mediatorMap.mapView(HelpWindow, HelpWindowMediator);
 			trace("Configure: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));
 		}

@@ -154,7 +154,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				case MouseEvent.ROLL_OVER:
 				{
 					if(sprite.alpha == 1) {
-						if(sprite.parent.x + this.px + radius + tooltip.width > this.tooltipContainer.width) {
+						if(sprite.parent.x + this.px + radius + tooltip.width + 10 > this.tooltipContainer.width) {
 							tooltip.leftTip.visible = false;
 							tooltip.rightTp.visible = true;
 							tooltip.x = sprite.parent.x + this.px - radius - tooltip.width - offset;
@@ -197,7 +197,7 @@ package com.pentagram.instance.view.visualizer.renderers
 						info.country = _data.country;
 						info.content = _content;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-						if(sprite.parent.x + this.px + radius + info.width > this.tooltipContainer.width) {
+						if(sprite.parent.x + this.px + radius + info.width + 10 > this.tooltipContainer.width) {
 							info.leftTipVisible = false;
 							info.rightTipVisible = true;
 							info.x = sprite.parent.x + this.px - radius - info.width - offset;

@@ -81,7 +81,7 @@
 						}	
 							
 					}
-					c.doLayout();			
+					c.doLayout(true);			
 				}
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
@@ -105,8 +105,7 @@
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
-						c.visible = true;
-						c.includeInLayout = true;
+						c.show();
 						break;
 					}
 				}
@@ -114,36 +113,32 @@
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
 				t.start();
 			}
-			
 			public function removeCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name == value.name) {
-						c.visible = false;
-						c.includeInLayout = false;
+						c.hide();
 						break;
 					}
 				}
-				var t:Timer = new Timer(100,1);
+				var t:Timer = new Timer(1000,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
 				t.start();
+				this.updateSize();
 			}
 			public function selectCategory(value:Category):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.name != value.name) {
-						c.visible = false;
-						c.includeInLayout = false;
+						c.hide();
 					}
 					else {
-						c.visible = true;
-						c.includeInLayout = true;
+						c.show();
 						c.percentHeight = c.percentWidth = 100;
 						c.height = holder.height;
 						c.width = holder.width/holder.numElements;
-						c.resize();
 					}
 				}
 				var t:Timer = new Timer(100,1);
@@ -188,8 +183,7 @@
 						circle.percentHeight = circle.percentWidth = 100;
 						circle.name = item.name;
 						holder.addElement(circle);
-						circle.refresh();
-						circle.doLayout();
+						circle.build();
 						updateSize();
 					} 
 				}

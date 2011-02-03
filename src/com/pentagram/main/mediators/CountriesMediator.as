@@ -1,6 +1,5 @@
-	package com.pentagram.main.mediators
+package com.pentagram.main.mediators
 {
-	import com.adobe.serialization.json.JSON;
 	import com.pentagram.controller.Constants;
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.main.event.ViewEvent;
@@ -8,7 +7,6 @@
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
-	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.utils.Uploader;
 	
@@ -22,7 +20,6 @@
 	import flash.net.FileFilter;
 	
 	import mx.collections.ArrayCollection;
-	import mx.rpc.events.ResultEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -41,10 +38,11 @@
 		
 		private var uploader:Uploader;
 		private var currentCountry:Country;
+		private var fileToUpload:File;
 		
 		override public function onRegister():void {
 			view.countryList.dataProvider = new ArrayCollection(model.countries.source);
-			view.countryList.addEventListener(IndexChangeEvent.CHANGE,handleSelection);
+			view.countryList.addEventListener(IndexChangeEvent.CHANGE,handleSelection,false,0,true);
 			view.continentList.dataProvider = model.regions;
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
@@ -63,7 +61,6 @@
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_CREATED,handleCountryUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_DELETED,handleCountryDeleted,EditorEvent);
 		}
-		private var fileToUpload:File;
 		
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {

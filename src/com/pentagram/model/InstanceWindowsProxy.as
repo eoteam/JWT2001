@@ -46,6 +46,8 @@ package com.pentagram.model
 		public const COUNTRIES_WINDOW:String = "countriesWindow";
 		public const USERS_WINDOW:String = "userWindow";
 		public const UPLOADER_WINDOW:String = "uploaderWindow";
+		public const HELP_WINDOW:String = "helpWindow";
+		
 		
 		public function InstanceWindowsProxy()
 		{
@@ -317,6 +319,12 @@ package com.pentagram.model
 			arrange.submenu.addItem(cascade);
 			cascade.addEventListener(Event.SELECT,handleArrange);
 			
+			//help
+			var helpItem:NativeMenuItem = new NativeMenuItem("Tile");
+			//helpItem.keyEquivalent = "h";
+			//helpItem.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			helpItem.addEventListener(Event.SELECT,handleHelp);
+			
 			//Manager Menu Items
 			var clients:NativeMenuItem = new NativeMenuItem("Clients");
 			clients.addEventListener(Event.SELECT,handleClient);
@@ -356,15 +364,18 @@ package com.pentagram.model
 			
 			var windowMenu:NativeMenuItem;
 			var fileMenu:NativeMenuItem;
+			
 			var managers:NativeMenu = new NativeMenu();
-	
+			var help:NativeMenu = new NativeMenu();
+			
 			if (NativeApplication.supportsMenu) {
 				var m:NativeMenu = NativeApplication.nativeApplication.menu;
 				windowMenu = m.items[3] as NativeMenuItem;
 				fileMenu = m.items[1] as NativeMenuItem;
 				
 				m.addSubmenu(managers,"Managers");
-		
+				m.addSubmenu(help,"Help");
+				
 				exportMenuItem = exp;
 				importMenuItem  = imp;
 				
@@ -380,9 +391,13 @@ package com.pentagram.model
 				var mroot:NativeMenuItem = new NativeMenuItem("Managers");
 				mroot.submenu = managers; 
 				
+				var hroot:NativeMenuItem = new NativeMenuItem("Help");
+				hroot.submenu = help;
+				
 				window.stage.nativeWindow.menu.addItem(windowMenu);
 				window.stage.nativeWindow.menu.addItem(fileMenu);
 				window.stage.nativeWindow.menu.addItem(mroot);
+				window.stage.nativeWindow.menu.addItem(hroot);
 			}
 			clientMenuItem = clients;
 			userMenuItem = users;
@@ -399,6 +414,8 @@ package com.pentagram.model
 			managers.addItem(countries);
 			managers.addItem(users);
 			managers.addItem(uploader);
+			
+			help.addItem(helpItem);
 			
 			
 			
@@ -442,6 +459,9 @@ package com.pentagram.model
 		}
 		private function handleUploader(event:Event):void {
 			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW));
-		}					 
+		}				
+		private function handleHelp(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,HELP_WINDOW));
+		}
 	}
 }

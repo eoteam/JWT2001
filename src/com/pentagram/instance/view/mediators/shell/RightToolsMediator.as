@@ -37,11 +37,11 @@ package com.pentagram.instance.view.mediators.shell
 			view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
 			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
 			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-			view.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
-			view.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
+			view.optionsPanel.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
+			view.optionsPanel.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
-			view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
@@ -130,19 +130,19 @@ package com.pentagram.instance.view.mediators.shell
 		}	
 		private function handleFilterToolsStateChange(event:StateChangeEvent):void {
 			if(view.state == 'Graph') {
-				view.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
+				view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			}	
 		}
 		private function handleXray(event:Event):void {
-			var alpha:Number = view.xrayToggle.selected?0.2:1;
+			var alpha:Number = view.optionsPanel.xrayToggle.selected?0.2:1;
 			dispatchPropEvent('alpha',alpha);
 		}
 		private function handleMapToggle(event:Event):void {
 
 		}
 		private function handleMaxRadius(event:Event):void {
-			model.maxRadius = view.maxRadiusSlider.value;
-			dispatchPropEvent('maxRadius',view.maxRadiusSlider.value);
+			model.maxRadius = view.optionsPanel.maxRadiusSlider.value;
+			dispatchPropEvent('maxRadius',view.optionsPanel.maxRadiusSlider.value);
 		}
 		private function dispatchPropEvent(prop:String,value:*):void {
 			dispatch(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,prop,value));

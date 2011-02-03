@@ -15,7 +15,7 @@
 			<s:HorizontalLayout gap="0" verticalAlign="middle"  paddingLeft="5"/>
 		</s:layout>
 		<s:Image id="logo" height="{barHeight-5}"  smooth="true" smoothingQuality="high"  scaleMode="letterbox"  fillMode="scale" 
-		source="{Constants.FILES_URL+client.thumbs}" />
+		source="{Constants.FILES_URL+client.thumb}" />
 		
 		<s:Rect width="15" excludeFrom="editor" />
 		<s:Line height="100%" excludeFrom="editor">

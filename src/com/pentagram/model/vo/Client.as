@@ -12,7 +12,7 @@ package com.pentagram.model.vo
 		public var headquarters:String;
 		public var website:String;
 		public var description:String;
-		public var thumbs:String;
+		public var thumb:String;
 		
 		public var datasets:ArrayList;
 		public var quantityDatasets:ArrayList;

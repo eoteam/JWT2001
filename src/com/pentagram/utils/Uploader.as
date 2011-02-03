@@ -39,7 +39,7 @@ package com.pentagram.utils
 			currentFile = file;
 		}
 		public function upload2(file:FileReference,dir:String=''):void {
-			var url:String = baseURL + "?directory="+dir+"&fileType=images";
+			var url:String = baseURL + "?directory="+dir+"&fileType=file";
 			var urlRequest:URLRequest = new URLRequest(url);
 			urlRequest.method = URLRequestMethod.POST;  
 			file.addEventListener(ProgressEvent.PROGRESS, uploadProgress);

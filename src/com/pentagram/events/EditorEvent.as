@@ -6,9 +6,11 @@ package com.pentagram.events
 	{
 		public static const UPDATE_CLIENT_DATA:String = "updateClientData";
 		public static const CLIENT_DATA_UPDATED:String = "clientDataUpdated";
-
 		public static const CREATE_CLIENT:String = "createClient";
 		public static const CLIENT_CREATED:String = "clientCreated";
+		public static const DELETE_CLIENT:String = "deleteClient";
+		public static const CLIENT_DELETED:String = "clientDeleted";
+		
 		
 		public static const CREATE_DATASET:String = "createDataset";
 		public static const DUMP_DATASET_DATA:String = "dumpDatasetData";

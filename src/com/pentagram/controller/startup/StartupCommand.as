@@ -61,6 +61,9 @@ package com.pentagram.controller.startup
 			appModel.clients = new ArrayList(event.token.results as Array);
 			counter++;
 			for each(var client:Client in appModel.clients.source) {
+				client.thumb = Constants.FILES_URL+client.thumb
+				
+				////??????????????????
 				for each(var region:Region in appModel.regions.source) {
 					var cRegion:Region = new Region();
 					cRegion.color = region.color;

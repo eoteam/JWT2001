@@ -45,7 +45,7 @@
 	
 	
 	<s:Label id="promptDisplay" left="4" right="4" top="1" bottom="0" includeIn="normalWithPrompt"
-			 color="#aaaaaa" fontStyle="italic"
+			 color="#aaaaaa" fontFamily="FlamaBookItalic" fontStyle="normal"
 			 maxDisplayedLines="1"
 			 verticalAlign="middle" />
 </s:Skin>
