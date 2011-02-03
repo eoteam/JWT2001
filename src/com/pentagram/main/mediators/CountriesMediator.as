@@ -150,7 +150,6 @@ package com.pentagram.main.mediators
 		}
 		private function handleDelete(event:MouseEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_COUNTRY,currentCountry));
-			
 		}
 	}
 }

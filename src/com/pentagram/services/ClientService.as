@@ -11,8 +11,6 @@ package com.pentagram.services
 
 	public class ClientService extends AbstractService implements IClientService
 	{
-		[Inject]
-		public var model:AppModel;
 		
 		public function loadClientDatasets(client:Client):void {
 			var params:Object = new Object();
@@ -91,7 +89,7 @@ package com.pentagram.services
 			params.idvalues = manyids;
 			this.createService(params,ResponseType.DATA);			
 		}
-		public function createClient(client:Client):void {
+		public function createClient(client:Client,userid:int):void {
 			var params:Object = new  Object();
 			params.action = "insertRecord";
 			params.tablename = 'content';
@@ -104,7 +102,7 @@ package com.pentagram.services
 			params.employees = client.employees;
 			params.headquarters = client.headquarters;
 			params.founded = client.founded;
-			params.createdby = params.modifiedby = model.user.id;
+			params.createdby = params.modifiedby = userid;
 			var d:Date = new Date();
 			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
 			this.createService(params,ResponseType.STATUS);

@@ -47,7 +47,7 @@ package com.pentagram.controller
 			
 			uploader.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
 			
-			clientService.createClient(client);
+			clientService.createClient(client,model.user.id	);
 			clientService.addHandlers(handleClientCreated);	
 		}
 		private function handleUploadComplete(event:DataEvent):void {

@@ -1,3 +1,6 @@
+echo -n "Committing ... "
+git status
 git add .
-git commit -a -m "client manager, ui tweaks, cluster view tweaks, skins"
+read message
+git commit -a -m "$message"
 git push origin edge

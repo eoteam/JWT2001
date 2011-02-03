@@ -39,6 +39,7 @@ package com.pentagram.main.mediators
 			view.clientList.dataProvider = new ArrayCollection(model.clients.source);
 			view.clientList.addEventListener(IndexChangeEvent.CHANGE,handleSelection,false,0,true);
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
+			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 			
@@ -131,6 +132,9 @@ package com.pentagram.main.mediators
 			//view.saveBtn.enabled = false;
 			currentClient = new Client();
 			view.client = currentClient;
+		}
+		private function handleDelete(event:MouseEvent):void {
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_CLIENT,currentClient));
 		}
 	}
 }
