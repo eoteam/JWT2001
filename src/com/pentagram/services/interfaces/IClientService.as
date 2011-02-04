@@ -4,6 +4,7 @@ package com.pentagram.services.interfaces
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Note;
 	
 	import mx.collections.ArrayList;
 
@@ -24,6 +25,11 @@ package com.pentagram.services.interfaces
 		function createClient(client:Client,userid:int):void;	
 		
 		function removeClient(client:Client):void;
+		
+		function loadClientNotes(client:Client):void;
+		
+		function updateNote(note:Note):void;
+		function createNode(note:Note):void;
 		
 	}
 }

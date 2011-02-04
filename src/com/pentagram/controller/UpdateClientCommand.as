@@ -65,7 +65,7 @@ package com.pentagram.controller
 			var result:StatusResult = event.token.results as StatusResult;	
 			if(result.success) {
 				var mediaid:int = Number(result.message);
-				appService.addFileToContent(client.id,mediaid);
+				appService.addFileToContent(client.id,mediaid,'thumb');
 				appService.addHandlers(contentmediaAdded);
 			}
 		}

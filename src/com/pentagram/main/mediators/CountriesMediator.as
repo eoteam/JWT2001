@@ -141,6 +141,7 @@ package com.pentagram.main.mediators
 			view.country = currentCountry;
 			view.saveBtn.enabled = true;
 			view.currentState = "edit";
+			this.fileToUpload = null;
 		}
 		private function handleAdd(event:MouseEvent):void {
 			view.currentState = "add";

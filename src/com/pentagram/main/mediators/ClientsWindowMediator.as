@@ -4,7 +4,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.main.event.ViewEvent;
-	import com.pentagram.main.windows.ClientListWindow;
+	import com.pentagram.main.windows.ClientsWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.utils.Uploader;
@@ -22,10 +22,10 @@ package com.pentagram.main.mediators
 	
 	import spark.events.IndexChangeEvent;
 
-	public class ClientWindowMediator extends Mediator
+	public class ClientsWindowMediator extends Mediator
 	{
 		[Inject]
-		public var view:ClientListWindow;
+		public var view:ClientsWindow;
 		
 		[Inject]
 		public var model:AppModel;
@@ -118,7 +118,6 @@ package com.pentagram.main.mediators
 			view.clientList.selectedIndex = 0;
 			currentClient = view.clientList.selectedItem;
 			view.client = currentClient;
-			view.saveBtn.enabled = true;
 			view.currentState = "edit";
 		}
 		private function handleSelection(event:IndexChangeEvent):void {
@@ -126,10 +125,10 @@ package com.pentagram.main.mediators
 			view.client = currentClient;
 			view.saveBtn.enabled = true;
 			view.currentState = "edit";
+			this.fileToUpload = null;
 		}
 		private function handleAdd(event:MouseEvent):void {
-			view.currentState = "add";
-			//view.saveBtn.enabled = false;
+			view.currentState = "add";	
 			currentClient = new Client();
 			view.client = currentClient;
 		}

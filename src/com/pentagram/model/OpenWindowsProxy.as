@@ -37,7 +37,7 @@ package com.pentagram.model
 			viewsMap = new HashMap();
 			viewsMap.put(LOGIN_WINDOW,"com.pentagram.main.windows.LoginWindow");
 			viewsMap.put(SPREADSHEET_WINDOW,"com.pentagram.main.windows.ExportSpreadSheetWindow");
-			viewsMap.put(CLIENT_WINDOW,"com.pentagram.main.windows.ClientListWindow");
+			viewsMap.put(CLIENT_WINDOW,"com.pentagram.main.windows.ClientsWindow");
 			viewsMap.put(COUNTRIES_WINDOW,"com.pentagram.main.windows.CountriesWindow");
 			viewsMap.put(UPLOADER_WINDOW,"com.pentagram.main.windows.BatchUploader");
 			viewsMap.put(HELP_WINDOW,"com.pentagram.main.windows.HelpWindow");

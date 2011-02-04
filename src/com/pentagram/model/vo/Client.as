@@ -34,5 +34,7 @@ package com.pentagram.model.vo
 		public function Client(created:Boolean = true) {
 			this.created = created;
 		}
+		
+		public var notes:ArrayCollection;
 	}
 }

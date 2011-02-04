@@ -87,13 +87,14 @@ package com.pentagram.services
 			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
 			this.createService(params,ResponseType.STATUS);
 		}
-		public function addFileToContent(contentid:int,mediaid:int):void {
+		public function addFileToContent(contentid:int,mediaid:int,usage:String=''):void {
 			var params:Object = new  Object();
 			params.action = "insertRecord";
 			params.tablename = 'content_media';
 			params.contentid = contentid;
 			params.mediaid = mediaid;
 			params.statusid = 4;
+			params.usage_type = usage;
 			this.createService(params,ResponseType.STATUS);			
 		}
 		public function createCountry(country:Country):void {

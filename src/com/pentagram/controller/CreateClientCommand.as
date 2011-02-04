@@ -90,7 +90,7 @@ package com.pentagram.controller
 			if(count == total) {
 				model.clients.addItem(client);
 				//country.region.countries.addItem(client);
-				this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.COUNTRY_CREATED));
+				this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CLIENT_CREATED));
 			}
 		}
 	}

@@ -6,9 +6,10 @@ package com.pentagram.instance.controller
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.Region;
-	import com.pentagram.services.interfaces.IDatasetService;
 	import com.pentagram.services.interfaces.IClientService;
+	import com.pentagram.services.interfaces.IDatasetService;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
 	
@@ -37,6 +38,9 @@ package com.pentagram.instance.controller
 				service.addHandlers(handleClientDatasets);
 				service.loadClientCountries(model.client);
 				service.addHandlers(handleClientCountries);	
+				service.loadClientNotes(model.client);
+				service.addHandlers(handleClientNotes);	
+				
 			}
 			else {
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
@@ -75,9 +79,7 @@ package com.pentagram.instance.controller
 			else {
 				model.client.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
-				
 			}
-			
 		}
 		private function handleClientCountries(event:ResultEvent):void
 		{	
@@ -97,8 +99,11 @@ package com.pentagram.instance.controller
 				}
 			}
 		}
-		private function handleDatasetLoaded(event:ResultEvent):void
-		{
+		private function handleClientNotes (event:ResultEvent):void {
+			var notes:Array = event.token.results as Array;
+			model.client.notes = new ArrayCollection(notes);
+		}
+		private function handleDatasetLoaded(event:ResultEvent):void {
 			counter++;
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.data = event.result.toString();
@@ -107,7 +112,6 @@ package com.pentagram.instance.controller
 			if(counter == model.client.datasets.length) {
 				model.client.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
-				//model.client = client;
 			}
 		}
 		

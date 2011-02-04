@@ -29,7 +29,7 @@ package com.pentagram.services.interfaces
 		
 		function addFileToDatabase(file:Object,path:String):void;
 		
-		function addFileToContent(contentid:int,mediaid:int):void;
+		function addFileToContent(contentid:int,mediaid:int,usage:String=''):void;
 		
 	}
 }

@@ -219,6 +219,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function set visible(v:Boolean):void {
 			_visible = v;
+			this.collidable = v;
 		}
 		private function hide():void {
 			sprite.visible = false;

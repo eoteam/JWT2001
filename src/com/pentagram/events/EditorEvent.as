@@ -11,7 +11,6 @@ package com.pentagram.events
 		public static const DELETE_CLIENT:String = "deleteClient";
 		public static const CLIENT_DELETED:String = "clientDeleted";
 		
-		
 		public static const CREATE_DATASET:String = "createDataset";
 		public static const DUMP_DATASET_DATA:String = "dumpDatasetData";
 		public static const DATASET_CREATED:String = "datasetCreated";
@@ -27,13 +26,19 @@ package com.pentagram.events
 		public static const IMPORT_FAILED:String = "importFailed";
 		public static const START_IMPORT:String = "startImport";
 		
-		
 		public static const UPDATE_COUNTRY:String = "updateCountry";
 		public static const COUNTRY_UPDATED:String = "countryUpdated";
 		public static const CREATE_COUNTRY:String = "createCountry";
 		public static const COUNTRY_CREATED:String = "countryCreated";
 		public static const DELETE_COUNTRY:String = "deleteCountry";
 		public static const COUNTRY_DELETED:String = "countryDeleted";
+		
+		
+		public static const UPDATE_NOTE:String = "updateNote";
+		public static const NOTE_UPDATED:String = "noteUpdated";
+		public static const CREATE_NOTE:String = "createNote";
+		public static const NOTE_CREATED:String = "noteCreated";
+		
 		
 		public var args:Array;
 		public function EditorEvent(type:String,...args)

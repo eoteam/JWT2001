@@ -1,4 +1,3 @@
-git status
 git add .
 echo -n "Enter commit message:"
 read message

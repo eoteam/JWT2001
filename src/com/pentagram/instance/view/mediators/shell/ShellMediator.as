@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
@@ -13,6 +14,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Note;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ModuleUtil;
@@ -31,6 +33,7 @@ package com.pentagram.instance.view.mediators.shell
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.components.Group;
+	import spark.events.TextOperationEvent;
 	
 	public class ShellMediator extends Mediator
 	{
@@ -45,7 +48,7 @@ package com.pentagram.instance.view.mediators.shell
 		
 		
 		private var loaders:Array = [];
-		
+		private var datasetids:String;
 		override public function onRegister():void
 		{
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
@@ -54,20 +57,19 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.STOP_TIMELINE,handleStopTimeline);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.PLAY_TIMELINE,handlePlayTimeline);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange);
-
-			
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
 			
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			
-			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent,false,0,true);
-			eventMap.mapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent,false,0,true);
-		
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
-			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory);
-			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools);
-			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave);
+			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
+			eventMap.mapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
+			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
+			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
+			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
+			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
+			
 				
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -79,10 +81,10 @@ package com.pentagram.instance.view.mediators.shell
 				model.importMenuItem.enabled = false;
 				view.currentState = view.loggedOutState.name;
 			}
-			
 			model.exportDirectory = File.desktopDirectory;
 			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
-			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
+			
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));	
 		}
 		private function handleIncludeTools(event:Event):void {
 			model.includeTools = view.exportPanel.includeTools.selected;
@@ -100,7 +102,9 @@ package com.pentagram.instance.view.mediators.shell
 			if(event.newIndex == model.MAP_INDEX){
 				restoreDatasets(view.mapView);
 				view.mapView.updateSize();
-				
+				view.vizTitle.text = view.mapView.datasets[2].name + " by Region";
+				datasetids = view.mapView.datasets[2].id.toString();
+				checkNotes();
 			}
 			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
@@ -115,6 +119,15 @@ package com.pentagram.instance.view.mediators.shell
 						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[3].optionsArray));
 					view.graphView.updateSize();
 					restoreDatasets(view.graphView);
+					view.vizTitle.text = view.graphView.datasets[0].name + " vs " + view.graphView.datasets[1].name + ", sized by " + view.graphView.datasets[2].name;
+					datasetids = view.graphView.datasets[0].id.toString()+','+ view.graphView.datasets[1].id.toString()+','+ view.graphView.datasets[2].id.toString();
+					if(view.graphView.datasets[3]) {
+						view.vizTitle.text += ", grouped by " + view.graphView.datasets[3].name;
+						datasetids += ','+view.graphView.datasets[3].id.toString();
+					}
+					else
+						view.vizTitle.text += ", grouped by region";	
+					checkNotes();
 				}	
 			}
 			else if(event.newIndex == model.CLUSTER_INDEX){
@@ -130,6 +143,9 @@ package com.pentagram.instance.view.mediators.shell
 						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[2].optionsArray));
 					view.clusterView.updateSize();
 					restoreDatasets(view.clusterView);
+					view.vizTitle.text = view.clusterView.datasets[2].name + " by " + view.clusterView.datasets[3].name;
+					datasetids = view.clusterView.datasets[2].id.toString()+','+ view.clusterView.datasets[3].id.toString();
+					checkNotes();
 				}
 			}
 		}
@@ -141,10 +157,16 @@ package com.pentagram.instance.view.mediators.shell
 					else
 						view.filterTools.continentList.dataProvider = null;
 					view.clusterView.visualize(event.args[0],event.args[1]);
+					view.vizTitle.text = event.args[0].name + " by " + event.args[1].name;
+					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
+					checkNotes();
 				break;
 				case model.MAP_INDEX:
 					view.mapView.visualize(event.args[0]);
 					view.filterTools.continentList.dataProvider = model.regions;
+					view.vizTitle.text = event.args[0].name + " by Region";
+					datasetids = event.args[0].id.toString();
+					checkNotes();
 				break;
 				case model.GRAPH_INDEX:
 					
@@ -155,6 +177,16 @@ package com.pentagram.instance.view.mediators.shell
 					
 					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3]);	
 					view.graphView.visualize(model.maxRadius,d,event.args[0],event.args[1],event.args[2],event.args[3]);
+					view.vizTitle.text = event.args[0].name + " vs " + event.args[1].name + ", sized by " + event.args[2].name;
+					datasetids = event.args[0].id.toString() + "," + event.args[1].id.toString()  + "," + event.args[2].id.toString();
+					if(event.args[3]) {
+						view.vizTitle.text += ", grouped by " + event.args[3].name;
+						datasetids += ","+event.args[3].id.toString()
+					}
+					else
+						view.vizTitle.text += ", grouped by region";
+					
+					checkNotes();
 				break;
 			}
 		}
@@ -238,6 +270,7 @@ package com.pentagram.instance.view.mediators.shell
 			util.addEventListener("moduleLoaded",handleMapLoaded);
 			util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");
 			loaders.push(util);
+			model.client.notes.filterFunction = findNoteByDatasets;
 		}
 		private function handleLoadSearchView(event:VisualizerEvent):void
 		{
@@ -268,6 +301,10 @@ package com.pentagram.instance.view.mediators.shell
 				var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
 				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
 				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
+				view.vizTitle.text = ds1.name + " vs " + ds2.name + ", sized by " + ds3.name;
+				view.vizTitle.text += ", grouped by region";
+				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
+				checkNotes();
 			}
 		}
 		private function handleMapLoaded(event:Event):void {
@@ -280,7 +317,7 @@ package com.pentagram.instance.view.mediators.shell
 				IMapView(util.view).isCompare = model.isCompare;
 				view.mapHolder.addElement(util.view as Group);
 				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(0) as Dataset;
-				
+				view.vizTitle.text = dataset.name + " by Region";
 				if(model.isCompare) {
 					for each(var r:Region in model.regions.source) {
 						if(r.name == model.compareArgs[2].name) {
@@ -289,7 +326,6 @@ package com.pentagram.instance.view.mediators.shell
 						else
 							r.selected = false;
 					}
-					//appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_TILE));
 				}				
 				view.mapView.visualize(dataset);
 				view.tools.thirdSet.selectedItem = dataset;
@@ -303,6 +339,8 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					view.tools.yearSlider.dataProvider = years;
 				}
+				datasetids = dataset.id.toString();
+				checkNotes();
 			}
 		}
 		private function handleClusterLoaded(event:Event):void {
@@ -317,6 +355,10 @@ package com.pentagram.instance.view.mediators.shell
 				view.tools.fourthSet.selectedItem = dataset2;
 				view.clusterView.visualize(dataset1,dataset2);
 				view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));
+				
+				view.vizTitle.text = dataset1.name + " by " + dataset2.name;
+				datasetids = dataset1.id.toString()+','+dataset2.id.toString();
+				checkNotes();
 			}			
 		}
 		private function handleFullScreen(event:Event):void{
@@ -324,6 +366,33 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleExportSettingsSave(event:MouseEvent):void {
 			view.exportPanel.visible = false;
+		}
+		private function findNoteByDatasets(note:Note):Boolean {
+			return note.datasets == datasetids;
+		}
+		private function handleInfoChanged(event:MouseEvent):void {
+			var note:Note
+			if(model.client.notes.length == 1) {
+				note = model.client.notes.getItemAt(0) as Note;
+				note.description = view.infoText.text;
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_NOTE,note));
+			}
+			else {
+				note = new Note();
+				note.description = view.infoText.text;
+				note.clientid = model.client.id;
+				note.datasets = datasetids;
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_NOTE,note));
+			}
+		}
+		private function checkNotes():void {
+			model.client.notes.refresh();
+			if(model.client.notes.length  == 1) {
+				view.infoText.text = Note(model.client.notes.getItemAt(0)).description;	
+			}
+			else
+				view.infoText.text = '';
+				
 		}
 	}
 }

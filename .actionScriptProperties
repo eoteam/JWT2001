@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <actionScriptProperties analytics="false" mainApplicationPath="View.mxml" projectUUID="ba420154-ce36-4a72-a3a8-db030c3e8ace" version="7">
-  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex Hero (build 18623)" fteInMXComponents="false" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+  <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" flexSDK="Flex Hero (build 18623)" fteInMXComponents="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="true" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
@@ -32,19 +32,18 @@
       <airSettings airCertificatePath="/Users/raed/Sites/JWT2001/View/view-certificate.p12" airTimestamp="true" version="1">
         <airExcludes>
           <pathEntry path="com/ericfeminella"/>
-          <pathEntry path="assets/icons/cursor_resize.gif"/>
           <pathEntry path="flex"/>
-          <pathEntry path="bxf"/>
+          <pathEntry path="assets/fonts"/>
+          <pathEntry path="assets/icons/cursor_resize.gif"/>
+          <pathEntry path="com/pentagram/view"/>
           <pathEntry path="com/pentagram/services"/>
           <pathEntry path="assets/.DS_Store"/>
-          <pathEntry path="com/adobe"/>
-          <pathEntry path="assets/icons/cursor_move.gif"/>
-          <pathEntry path="org"/>
-          <pathEntry path="com/pentagram/view"/>
-          <pathEntry path=".DS_Store"/>
-          <pathEntry path="assets/fonts"/>
-          <pathEntry path="com/.DS_Store"/>
           <pathEntry path="ws"/>
+          <pathEntry path="com/adobe"/>
+          <pathEntry path="com/.DS_Store"/>
+          <pathEntry path=".DS_Store"/>
+          <pathEntry path="org"/>
+          <pathEntry path="assets/icons/cursor_move.gif"/>
         </airExcludes>
       </airSettings>
       <actionScriptSettings version="1"/>

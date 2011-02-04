@@ -210,15 +210,16 @@ package com.pentagram.instance.view.mediators.shell
 			counter++;
 			
 			if(counter == view.yearSlider.dataProvider.length) {
-				yearTimer.stop();
-				view.playBtn.label = "Play";		
-				view.playBtn.selected = false;
-				this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.STOP_TIMELINE));
+				counter = 0;
+//				yearTimer.stop();
+//				view.playBtn.label = "Play";		
+//				view.playBtn.selected = false;
+//				this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.STOP_TIMELINE));
 			}
-			else {
+			//else {
 				view.yearSlider.selectedIndex = counter;
 				handleYearSelection();
-			}
+			//}
 		}
 		private function handleYearSelection(event:IndexChangeEvent=null):void {
 		

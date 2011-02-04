@@ -5,6 +5,7 @@ package com.pentagram.services
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Dataset;
+	import com.pentagram.model.vo.Note;
 	import com.pentagram.services.interfaces.IClientService;
 	
 	import mx.collections.ArrayList;
@@ -107,5 +108,37 @@ package com.pentagram.services
 			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
 			this.createService(params,ResponseType.STATUS);
 		}
+		public function removeClient(client:Client):void {
+			var params:Object = new  Object();
+			params.action = "deleteRecord";
+			params.tablename = 'content';
+			params.id = client.id;
+			this.createService(params,ResponseType.STATUS);
+		}
+		public function loadClientNotes(client:Client):void {
+			var params:Object = new  Object();
+			params.action = "getData";
+			params.tablename = 'notes';
+			params.clientid = client.id;
+			this.createService(params,ResponseType.DATA,Note);
+		}
+		public function updateNote(note:Note):void {
+			var params:Object = new  Object();
+			params.action = "updateRecord";
+			params.tablename = 'notes';
+			params.id = note.id;
+			params.description = note.description;
+			this.createService(params,ResponseType.STATUS);	
+		}
+		public function createNode(note:Note):void {
+			var params:Object = new  Object();
+			params.action = "insertRecord";
+			params.tablename = 'notes';
+			params.clientid = note.clientid;
+			params.description = note.description;
+			params.datasets = note.datasets;
+			this.createService(params,ResponseType.STATUS);	
+		}
+		
 	}
 }
