@@ -9,11 +9,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function updateMaxRadius(value:Number):void;
 		
 		function unload():void;
-		
-		function set continous(value:Boolean):void;
-		
-		function get continous():Boolean;
-		
+			
 		function pause():void;
 		
 		function resume():void;
@@ -24,15 +20,19 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function get datasets():Array;
 		
+		function get viewOptions():Array;
+				
 		function addCategory(value:Category,count:int):void;
 		
 		function removeCategory(value:Category,count:int):void;
 		
 		function selectCategory(value:Category):void;
 		
+		function selectAllCategories():void;
+		
+		
 		function updateSize():void;
 		
-		function selectAllCategories():void;
 		
 	}
 }

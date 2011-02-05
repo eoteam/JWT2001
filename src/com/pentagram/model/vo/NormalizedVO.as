@@ -13,6 +13,7 @@ package com.pentagram.model.vo
 		public var shortname:String;
 		public var prevRadius:Number;
 		public var category:String;
+		public var country:Country;
 
 	}
 }

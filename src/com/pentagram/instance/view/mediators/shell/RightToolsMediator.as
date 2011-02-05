@@ -44,9 +44,11 @@ package com.pentagram.instance.view.mediators.shell
 			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 			
+			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
 			eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			
 			if(model.isCompare) {
 				var newDP:ArrayList = new ArrayList();
 				view.comparator.enabled = true;
@@ -182,7 +184,6 @@ package com.pentagram.instance.view.mediators.shell
 				if(item.selected)
 					appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,model.selectedSet,item));
 			}
-			
 		}
 	}
 }

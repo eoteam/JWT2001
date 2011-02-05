@@ -54,7 +54,7 @@
 	<s:Scroller width="100%" height.closed="0" height.open="100"  top="25" id="optionsHolder">
 		<s:VGroup width="100%" clipAndEnableScrolling="false" gap="4">
 			<s:HGroup paddingLeft="8">
-				<s:CheckBox  label="X-Ray Mode" id="xrayToggle" textAlign="center" left="6"  height="25" selected="true" color="0xffffff"/>
+				<s:CheckBox  label="X-Ray Mode" id="xrayToggle"  left="6"  height="25" selected="true" color="0xffffff"/>
 			</s:HGroup>
 		
 			<s:Rect width="100%" height="0.25">

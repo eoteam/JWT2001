@@ -105,6 +105,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.vizTitle.text = view.mapView.datasets[2].name + " by Region";
 				datasetids = view.mapView.datasets[2].id.toString();
 				checkNotes();
+				restoreViewOptions(view.mapView);
 			}
 			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
@@ -128,6 +129,7 @@ package com.pentagram.instance.view.mediators.shell
 					else
 						view.vizTitle.text += ", grouped by region";	
 					checkNotes();
+					restoreViewOptions(view.graphView);
 				}	
 			}
 			else if(event.newIndex == model.CLUSTER_INDEX){
@@ -146,6 +148,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.vizTitle.text = view.clusterView.datasets[2].name + " by " + view.clusterView.datasets[3].name;
 					datasetids = view.clusterView.datasets[2].id.toString()+','+ view.clusterView.datasets[3].id.toString();
 					checkNotes();
+					restoreViewOptions(view.clusterView);
 				}
 			}
 		}
@@ -191,7 +194,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function handleStopTimeline(event:VisualizerEvent):void {
-			view.currentVisualizer.continous = false;
+			//view.currentVisualizer.continous = false;
 			view.currentVisualizer.pause();
 		}
 		private function restoreDatasets(viz:IVisualizer):void {
@@ -201,7 +204,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.tools.fourthSet.selectedItem	= viz.datasets[3] ? viz.datasets[3] : null;				
 		}
 		private function handlePlayTimeline(event:VisualizerEvent):void {
-			view.currentVisualizer.continous = true;
+			//view.currentVisualizer.continous = true;
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					view.clusterView.updateYear(event.args[0]);
@@ -251,12 +254,12 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case 'maxRadius':
 					if(view.visualizerArea.selectedIndex == model.GRAPH_INDEX) {
-					var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
-					var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
-					var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
-					var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
-					var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
-					model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
+						var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
+						var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
+						var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
+						var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
+						var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
+						model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
 					}
 					view.currentVisualizer.updateMaxRadius(value);
 				break;
@@ -305,6 +308,8 @@ package com.pentagram.instance.view.mediators.shell
 				view.vizTitle.text += ", grouped by region";
 				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
 				checkNotes();
+				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
+				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}
 		}
 		private function handleMapLoaded(event:Event):void {
@@ -356,9 +361,13 @@ package com.pentagram.instance.view.mediators.shell
 				view.clusterView.visualize(dataset1,dataset2);
 				view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));
 				
+				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
+				view.filterTools.optionsPanel.xrayToggle.selected = true;
+				
 				view.vizTitle.text = dataset1.name + " by " + dataset2.name;
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();
 				checkNotes();
+				
 			}			
 		}
 		private function handleFullScreen(event:Event):void{
@@ -391,8 +400,13 @@ package com.pentagram.instance.view.mediators.shell
 				view.infoText.text = Note(model.client.notes.getItemAt(0)).description;	
 			}
 			else
-				view.infoText.text = '';
-				
+				view.infoText.text = '';		
+		}
+		private function restoreViewOptions(viz:IVisualizer):void {
+			var arr:Array = viz.viewOptions;
+			view.filterTools.optionsPanel.maxRadiusSlider.value = arr[0];
+			view.filterTools.optionsPanel.xrayToggle.selected = arr[1];
+			//view.tools.yearSlider.selectedItem
 		}
 	}
 }

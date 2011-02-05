@@ -61,13 +61,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	 */
 	[Event(name="show", type="mx.events.FlexEvent")]
 	
-	//--------------------------------------
-	//  Styles
-	//--------------------------------------
-	
-//	include "../../styles/metadata/LeadingStyle.as"
-//	include "../../styles/metadata/PaddingStyles.as"
-//	include "../../styles/metadata/TextStyles.as"
+
 	
 	/**
 	 *  Background color of the component.
@@ -175,317 +169,45 @@ package com.pentagram.instance.view.visualizer.renderers
 	 */
 	public class GraphDataTip extends UIComponent implements IDataRenderer
 	{
-		//include "../../core/Version.as";
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Class initialization
-		//
-		//--------------------------------------------------------------------------
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Class constnats
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @private
-		 */
+		private var _hitData:HitData;
 		private static const HEX_DIGITS:String = "0123456789ABCDEF";
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Class variables
-		//
-		//--------------------------------------------------------------------------
-		
 		[Inspectable(environment="none")]
-		
-		/**
-		 *  Specifies the maximum width of the bounding box, in pixels,
-		 *  for new DataTip controls. 
-		 *  
-		 *  @default 300
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
 		public static var maxTipWidth:Number = 300;
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Constructor
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  Constructor.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
+
 		public function GraphDataTip()
 		{
-			super();
-			
+			super();	
 			mouseChildren = false;
 			mouseEnabled = false;
-		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Variables
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @private
-		 */
-		private var _moduleFactoryInitialized:Boolean = false;
-		
-		/**
-		 *  @private.
-		 */
-		private var _label:IUITextField;
-		
-		/**
-		 *  @private.
-		 */
-		private var _format:TextFormat;
-		
-		/**
-		 *  @private.
-		 */
-		private var _hitData:HitData;
-		
-		/**
-		 *  @private.
-		 */
-		private var _labelWidth:Number;
-		
-		/**
-		 *  @private.
-		 */
-		private var _labelHeight:Number;
-		
-		/**
-		 *  @private.
-		 */
-		private var _shadowFill:IFill = IFill(new SolidColor(0xAAAAAA, 0.55));
-		
-		/**
-		 *  @private.
-		 */
-		private var stroke:SolidColorStroke = new SolidColorStroke(0, 0, 1);
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Properties
-		//
-		//--------------------------------------------------------------------------
-		
-		//----------------------------------
-		//  data
-		//----------------------------------
-		
+		};
+
 		[Inspectable(environment="none")]
-		
-		/**
-		 *  The HitData structure describing the data point
-		 *  that the DataTip is rendering.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
 		public function get data():Object
 		{
 			return _hitData;
 		}
-		
-		/**
-		 *  @private
-		 */
 		public function set data(value:Object):void
 		{
 			_hitData = HitData(value);
-			stroke = new SolidColorStroke(_hitData.contextColor, 0, 100);
-			setText(_hitData.displayText);
-			
+			if(tooltip)
+				tooltip.data = _hitData;
+			invalidateSize();
 			invalidateDisplayList();
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Overridden methods: UIComponent
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @inheritDoc
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
-		override public function set moduleFactory(factory:IFlexModuleFactory):void
+		override protected function measure():void
 		{
-			super.moduleFactory = factory;
-			
-			if (_moduleFactoryInitialized)
-				return;
-			
-			_moduleFactoryInitialized = true;
-		}
-		
-		/**
-		 *  @inheritDoc
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
+			super.measure();			
+			measuredWidth = 240;
+			measuredHeight = 105;        
+		} 	
+		private var tooltip:BubbleToolTip;
 		override protected function createChildren():void
 		{
 			super.createChildren();
-			
-			// Create the TextField that displays the DataTip text.
-			if (!_label)
-			{
-				_label = IUITextField(createInFontContext(UITextField));
-				
-				_label.x = getStyle("paddingLeft")
-				_label.y = getStyle("paddingTop");
-				_label.autoSize = TextFieldAutoSize.LEFT;
-				_label.selectable = false;
-				_label.multiline = true;
-				
-				addChild(DisplayObject(_label));
-			}
-		}
-		
-		/**
-		 *  @inheritDoc
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
-		override protected function measure():void
-		{
-			super.measure();
-			
-			var borderMetrics:Rectangle = new Rectangle(1, 1, 0, 0);
-			
-			var leftInset:Number = borderMetrics.left + getStyle("paddingLeft");
-			var topInset:Number = borderMetrics.top + getStyle("paddingTop");
-			var rightInset:Number = borderMetrics.right + getStyle("paddingRight");
-			var bottomInset:Number = borderMetrics.bottom + getStyle("paddingBottom");
-			
-			var widthSlop:Number = leftInset + rightInset;
-			var heightSlop:Number = topInset + bottomInset;
-			
-			_label.wordWrap = false;
-			
-			if (_label.textWidth + widthSlop > DataTip.maxTipWidth)
-			{
-				_label.width = DataTip.maxTipWidth - widthSlop;
-				_label.wordWrap = true;
-				_label.width = _label.textWidth + widthSlop;
-			}
-			
-			_labelWidth = _label.width + widthSlop;
-			_labelHeight = _label.height + heightSlop;
-			
-			measuredWidth = _labelWidth + 6;
-			measuredHeight = _labelHeight + 6;        
-		}
-		/**
-		 *  @inheritDoc
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
-		override protected function updateDisplayList(unscaledWidth:Number,
-													  unscaledHeight:Number):void
-		{
-			super.updateDisplayList(unscaledWidth, unscaledHeight);
-			
-			var g:Graphics = graphics;
-			g.clear();
-			
-			var xpos:Number = 0;
-			var ypos:Number = 0;
-			
-			g.moveTo(measuredWidth, 2);
-			_shadowFill.begin(g,
-				new Rectangle(xpos, ypos, measuredWidth, measuredHeight),null);
-			g.lineTo(measuredWidth + 2, 2);
-			g.lineTo(measuredWidth + 2, measuredHeight + 2);
-			g.lineTo(2,measuredHeight + 2);
-			g.lineTo(2,measuredHeight);
-			g.lineTo(measuredWidth - 2, measuredHeight - 2);
-			g.lineTo(measuredWidth - 2, 2);
-			_shadowFill.end(g);
-			
-			var fill:IFill = IFill(new SolidColor(0x1a1a1a, 0.8));
-			
-//			GraphicsUtilities.fillRect(g, xpos, ypos, measuredWidth,
-//				measuredHeight, fill);
-			
-			g.beginFill(0x1a1a1a, 0.8);
-			g.drawRoundRect(xpos, ypos, measuredWidth,measuredHeight,5,5);
-			g.endFill()
-				
-			_label.x = xpos + getStyle("paddingLeft")
-			_label.y = ypos + getStyle("paddingTop");
-		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Methods
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @private
-		 */
-		private function setText(t:String):void
-		{
-			// Make sure the text styles are applied.
-			// However, we don't want leftMargin and rightMargin
-			// of the TextField's TextFormat to be set to the
-			// paddingLeft and paddingRight of the ToolTip style.
-			// We want these styles to affect the space between the
-			// TextField and the border, but not the margins within
-			// the TextField.
-			
-			var _format:TextFormat = new TextFormat();
-			_format.font = "FlamaBookMx2";
-			_format.color = 0xffffff;
-			_format.leftMargin = 0;
-			_format.rightMargin = 0;
-			_format.size = 12;
-			_label.defaultTextFormat = _format;
-			_label.text = t;
-			_label.embedFonts = true;
-			invalidateSize();
-		}
-		
-		/**
-		 *  @private
-		 */
+		    tooltip = new BubbleToolTip();
+			this.addChild(tooltip);
+		}		
 		private function decToColor(v:Number):String
 		{
 			var str:String = "#";
@@ -496,5 +218,4 @@ package com.pentagram.instance.view.visualizer.renderers
 			return str;
 		}
 	}
-	
 }

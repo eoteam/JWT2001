@@ -26,9 +26,11 @@
 			
 			import spark.core.SpriteVisualElement;
 			
-			private var _continous:Boolean = false;
 			private var maxRadius:Number = 25;
-			private var firstLoad:Boolean = true;
+			private var currentYear:int;
+			private var opacity:Boolean = true;
+
+			private var firstPass:Boolean = true;
 			private var ds1:Dataset;
 			private var ds2:Dataset;
 			protected var resizeFlag:Boolean = false
@@ -38,7 +40,7 @@
 			}
 			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
 				this.ds1 = dataset1; this.ds2 = dataset2;
-				if(!firstLoad) {
+				if(!firstPass) {
 					doVisualize();
 				}
 			}
@@ -46,6 +48,7 @@
 				
 			}
 			public function updateMaxRadius(value:Number):void {
+				maxRadius = value;
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking =  holder.getElementAt(i) as CirclePacking;
 					c.scaler = value/100;
@@ -55,13 +58,6 @@
 			public function unload():void {
 				
 			}
-			public function get continous():Boolean{
-				return _continous;
-			}			
-			public function set continous(value:Boolean):void{
-				_continous = value;
-			}
-			
 			public function pause():void  {
 				
 			}
@@ -71,6 +67,7 @@
 			}
 			
 			public function updateYear(year:int):void {
+				currentYear = year;
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
@@ -88,6 +85,7 @@
 				
 			}
 			public function toggleOpacity(value:Number):void {
+				opacity = value==1?false:true;
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
@@ -153,8 +151,11 @@
 			}
 			private function handleTimer(event:TimerEvent):void {
 				updateSize();
-			}			
-			private function doVisualize():void {
+			}	
+			public function get viewOptions():Array {
+				return [maxRadius,opacity,currentYear];
+			}
+			protected function doVisualize():void {
 				holder.removeAllElements();
 				if(ds1.type == 0) { //quantitative
 					for each(var item:Category in ds1.optionsArray) {
@@ -187,7 +188,7 @@
 						updateSize();
 					} 
 				}
-				firstLoad = false;
+				firstPass = false;
 				this.callLater(updateSize);
 				var t:Timer = new Timer(100,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);

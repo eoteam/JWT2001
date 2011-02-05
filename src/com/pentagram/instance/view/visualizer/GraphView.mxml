@@ -6,12 +6,13 @@
 				 xmlns:chart="com.pentagram.instance.view.visualizer.chart.*"
 				 implements="com.pentagram.instance.view.visualizer.interfaces.IGraphView"
 				 xmlns:modules="ws.tink.spark.modules.*" 
-				 creationComplete="module1_creationCompleteHandler(event)"
+				 creationComplete="creationCompleteHandler(event)"
 				 width="100%" height="100%" 
 				 contentBackgroundAlpha="0" xmlns:views="com.pentagram.instance.view.visualizer.views.*"  >
 	<fx:Script>
 		<![CDATA[
 			import mx.charts.HitData;
+			import mx.charts.events.ChartItemEvent;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -34,42 +35,27 @@
 			private var  ds2:Dataset;
 			private var  ds3:Dataset;
 			private var  ds4:Dataset;
-			[Bindable] private var	 maxRadius:Number = 25;
+			
+			[Bindable] private var maxRadius:Number = 25;
+			private var currentYear:int;
+			private var opacity:Boolean = true;
+			
 			private var categories:Array;
-			private var firstLoad:Boolean = true;
-			
-			
+			private var firstPass:Boolean = true;
+
 			public function get datasets():Array {
 				return [ds1,ds2,ds3,ds4];
 			}
-			private var _continous:Boolean = false;
-			public function set continous(value:Boolean):void{
-				_continous = value;
-				if(_continous == false) {
-					pause();
-				}
-				else {
-					resume();
-				}
-			}
-			
-			public function get continous():Boolean{
-				return _continous;
-			}
-
-			
-			private var firstPass:Boolean = true;
-			
 			public function visualize(maxRadius:Number,arr:ArrayCollection,...props):void {
 				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
 				
 				_visdata = arr;
 				this.maxRadius = maxRadius;		
-				if(!firstLoad) {
+				if(!firstPass) {
 					doVisualize();
 				}
 			}
-			private function doVisualize():void {	
+			protected function doVisualize():void {	
 				chart.newXAxis = hAxisRenderer;
 				chart.newYAxis = vAxisRenderer;
 				
@@ -80,7 +66,7 @@
 				chart.verticalAxisRenderers = [vAxisRenderer]; 
 				chart.horizontalAxisRenderers = [hAxisRenderer];
 				
-				firstPass = firstLoad = false;	
+				firstPass = false;	
 			}
 			private function createAxis(dataset:Dataset,axis:String):IAxis {
 				
@@ -107,6 +93,7 @@
 				//axis.maximumLabelPrecision = 4;
 				return axis;
 			}
+			
 			[Bindable] private var _visdata:ArrayCollection; 
 			public function set visdata(d:ArrayCollection):void {
 				_visdata = d;
@@ -152,9 +139,10 @@
 				
 			}
 			public function updateYear(year:int):void {
-				
+				currentYear = year;
 			}
 			public function toggleOpacity(value:Number):void {
+				opacity = value==1?false:true;
 				for each(var item:NormalizedVO in _visdata) {
 					item.alpha = value;
 				}
@@ -162,23 +150,38 @@
 			public function updateSize():void {
 				
 			}
-
-			protected function module1_creationCompleteHandler(event:FlexEvent):void
-			{
+			public function get viewOptions():Array {
+				return [maxRadius,opacity,currentYear];
+			}
+			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}
 			public function dtFunc(hd:HitData):String {
+//				var item:NormalizedVO = hd.item as NormalizedVO;
+//				var result:String = '';
+//				result +=  ds1.name + ": " + item.x + "\n";
+//				result +=  ds2.name + ": " + item.y + "\n";
+//				if(ds3) result +=  ds3.name + ": " + Math.round(item.radius*ds3.max) + "\n";
+//				if(ds4) result +=  ds4.name + ": " + item.category;
+//				return result;
+				
 				var item:NormalizedVO = hd.item as NormalizedVO;
-				var result:String = '';
-				result +=  ds1.name + ": " + item.x + "\n";
-				result +=  ds2.name + ": " + item.y + "\n";
-				if(ds3) result +=  ds3.name + ": " + Math.round(item.radius*ds3.max) + "\n";
-				if(ds4) result +=  ds4.name + ": " + item.category;
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
+				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
+				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
+				result += "</p></TextFlow>";					
 				return result;
 			}
 			public function selectAllCategories():void {
 				
 			}
+
+			protected function chart_itemClickHandler(event:ChartItemEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Style>
@@ -221,7 +224,7 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
+	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"  itemClick="chart_itemClickHandler(event)"
 	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18">
 		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 

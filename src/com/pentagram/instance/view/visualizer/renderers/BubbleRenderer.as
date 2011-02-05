@@ -12,7 +12,10 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	
+	import com.pentagram.model.vo.NormalizedVO;
+	
 	import flash.display.Graphics;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -21,56 +24,29 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.charts.chartClasses.GraphicsUtilities;
 	import mx.core.IDataRenderer;
 	import mx.core.UIComponent;
+	import mx.events.CloseEvent;
 	import mx.graphics.IFill;
 	import mx.graphics.IStroke;
 	import mx.graphics.SolidColor;
 	import mx.graphics.Stroke;
+	import mx.managers.PopUpManager;
 	import mx.skins.ProgrammaticSkin;
 	import mx.utils.ColorUtil;
 	
-	/**
-	 *  A simple chart itemRenderer implementation
-	 *  that fills an elliptical area.
-	 *  This class can be used as an itemRenderer for ColumnSeries, BarSeries, AreaSeries, LineSeries,
-	 *  PlotSeries, and BubbleSeries objects.
-	 *  It renders its area on screen using the <code>fill</code> and <code>stroke</code> styles
-	 *  of its associated series.
-	 *  
-	 *  @langversion 3.0
-	 *  @playerversion Flash 9
-	 *  @playerversion AIR 1.1
-	 *  @productversion Flex 3
-	 */
-	public class BubbleRenderer extends UIComponent
-		implements IDataRenderer
+
+	public class BubbleRenderer extends UIComponent implements IDataRenderer
 	{
 
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Class variables
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @private
-		 */
+
 		private static var rcFill:Rectangle = new Rectangle();
+		private var info:RendererInfo;
+		private var infoVisible:Boolean = false;
+		private var radius:Number = 0;
+		private var actualX:Number;
+		private var actualY:Number;
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Constructor
-		//
-		//--------------------------------------------------------------------------
+		private var offset:int = 15;
 		
-		/**
-		 *  Constructor.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
 		public function BubbleRenderer() 
 		{
 			super();
@@ -86,65 +62,32 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.mouseEnabled = false;
 			label.defaultTextFormat = textFormat;
 			this.addChild(label);
-			
+			this.addEventListener(MouseEvent.CLICK,mouseEventHandler);
 
 		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Properties
-		//
-		//--------------------------------------------------------------------------
-		
-		//----------------------------------
-		//  data
-		//----------------------------------
-		
-		/**
-		 *  @private
-		 *  Storage for the data property.
-		 */
+
+
 		private var _data:Object;
 		
 		[Inspectable(environment="none")]
 		
-		/**
-		 *  The chartItem that this itemRenderer displays.
-		 *  This value is assigned by the owning series.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 9
-		 *  @playerversion AIR 1.1
-		 *  @productversion Flex 3
-		 */
+
 		public function get data():Object
 		{
 			return _data;
 		}
 		protected var label:TextField;
 		protected var textFormat:TextFormat;
-		/**
-		 *  @private
-		 */
-
+		protected var item:NormalizedVO;
+		
 		public function set data(value:Object):void
 		{
 			if (_data == value) { 
 				return;
 			}
 			_data = value;
-		}
-
-		//--------------------------------------------------------------------------
-		//
-		//  Overridden methods
-		//
-		//--------------------------------------------------------------------------
-		
-		/**
-		 *  @private
-		 */
-		
+			item = value.item as NormalizedVO;
+		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth, unscaledHeight);
@@ -208,7 +151,12 @@ package com.pentagram.instance.view.visualizer.renderers
 				stroke.apply(g,null,null);
 			if (fill)
 				fill.begin(g, rcFill, null);
-			g.drawEllipse(w - adjustedRadius,w - adjustedRadius,unscaledWidth - 2 * w + adjustedRadius * 2, unscaledHeight - 2 * w + adjustedRadius * 2);
+			radius = unscaledWidth - 2 * w + adjustedRadius * 2;
+			actualX = w - adjustedRadius;
+			g.drawEllipse(w - adjustedRadius,
+						  w - adjustedRadius,
+						  unscaledWidth - 2 * w + adjustedRadius * 2,
+						  unscaledHeight - 2 * w + adjustedRadius * 2);
 			
 			if (fill)
 				fill.end(g);
@@ -217,14 +165,40 @@ package com.pentagram.instance.view.visualizer.renderers
 				textFormat.color = color;
 				label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 				label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
-				label.text = _data.item.shortname;
 				label.defaultTextFormat = textFormat;
+				label.text = _data.item.shortname;
+				
 			if(unscaledWidth - 2 * w + adjustedRadius * 2 > 0) {	
 				this.visible = true;
 			}
 			else
 				this.visible = false;
 		}
+		protected function mouseEventHandler(event:MouseEvent):void {
+			var mouseEvent:MouseEvent = event as MouseEvent;
+			
+			if(!infoVisible) {
+				info = new RendererInfo();
+				info.country = item.country;
+				//info.content = _content;
+				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
+				if(actualX  + radius + info.width + 10 > this.parentDocument.width) {
+					info.leftTipVisible = false;
+					info.rightTipVisible = true;
+					info.x = x + actualX - radius*2 - info.width - offset;
+				}
+				else { 
+					info.leftTipVisible = true;
+					info.rightTipVisible = false;
+					info.x = x + actualX + radius + offset;
+				}
+				info.y = y+actualX+radius+info.height/2;
+				PopUpManager.addPopUp(info, this.parentDocument as UIComponent, false);
+				infoVisible = true;
+			}
+		}
+		private function handleInfoClose(event:CloseEvent):void {
+			infoVisible = false;
+		}
 	}
-	
 }

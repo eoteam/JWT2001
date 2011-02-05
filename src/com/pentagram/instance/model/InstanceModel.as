@@ -104,6 +104,7 @@ package com.pentagram.instance.model
 				var obj:NormalizedVO = new NormalizedVO(); 
 				obj.name = row.name;
 				obj.shortname = row.country.shortname;
+				obj.country = row.country;
 				obj.index = i;
 				
 				if(ds1.time == 1) 
