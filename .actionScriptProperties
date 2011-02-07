@@ -12,6 +12,11 @@
       <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/Common/"/>
       <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject/"/>
       <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LOCALE_LOCATION}/version4locale/"/>
+      <libraryPathEntry kind="1" linkType="1" path="${DCD_LIB_LOCATION}"/>
+      <libraryPathEntry kind="1" linkType="1" path="${DCD_LOCALE_LOCATION}"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DCD_FIBER_LOCATION}/fiber.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DCD_FIBER_LOCALE_LOCATION}/fiber_rb.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="${DCD_FIBER_LOCATION}/playerfds.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -24,6 +29,7 @@
     <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/MapView.swf" optimize="false" sourcePath="src/com/pentagram/instance/view/visualizer/MapView.mxml"/>
     <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/ClusterView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/ClusterView.mxml"/>
     <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/GraphView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/GraphView.mxml"/>
+    <module application="src/View.mxml" destPath="com/pentagram/instance/view/visualizer/TwitterView.swf" optimize="true" sourcePath="src/com/pentagram/instance/view/visualizer/TwitterView.mxml"/>
   </modules>
   <buildCSSFiles/>
   <flashCatalyst validateFlashCatalystCompatibility="false"/>

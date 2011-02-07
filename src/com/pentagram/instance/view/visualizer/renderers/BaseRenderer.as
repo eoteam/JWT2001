@@ -17,7 +17,8 @@ package com.pentagram.instance.view.visualizer.renderers
 
 	internal class BaseRenderer extends UIComponent
 	{
-		protected var label:TextField;
+		public var label:String = '';
+		protected var labelTF:TextField;
 		protected var textFormat:TextFormat;
 		protected var _selected:Boolean = false;
 		protected var _fixed:int = 0;

@@ -41,6 +41,7 @@
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" />
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" />
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" />
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" />
 			</mx:ViewStack>
 			
 			<s:HGroup verticalAlign="middle" height="60" left="5" right="5">

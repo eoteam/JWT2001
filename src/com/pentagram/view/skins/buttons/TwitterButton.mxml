@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path7" includeIn="disabledAndSelected" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path5" includeIn="downAndSelected" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path4" includeIn="overAndSelected" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path3" includeIn="upAndSelected" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path2" includeIn="disabled" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path1" includeIn="down" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path0" includeIn="over" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" height="33.465" id="path6" includeIn="up" width="19.2" winding="nonZero" x="20.8" y="1.565">
+		<s:fill>
+			<s:LinearGradient rotation="353.988" scaleX="13.999" x="3.698" y="17.336">
+				<s:GradientEntry color="#BDBDBD" ratio="0"/>
+				<s:GradientEntry color="#F7F7F7" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Path>
+	<s:Rect height="35" id="rect5" includeIn="disabled,disabledAndSelected,up" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="11.83" x="16.063" y="0">
+				<s:GradientEntry color="#707070" ratio="0"/>
+				<s:GradientEntry color="#4F4F4F" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect14" includeIn="over" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect0" includeIn="down" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect1" includeIn="upAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect2" includeIn="overAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="35" id="rect3" includeIn="downAndSelected" width="32" x="0" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
+				<s:GradientEntry color="#1F1F1F" ratio="0"/>
+				<s:GradientEntry color="#3D3D3D" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Path data="M 93.791 33.265 L 108.256 24.875 L 91.413 23.73 C 88.672 15.613 81.717 9.031 73.856 7.782 L 82.084 1.483 C 82.084 1.483 71.81 -1.902 67.113 1.476 C 66.806 1.697 66.525 1.913 66.266 2.124 C 58.815 7.433 54.342 17.329 50.705 26.958 C 47.732 24.071 45.759 18.192 43.397 16.926 C 36.764 13.372 28.829 9.655 16.38 5.026 C 15.997 9.149 17.747 18.242 24.713 21.885 C 23.205 21.681 17.226 21.651 15.022 22.176 C 15.919 26.905 22.075 31.282 30.031 33.163 C 26.397 33.401 22.348 33.897 20.647 35.676 C 22.302 38.963 27.522 42.926 35.777 42.373 C 26.522 44.926 29.147 53.426 39.059 51.356 C 27.844 62.958 10.156 62.096 0 52.401 C 25.517 87.209 79.857 74.824 91.562 42.791 L 108.256 41.656 L 93.791 33.265 Z" height="17.296" id="path17" width="25.256" winding="nonZero" x="3.229" y="8.448">
+		<s:fill>
+			<s:SolidColor color="#FFFFFF"/>
+		</s:fill>
+	</s:Path>
+</s:Skin>

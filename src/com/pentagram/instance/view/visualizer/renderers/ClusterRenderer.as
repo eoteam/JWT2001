@@ -55,13 +55,13 @@ package com.pentagram.instance.view.visualizer.renderers
 			textFormat.color = _textColor;
 			textFormat.align="left";
 			
-			label = new TextField();
-			label.selectable = false;
-			label.embedFonts = true;
-			label.mouseEnabled = false;
-			label.defaultTextFormat = textFormat;
-			label.width = 30; label.height = 20;	
-			this.addChild(label);
+			labelTF = new TextField();
+			labelTF.selectable = false;
+			labelTF.embedFonts = true;
+			labelTF.mouseEnabled = false;
+			labelTF.defaultTextFormat = textFormat;
+			labelTF.width = 30; labelTF.height = 20;	
+			this.addChild(labelTF);
 			
 			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
 			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
@@ -112,8 +112,8 @@ package com.pentagram.instance.view.visualizer.renderers
 				draw();
 			else if(!stateFlag) {
 				graphics.clear();
-				if(label)
-					label.visible = false;
+				if(labelTF)
+					labelTF.visible = false;
 			}
 		}
 		protected function draw():void {
@@ -133,23 +133,26 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
-			if(_radius < 30 && _radius > 15)  {
+			labelTF.text = _data?_data.country.shortname:this.label;
+			labelTF.width = labelTF.textWidth;
+			
+			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
 				textFormat.size = 10;
-				label.visible = true;
+				labelTF.visible = true;
 			}
-			else if(_radius <= 15)
-				label.visible = false;
+			else if(_radius <= labelTF.textWidth/2)
+				labelTF.visible = false;
 			else {
 				textFormat.size = 12;
-				label.visible = true;	
+				labelTF.visible = true;	
 			}
 			textFormat.color = _textColor;			
-			label.text = _data.country.shortname
-			label.x = -label.textWidth/2;
-			label.y = -label.textHeight/2;
-			label.width = label.textWidth+4;
-			label.height = label.textHeight+4;	
-			label.defaultTextFormat = textFormat;
+			
+			labelTF.x = -labelTF.textWidth/2;
+			labelTF.y = -labelTF.textHeight/2;
+			labelTF.width = labelTF.textWidth+4;
+			labelTF.height = labelTF.textHeight+4;	
+			labelTF.defaultTextFormat = textFormat;
 			
 			if(this.alpha == 0) {
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
@@ -163,6 +166,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
+					if(data) {
 					if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
 						tooltip.leftTip.visible = false;
 						tooltip.rightTp.visible = true;
@@ -177,6 +181,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					tooltip.visible = true;	
 					tooltip.content = _content;
 					tooltip.country = data.country;
+					}
 					break;
 				}
 					
@@ -195,7 +200,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				}
 				case MouseEvent.CLICK:
 				{
-					if(!infoVisible) {
+					if(!infoVisible && data) {
 						tooltip.visible = false;
 						info = new RendererInfo();
 						info.country = _data.country;

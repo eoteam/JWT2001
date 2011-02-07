@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:controls="com.pentagram.view.controls.*">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
 	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>
@@ -11,14 +11,6 @@
 		<s:State name="downAndSelected"/>
 		<s:State name="disabledAndSelected"/>
 	</s:states>
-	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" id="path4" includeIn="disabled,disabledAndSelected,over,up" winding="nonZero" x="23.8" y="0.565">
-		<s:fill>
-			<s:LinearGradient rotation="353.988" scaleX="13.9991" x="3.698" y="17.854">
-				<s:GradientEntry color="#BDBDBD" ratio="0"/>
-				<s:GradientEntry color="#F7F7F7" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Path>
 	<s:Rect height="35" id="rect14" includeIn="over" width="32" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
@@ -35,14 +27,6 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" id="path0" includeIn="down" winding="nonZero" x="23.8" y="0.565">
-		<s:fill>
-			<s:LinearGradient rotation="353.988" scaleX="13.9991" x="3.698" y="17.854">
-				<s:GradientEntry color="#BDBDBD" ratio="0"/>
-				<s:GradientEntry color="#F7F7F7" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Path>
 	<s:Rect height="35" id="rect0" includeIn="down" width="32" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
@@ -51,14 +35,6 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" id="path1" includeIn="upAndSelected" winding="nonZero" x="23.8" y="0.565">
-		<s:fill>
-			<s:LinearGradient rotation="353.988" scaleX="13.9991" x="3.698" y="17.854">
-				<s:GradientEntry color="#BDBDBD" ratio="0"/>
-				<s:GradientEntry color="#F7F7F7" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Path>
 	<s:Rect height="35" id="rect1" includeIn="upAndSelected" width="32" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
@@ -67,14 +43,6 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" id="path2" includeIn="overAndSelected" winding="nonZero" x="23.8" y="0.565">
-		<s:fill>
-			<s:LinearGradient rotation="353.988" scaleX="13.9991" x="3.698" y="17.854">
-				<s:GradientEntry color="#BDBDBD" ratio="0"/>
-				<s:GradientEntry color="#F7F7F7" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Path>
 	<s:Rect height="35" id="rect2" includeIn="overAndSelected" width="32" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
@@ -83,14 +51,6 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<s:Path data="M 19.2 34.465 L 0 34.465 L 0 0 L 16.2 0 L 19.2 6.132 L 19.2 34.465 Z" id="path3" includeIn="downAndSelected" winding="nonZero" x="23.8" y="0.565">
-		<s:fill>
-			<s:LinearGradient rotation="353.988" scaleX="13.9991" x="3.698" y="17.854">
-				<s:GradientEntry color="#BDBDBD" ratio="0"/>
-				<s:GradientEntry color="#F7F7F7" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-	</s:Path>
 	<s:Rect height="35" id="rect3" includeIn="downAndSelected" width="32" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="36.252" x="16.323" y="0">
@@ -139,7 +99,4 @@
 			<s:SolidColor color="#FFFFFF"/>
 		</s:fill>
 	</s:Path>
-	
-	<controls:ButtonToolTip bodyText="Map View" includeInLayout="false"   y="{-height-5}" x="{width/2-42.5}" tipPlacement="{42.5-5}" 
-	visible="false" visible.overAndSelected="true"  visible.over="true" rectWidth="85" labelFontSize="12"/>
 </s:Skin>

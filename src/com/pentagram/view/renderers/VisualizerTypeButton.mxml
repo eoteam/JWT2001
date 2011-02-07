@@ -8,6 +8,7 @@
 			import com.pentagram.view.skins.buttons.ClusterButton;
 			import com.pentagram.view.skins.buttons.GraphButton;
 			import com.pentagram.view.skins.buttons.MapButton;
+			import com.pentagram.view.skins.buttons.TwitterButton;
 			override public function set data(value:Object):void {
 				super.data = value;
 				if(value) {
@@ -21,7 +22,10 @@
 						break;
 						case "Graph":
 							this.setStyle("skinClass",GraphButton);
-						break;						
+						break;	
+						case "Twitter":
+							this.setStyle("skinClass",TwitterButton);
+						break; 
 					}
 				}
 			}

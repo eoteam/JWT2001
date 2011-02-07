@@ -151,6 +151,12 @@ package com.pentagram.instance.view.mediators.shell
 					restoreViewOptions(view.clusterView);
 				}
 			}
+			else {
+				util = new ModuleUtil();
+				util.addEventListener("moduleLoaded",handleTwitterLoaded);
+				util.loadModule("com/pentagram/instance/view/visualizer/TwitterView.swf");	
+				loaders.push(util);
+			}
 		}
 		private function handleDatasetSelection(event:VisualizerEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
@@ -369,6 +375,13 @@ package com.pentagram.instance.view.mediators.shell
 				checkNotes();
 				
 			}			
+		}
+		private function handleTwitterLoaded(event:Event):void {
+			var util:ModuleUtil  = event.target as ModuleUtil;
+			//if(util.view is IClusterView) {
+				//this.view.clusterView = util.view as IClusterView;
+				view.twitterHolder.addElement(util.view as Group);	
+			//}			
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();

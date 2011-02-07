@@ -320,7 +320,7 @@ package com.pentagram.model
 			cascade.addEventListener(Event.SELECT,handleArrange);
 			
 			//help
-			var helpItem:NativeMenuItem = new NativeMenuItem("Tile");
+			var helpItem:NativeMenuItem = new NativeMenuItem("Help");
 			//helpItem.keyEquivalent = "h";
 			//helpItem.keyEquivalentModifiers = [Keyboard.COMMAND];			
 			helpItem.addEventListener(Event.SELECT,handleHelp);
