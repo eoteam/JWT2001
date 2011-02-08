@@ -41,7 +41,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var dirtyFlag:Boolean = false;
 		protected var dirtyCoordFlag:Boolean = false;
 		protected var _content:String;
-		
+			
 		public function ClusterRenderer(parent:Group,parent2:SpriteVisualElement) {
 			super();
 			this.fillAlpha = 1;
@@ -74,9 +74,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltipContainer.addElement(tooltip);
 			tooltip.visible = false;
 		}		
-		override public function set data(d:DataRow):void { 
-			_data = d; 
-			fillColor = textColor = d.country.region.color;
+		override public function set data(d:Object):void { 
+			super.data = d;
+			fillColor = textColor = DataRow(d).country.region.color;
 		}
 		public function set state(value:Boolean):void {
 			if(value && !stateFlag)
@@ -133,7 +133,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
-			labelTF.text = _data?_data.country.shortname:this.label;
+			labelTF.text = DataRow(_data).country.shortname;
 			labelTF.width = labelTF.textWidth;
 			
 			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {

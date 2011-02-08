@@ -1,11 +1,9 @@
 package com.pentagram.instance.view.visualizer.views
 {
-	import flash.geom.Point;
-	
-	import spark.core.SpriteVisualElement;
 	import com.greensock.TweenNano;
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
+	import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -16,10 +14,11 @@ package com.pentagram.instance.view.visualizer.views
 	
 	import spark.components.Group;
 	import spark.core.SpriteVisualElement;
+
 	
 	public class TwitterPacking extends SpriteVisualElement
 	{
-		public var spriteArray:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
+		public var spriteArray:Vector.<TwitterRenderer> = new Vector.<TwitterRenderer>;
 		private var circlePositions:Vector.<Point3D>;
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var numberList:Array = [];
@@ -36,14 +35,12 @@ package com.pentagram.instance.view.visualizer.views
 		public function build():void {
 			var counter:uint = 0;
 			while(counter < numberList.length) {
-				var sprite:ClusterRenderer = new  ClusterRenderer(tooltipContainer,this); 
-				//sprite.data = numberList[counter].data;
-				//sprite.data2 = numberList[counter].data2; 
-				sprite.label = numberList[counter].word;
-				sprite.fillColor = 0xff0000;
+				var sprite:TwitterRenderer = new  TwitterRenderer(tooltipContainer,this);  
+				sprite.data = numberList[counter];
+				sprite.fillColor = 0x5599BB;
 				sprite.fillAlpha = 0.2;
-				//sprite.content = numberList[counter].content;
-				sprite.textColor = 0;
+
+				sprite.textColor = 0x5599BB;
 				sprite.radiusBeforeRendering = numberList[counter].count;
 				sprite.scaleX= -1;
 				spriteArray.push(sprite);
@@ -55,7 +52,7 @@ package com.pentagram.instance.view.visualizer.views
 		public function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
 			var disposeCounter:int = 2;
-			var c:ClusterRenderer = null;
+			var c:TwitterRenderer = null;
 			var _loc_2:Number = NaN;
 			var _loc_7:uint = 0;
 			var _loc_3:Number = 0;
@@ -108,7 +105,7 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		
 		public function draw() : void {			
-			var c:ClusterRenderer;
+			var c:TwitterRenderer;
 			if (this.numberList.length < 2){
 				return;
 			}

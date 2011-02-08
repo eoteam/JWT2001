@@ -41,7 +41,8 @@
 				<s:SolidColorStroke weight="0.25" color="0x666666"/>
 			</s:stroke>
 		</s:Rect>
-		<s:Label verticalCenter="0" text="View Options" left="25" right="0"  color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" />		
+		<s:Label verticalCenter="0" text="View Options" left="25" right="0" click="button1_clickHandler(event)"  mouseChildren="false"
+		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" />		
 	</s:Group>
 	
 	

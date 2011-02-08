@@ -17,7 +17,7 @@ package com.pentagram.instance.view.visualizer.renderers
 
 	internal class BaseRenderer extends UIComponent
 	{
-		public var label:String = '';
+
 		protected var labelTF:TextField;
 		protected var textFormat:TextFormat;
 		protected var _selected:Boolean = false;
@@ -27,11 +27,12 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _fillAlpha:Number = 0.25;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
-		protected var _data:DataRow;
+		protected var _data:Object;
+		
 		//protected var _graphic:Sprite;
 		
-		public function get data():DataRow { return _data; }
-		public function set data(d:DataRow):void { 
+		public function get data():Object { return _data; }
+		public function set data(d:Object):void { 
 			_data = d; 
 		}
 		[Bindable] protected var _radius:Number = 1;

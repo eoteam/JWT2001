@@ -4,7 +4,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 
-	public interface IGraphView extends IVisualizer
+	public interface IGraphView extends IDataVisualizer
 	{
 		function set visdata(data:ArrayCollection):void;
 		

@@ -1,0 +1,1731 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Graphic version="2.0" viewHeight="159.547" viewWidth="254.875" ai:appVersion="15.0.0.399" ATE:version="1.0.0" flm:version="1.0.0" d:using="" xmlns="http://ns.adobe.com/fxg/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:ai="http://ns.adobe.com/ai/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+  <Group ai:seqID="1" d:layerType="page" d:pageHeight="159.547" d:pageWidth="254.875" d:type="layer" d:userLabel="Artboard 1">
+    <Group ai:seqID="2" d:type="layer" d:userLabel="Layer 1">
+      <Group ai:seqID="3">
+        <Ellipse x="53.1133" width="7.58984" height="7.58984" ai:seqID="4">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="0.000976562" width="7.58789" height="7.58789" ai:seqID="5">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="0.000976562" width="7.58789" height="7.58789" ai:seqID="6">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="0.00146484" width="7.58691" height="7.58691" ai:seqID="7">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="0.00146484" width="7.58691" height="7.58691" ai:seqID="8">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="0.000976562" width="7.58789" height="7.58789" ai:seqID="9">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="227.635" y="0.00146484" width="7.58691" height="7.58691" ai:seqID="10">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="15.1748" y="7.58887" width="7.58789" height="7.58789" ai:seqID="11">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="22.7627" y="7.58887" width="7.58789" height="7.58789" ai:seqID="12">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="30.3506" y="7.58936" width="7.58691" height="7.58691" ai:seqID="13">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="7.58838" width="7.58887" height="7.58887" ai:seqID="14">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="7.58789" winding="nonZero" ai:seqID="15" data="M7.58691 3.79492C7.58691 1.69922 5.89062 0 3.79199 0 1.69922 0 0 1.69922 0 3.79492 0 5.88965 1.69922 7.58887 3.79199 7.58887 5.89062 7.58887 7.58691 5.88965 7.58691 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="7.58789" width="7.58984" height="7.58984" ai:seqID="16">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="7.58887" width="7.58789" height="7.58789" ai:seqID="17">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="7.58887" width="7.58789" height="7.58789" ai:seqID="18">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="7.58936" width="7.58691" height="7.58691" ai:seqID="19">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="7.58936" width="7.58691" height="7.58691" ai:seqID="20">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="7.58838" width="7.58887" height="7.58887" ai:seqID="21">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="7.58936" width="7.58691" height="7.58691" ai:seqID="22">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="7.58789" winding="nonZero" ai:seqID="23" data="M7.58887 3.79492C7.58887 1.69922 5.88867 0 3.7959 0 1.69727 0 0 1.69922 0 3.79492 0 5.88965 1.69727 7.58887 3.7959 7.58887 5.88867 7.58887 7.58887 5.88965 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="136.582" y="7.58936" width="7.58691" height="7.58691" ai:seqID="24">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="7.58936" width="7.58691" height="7.58691" ai:seqID="25">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="7.58838" width="7.58887" height="7.58887" ai:seqID="26">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="7.58984" width="7.58594" height="7.58594" ai:seqID="27">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="235.222" y="7.58789" winding="nonZero" ai:seqID="28" data="M7.58887 3.79492C7.58887 1.69922 5.88965 0 3.79199 0 1.69922 0 0 1.69922 0 3.79492 0 5.88965 1.69922 7.58887 3.79199 7.58887 5.88965 7.58887 7.58887 5.88965 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="15.1748" y="15.1758" width="7.58789" height="7.58789" ai:seqID="29">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="22.7627" y="15.1758" width="7.58789" height="7.58789" ai:seqID="30">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="30.3506" y="15.1763" width="7.58691" height="7.58691" ai:seqID="31">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="15.1753" width="7.58887" height="7.58887" ai:seqID="32">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="15.1768" winding="nonZero" ai:seqID="33" data="M7.58691 3.79297C7.58691 1.69727 5.89062 0 3.79199 0 1.69922 0 0 1.69727 0 3.79297 0 5.88867 1.69922 7.58789 3.79199 7.58789 5.89062 7.58789 7.58691 5.88867 7.58691 3.79297Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="15.1748" width="7.58984" height="7.58984" ai:seqID="34">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="15.1758" width="7.58789" height="7.58789" ai:seqID="35">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="15.1758" width="7.58789" height="7.58789" ai:seqID="36">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="15.1763" width="7.58691" height="7.58691" ai:seqID="37">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="15.1763" width="7.58691" height="7.58691" ai:seqID="38">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="15.1753" width="7.58887" height="7.58887" ai:seqID="39">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="15.1763" width="7.58691" height="7.58691" ai:seqID="40">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="15.1758" width="7.58789" height="7.58789" ai:seqID="41">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="15.1758" width="7.58789" height="7.58789" ai:seqID="42">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="15.1768" winding="nonZero" ai:seqID="43" data="M7.58887 3.79297C7.58887 1.69727 5.88867 0 3.7959 0 1.69727 0 0 1.69727 0 3.79297 0 5.88867 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.88867 7.58887 3.79297Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="15.1768" width="7.58594" height="7.58594" ai:seqID="44">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="15.1763" width="7.58691" height="7.58691" ai:seqID="45">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="15.1743" width="7.59082" height="7.59082" ai:seqID="46">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="15.1763" width="7.58691" height="7.58691" ai:seqID="47">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="15.1758" width="7.58789" height="7.58789" ai:seqID="48">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="15.1748" width="7.58984" height="7.58984" ai:seqID="49">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="15.1772" width="7.58496" height="7.58496" ai:seqID="50">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="15.1753" width="7.58887" height="7.58887" ai:seqID="51">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="15.1753" width="7.58887" height="7.58887" ai:seqID="52">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="15.1768" width="7.58594" height="7.58594" ai:seqID="53">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="15.1753" width="7.58887" height="7.58887" ai:seqID="54">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="212.461" y="15.1763" width="7.58691" height="7.58691" ai:seqID="55">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="235.222" y="15.1768" winding="nonZero" ai:seqID="56" data="M7.58887 3.79297C7.58887 1.69727 5.88965 0 3.79199 0 1.69922 0 0 1.69727 0 3.79297 0 5.88867 1.69922 7.58789 3.79199 7.58789 5.88965 7.58789 7.58887 5.88867 7.58887 3.79297Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="15.1748" y="22.7646" width="7.58789" height="7.58789" ai:seqID="57">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="30.3506" y="22.7651" width="7.58691" height="7.58691" ai:seqID="58">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="22.7642" width="7.58887" height="7.58887" ai:seqID="59">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="22.7646" winding="nonZero" ai:seqID="60" data="M7.58691 3.79395C7.58691 1.69727 5.89062 0 3.79199 0 1.69922 0 0 1.69727 0 3.79395 0 5.88867 1.69922 7.58691 3.79199 7.58691 5.89062 7.58691 7.58691 5.88867 7.58691 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="22.7637" width="7.58984" height="7.58984" ai:seqID="61">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="22.7646" width="7.58789" height="7.58789" ai:seqID="62">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="22.7646" width="7.58789" height="7.58789" ai:seqID="63">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="22.7651" width="7.58691" height="7.58691" ai:seqID="64">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="22.7651" width="7.58691" height="7.58691" ai:seqID="65">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="22.7642" width="7.58887" height="7.58887" ai:seqID="66">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="22.7651" width="7.58691" height="7.58691" ai:seqID="67">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="22.7646" width="7.58789" height="7.58789" ai:seqID="68">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="22.7646" width="7.58789" height="7.58789" ai:seqID="69">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="22.7646" winding="nonZero" ai:seqID="70" data="M7.58887 3.79395C7.58887 1.69727 5.88867 0 3.7959 0 1.69727 0 0 1.69727 0 3.79395 0 5.88867 1.69727 7.58691 3.7959 7.58691 5.88867 7.58691 7.58887 5.88867 7.58887 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="22.7656" width="7.58594" height="7.58594" ai:seqID="71">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="22.7651" width="7.58691" height="7.58691" ai:seqID="72">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="22.7632" width="7.59082" height="7.59082" ai:seqID="73">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="22.7651" width="7.58691" height="7.58691" ai:seqID="74">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="22.7646" width="7.58789" height="7.58789" ai:seqID="75">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="22.7637" width="7.58984" height="7.58984" ai:seqID="76">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="22.7661" width="7.58496" height="7.58496" ai:seqID="77">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="22.7642" width="7.58887" height="7.58887" ai:seqID="78">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="22.7642" width="7.58887" height="7.58887" ai:seqID="79">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="22.7656" width="7.58594" height="7.58594" ai:seqID="80">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="22.7642" width="7.58887" height="7.58887" ai:seqID="81">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="212.461" y="22.7651" width="7.58691" height="7.58691" ai:seqID="82">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="242.811" y="22.7651" width="7.58691" height="7.58691" ai:seqID="83">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse y="30.3521" width="7.58691" height="7.58691" ai:seqID="84">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="7.58691" y="30.3516" width="7.58789" height="7.58789" ai:seqID="85">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="15.1748" y="30.3516" width="7.58789" height="7.58789" ai:seqID="86">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="30.3506" y="30.3521" width="7.58691" height="7.58691" ai:seqID="87">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="30.3511" width="7.58887" height="7.58887" ai:seqID="88">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="30.3516" winding="nonZero" ai:seqID="89" data="M7.58691 3.79395C7.58691 1.69922 5.89062 0 3.79199 0 1.69922 0 0 1.69922 0 3.79395 0 5.88867 1.69922 7.58789 3.79199 7.58789 5.89062 7.58789 7.58691 5.88867 7.58691 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="30.3506" width="7.58984" height="7.58984" ai:seqID="90">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="30.3516" width="7.58789" height="7.58789" ai:seqID="91">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="30.3516" width="7.58789" height="7.58789" ai:seqID="92">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="30.3521" width="7.58691" height="7.58691" ai:seqID="93">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="30.3521" width="7.58691" height="7.58691" ai:seqID="94">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="30.3511" width="7.58887" height="7.58887" ai:seqID="95">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="30.3521" width="7.58691" height="7.58691" ai:seqID="96">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="30.3516" width="7.58789" height="7.58789" ai:seqID="97">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="30.3516" width="7.58789" height="7.58789" ai:seqID="98">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="30.3516" winding="nonZero" ai:seqID="99" data="M7.58887 3.79395C7.58887 1.69922 5.88867 0 3.7959 0 1.69727 0 0 1.69922 0 3.79395 0 5.88867 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.88867 7.58887 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="30.3525" width="7.58594" height="7.58594" ai:seqID="100">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="30.3521" width="7.58691" height="7.58691" ai:seqID="101">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="30.3501" width="7.59082" height="7.59082" ai:seqID="102">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="30.3521" width="7.58691" height="7.58691" ai:seqID="103">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="30.3516" width="7.58789" height="7.58789" ai:seqID="104">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="30.3506" width="7.58984" height="7.58984" ai:seqID="105">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="30.353" width="7.58496" height="7.58496" ai:seqID="106">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="30.3511" width="7.58887" height="7.58887" ai:seqID="107">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="30.3511" width="7.58887" height="7.58887" ai:seqID="108">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="30.3525" width="7.58594" height="7.58594" ai:seqID="109">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="30.3511" width="7.58887" height="7.58887" ai:seqID="110">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="235.222" y="30.3516" winding="nonZero" ai:seqID="111" data="M7.58887 3.79395C7.58887 1.69922 5.88965 0 3.79199 0 1.69922 0 0 1.69922 0 3.79395 0 5.88867 1.69922 7.58789 3.79199 7.58789 5.88965 7.58789 7.58887 5.88867 7.58887 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="7.58691" y="37.9404" width="7.58789" height="7.58789" ai:seqID="112">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="15.1748" y="37.9404" width="7.58789" height="7.58789" ai:seqID="113">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="30.3506" y="37.9409" width="7.58691" height="7.58691" ai:seqID="114">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="37.9399" width="7.58887" height="7.58887" ai:seqID="115">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="37.9395" winding="nonZero" ai:seqID="116" data="M7.58691 3.79492C7.58691 1.69824 5.89062 0 3.79199 0 1.69922 0 0 1.69824 0 3.79492 0 5.89062 1.69922 7.58789 3.79199 7.58789 5.89062 7.58789 7.58691 5.89062 7.58691 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="37.9395" width="7.58984" height="7.58984" ai:seqID="117">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="37.9404" width="7.58789" height="7.58789" ai:seqID="118">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="37.9404" width="7.58789" height="7.58789" ai:seqID="119">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="37.9409" width="7.58691" height="7.58691" ai:seqID="120">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="37.9409" width="7.58691" height="7.58691" ai:seqID="121">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="37.9399" width="7.58887" height="7.58887" ai:seqID="122">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="37.9409" width="7.58691" height="7.58691" ai:seqID="123">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="37.9404" width="7.58789" height="7.58789" ai:seqID="124">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="37.9404" width="7.58789" height="7.58789" ai:seqID="125">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="37.9395" winding="nonZero" ai:seqID="126" data="M7.58887 3.79492C7.58887 1.69824 5.88867 0 3.7959 0 1.69727 0 0 1.69824 0 3.79492 0 5.89062 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.89062 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="37.9414" width="7.58594" height="7.58594" ai:seqID="127">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="37.9409" width="7.58691" height="7.58691" ai:seqID="128">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="37.939" width="7.59082" height="7.59082" ai:seqID="129">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="37.9409" width="7.58691" height="7.58691" ai:seqID="130">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="37.9404" width="7.58789" height="7.58789" ai:seqID="131">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="37.9395" width="7.58984" height="7.58984" ai:seqID="132">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="37.9419" width="7.58496" height="7.58496" ai:seqID="133">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="37.9399" width="7.58887" height="7.58887" ai:seqID="134">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="37.9399" width="7.58887" height="7.58887" ai:seqID="135">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="37.9414" width="7.58594" height="7.58594" ai:seqID="136">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="37.9399" width="7.58887" height="7.58887" ai:seqID="137">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="235.222" y="37.9395" winding="nonZero" ai:seqID="138" data="M7.58887 3.79492C7.58887 1.69824 5.88965 0 3.79199 0 1.69922 0 0 1.69824 0 3.79492 0 5.89062 1.69922 7.58789 3.79199 7.58789 5.88965 7.58789 7.58887 5.89062 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="37.9375" y="45.5278" width="7.58887" height="7.58887" ai:seqID="139">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="45.5278" winding="nonZero" ai:seqID="140" data="M7.58691 3.79492C7.58691 1.69922 5.89062 0 3.79199 0 1.69922 0 0 1.69922 0 3.79492 0 5.88867 1.69922 7.58691 3.79199 7.58691 5.89062 7.58691 7.58691 5.88867 7.58691 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="45.5278" width="7.58984" height="7.58984" ai:seqID="141">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="45.5278" width="7.58789" height="7.58789" ai:seqID="142">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="45.5278" width="7.58789" height="7.58789" ai:seqID="143">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="45.5288" width="7.58691" height="7.58691" ai:seqID="144">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="45.5288" width="7.58691" height="7.58691" ai:seqID="145">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="45.5278" width="7.58887" height="7.58887" ai:seqID="146">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="45.5288" width="7.58691" height="7.58691" ai:seqID="147">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="45.5278" width="7.58789" height="7.58789" ai:seqID="148">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="45.5278" width="7.58789" height="7.58789" ai:seqID="149">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="45.5278" winding="nonZero" ai:seqID="150" data="M7.58887 3.79492C7.58887 1.69922 5.88867 0 3.7959 0 1.69727 0 0 1.69922 0 3.79492 0 5.88867 1.69727 7.58691 3.7959 7.58691 5.88867 7.58691 7.58887 5.88867 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="45.5288" width="7.58594" height="7.58594" ai:seqID="151">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="45.5288" width="7.58691" height="7.58691" ai:seqID="152">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="45.5269" width="7.59082" height="7.59082" ai:seqID="153">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="45.5288" width="7.58691" height="7.58691" ai:seqID="154">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="45.5278" width="7.58789" height="7.58789" ai:seqID="155">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="45.5278" width="7.58984" height="7.58984" ai:seqID="156">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="45.5298" width="7.58496" height="7.58496" ai:seqID="157">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="45.5278" width="7.58887" height="7.58887" ai:seqID="158">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="220.046" y="45.5278" width="7.58887" height="7.58887" ai:seqID="159">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="227.635" y="45.5288" width="7.58691" height="7.58691" ai:seqID="160">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="53.1147" width="7.58887" height="7.58887" ai:seqID="161">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="53.1138" winding="nonZero" ai:seqID="162" data="M7.58691 3.79492C7.58691 1.69922 5.89062 0 3.79199 0 1.69922 0 0 1.69922 0 3.79492 0 5.89062 1.69922 7.58789 3.79199 7.58789 5.89062 7.58789 7.58691 5.89062 7.58691 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="53.1138" width="7.58984" height="7.58984" ai:seqID="163">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="53.1147" width="7.58789" height="7.58789" ai:seqID="164">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="53.1147" width="7.58789" height="7.58789" ai:seqID="165">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="53.1157" width="7.58691" height="7.58691" ai:seqID="166">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="53.1157" width="7.58691" height="7.58691" ai:seqID="167">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="53.1147" width="7.58887" height="7.58887" ai:seqID="168">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="53.1157" width="7.58691" height="7.58691" ai:seqID="169">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="53.1147" width="7.58789" height="7.58789" ai:seqID="170">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="53.1147" width="7.58789" height="7.58789" ai:seqID="171">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="53.1138" winding="nonZero" ai:seqID="172" data="M7.58887 3.79492C7.58887 1.69922 5.88867 0 3.7959 0 1.69727 0 0 1.69922 0 3.79492 0 5.89062 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.89062 7.58887 3.79492Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="53.1157" width="7.58594" height="7.58594" ai:seqID="173">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="53.1157" width="7.58691" height="7.58691" ai:seqID="174">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="53.1138" width="7.59082" height="7.59082" ai:seqID="175">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="53.1157" width="7.58691" height="7.58691" ai:seqID="176">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="53.1147" width="7.58789" height="7.58789" ai:seqID="177">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="53.1138" width="7.58984" height="7.58984" ai:seqID="178">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="53.1167" width="7.58496" height="7.58496" ai:seqID="179">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="53.1147" width="7.58887" height="7.58887" ai:seqID="180">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="53.1147" width="7.58887" height="7.58887" ai:seqID="181">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="212.461" y="53.1157" width="7.58691" height="7.58691" ai:seqID="182">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="220.046" y="53.1147" width="7.58887" height="7.58887" ai:seqID="183">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="37.9375" y="60.7017" winding="nonZero" ai:seqID="184" data="M7.58887 3.79688C7.58887 1.69824 5.8916 0 3.79395 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79395 7.58789 5.8916 7.58789 7.58887 5.89062 7.58887 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="45.5264" y="60.7017" winding="nonZero" ai:seqID="185" data="M7.58691 3.79688C7.58691 1.69824 5.89062 0 3.79199 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79199 7.58789 5.89062 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="53.1133" y="60.7017" winding="nonZero" ai:seqID="186" data="M7.58984 3.79688C7.58984 1.69824 5.88965 0 3.79492 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79492 7.58789 5.88965 7.58789 7.58984 5.89062 7.58984 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="60.7031" y="60.7017" winding="nonZero" ai:seqID="187" data="M7.58789 3.79688C7.58789 1.69824 5.8877 0 3.79297 0 1.69629 0 0 1.69824 0 3.79688 0 5.89062 1.69629 7.58789 3.79297 7.58789 5.8877 7.58789 7.58789 5.89062 7.58789 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="68.291" y="60.7017" winding="nonZero" ai:seqID="188" data="M7.58789 3.79688C7.58789 1.69824 5.88672 0 3.79199 0 1.69727 0 0 1.69824 0 3.79688 0 5.89062 1.69727 7.58789 3.79199 7.58789 5.88672 7.58789 7.58789 5.89062 7.58789 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="75.8789" y="60.7017" winding="nonZero" ai:seqID="189" data="M7.58691 3.79688C7.58691 1.69824 5.88867 0 3.79297 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79297 7.58789 5.88867 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="83.4658" y="60.7017" winding="nonZero" ai:seqID="190" data="M7.58691 3.79688C7.58691 1.69824 5.88867 0 3.79395 0 1.69727 0 0 1.69824 0 3.79688 0 5.89062 1.69727 7.58789 3.79395 7.58789 5.88867 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="91.0527" y="60.7017" winding="nonZero" ai:seqID="191" data="M7.58887 3.79688C7.58887 1.69824 5.89062 0 3.79395 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79395 7.58789 5.89062 7.58789 7.58887 5.89062 7.58887 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="98.6416" y="60.7017" winding="nonZero" ai:seqID="192" data="M7.58691 3.79688C7.58691 1.69824 5.88867 0 3.79395 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79395 7.58789 5.88867 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="106.229" y="60.7017" winding="nonZero" ai:seqID="193" data="M7.58789 3.79688C7.58789 1.69824 5.8916 0 3.79395 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79395 7.58789 5.8916 7.58789 7.58789 5.89062 7.58789 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="113.815" y="60.7017" winding="nonZero" ai:seqID="194" data="M7.58789 3.79688C7.58789 1.69824 5.89062 0 3.79297 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79297 7.58789 5.89062 7.58789 7.58789 5.89062 7.58789 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="121.403" y="60.7017" winding="nonZero" ai:seqID="195" data="M7.58887 3.79688C7.58887 1.69824 5.88867 0 3.7959 0 1.69727 0 0 1.69824 0 3.79688 0 5.89062 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.89062 7.58887 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="128.996" y="60.7017" winding="nonZero" ai:seqID="196" data="M7.58594 3.79688C7.58594 1.69824 5.88867 0 3.79297 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79297 7.58789 5.88867 7.58789 7.58594 5.89062 7.58594 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="136.582" y="60.7017" winding="nonZero" ai:seqID="197" data="M7.58691 3.79688C7.58691 1.69824 5.88965 0 3.79395 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79395 7.58789 5.88965 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="144.169" y="60.7017" winding="nonZero" ai:seqID="198" data="M7.59082 3.79688C7.59082 1.69824 5.8916 0 3.79688 0 1.7002 0 0 1.69824 0 3.79688 0 5.89062 1.7002 7.58789 3.79688 7.58789 5.8916 7.58789 7.59082 5.89062 7.59082 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="151.757" y="60.7017" winding="nonZero" ai:seqID="199" data="M7.58691 3.79688C7.58691 1.69824 5.8877 0 3.79297 0 1.69629 0 0 1.69824 0 3.79688 0 5.89062 1.69629 7.58789 3.79297 7.58789 5.8877 7.58789 7.58691 5.89062 7.58691 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="159.344" y="60.7017" winding="nonZero" ai:seqID="200" data="M7.58789 3.79688C7.58789 1.69824 5.88965 0 3.79199 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79199 7.58789 5.88965 7.58789 7.58789 5.89062 7.58789 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="166.932" y="60.7017" winding="nonZero" ai:seqID="201" data="M7.58984 3.79688C7.58984 1.69824 5.88867 0 3.79297 0 1.69824 0 0 1.69824 0 3.79688 0 5.89062 1.69824 7.58789 3.79297 7.58789 5.88867 7.58789 7.58984 5.89062 7.58984 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="174.521" y="60.7017" winding="nonZero" ai:seqID="202" data="M7.58496 3.79688C7.58496 1.69824 5.8877 0 3.79199 0 1.69727 0 0 1.69824 0 3.79688 0 5.89062 1.69727 7.58789 3.79199 7.58789 5.8877 7.58789 7.58496 5.89062 7.58496 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Path x="182.105" y="60.7017" winding="nonZero" ai:seqID="203" data="M7.58887 3.79688C7.58887 1.69824 5.88867 0 3.79395 0 1.69922 0 0 1.69824 0 3.79688 0 5.89062 1.69922 7.58789 3.79395 7.58789 5.88867 7.58789 7.58887 5.89062 7.58887 3.79688Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="37.9375" y="68.292" width="7.58887" height="7.58887" ai:seqID="204">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="45.5264" y="68.29" winding="nonZero" ai:seqID="205" data="M7.58691 3.7959C7.58691 1.69922 5.89062 0 3.79199 0 1.69922 0 0 1.69922 0 3.7959 0 5.89062 1.69922 7.58887 3.79199 7.58887 5.89062 7.58887 7.58691 5.89062 7.58691 3.7959Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="53.1133" y="68.291" width="7.58984" height="7.58984" ai:seqID="206">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="60.7031" y="68.292" width="7.58789" height="7.58789" ai:seqID="207">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="68.292" width="7.58789" height="7.58789" ai:seqID="208">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="68.293" width="7.58691" height="7.58691" ai:seqID="209">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="68.293" width="7.58691" height="7.58691" ai:seqID="210">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="68.292" width="7.58887" height="7.58887" ai:seqID="211">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="68.293" width="7.58691" height="7.58691" ai:seqID="212">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="68.292" width="7.58789" height="7.58789" ai:seqID="213">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="68.292" width="7.58789" height="7.58789" ai:seqID="214">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="68.29" winding="nonZero" ai:seqID="215" data="M7.58887 3.7959C7.58887 1.69922 5.88867 0 3.7959 0 1.69727 0 0 1.69922 0 3.7959 0 5.89062 1.69727 7.58887 3.7959 7.58887 5.88867 7.58887 7.58887 5.89062 7.58887 3.7959Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="68.293" width="7.58594" height="7.58594" ai:seqID="216">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="68.293" width="7.58691" height="7.58691" ai:seqID="217">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="68.291" width="7.59082" height="7.59082" ai:seqID="218">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="68.293" width="7.58691" height="7.58691" ai:seqID="219">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="68.292" width="7.58789" height="7.58789" ai:seqID="220">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="68.291" width="7.58984" height="7.58984" ai:seqID="221">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="68.2939" width="7.58496" height="7.58496" ai:seqID="222">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="68.292" width="7.58887" height="7.58887" ai:seqID="223">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="37.9375" y="75.8779" width="7.58887" height="7.58887" ai:seqID="224">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="68.291" y="75.8779" width="7.58789" height="7.58789" ai:seqID="225">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="75.8789" width="7.58691" height="7.58691" ai:seqID="226">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="75.8789" width="7.58691" height="7.58691" ai:seqID="227">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="75.8779" width="7.58887" height="7.58887" ai:seqID="228">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="75.8789" width="7.58691" height="7.58691" ai:seqID="229">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="106.229" y="75.8779" width="7.58789" height="7.58789" ai:seqID="230">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="113.815" y="75.8779" width="7.58789" height="7.58789" ai:seqID="231">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="75.8789" winding="nonZero" ai:seqID="232" data="M7.58887 3.79297C7.58887 1.69824 5.88867 0 3.7959 0 1.69727 0 0 1.69824 0 3.79297 0 5.8877 1.69727 7.58789 3.7959 7.58789 5.88867 7.58789 7.58887 5.8877 7.58887 3.79297Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="75.8789" width="7.58594" height="7.58594" ai:seqID="233">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="75.8789" width="7.58691" height="7.58691" ai:seqID="234">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="75.877" width="7.59082" height="7.59082" ai:seqID="235">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="75.8789" width="7.58691" height="7.58691" ai:seqID="236">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="75.8779" width="7.58789" height="7.58789" ai:seqID="237">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="75.877" width="7.58984" height="7.58984" ai:seqID="238">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="75.8799" width="7.58496" height="7.58496" ai:seqID="239">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="75.8779" width="7.58887" height="7.58887" ai:seqID="240">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="83.4668" width="7.58691" height="7.58691" ai:seqID="241">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="83.4668" width="7.58691" height="7.58691" ai:seqID="242">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="83.4658" width="7.58887" height="7.58887" ai:seqID="243">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="83.4668" width="7.58691" height="7.58691" ai:seqID="244">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Path x="121.403" y="83.4668" winding="nonZero" ai:seqID="245" data="M7.58887 3.79395C7.58887 1.69824 5.88867 0 3.7959 0 1.69727 0 0 1.69824 0 3.79395 0 5.88965 1.69727 7.58691 3.7959 7.58691 5.88867 7.58691 7.58887 5.88965 7.58887 3.79395Z">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Path>
+        <Ellipse x="128.996" y="83.4678" width="7.58594" height="7.58594" ai:seqID="246">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="83.4668" width="7.58691" height="7.58691" ai:seqID="247">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="83.4658" width="7.59082" height="7.59082" ai:seqID="248">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="83.4668" width="7.58691" height="7.58691" ai:seqID="249">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="83.4658" width="7.58984" height="7.58984" ai:seqID="250">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="83.4658" width="7.58887" height="7.58887" ai:seqID="251">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="91.0537" width="7.58691" height="7.58691" ai:seqID="252">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="91.0537" width="7.58691" height="7.58691" ai:seqID="253">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="91.0527" width="7.58887" height="7.58887" ai:seqID="254">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="98.6416" y="91.0537" width="7.58691" height="7.58691" ai:seqID="255">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="128.996" y="91.0547" width="7.58594" height="7.58594" ai:seqID="256">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="91.0537" width="7.58691" height="7.58691" ai:seqID="257">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="91.0518" width="7.59082" height="7.59082" ai:seqID="258">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="91.0537" width="7.58691" height="7.58691" ai:seqID="259">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="91.0537" width="7.58789" height="7.58789" ai:seqID="260">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="75.8789" y="98.6426" width="7.58691" height="7.58691" ai:seqID="261">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="98.6426" width="7.58691" height="7.58691" ai:seqID="262">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="98.6416" width="7.58887" height="7.58887" ai:seqID="263">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="98.6426" width="7.58691" height="7.58691" ai:seqID="264">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="98.6406" width="7.59082" height="7.59082" ai:seqID="265">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="98.6426" width="7.58691" height="7.58691" ai:seqID="266">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="98.6431" width="7.58789" height="7.58789" ai:seqID="267">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="98.6416" width="7.58887" height="7.58887" ai:seqID="268">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="247.229" y="98.6416" width="7.58887" height="7.58887" ai:seqID="269">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="83.4658" y="106.231" width="7.58691" height="7.58691" ai:seqID="270">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="106.231" width="7.58691" height="7.58691" ai:seqID="271">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="106.231" width="7.58691" height="7.58691" ai:seqID="272">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="106.23" width="7.58887" height="7.58887" ai:seqID="273">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="106.233" width="7.58594" height="7.58594" ai:seqID="274">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="91.0527" y="113.82" width="7.58887" height="7.58887" ai:seqID="275">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="113.82" width="7.58691" height="7.58691" ai:seqID="276">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="113.82" width="7.58691" height="7.58691" ai:seqID="277">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="113.82" width="7.58594" height="7.58594" ai:seqID="278">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="220.046" y="113.82" width="7.58887" height="7.58887" ai:seqID="279">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="128.996" y="121.407" width="7.58594" height="7.58594" ai:seqID="280">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="121.407" width="7.58691" height="7.58691" ai:seqID="281">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="121.405" width="7.59082" height="7.59082" ai:seqID="282">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="121.408" width="7.58496" height="7.58496" ai:seqID="283">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="121.406" width="7.58887" height="7.58887" ai:seqID="284">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="128.995" width="7.58691" height="7.58691" ai:seqID="285">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="128.993" width="7.59082" height="7.59082" ai:seqID="286">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="128.993" width="7.58984" height="7.58984" ai:seqID="287">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="128.996" width="7.58496" height="7.58496" ai:seqID="288">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="128.994" width="7.58887" height="7.58887" ai:seqID="289">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="128.994" width="7.58887" height="7.58887" ai:seqID="290">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="128.995" width="7.58594" height="7.58594" ai:seqID="291">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="128.994" width="7.58887" height="7.58887" ai:seqID="292">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="136.582" y="136.583" width="7.58691" height="7.58691" ai:seqID="293">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="144.169" y="136.581" width="7.59082" height="7.59082" ai:seqID="294">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="136.583" width="7.58691" height="7.58691" ai:seqID="295">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="136.581" width="7.58984" height="7.58984" ai:seqID="296">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="136.584" width="7.58496" height="7.58496" ai:seqID="297">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="136.582" width="7.58887" height="7.58887" ai:seqID="298">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="136.582" width="7.58887" height="7.58887" ai:seqID="299">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="204.873" y="136.582" width="7.58887" height="7.58887" ai:seqID="300">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="212.461" y="136.583" width="7.58691" height="7.58691" ai:seqID="301">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="144.17" width="7.58691" height="7.58691" ai:seqID="302">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="227.635" y="144.17" width="7.58691" height="7.58691" ai:seqID="303">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="151.757" y="151.757" width="7.58691" height="7.58691" ai:seqID="304">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="159.344" y="151.757" width="7.58789" height="7.58789" ai:seqID="305">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="166.932" y="151.757" width="7.58984" height="7.58984" ai:seqID="306">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="174.521" y="151.757" width="7.58496" height="7.58496" ai:seqID="307">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="182.105" y="151.757" width="7.58887" height="7.58887" ai:seqID="308">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="189.694" y="151.757" width="7.58887" height="7.58887" ai:seqID="309">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="197.287" y="151.758" width="7.58594" height="7.58594" ai:seqID="310">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+        <Ellipse x="227.635" y="151.757" width="7.58691" height="7.58691" ai:seqID="311">
+          <fill>
+            <SolidColor color="#CCCCCC"/>
+          </fill>
+        </Ellipse>
+      </Group>
+    </Group>
+    <Group  x="6.79199" y="16.3184" visible="true" ai:seqID="312" d:type="layer" d:userLabel="countries">
+        <Rect x="25.8906" y="21.125" width="2" height="2" ai:seqID="314" d:userLabel="AZE">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="3.51172" y="20.125" width="2" height="2" ai:seqID="315" d:userLabel="ARM">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect y="16.209" width="2" height="2" ai:seqID="316" d:userLabel="GEO">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="37.3643" y="22.125" width="2" height="2" ai:seqID="317" d:userLabel="TKM">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="49.8643" y="18.188" width="2" height="2" ai:seqID="318" d:userLabel="UZB">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="71.7393" y="23.9312" width="2" height="2" ai:seqID="319" d:userLabel="TJK">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="55.6309" y="33.5781" width="2" height="2" ai:seqID="320" d:userLabel="AFG">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="64.2646" y="43.4751" width="2" height="2" ai:seqID="321" d:userLabel="PAK">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="73.7393" y="17.563" width="2" height="2" ai:seqID="322" d:userLabel="KGZ">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="83.165" y="61.959" width="2" height="2" ai:seqID="323" d:userLabel="IND">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="109.633" y="58.625" width="2" height="2" ai:seqID="324" d:userLabel="BGD">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="124.803" y="64" width="2" height="2" ai:seqID="325" d:userLabel="MMR">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="96.5527" y="49.5654" width="2" height="2" ai:seqID="326" d:userLabel="NPL">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="147.741" y="33.188" width="2" height="2" ai:seqID="327" d:userLabel="CHN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="135.803" y="80.5005" width="2" height="2" ai:seqID="328" d:userLabel="TJK">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="145.803" y="74.25" width="2" height="2" ai:seqID="329" d:userLabel="LAO">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="145.303" y="86.1255" width="2" height="2" ai:seqID="330" d:userLabel="KHM">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="146.45" y="70.3521" width="2" height="2" ai:seqID="331" d:userLabel="VNM">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="141.596" y="107.655" width="2" height="2" ai:seqID="332" d:userLabel="MYS">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="174.428" y="124.628" width="2" height="2" ai:seqID="333" d:userLabel="IDN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="189.332" y="92.7271" width="2" height="2" ai:seqID="334" d:userLabel="PHL">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="87.251" y="100.475" width="2" height="2" ai:seqID="335" d:userLabel="LKA">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="56.7871" y="108.023" width="2" height="2" ai:seqID="336" d:userLabel="MDV">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="193.277" y="138.585" width="2" height="2" ai:seqID="337" d:userLabel="TLS">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="141.284" y="115.332" width="2" height="2" ai:seqID="338" d:userLabel="SGP">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="216.156" y="100.11" width="2" height="2" ai:seqID="339" d:userLabel="GUM">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="244.656" y="87.7612" width="2" height="2" ai:seqID="340" d:userLabel="PLW">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="242.631" y="81.1567" width="2" height="2" ai:seqID="341" d:userLabel="MNP">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="170.241" y="107.016" width="2" height="2" ai:seqID="342" d:userLabel="BRN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="112.056" y="51.4912" width="2" height="2" ai:seqID="343" d:userLabel="BTN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="140.178" y="6" width="2" height="2" ai:seqID="344" d:userLabel="MNG">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="57.0527" width="2" height="2" ai:seqID="345" d:userLabel="KAZ">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="196.553" y="22.125" width="2" height="2" ai:seqID="346" d:userLabel="PRK">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="200.803" y="29.5" width="2" height="2" ai:seqID="347" d:userLabel="KOR">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="185.833" y="70.0732" width="2" height="2" ai:seqID="348" d:userLabel="TWN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+        <Rect x="224.037" y="31.5601" width="2" height="2" ai:seqID="349" d:userLabel="JPN">
+          <fill>
+            <SolidColor/>
+          </fill>
+        </Rect>
+      </Group>
+  </Group>
+</Graphic>

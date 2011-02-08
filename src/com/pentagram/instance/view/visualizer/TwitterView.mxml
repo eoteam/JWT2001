@@ -3,12 +3,17 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:modules="ws.tink.spark.modules.*" 
+				xmlns:views="com.pentagram.instance.view.visualizer.views.*"
+				implements="com.pentagram.instance.view.visualizer.interfaces.ITwitterView"
 				creationComplete="creationCompleteHandler(event)" resize="updateSize()"
-				width="100%" height="100%" xmlns:views="com.pentagram.instance.view.visualizer.views.*">
+				width="100%" height="100%">
 	<fx:Script>
 		<![CDATA[
 			import com.adobe.serialization.json.JSON;
+			import com.greensock.TweenNano;
+			import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
 			import com.pentagram.instance.view.visualizer.views.TwitterPacking;
+			import com.pentagram.model.vo.Client;
 			
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
@@ -16,26 +21,28 @@
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
-			
+			private var baseURL:String = "http://search.twitter.com/search.json?q=";
 			private var counter:int = 1;
 			private var pageTotal:int = 4;
-			
+			private var maxRadius:Number = 25;
+			private var opacity:Boolean = true;
 			private var arr:Array = [];
-			protected var resizeFlag:Boolean = false
-			
 			private var pack:TwitterPacking;
-
+			private var _client:Client;
 			private var text:String = '';
+			private var firstPass:Boolean = true;
 			private var common:Array = ["the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do",
 				"at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there",
 				"their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no",
 				"just","him","know","take","person","into","year","your","good","some","could","them","see","other","than","then",
-				"now","look","only","come","its","over","think","also","back","after","use","two","how","our","work","first","well",
+				"now","look","only","come","its","over","think","also","back","after","use","two","how","our","	","first","well",
 				"way","even","new","want","because","any","these","give","day","most","us",
 				
-				"http","bit","ly","pentagramdesign","rt","www","com","pentagram","designers","here","lots","ever"];
+				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has"];
 			
-			protected function httpservice1_resultHandler(event:ResultEvent):void
+			protected var resizeFlag:Boolean = false
+				
+			private function httpservice1_resultHandler(event:ResultEvent):void
 			{
 				var o:Object  = JSON.decode(event.result.toString());
 				arr = arr.concat(o.results);
@@ -43,14 +50,13 @@
 					text+= item.text + "\n";
 				}
 				if(counter < pageTotal) {
-					service.url = "http://search.twitter.com/search.json?q=pentagramdesign&rpp=100&page="+counter.toString();
+					service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page="+counter.toString();
 					service.send();
 				}
 				else  {
 					var a:Array = countWords(text,0);
 					pack = new TwitterPacking(a,this);
 					pack.percentHeight = pack.percentWidth = 100;
-					//circle.name = item.name;
 					this.addElement(pack);
 					pack.build();
 					updateSize();
@@ -94,7 +100,7 @@
 					for (var i:int=0;i<=A.length-1;i++)
 					{	
 						k= A.charCodeAt(i);
-						if (((k>64) && (k<91)) || (k==32))
+						if ( ((k>64) && (k<5000)) || (k==32) ) // ((k>64) && (k<91)) || 
 						{	
 							C=C+A.charAt(i);
 						}
@@ -183,26 +189,64 @@
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] >= N[1]*0.1)
+					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] >= N[1]*0.01)
 						results.push({count:N[i],word:m1[i]});
 					C=C + N[i]+ "\t" + m1[i] + "\n";
 				}
-				area.text = C;
+				area2.text = C;
 				return results;
-			}
-			
-			
-			protected function creationCompleteHandler(event:FlexEvent):void
+			}	
+			private function creationCompleteHandler(event:FlexEvent):void
 			{
-				service.url = "http://search.twitter.com/search.json?q=pentagramdesign&rpp=100&page=1";
+				firstPass = false;
+				if(_client)
+					doVisualize();
+			}
+			public function update():void {
+				
+			}
+			public function set client(value:Client):void {
+				if(_client != value) {
+					_client = value;
+					if(!firstPass)
+						doVisualize();
+				}
+			}
+			private function doVisualize():void {
+				counter = 1;
+				common.push(_client.shortname.toLowerCase());
+				service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page=1";
 				service.send();
+				firstPass = false;
+			}
+			public function get viewOptions():Array {
+				return [maxRadius,opacity,0];
+			}
+			public function toggleOpacity(value:Number):void {
+				opacity = value==1?false:true;
+				for (var j:int=0;j<pack.numChildren;j++) {
+					var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+					renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
+					TweenNano.to(renderer, .5, {fillAlpha: value}); 
+				}
+			}
+			public function updateMaxRadius(value:Number):void {
+				maxRadius = value;
+				pack.scaler = value/100;
+				pack.draw();
+			}
+			private function handleChange(event:Event):void {
+				var t:String = area2.text;
+				for (var i:int=0;i<t.length;i++) {
+					trace(t.charCodeAt(i));
+				}
 			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple"
-					   result="httpservice1_resultHandler(event)" 
-					   method="GET"/>
+	   	result="httpservice1_resultHandler(event)" 
+	  	method="GET"/>
 	</fx:Declarations>
-	<s:TextArea width="300" height="100%" id="area" />
+	<s:TextArea  width="300" height="100%" id="area2" fontFamily="_sans" text="お元気ですか？" minHeight="40"/>
 </modules:Module>

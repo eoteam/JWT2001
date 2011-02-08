@@ -8,8 +8,10 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.instance.view.visualizer.interfaces.IClusterView;
+	import com.pentagram.instance.view.visualizer.interfaces.IDataVisualizer;
 	import com.pentagram.instance.view.visualizer.interfaces.IGraphView;
 	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
+	import com.pentagram.instance.view.visualizer.interfaces.ITwitterView;
 	import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
@@ -151,11 +153,19 @@ package com.pentagram.instance.view.mediators.shell
 					restoreViewOptions(view.clusterView);
 				}
 			}
-			else {
-				util = new ModuleUtil();
-				util.addEventListener("moduleLoaded",handleTwitterLoaded);
-				util.loadModule("com/pentagram/instance/view/visualizer/TwitterView.swf");	
-				loaders.push(util);
+			else if(event.newIndex == model.TWITTER_INDEX){ 
+				view.vizTitle.text = 'Twitter Visualization for term "' + model.client.shortname+'"';
+				view.infoText.text = '';
+				if(view.twitterView == null) {
+					util = new ModuleUtil();
+					util.addEventListener("moduleLoaded",handleTwitterLoaded);
+					util.loadModule("com/pentagram/instance/view/visualizer/TwitterView.swf");	
+					loaders.push(util);
+				}
+				else {
+					view.twitterView.client = model.client;
+					restoreViewOptions(view.twitterView);
+				}
 			}
 		}
 		private function handleDatasetSelection(event:VisualizerEvent):void {
@@ -201,9 +211,10 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleStopTimeline(event:VisualizerEvent):void {
 			//view.currentVisualizer.continous = false;
-			view.currentVisualizer.pause();
+			if(view.currentVisualizer is IDataVisualizer)
+				IDataVisualizer(view.currentVisualizer).pause();
 		}
-		private function restoreDatasets(viz:IVisualizer):void {
+		private function restoreDatasets(viz:IDataVisualizer):void {
 			view.tools.firstSet.selectedItem 	= viz.datasets[0] ? viz.datasets[0] : null;				
 			view.tools.secondSet.selectedItem	= viz.datasets[1] ? viz.datasets[1] : null;				
 			view.tools.thirdSet.selectedItem	= viz.datasets[2] ? viz.datasets[2] : null;				
@@ -229,30 +240,35 @@ package com.pentagram.instance.view.mediators.shell
 			var type:String = event.args[0];
 			var item:Category = event.args[1] as Category;	
 			var count:int = event.args[2] as int;
-			switch(type) {
-				case "addRegion":
-					view.currentVisualizer.addCategory(item,count);
+			if(view.currentVisualizer is IDataVisualizer) {
+				var viz:IDataVisualizer = view.currentVisualizer as IDataVisualizer
+				switch(type) {
+					case "addRegion":
+						viz.addCategory(item,count);
+						break;
+					
+					case "selectRegion":
+						viz.selectCategory(item);
 					break;
-				
-				case "selectRegion":
-					view.currentVisualizer.selectCategory(item);
-				break;
-				
-				case "removeRegion":
-					view.currentVisualizer.removeCategory(item,count);
-				break;
-				case "selectAll":
-					view.currentVisualizer.selectAllCategories();
-				break;
+					
+					case "removeRegion":
+						viz.removeCategory(item,count);
+					break;
+					case "selectAll":
+						viz.selectAllCategories();
+					break;
+				}
 			}
 		}
 	
 		private function handleViewChange(event:VisualizerEvent):void {
 			var prop:String = event.args[0];
 			var value:* = event.args[1];
+			
+			var viz:IVisualizer = view.currentVisualizer
 			switch(prop) {
 				case 'alpha':
-					view.currentVisualizer.toggleOpacity(value);
+					viz.toggleOpacity(value);
 				break;
 				case 'mapToggle':
 					if(view.visualizerArea.selectedIndex == model.MAP_INDEX)
@@ -267,9 +283,10 @@ package com.pentagram.instance.view.mediators.shell
 						var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
 						model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
 					}
-					view.currentVisualizer.updateMaxRadius(value);
+					viz.updateMaxRadius(value);
 				break;
 			}
+			
 		}
 		
 		private function handleClientLoaded(event:VisualizerEvent):void
@@ -378,10 +395,11 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleTwitterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
-			//if(util.view is IClusterView) {
-				//this.view.clusterView = util.view as IClusterView;
+			if(util.view is ITwitterView) {
+				view.twitterView = util.view as ITwitterView;
+				view.twitterView.client = model.client;
 				view.twitterHolder.addElement(util.view as Group);	
-			//}			
+			}			
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();

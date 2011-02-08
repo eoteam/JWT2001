@@ -6,6 +6,16 @@
 @namespace flashcommander "org.flashcommander.components.*";
 @namespace bxf "bxf.ui.controls.*";
 
+@font-face 
+{
+	src:               local("Arial");
+	fontFamily:      'Arial_subset';
+	embedAsCFF: false;
+	unicodeRange:     U+0041-U+005A, U+0061-U+007A, U+003F-U+003F,     /* A-Z, a-z, ?  */
+		U+304A-U+304A, U+5143-U+5143, U+6C17-U+6C17, U+3067-U+3067, U+3059-U+3059, U+304B-U+304B, U+FF1F-U+FF1F,    /* お元気ですか？ */                    
+		U+4F60-U+4F60, U+597D-U+597D, U+5417-U+5417;     /* 你好吗 */                    
+}
+
 @font-face {
 	src: url("/assets/fonts/FlamaBook.ttf");
     font-family: "FlamaBook";

@@ -30,7 +30,7 @@
         /** 
          * @copy spark.skins.spark.ApplicationSkin#hostComponent
          */
-        [HostComponent("com.pentagram.instance.view.visualizer.renderers.RendererInfo")]
+        [HostComponent("com.pentagram.instance.view.visualizer.renderers.TWRendererInfo")]
         ]]>
     </fx:Metadata> 
     

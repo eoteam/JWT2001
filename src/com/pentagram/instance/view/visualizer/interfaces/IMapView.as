@@ -7,7 +7,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 	import mx.collections.ArrayList;
 	import mx.core.IUIComponent;
 
-	public interface IMapView extends IVisualizer
+	public interface IMapView extends IDataVisualizer
 	{
 		function toggleMap(visible:Boolean):void;
 	

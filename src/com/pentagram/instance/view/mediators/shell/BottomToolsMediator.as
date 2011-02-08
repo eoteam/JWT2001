@@ -127,7 +127,10 @@ package com.pentagram.instance.view.mediators.shell
 					break;					
 				case model.GRAPH_INDEX:
 					view.currentState = 'graph';
-					break;					
+				break;	
+				case model.TWITTER_INDEX:
+					view.currentState = 'twitter';
+				break;	
 			}
 		}
 		private function handleDatasetSelection(event:Event):void {

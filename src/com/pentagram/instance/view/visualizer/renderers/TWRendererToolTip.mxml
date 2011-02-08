@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"  alpha="0"
+		 implements="mx.core.IToolTip" width="200" height="85" showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
+	<fx:Script>
+		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
+			
+			[Bindable]
+			public function get text():String {
+				return country.name;
+			}
+			public function set text(value:String):void {
+			}
+			
+			public function set content(value:String):void {
+				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<vo:Country id="country" />	
+		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
+		<s:Fade id="fadeOut" alphaTo="0" duration="250" />
+		<s:TextFlow id="ctf" />
+	</fx:Declarations>
+	<s:Path rotation="90" y="39"	
+			id="leftTip"  winding="nonZero"
+			data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Path>
+	
+	<s:Path id="rightTp" right="-16" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" rotation="270" visible="false" verticalCenter="-4" winding="nonZero">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Path>
+	
+	
+	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+		<s:fill>
+			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+	</s:Rect>
+	
+	<s:RichText verticalCenter="0" horizontalCenter="0" id="dataText"
+	fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6"  textFlow="{ctf}" />	
+	
+</s:Group>	
+
