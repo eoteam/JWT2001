@@ -285,6 +285,9 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					viz.updateMaxRadius(value);
 				break;
+				case "topics" :
+					view.twitterView.selectTweets(value as Vector.<Object>);
+				break;
 			}
 			
 		}

@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"  alpha="0"
-		 implements="mx.core.IToolTip" width="200" height="85" showEffect="{fadeIn}" hideEffect="{fadeOut}"
+		 implements="mx.core.IToolTip" width="200" height="85"  styleName="darkPanel"
+		 showEffect="{fadeIn}" hideEffect="{fadeOut}" show="group1_showHandler(event)" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
 		<![CDATA[
 			import flashx.textLayout.conversion.TextConverter;
 			
+			import mx.events.FlexEvent;
+			
 			[Bindable]
 			public function get text():String {
-				return country.name;
+				return topic.value;
 			}
 			public function set text(value:String):void {
 			}
@@ -17,14 +20,34 @@
 			public function set content(value:String):void {
 				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
 			}
+
+			protected function group1_showHandler(event:FlexEvent):void
+			{
+				currentState = topic.link ? "link":"normal";
+			}
+
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				var url:String = topic.value;
+				if(topic.value.substr(0,7) != 'http://')
+					url = "http://"+topic.value;
+				var req:URLRequest = new URLRequest(url);
+				navigateToURL(req, "_blank");
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<vo:Country id="country" />	
+		<vo:TwitterTopic id="topic" />	
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
 		<s:Fade id="fadeOut" alphaTo="0" duration="250" />
 		<s:TextFlow id="ctf" />
 	</fx:Declarations>
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="link" />
+	</s:states>
 	<s:Path rotation="90" y="39"	
 			id="leftTip"  winding="nonZero"
 			data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
@@ -55,7 +78,8 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:RichText verticalCenter="0" horizontalCenter="0" id="dataText"
+	<s:Button label="This is a link!" includeIn="link" click="button1_clickHandler(event)" styleName="darkButton" verticalCenter="0" horizontalCenter="0"/>
+	<s:RichText verticalCenter="0" horizontalCenter="0" id="dataText" includeIn="normal"
 	fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6"  textFlow="{ctf}" />	
 	
 </s:Group>	

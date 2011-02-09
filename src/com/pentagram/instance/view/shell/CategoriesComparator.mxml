@@ -43,7 +43,7 @@
 		</s:Transition>
 	</s:transitions>
 	
-	<s:Group width="100%">
+	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" left="6" top="2" bottom="2" click="button1_clickHandler(event)"/>
 		<s:Rect width="0.25" height="100%" left="24">
 			<s:stroke>
@@ -60,12 +60,12 @@
 		</s:stroke>
 	</s:Rect>	
 	
-	<s:List id="categoryHolder" width="100%" contentBackgroundAlpha="0" borderVisible="false" height.closed="0" height.open="160" 
+	<s:List id="categoryHolder" width="100%" contentBackgroundAlpha="0" borderVisible="false" height.closed="0" height.open="150" 
 	 top="25" bottom.open="24" itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer" >
 		<s:layout>
 			<s:VerticalLayout  clipAndEnableScrolling="false"  gap="0" paddingLeft="4"  horizontalAlign="center"/>
 		</s:layout>
 	</s:List>
-	<s:Button label="Create Comparaisons"  width="100%" includeIn="open" bottom="0" 
+	<s:Button label="Create Comparaisons"  width="100%" includeIn="open" bottom="5" 
 	id="compareBtn" click="compareBtn_clickHandler(event)" styleName="darkButton"/>
 </s:Group>

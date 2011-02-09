@@ -6,7 +6,7 @@
 				xmlns:views="com.pentagram.instance.view.visualizer.views.*"
 				implements="com.pentagram.instance.view.visualizer.interfaces.ITwitterView"
 				creationComplete="creationCompleteHandler(event)" resize="updateSize()"
-				width="100%" height="100%">
+				width="100%" height="100%" xmlns:assets="com.pentagram.view.assets.*" >
 	<fx:Script>
 		<![CDATA[
 			import com.adobe.serialization.json.JSON;
@@ -192,7 +192,7 @@
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] >= N[1]*0.01) {
+					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
 						var topic:TwitterTopic = new TwitterTopic();
 						topic.count = N[i];
 						topic.value = m1[i];
@@ -275,14 +275,16 @@
 				
 				
 				//var a1:Array = countWords(text,0);
-				_topics = countWords(text,1);
+				_topics = countWords(text,0);
 				var o:Array  = JSON.decode(event.result.toString()) as Array;
 				for each(var item:Object  in o) {
-					var topic:TwitterTopic = new TwitterTopic();
-					topic.link = true;
-					topic.count = item.cout;
-					topic.value = item.value;
-					_topics.push(topic);
+					if(item.count) {
+						var topic:TwitterTopic = new TwitterTopic();
+						topic.link = true;
+						topic.count = item.count;
+						topic.value = item.value;
+						_topics.push(topic);
+					}
 				}
 				//a1 = a1.concat(o)
 				
@@ -303,15 +305,37 @@
 //				this.addElement(pack1);
 //				pack1.build();
 				
-//				var pack2:TwitterPacking = new TwitterPacking(_topics,this);
-//				pack2.percentHeight = pack2.percentWidth = 100;
-//				holder.addElement(pack2);
-//				pack2.build();
-//				updateSize();
+				var pack2:TwitterPacking = new TwitterPacking(_topics,this);
+				pack2.percentHeight = pack2.percentWidth = 100;
+				holder.addElement(pack2);
+				pack2.build();
+				pack2.addEventListener("layoutComplete",handleLayout);	
 				this.dispatchEvent(new Event("vizLoaded"));
+			}
+			private function handleLayout(event:Event):void {
+				updateSize();
+				this.currentState = "loaded";
 			}
 			public function get topics():Array {
 				return _topics;
+			}
+			public function selectTweets(tweets:Vector.<Object>):void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					for (var j:int=0;j<pack.numChildren;j++) {
+						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+						if(tweets.indexOf(renderer.data) != -1) {
+							renderer.textColor = 0xffffffff;
+							TweenNano.to(renderer, .5, {fillAlpha: 1});
+							renderer.showTooltip();
+						}
+						else {
+							renderer.textColor = renderer.fillColor;
+							TweenNano.to(renderer, .5, {fillAlpha: 0.2});
+							renderer.hideTooltip();
+						}
+					}
+				}
 			}
 		]]>
 	</fx:Script>
@@ -322,7 +346,10 @@
 <!--		<s:HTTPService id="counterService" resultFormat="text" concurrency="multiple" method="POST" result="counter_resultHandler(event)" />-->
 		<s:HTTPService id="linksService" resultFormat="text" concurrency="multiple" method="POST" result="linksService_resultHandler(event)"/>
 	</fx:Declarations>
-
+	<modules:states>
+		<s:State name="loading" />
+		<s:State name="loaded" />
+	</modules:states>
 	<!--<s:HGroup paddingLeft="10" height="100%" id="panel">
 		<s:List height="100%" id="list1"  >
 			<s:itemRenderer>
@@ -364,4 +391,5 @@
 	</s:HGroup>
 	<s:ToggleButton id="toggle" change="toggle_changeHandler(event)"  label="show copy"/>-->
 		<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
+		<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
 </modules:Module>

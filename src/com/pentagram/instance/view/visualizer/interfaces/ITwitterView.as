@@ -7,5 +7,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function set client(value:Client):void;
 		
 		function get topics():Array;
+		
+		function selectTweets(tweets:Vector.<Object>):void;
 	}
 }

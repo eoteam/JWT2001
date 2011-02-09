@@ -2,7 +2,7 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
-				autoDrawBackground="false">
+				autoDrawBackground="false"  width="100%">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.view.skins.buttons.ContinentToggleButton;
@@ -38,7 +38,7 @@
 		</s:stroke>
 	</s:Rect>
 	<s:Button verticalCenter="0" skinClass="com.pentagram.view.skins.buttons.ContinentToggleButton"  id="select"
-	label="{data.name}" left="21"  color="{data.color}" click="togglebutton1_changeHandler(event)"  />
+	label="{data.name}" left="21"  right="0" color="{data.color}" click="togglebutton1_changeHandler(event)"  />
 	
 	<s:Rect left="-4" right="0" height="0.25" bottom="0">
 		<s:stroke>

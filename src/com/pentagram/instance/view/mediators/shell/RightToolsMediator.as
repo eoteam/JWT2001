@@ -20,6 +20,8 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import org.robotlegs.mvcs.Mediator;
 	
+	import spark.events.GridSelectionEvent;
+	
 	public class RightToolsMediator extends Mediator
 	{
 		[Inject]
@@ -137,10 +139,16 @@ package com.pentagram.instance.view.mediators.shell
 			if(view.state == 'Graph') {
 				view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			}	
+			if(view.state == "Twitter") {
+				view.topics.topicsList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleTopicsSelection,false,0,true);
+			}
 		}
 		private function handleXray(event:Event):void {
 			var alpha:Number = view.optionsPanel.xrayToggle.selected?0.2:1;
 			dispatchPropEvent('alpha',alpha);
+		}
+		private function handleTopicsSelection(event:Event):void {
+			dispatchPropEvent('topics',view.topics.topicsList.selectedItems);
 		}
 		private function handleMapToggle(event:Event):void {
 

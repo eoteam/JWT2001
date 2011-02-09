@@ -2,6 +2,7 @@ package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
 	import com.pentagram.model.vo.DataRow;
+	import com.pentagram.model.vo.TwitterTopic;
 	import com.pentagram.utils.Colors;
 	
 	import flash.display.GradientType;
@@ -109,6 +110,9 @@ package com.pentagram.instance.view.visualizer.renderers
 					labelTF.visible = false;
 			}
 		}
+		public function force():void {
+			draw();
+		}
 		protected function draw():void {
 			var g:Graphics = this.graphics;//this.graphics;
 			dirtyFlag = false;
@@ -159,21 +163,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-						tooltip.leftTip.visible = false;
-						tooltip.rightTp.visible = true;
-						tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
-					}
-					else { 
-						tooltip.leftTip.visible = true;
-						tooltip.rightTp.visible = false;
-						tooltip.x = this.directParent.x + this.x + radius + offset;
-					}
-					tooltip.y = this.y - tooltip.height/2;
-					tooltip.visible = true;	
-					tooltip.content = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>"+
-									  '<span color="#ffffff" fontSize="18">'+_data.value + ": "+ _data.count + '</span>' +
-									   "</p></TextFlow>";
+					showTooltip();
 					break;
 				}
 					
@@ -221,6 +211,27 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		private function addedToStageHandler(event:Event):void {
 			
+		}
+		public function hideTooltip():void {
+			tooltip.visible = false;
+		}
+		public function showTooltip():void {
+			if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
+				tooltip.leftTip.visible = false;
+				tooltip.rightTp.visible = true;
+				tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
+			}
+			else { 
+				tooltip.leftTip.visible = true;
+				tooltip.rightTp.visible = false;
+				tooltip.x = this.directParent.x + this.x + radius + offset;
+			}
+			tooltip.y = this.y - tooltip.height/2;
+			tooltip.topic = this._data as TwitterTopic;
+			tooltip.visible = true;	
+			tooltip.content = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>"+
+				'<span color="#ffffff" fontSize="18">'+_data.value + ": "+ _data.count + '</span>' +
+				"</p></TextFlow>";
 		}
 	}
 	

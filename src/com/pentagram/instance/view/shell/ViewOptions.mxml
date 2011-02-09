@@ -34,7 +34,7 @@
 	</s:transitions>
 	
 	
-	<s:Group width="100%">
+	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" left="6" top="2" bottom="2" click="button1_clickHandler(event)"/>
 		<s:Rect width="0.25" height="100%" left="24">
 			<s:stroke>

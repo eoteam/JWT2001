@@ -49,26 +49,40 @@ package com.pentagram.instance.view.visualizer.views
 			}
 			doLayout();
 		}
-		public function doLayout(animate:Boolean=false):void {
+		private var disposeCounter:int = 2;
+		private var c:TwitterRenderer = null;
+		private var _loc_2:Number = NaN;
+		private var _loc_7:uint = 0;
+		private var _loc_3:Number = 0;
+		private var _loc_4:* = new Point();
+		private var _loc_5:Number;
+		private var timer:Timer;
+		private function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
-			var disposeCounter:int = 2;
-			var c:TwitterRenderer = null;
-			var _loc_2:Number = NaN;
-			var _loc_7:uint = 0;
-			var _loc_3:Number = 0;
-			var _loc_4:* = new Point();
+
 			circlePositions = new Vector.<Point3D>;			
 			circlePositions.push(new Point3D(0, 0, this.spriteArray[0].radiusBeforeRendering));
 			circlePositions.push(new Point3D(this.spriteArray[0].radiusBeforeRendering + this.spriteArray[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.spriteArray[1].radiusBeforeRendering));
-			var _loc_5:Number = this.circlePositions[1].x + this.circlePositions[1].z;
-			while (disposeCounter < this.numberList.length){
-				
+			_loc_5 = this.circlePositions[1].x + this.circlePositions[1].z;
+			
+//			while (disposeCounter < this.numberList.length){
+//				
+//				
+//			}
+			timer = new Timer(50);
+			timer.addEventListener(TimerEvent.TIMER,onTimer);
+			timer.start();
+
+		}
+		protected function onTimer(event:TimerEvent):void {
+			if(disposeCounter < this.numberList.length){
+				timer.stop();
 				c = this.spriteArray[disposeCounter];
 				//this.graphics.moveTo(0, 0);
 				_loc_2 = this.spriteArray[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
-				while (_loc_7 < 500) {
+				while (_loc_7 < 10000) {
 					
 					_loc_4.x = _loc_2 * Math.cos(_loc_3);
 					_loc_4.y = _loc_2 * Math.sin(_loc_3);
@@ -81,16 +95,21 @@ package com.pentagram.instance.view.visualizer.views
 					}
 					_loc_7 = _loc_7 + 1;
 				}
-				draw();
+				//	draw(true);
 				disposeCounter++;
+				timer.start();
 			}
-			for each(var pos:Point3D in circlePositions) {
-				pos.x = pos.x /_loc_5;
-				pos.y = pos.y / _loc_5;
-				pos.z = pos.z / _loc_5;
+			else {
+				timer.stop();
+				for each(var pos:Point3D in circlePositions) {
+					pos.x = pos.x /_loc_5;
+					pos.y = pos.y / _loc_5;
+					pos.z = pos.z / _loc_5;
+				}
+				draw();
+				animateCoord = false;
+				this.dispatchEvent(new Event("layoutComplete"));
 			}
-			draw();
-			animateCoord = false;
 		}
 		protected function testCircleAtPoint(point:Point, radius:Number) : Boolean {
 			var _loc_3:uint = 1;
@@ -104,7 +123,7 @@ package com.pentagram.instance.view.visualizer.views
 			return true;
 		}
 		
-		public function draw() : void {			
+		public function draw(fast:Boolean=false) : void {			
 			var c:TwitterRenderer;
 			if (this.numberList.length < 2){
 				return;
@@ -116,15 +135,28 @@ package com.pentagram.instance.view.visualizer.views
 				c.state = true;
 				if(animateCoord) {
 					c.alpha = 0;
+					if(!fast)
 					TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
 						alpha:1,
 						x:this.circlePositions[i].x * _loc_2 + width/2,
-						y:this.circlePositions[i].y * _loc_2+ height/2});					
+						y:this.circlePositions[i].y * _loc_2+ height/2});
+					else {
+						c.radius = this.circlePositions[i].z * _loc_2 * scaler
+						c.x = this.circlePositions[i].x * _loc_2 + width/2;
+						c.y = this.circlePositions[i].y * _loc_2+ height/2;
+						c.alpha = 1;
+						c.force();
+					}
 				}
 				else {
 					c.x =  this.circlePositions[i].x * _loc_2 + width/2;
 					c.y = this.circlePositions[i].y * _loc_2+ height/2;
-					TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
+					if(!fast)
+						TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
+					else {
+						c.radius = this.circlePositions[i].z * _loc_2 * scaler;
+						c.force();
+					}
 				}
 				i++;
 			}
