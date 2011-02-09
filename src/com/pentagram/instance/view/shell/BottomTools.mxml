@@ -133,7 +133,7 @@
 		</s:HGroup>
 		
 		
-		<s:HGroup  verticalAlign="middle"  includeIn="twitter">
+<!--		<s:HGroup  verticalAlign="middle"  includeIn="twitter">
 			<s:Label text="Language:  "/>
 			<s:DropDownList width="180" labelField="name">
 				<s:ArrayList>
@@ -166,15 +166,8 @@
 				</s:fill>
 			</s:Path>
 			<s:Rect width="10"/>		
-		</s:HGroup>
-		
-		<s:HGroup  verticalAlign="middle"  includeIn="twitter">
-			<s:Label text="Range:  "/>
-			<controls:IntervalSlider skinClass="com.pentagram.view.skins.controls.IntervalSlider" minimum="1" maximum="100"
-			 snapInterval="0.01"
-			 thumb1Value="1"
-			 thumb2Value="100" />
-		</s:HGroup>
+		</s:HGroup>-->
+
 		
 		<s:Rect width="100%" />
 		<s:Line height="100%" width="1" bottom="34">

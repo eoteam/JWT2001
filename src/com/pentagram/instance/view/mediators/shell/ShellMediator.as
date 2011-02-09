@@ -399,7 +399,11 @@ package com.pentagram.instance.view.mediators.shell
 				view.twitterView = util.view as ITwitterView;
 				view.twitterView.client = model.client;
 				view.twitterHolder.addElement(util.view as Group);	
+				view.twitterView.addEventListener("vizLoaded",handleTwitterViz);
 			}			
+		}
+		private function  handleTwitterViz(event:Event):void {
+			view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();

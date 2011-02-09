@@ -126,7 +126,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
-			labelTF.text = _data.word;
+			labelTF.text = _data.value;
 			labelTF.width = labelTF.textWidth;
 			
 			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
@@ -172,7 +172,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					tooltip.y = this.y - tooltip.height/2;
 					tooltip.visible = true;	
 					tooltip.content = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>"+
-									  '<span color="#ffffff" fontSize="18">'+_data.word + ": "+ _data.count + '</span>' +
+									  '<span color="#ffffff" fontSize="18">'+_data.value + ": "+ _data.count + '</span>' +
 									   "</p></TextFlow>";
 					break;
 				}
@@ -195,7 +195,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					if(!infoVisible) {
 						tooltip.visible = false;
 						info = new TWRendererInfo();
-						info.content = _data.word + ": "+ _data.count;
+						info.content = _data.value + ": "+ _data.count;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
 						if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {

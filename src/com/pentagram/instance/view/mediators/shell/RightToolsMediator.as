@@ -81,7 +81,10 @@ package com.pentagram.instance.view.mediators.shell
 					break;					
 				case model.GRAPH_INDEX:
 					view.currentState = view.isOpen? 'openAndGraph' : 'closedAndGraph';
-					break;					
+				break;
+				case model.TWITTER_INDEX:
+					view.currentState = view.isOpen? 'openAndTwitter' : 'closedAndTwitter';
+				break;
 			}
 		}
 

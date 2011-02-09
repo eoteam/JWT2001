@@ -122,7 +122,7 @@
 			}
 			public function selectAllCategories():void {
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				if(map.region.fxgmap != "world_map.xml")
+				if(map.region.fxgmap != "JWT2001_view_map_world.xml")
 					loadWorldMap();
 				for each(var c:MapRenderer in renderers) {
 					if(c && c.data) {
@@ -141,7 +141,7 @@
 						c.draw();
 					}
 				}
-				if(count > 1 && map.region.fxgmap != "world_map.xml")  {
+				if(count > 1 && map.region.fxgmap != "JWT2001_view_map_world.xml")  {
 					this.loadWorldMap();
 				}
 			}
@@ -346,9 +346,9 @@
 				map.addEventListener(Event.COMPLETE,handleMapLoaded);
 				mapHolder.addElement(map);				
 				var file:File = File.applicationDirectory;
-				file = file.resolvePath(PATH+"world_map.xml");
+				file = file.resolvePath(PATH+"JWT2001_view_map_world.xml");
 				var r:Region = new Region();
-				r.coeff = 1; r.fxgmap = "world_map.xml";
+				r.coeff = 1; r.fxgmap = "JWT2001_view_map_world.xml";
 				map.load(file,r);
 				map.percentHeight = 100;
 				map.percentWidth = 100;

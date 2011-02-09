@@ -11,10 +11,13 @@
 		<![CDATA[
 			import com.adobe.serialization.json.JSON;
 			import com.greensock.TweenNano;
+			import com.pentagram.controller.Constants;
 			import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
 			import com.pentagram.instance.view.visualizer.views.TwitterPacking;
 			import com.pentagram.model.vo.Client;
+			import com.pentagram.model.vo.TwitterTopic;
 			
+			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -27,7 +30,6 @@
 			private var maxRadius:Number = 25;
 			private var opacity:Boolean = true;
 			private var arr:Array = [];
-			private var pack:TwitterPacking;
 			private var _client:Client;
 			private var text:String = '';
 			private var firstPass:Boolean = true;
@@ -38,7 +40,8 @@
 				"now","look","only","come","its","over","think","also","back","after","use","two","how","our","	","first","well",
 				"way","even","new","want","because","any","these","give","day","most","us",
 				
-				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has"];
+				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has",
+				"quot","amp","'s"];
 			
 			protected var resizeFlag:Boolean = false
 				
@@ -53,13 +56,12 @@
 					service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page="+counter.toString();
 					service.send();
 				}
-				else  {
-					var a:Array = countWords(text,0);
-					pack = new TwitterPacking(a,this);
-					pack.percentHeight = pack.percentWidth = 100;
-					this.addElement(pack);
-					pack.build();
-					updateSize();
+				else  {	
+					var params:Object = new Object();
+					params.action = "getLinks"
+					params.text = text;
+					linksService.url =  Constants.DB_EXECUTE;
+					linksService.send(params);
 				}
 				counter++;
 			}
@@ -75,16 +77,17 @@
 				}
 			}
 			private function handleResize(event:Event=null):void {
-				if(pack){
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
 					pack.percentHeight = pack.percentWidth = 100;
 					pack.draw();			
 				}
 			}
 			private function countWords(text:String,p:int):Array
 			{
-				var m:Array = new Array(10000);
-				var m1:Array = new Array(10000);
-				var N:Array = new Array (10000);
+				var m:Array = new Array();
+				var m1:Array = new Array();
+				var N:Array = new Array ();
 				var NN:int=0;
 				var Numwords:int = 0;
 				var ch:int=p;
@@ -183,17 +186,21 @@
 						}
 					}
 				}
-				C=C+"Unique:" + NN+"  Total:" + Numwords+"\n";
-				C=C+"Freq.\tWord\n";
+				//C=C+"Unique:" + NN+"  Total:" + Numwords+"\n";
+				//C=C+"Freq.\tWord\n";
 				var results:Array = [];
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] >= N[1]*0.01)
-						results.push({count:N[i],word:m1[i]});
-					C=C + N[i]+ "\t" + m1[i] + "\n";
+					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] >= N[1]*0.01) {
+						var topic:TwitterTopic = new TwitterTopic();
+						topic.count = N[i];
+						topic.value = m1[i];
+						results.push(topic);
+					}
+					//C=C + N[i]+ "\t" + m1[i] + "\n";
 				}
-				area2.text = C;
+				//area2.text = C;
 				return results;
 			}	
 			private function creationCompleteHandler(event:FlexEvent):void
@@ -215,6 +222,9 @@
 			private function doVisualize():void {
 				counter = 1;
 				common.push(_client.shortname.toLowerCase());
+				common.push("@"+_client.shortname.toLowerCase());
+				common.push("@"+_client.shortname.toLowerCase()+":");
+				common.push("@"+_client.shortname.toLowerCase()+".");
 				service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page=1";
 				service.send();
 				firstPass = false;
@@ -224,22 +234,84 @@
 			}
 			public function toggleOpacity(value:Number):void {
 				opacity = value==1?false:true;
-				for (var j:int=0;j<pack.numChildren;j++) {
-					var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-					renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-					TweenNano.to(renderer, .5, {fillAlpha: value}); 
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					for (var j:int=0;j<pack.numChildren;j++) {
+						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
+						TweenNano.to(renderer, .5, {fillAlpha: value}); 
+					}
 				}
 			}
 			public function updateMaxRadius(value:Number):void {
 				maxRadius = value;
-				pack.scaler = value/100;
-				pack.draw();
-			}
-			private function handleChange(event:Event):void {
-				var t:String = area2.text;
-				for (var i:int=0;i<t.length;i++) {
-					trace(t.charCodeAt(i));
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					pack.scaler = value/100;
+					pack.draw();
 				}
+			}
+//			private var results:Array
+//			protected function counter_resultHandler(event:ResultEvent):void
+//			{
+//				var o:Array  = JSON.decode(event.result.toString()) as Array;
+//				results = [];
+//				for each(var item:Object in o) {
+//					if(common.indexOf(item.word) == -1 && String(item.word).length > 1) {
+//						//area2.text+= item.word + " = " + item.count + "\n";
+//						results.push(item);
+//					}
+//				}
+//			}
+//			protected function toggle_changeHandler(event:Event):void
+//			{	
+//				panel.visible = toggle.selected ? true : false;
+//			}
+			private var _topics:Array;
+			protected function linksService_resultHandler(event:ResultEvent):void
+			{
+
+				//list4.dataProvider = new ArrayList(o);
+				
+				
+				//var a1:Array = countWords(text,0);
+				_topics = countWords(text,1);
+				var o:Array  = JSON.decode(event.result.toString()) as Array;
+				for each(var item:Object  in o) {
+					var topic:TwitterTopic = new TwitterTopic();
+					topic.link = true;
+					topic.count = item.cout;
+					topic.value = item.value;
+					_topics.push(topic);
+				}
+				//a1 = a1.concat(o)
+				
+				//results = results.concat(o);
+				
+//				list1.dataProvider = new ArrayList(results);
+//				list2.dataProvider = new ArrayList(a1);
+//				list3.dataProvider = new ArrayList(a2);
+//				tweets.text = text;
+//				
+//				var pack:TwitterPacking = new TwitterPacking(results,this);
+//				pack.percentHeight = pack.percentWidth = 100;
+//				this.addElement(pack);
+//				pack.build();
+//				
+//				var pack1:TwitterPacking = new TwitterPacking(a1,this);
+//				pack1.percentHeight = pack1.percentWidth = 100;
+//				this.addElement(pack1);
+//				pack1.build();
+				
+//				var pack2:TwitterPacking = new TwitterPacking(_topics,this);
+//				pack2.percentHeight = pack2.percentWidth = 100;
+//				holder.addElement(pack2);
+//				pack2.build();
+//				updateSize();
+				this.dispatchEvent(new Event("vizLoaded"));
+			}
+			public function get topics():Array {
+				return _topics;
 			}
 		]]>
 	</fx:Script>
@@ -247,6 +319,49 @@
 		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple"
 	   	result="httpservice1_resultHandler(event)" 
 	  	method="GET"/>
+<!--		<s:HTTPService id="counterService" resultFormat="text" concurrency="multiple" method="POST" result="counter_resultHandler(event)" />-->
+		<s:HTTPService id="linksService" resultFormat="text" concurrency="multiple" method="POST" result="linksService_resultHandler(event)"/>
 	</fx:Declarations>
-	<s:TextArea  width="300" height="100%" id="area2" fontFamily="_sans" text="お元気ですか？" minHeight="40"/>
+
+	<!--<s:HGroup paddingLeft="10" height="100%" id="panel">
+		<s:List height="100%" id="list1"  >
+			<s:itemRenderer>
+				<fx:Component>
+					<s:ItemRenderer>
+						<s:Label text="{data.word+' = ' + data.count}" />
+					</s:ItemRenderer>
+				</fx:Component>
+			</s:itemRenderer>
+		</s:List>
+		<s:List height="100%" id="list2"  >
+			<s:itemRenderer>
+				<fx:Component>
+					<s:ItemRenderer>
+						<s:Label text="{data.word+' = ' + data.count}" />
+					</s:ItemRenderer>
+				</fx:Component>
+			</s:itemRenderer>
+		</s:List>
+		<s:List height="100%" id="list3"  >
+			<s:itemRenderer>
+				<fx:Component>
+					<s:ItemRenderer>
+						<s:Label text="{data.word+' = ' + data.count}" />
+					</s:ItemRenderer>
+				</fx:Component>
+			</s:itemRenderer>
+		</s:List>
+		<s:List height="100%" id="list4"  >
+			<s:itemRenderer>
+				<fx:Component>
+					<s:ItemRenderer>
+						<s:Label text="{data.value+' = ' + data.count}" />
+					</s:ItemRenderer>
+				</fx:Component>
+			</s:itemRenderer>
+		</s:List>
+		<s:TextArea width="600" height="100%" id="tweets" />
+	</s:HGroup>
+	<s:ToggleButton id="toggle" change="toggle_changeHandler(event)"  label="show copy"/>-->
+		<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
 </modules:Module>

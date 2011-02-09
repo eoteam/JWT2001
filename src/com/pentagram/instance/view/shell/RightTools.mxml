@@ -28,6 +28,8 @@
 					return 'Map';
 				else if(graphStates.indexOf(currentState) != -1)
 					return 'Graph';
+				else if(twitterStates.indexOf(currentState) != -1)
+					return 'Twitter';
 				else return '';
 			}
 			public function get isOpen():Boolean {
@@ -74,15 +76,21 @@
 			<fx:String>closedAndGraph</fx:String>
 			<fx:String>openAndGraph</fx:String>
 		</fx:Array>
+		<fx:Array id="twitterStates">
+			<fx:String>closedAndTwitter</fx:String>
+			<fx:String>openAndTwitter</fx:String>
+		</fx:Array>
 		<fx:Array id="openStates">
 			<fx:String>openAndCluster</fx:String>
 			<fx:String>openAndMap</fx:String>
 			<fx:String>openAndGraph</fx:String>
+			<fx:String>openAndTwitter</fx:String>
 		</fx:Array>
 		<fx:Array id="closedStates">
 			<fx:String>closedAndCluster</fx:String>
 			<fx:String>closedAndMap</fx:String>
 			<fx:String>closedAndGraph</fx:String>
+			<fx:String>closedAndTwitter</fx:String>
 		</fx:Array>
 		<fx:Number id="toggleWidth">11</fx:Number>
 	</fx:Declarations>
@@ -93,6 +101,8 @@
 		<s:State name="openAndMap" stateGroups="open,map" />
 		<s:State name="closedAndGraph" stateGroups="closed,graph" />
 		<s:State name="openAndGraph" stateGroups="open,graph" />
+		<s:State name="closedAndTwitter" stateGroups="closed,twitter" />
+		<s:State name="openAndTwitter" stateGroups="open,twitter" />
 	</s:states>
 
 	<s:ToggleButton id="toggle" width="{toggleWidth}" height="100%" change="toggle_changeHandler(event)" skinClass="com.pentagram.view.skins.buttons.RightToolsButton"/>
@@ -130,13 +140,17 @@
 				<s:SolidColor color="0x666666"/>
 			</s:fill>
 		</s:Rect>
+		
 		<shell:ViewOptions width="100%" id="optionsPanel" />
+		
 		<s:Rect width="100%" height="4">
 			<s:fill>
 				<s:SolidColor color="0x666666"/>
 			</s:fill>
 		</s:Rect>
-		<shell:CategoriesComparator width="100%"  id="comparator" enabled="false"/>
 		
+		<shell:CategoriesComparator width="100%"  id="comparator" enabled="false" includeIn="map"/>
+		
+		<shell:TwitterTopics  width="100%"  id="topics"  includeIn="twitter"/>
 	</s:VGroup>
 </s:Group>

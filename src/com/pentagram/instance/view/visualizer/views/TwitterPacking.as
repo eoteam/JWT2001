@@ -68,7 +68,7 @@ package com.pentagram.instance.view.visualizer.views
 				_loc_2 = this.spriteArray[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
-				while (_loc_7 < 5000) {
+				while (_loc_7 < 500) {
 					
 					_loc_4.x = _loc_2 * Math.cos(_loc_3);
 					_loc_4.y = _loc_2 * Math.sin(_loc_3);

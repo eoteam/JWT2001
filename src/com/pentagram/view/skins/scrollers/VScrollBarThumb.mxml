@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" minHeight="20">
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>

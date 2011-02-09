@@ -42,7 +42,7 @@
 			</s:stroke>
 		</s:Rect>
 		<s:Label verticalCenter="0" text="View Options" left="25" right="0" click="button1_clickHandler(event)"  mouseChildren="false"
-		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" />		
+		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold"/>		
 	</s:Group>
 	
 	

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.main.event.ViewEvent;
+			
+			import mx.events.FlexEvent;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				currentState = currentState == "open"?"closed":"open";
+			}
+			
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+//				categoryHolder.scroller.setStyle("horizontalScrollPolicy","off");
+//				categoryHolder.scroller.setStyle("verticalScrollPolicy","off");
+//				
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		
+	</fx:Declarations>
+	<s:states>
+		<s:State name="closed" />
+		<s:State name="open" />
+	</s:states>
+	<s:transitions>
+		<s:Transition toState="*">
+			<s:Resize target="{gridHolder}" duration="500" />
+		</s:Transition>
+	</s:transitions>
+	
+	<s:Group width="100%">
+		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" left="6" top="2" bottom="2" click="button1_clickHandler(event)"/>
+		<s:Rect width="0.25" height="100%" left="24">
+			<s:stroke>
+				<s:SolidColorStroke weight="0.25" color="0x666666"/>
+			</s:stroke>
+		</s:Rect>
+		<s:Label verticalCenter="0" text="Twitter Topics" left="25" right="0"  click="button1_clickHandler(event)"  mouseChildren="false"
+				 color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold" />		
+	</s:Group>
+	
+	<s:Rect width="100%" height="0.25" top="24">
+		<s:stroke>
+			<s:SolidColorStroke color="0x666666" weight="0.25" />
+		</s:stroke>
+	</s:Rect>	
+	<s:Group height.closed="0" height.open="160" top="25" clipAndEnableScrolling="true" id="gridHolder">
+		<s:DataGrid width="100%" id="topicsList" contentBackgroundAlpha="0" borderVisible="false" height="100%" 
+		 selectionColor="0xffffff" rollOverColor="0xffffff">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="value" sortable="true" id="labels" headerText="Topic">
+						<s:headerRenderer>
+							<fx:Component>
+								<s:GridItemRenderer>
+									<s:Label fontFamily="FlamaBold" color="0xffffff" text="Topic" />
+								</s:GridItemRenderer>
+							</fx:Component>
+						</s:headerRenderer>
+						<s:itemRenderer>
+							<fx:Component>
+								<s:GridItemRenderer >
+									<s:Label text="{data.value}" fontFamily="FlamaBold" color="0x666666" />
+								</s:GridItemRenderer>
+							</fx:Component>
+						</s:itemRenderer>
+					</s:GridColumn>
+					<s:GridColumn dataField="count" sortable="true" id="counts" headerText="Count">
+						<s:headerRenderer>
+							<fx:Component>
+								<s:GridItemRenderer>
+									<s:Label fontFamily="FlamaBold" color="0xffffff" text="Count" />
+								</s:GridItemRenderer>
+							</fx:Component>
+						</s:headerRenderer>
+						<s:itemRenderer>
+							<fx:Component>
+								<s:GridItemRenderer>
+									<s:Label text="{data.count}" fontFamily="FlamaBold" color="0x666666" />
+								</s:GridItemRenderer>							
+							</fx:Component>
+						</s:itemRenderer>
+					</s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+	
+	</s:Group>
+	
+</s:Group>

@@ -1,6 +1,8 @@
 package com.pentagram.instance.view.visualizer.interfaces
 {
-	public interface IVisualizer
+	import flash.events.IEventDispatcher;
+
+	public interface IVisualizer extends IEventDispatcher
 	{
 		function update():void;
 		
