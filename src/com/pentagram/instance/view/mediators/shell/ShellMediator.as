@@ -72,7 +72,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			
-				
+			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 				model.exportMenuItem.enabled = true;
@@ -204,8 +204,11 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					else
 						view.vizTitle.text += ", grouped by region";
-					
 					checkNotes();
+				break;
+				case model.TWITTER_INDEX:
+					view.twitterView.changeView(event.args[0]);
+					view.filterTools.adjustCategories(event.args[0]);
 				break;
 			}
 		}

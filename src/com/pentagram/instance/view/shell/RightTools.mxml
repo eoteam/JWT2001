@@ -58,11 +58,42 @@
 				}
 				else currentState = "closedAnd"+state;
 			}
-			
+			public function adjustCategories(view:Object):void {
+				continentList.dataProvider = view.value == "lang"?twitterLanguages:this.twitterOptions;
+			}
 		]]>
 	</fx:Script>
 
-	<fx:Declarations>
+	<fx:Declarations> 
+		<s:ArrayList id="twitterLanguages">
+			<fx:Object value="all" name="Any Language"/>
+												<fx:Object value="ar" name="Arabic (العربية)"/>
+			<fx:Object value="da" name="Danish (dansk)"/>
+			<fx:Object value="nl" name="Dutch (Nederlands)"/>
+			<fx:Object value="en" name="English"/>
+												<fx:Object value="fa" name="Farsi / Persian (فارسی)"/>
+			<fx:Object value="fi" name="Finnish (suomen kieli)"/>
+			<fx:Object value="fr" name="French (français)"/>
+			<fx:Object value="de" name="German (Deutsch)"/>
+			<fx:Object value="hu" name="Hungarian (Magyar)"/>
+			<fx:Object value="is" name="Icelandic (Íslenska)"/>
+			<fx:Object value="it" name="Italian (Italiano)"/>
+			<fx:Object value="ja" name="Japanese (日本語)"/>
+			<fx:Object value="no" name="Norwegian (Norsk)"/>
+			<fx:Object value="pl" name="Polish (polski)"/>
+			<fx:Object value="pt" name="Portuguese (Português)"/>
+			<fx:Object value="ru" name="Russian (русский язык)"/>
+			<fx:Object value="es" name="Spanish (español)"/>
+			<fx:Object value="sv" name="Swedish (Svenska)"/>
+			<fx:Object value="th" name="Thai (ไทย)"/>
+		</s:ArrayList>
+		
+		<s:ArrayList id="twitterOptions">
+			<fx:Object value="pos" name="Positive Attitude :)"/>
+			<fx:Object value="neg" name="Negative Attidue :("/>
+			<fx:Object value="que" name="Asking a question ?"/>
+		</s:ArrayList>	
+		
 		<mx:ViewStack id="visualizerArea" />
 		<fx:Array id="clusterStates">
 			<fx:String>closedAndCluster</fx:String>

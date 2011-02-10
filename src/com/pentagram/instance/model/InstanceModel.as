@@ -55,7 +55,7 @@ package com.pentagram.instance.model
 		public const CLUSTER_INDEX:int = 0;
 		public const GRAPH_INDEX:int = 1;
 		public const TWITTER_INDEX:int = 3;
-		
+
 		public function parseData(data:Array,dataset:Dataset,client:Client):void {
 			var prop:String;
 			var item:Object;
@@ -177,5 +177,6 @@ package com.pentagram.instance.model
 					item.radius = 0;
 			}
 		}
+		
 	}
 }

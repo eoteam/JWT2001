@@ -35,6 +35,7 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import spark.events.DropDownEvent;
 	import spark.events.IndexChangeEvent;
+	import spark.events.TextOperationEvent;
 	
 	public class BottomToolsMediator extends Mediator
 	{
@@ -130,9 +131,12 @@ package com.pentagram.instance.view.mediators.shell
 				break;	
 				case model.TWITTER_INDEX:
 					view.currentState = 'twitter';
+					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
+					//view.twitterSearch.addEventListener(TextOperationEvent.CHANGE,handleTwitterSearch,false,0,true);
 				break;	
 			}
-		}
+		}	
+		//private function handleTwitterSearch
 		private function handleDatasetSelection(event:Event):void {
 			var years:ArrayList = new ArrayList();
 			var i:int;
@@ -204,6 +208,10 @@ package com.pentagram.instance.view.mediators.shell
 						}
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,ds1,ds2,ds3,ds4));	
 					}
+					break;
+					case model.TWITTER_INDEX:
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.twitterOptions.selectedItem));
+							
 					break;
 			}
 			

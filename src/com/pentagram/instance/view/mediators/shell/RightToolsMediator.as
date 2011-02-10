@@ -67,6 +67,12 @@ package com.pentagram.instance.view.mediators.shell
 				view.comparator.categoryHolder.dataProvider = newDP;
 				view.check.selected = false;
 			}
+			for(var i:int=0;i<view.twitterLanguages.length;i++) {
+				view.twitterLanguages.getItemAt(i).color = model.colors[i];
+			}
+			for(i=0;i<view.twitterOptions.length;i++) {
+				view.twitterOptions.getItemAt(i).color = model.colors[i];
+			}
 		}
 		private function handleImageSaveStart(event:ViewEvent):void {
 			if(!model.includeTools)
@@ -91,39 +97,41 @@ package com.pentagram.instance.view.mediators.shell
 		}
 
 		private function handleRegionSelect(event:Event):void {
-			var item:Category = event.target.data as Category;
-			view.check.selected = false;	
-			var region:Category;
-			var selectCount:int = 0;
-			for each(region in ArrayList(view.continentList.dataProvider).source) {
-				if(region.selected)
-					selectCount++;
-			} 
-			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item,selectCount));
-			switch(event.type) {
-				case "addRegion":
-					adjustSelection(selectCount);
-				break;
-				
-				case "selectRegion":
-					var newDP:ArrayList = new ArrayList();
-					for each(var category:Category in  ArrayList(view.continentList.dataProvider).source) {
-						if(category != item) {
-							category.selected = false;
-							var item2:Category = new Category();
-							item2.name = category.name;
-							item2.color = category.color;
-							item2.selected = false;
-							newDP.addItem(item2);
+			if(view.state != "twitter") {
+				var item:Category = event.target.data as Category;
+				view.check.selected = false;	
+				var region:Category;
+				var selectCount:int = 0;
+				for each(region in ArrayList(view.continentList.dataProvider).source) {
+					if(region.selected)
+						selectCount++;
+				} 
+				dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,event.type,item,selectCount));
+				switch(event.type) {
+					case "addRegion":
+						adjustSelection(selectCount);
+					break;
+					
+					case "selectRegion":
+						var newDP:ArrayList = new ArrayList();
+						for each(var category:Category in  ArrayList(view.continentList.dataProvider).source) {
+							if(category != item) {
+								category.selected = false;
+								var item2:Category = new Category();
+								item2.name = category.name;
+								item2.color = category.color;
+								item2.selected = false;
+								newDP.addItem(item2);
+							}
 						}
-					}
-					view.comparator.categoryHolder.dataProvider = newDP;
-					view.comparator.enabled = true;
-				break;
-				
-				case "removeRegion":
-					adjustSelection(selectCount);
-				break;
+						view.comparator.categoryHolder.dataProvider = newDP;
+						view.comparator.enabled = true;
+					break;
+					
+					case "removeRegion":
+						adjustSelection(selectCount);
+					break;
+				}
 			}
 		}
 		private function adjustSelection(count:int):void {

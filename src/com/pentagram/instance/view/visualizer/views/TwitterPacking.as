@@ -69,7 +69,7 @@ package com.pentagram.instance.view.visualizer.views
 //				
 //				
 //			}
-			timer = new Timer(50);
+			timer = new Timer(5);
 			timer.addEventListener(TimerEvent.TIMER,onTimer);
 			timer.start();
 

@@ -5,7 +5,7 @@
 				xmlns:modules="ws.tink.spark.modules.*" 
 				xmlns:views="com.pentagram.instance.view.visualizer.views.*"
 				implements="com.pentagram.instance.view.visualizer.interfaces.ITwitterView"
-				creationComplete="creationCompleteHandler(event)" resize="updateSize()"
+				resize="updateSize()"
 				width="100%" height="100%" xmlns:assets="com.pentagram.view.assets.*" >
 	<fx:Script>
 		<![CDATA[
@@ -20,6 +20,8 @@
 			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
+			
+			import spark.events.IndexChangeEvent;
 			
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
@@ -44,9 +46,93 @@
 				"quot","amp","'s"];
 			
 			protected var resizeFlag:Boolean = false
+			private var _topics:Array;	
+			private var limit:int;
+			
+			public function updateSize():void {
+				resizeFlag = true;
+				this.invalidateDisplayList();
+			}
+			public function update():void {
 				
-			private function httpservice1_resultHandler(event:ResultEvent):void
+			}
+			public function set client(value:Client):void {
+				if(_client != value) {
+					_client = value;
+					if(!firstPass)
+						doVisualize();
+				}
+			}
+			public function changeView(view:Object):void {
+				
+			}
+			public function get topics():Array {
+				return _topics;
+			}
+			public function selectTweets(tweets:Vector.<Object>):void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					for (var j:int=0;j<pack.numChildren;j++) {
+						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+						if(tweets.indexOf(renderer.data) != -1) {
+							renderer.textColor = 0xffffffff;
+							TweenNano.to(renderer, .5, {fillAlpha: 1});
+							renderer.showTooltip();
+						}
+						else {
+							renderer.textColor = renderer.fillColor;
+							TweenNano.to(renderer, .5, {fillAlpha: 0.2});
+							renderer.hideTooltip();
+						}
+					}
+				}
+			}
+			public function get viewOptions():Array {
+				return [maxRadius,opacity,0];
+			}
+			public function toggleOpacity(value:Number):void {
+				opacity = value==1?false:true;
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					for (var j:int=0;j<pack.numChildren;j++) {
+						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
+						TweenNano.to(renderer, .5, {fillAlpha: value}); 
+					}
+				}
+			}
+			public function updateMaxRadius(value:Number):void {
+				maxRadius = value;
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					pack.scaler = value/100;
+					pack.draw();
+				}
+			}
+			
+			public function list1_changeHandler(value:Object):void
 			{
+				firstPass = false;
+				currentState = "loading";
+				limit = value.value;
+				if(_client)
+					doVisualize();
+			}
+			override protected function updateDisplayList(w:Number, h:Number):void {
+				super.updateDisplayList(w,h);
+				if(resizeFlag) {
+					resizeFlag = false;
+					handleResize();
+				}
+			}
+			private function handleResize(event:Event=null):void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					pack.percentHeight = pack.percentWidth = 100;
+					pack.draw();			
+				}
+			}
+			private function httpservice1_resultHandler(event:ResultEvent):void {
 				var o:Object  = JSON.decode(event.result.toString());
 				arr = arr.concat(o.results);
 				for each(var item:Object in o.results) {
@@ -65,26 +151,7 @@
 				}
 				counter++;
 			}
-			public function updateSize():void {
-				resizeFlag = true;
-				this.invalidateDisplayList();
-			}
-			override protected function updateDisplayList(w:Number, h:Number):void {
-				super.updateDisplayList(w,h);
-				if(resizeFlag) {
-					resizeFlag = false;
-					handleResize();
-				}
-			}
-			private function handleResize(event:Event=null):void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					pack.percentHeight = pack.percentWidth = 100;
-					pack.draw();			
-				}
-			}
-			private function countWords(text:String,p:int):Array
-			{
+			private function countWords(text:String,p:int):Array {
 				var m:Array = new Array();
 				var m1:Array = new Array();
 				var N:Array = new Array ();
@@ -192,7 +259,7 @@
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
+					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] > limit) {
 						var topic:TwitterTopic = new TwitterTopic();
 						topic.count = N[i];
 						topic.value = m1[i];
@@ -200,85 +267,28 @@
 					}
 					//C=C + N[i]+ "\t" + m1[i] + "\n";
 				}
-				//area2.text = C;
 				return results;
 			}	
-			private function creationCompleteHandler(event:FlexEvent):void
-			{
-				firstPass = false;
-				if(_client)
-					doVisualize();
-			}
-			public function update():void {
-				
-			}
-			public function set client(value:Client):void {
-				if(_client != value) {
-					_client = value;
-					if(!firstPass)
-						doVisualize();
-				}
-			}
 			private function doVisualize():void {
 				counter = 1;
-				common.push(_client.shortname.toLowerCase());
-				common.push("@"+_client.shortname.toLowerCase());
-				common.push("@"+_client.shortname.toLowerCase()+":");
-				common.push("@"+_client.shortname.toLowerCase()+".");
+				var arr:Array = _client.shortname.toLowerCase().split(" ");
+				for each(var token:String in arr) {
+					common.push(token);
+					common.push("@"+token);
+					common.push("@"+token+":");
+					common.push("@"+token+".");
+					common.push("@"+token+",");
+					common.push("@"+token+")");
+				}
 				service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page=1";
 				service.send();
 				firstPass = false;
 			}
-			public function get viewOptions():Array {
-				return [maxRadius,opacity,0];
-			}
-			public function toggleOpacity(value:Number):void {
-				opacity = value==1?false:true;
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					for (var j:int=0;j<pack.numChildren;j++) {
-						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-						TweenNano.to(renderer, .5, {fillAlpha: value}); 
-					}
-				}
-			}
-			public function updateMaxRadius(value:Number):void {
-				maxRadius = value;
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					pack.scaler = value/100;
-					pack.draw();
-				}
-			}
-//			private var results:Array
-//			protected function counter_resultHandler(event:ResultEvent):void
-//			{
-//				var o:Array  = JSON.decode(event.result.toString()) as Array;
-//				results = [];
-//				for each(var item:Object in o) {
-//					if(common.indexOf(item.word) == -1 && String(item.word).length > 1) {
-//						//area2.text+= item.word + " = " + item.count + "\n";
-//						results.push(item);
-//					}
-//				}
-//			}
-//			protected function toggle_changeHandler(event:Event):void
-//			{	
-//				panel.visible = toggle.selected ? true : false;
-//			}
-			private var _topics:Array;
-			protected function linksService_resultHandler(event:ResultEvent):void
-			{
-
-				//list4.dataProvider = new ArrayList(o);
-				
-				
-				//var a1:Array = countWords(text,0);
+			private function linksService_resultHandler(event:ResultEvent):void {
 				_topics = countWords(text,0);
 				var o:Array  = JSON.decode(event.result.toString()) as Array;
 				for each(var item:Object  in o) {
-					if(item.count) {
+					if(item.count > limit) {
 						var topic:TwitterTopic = new TwitterTopic();
 						topic.link = true;
 						topic.count = item.count;
@@ -286,110 +296,65 @@
 						_topics.push(topic);
 					}
 				}
-				//a1 = a1.concat(o)
-				
-				//results = results.concat(o);
-				
-//				list1.dataProvider = new ArrayList(results);
-//				list2.dataProvider = new ArrayList(a1);
-//				list3.dataProvider = new ArrayList(a2);
-//				tweets.text = text;
-//				
-//				var pack:TwitterPacking = new TwitterPacking(results,this);
-//				pack.percentHeight = pack.percentWidth = 100;
-//				this.addElement(pack);
-//				pack.build();
-//				
-//				var pack1:TwitterPacking = new TwitterPacking(a1,this);
-//				pack1.percentHeight = pack1.percentWidth = 100;
-//				this.addElement(pack1);
-//				pack1.build();
-				
 				var pack2:TwitterPacking = new TwitterPacking(_topics,this);
 				pack2.percentHeight = pack2.percentWidth = 100;
 				holder.addElement(pack2);
 				pack2.build();
 				pack2.addEventListener("layoutComplete",handleLayout);	
 				this.dispatchEvent(new Event("vizLoaded"));
+				this.updateSize();
 			}
 			private function handleLayout(event:Event):void {
 				updateSize();
 				this.currentState = "loaded";
 			}
-			public function get topics():Array {
-				return _topics;
-			}
-			public function selectTweets(tweets:Vector.<Object>):void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					for (var j:int=0;j<pack.numChildren;j++) {
-						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-						if(tweets.indexOf(renderer.data) != -1) {
-							renderer.textColor = 0xffffffff;
-							TweenNano.to(renderer, .5, {fillAlpha: 1});
-							renderer.showTooltip();
-						}
-						else {
-							renderer.textColor = renderer.fillColor;
-							TweenNano.to(renderer, .5, {fillAlpha: 0.2});
-							renderer.hideTooltip();
-						}
-					}
-				}
-			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple"
-	   	result="httpservice1_resultHandler(event)" 
-	  	method="GET"/>
-<!--		<s:HTTPService id="counterService" resultFormat="text" concurrency="multiple" method="POST" result="counter_resultHandler(event)" />-->
+		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple" result="httpservice1_resultHandler(event)" method="GET"/>
 		<s:HTTPService id="linksService" resultFormat="text" concurrency="multiple" method="POST" result="linksService_resultHandler(event)"/>
+		
 	</fx:Declarations>
 	<modules:states>
+		<s:State name="preload" />
 		<s:State name="loading" />
 		<s:State name="loaded" />
 	</modules:states>
-	<!--<s:HGroup paddingLeft="10" height="100%" id="panel">
-		<s:List height="100%" id="list1"  >
-			<s:itemRenderer>
-				<fx:Component>
-					<s:ItemRenderer>
-						<s:Label text="{data.word+' = ' + data.count}" />
-					</s:ItemRenderer>
-				</fx:Component>
-			</s:itemRenderer>
-		</s:List>
-		<s:List height="100%" id="list2"  >
-			<s:itemRenderer>
-				<fx:Component>
-					<s:ItemRenderer>
-						<s:Label text="{data.word+' = ' + data.count}" />
-					</s:ItemRenderer>
-				</fx:Component>
-			</s:itemRenderer>
-		</s:List>
-		<s:List height="100%" id="list3"  >
-			<s:itemRenderer>
-				<fx:Component>
-					<s:ItemRenderer>
-						<s:Label text="{data.word+' = ' + data.count}" />
-					</s:ItemRenderer>
-				</fx:Component>
-			</s:itemRenderer>
-		</s:List>
-		<s:List height="100%" id="list4"  >
-			<s:itemRenderer>
-				<fx:Component>
-					<s:ItemRenderer>
-						<s:Label text="{data.value+' = ' + data.count}" />
-					</s:ItemRenderer>
-				</fx:Component>
-			</s:itemRenderer>
-		</s:List>
-		<s:TextArea width="600" height="100%" id="tweets" />
-	</s:HGroup>
-	<s:ToggleButton id="toggle" change="toggle_changeHandler(event)"  label="show copy"/>-->
-		<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
-		<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
+	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
+	
+	<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
+		
+	<s:Group verticalCenter="0" horizontalCenter="0" styleName="darkPanel" includeIn="preload" width="300" height="100">
+		<s:Rect radiusX="6" radiusY="6" top="0" bottom="0" left="0" right="0">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Rect>
+		<s:VGroup verticalCenter="0" horizontalCenter="0">
+			<s:Label fontFamily="FlamaBold" text="Choose rendering speed"  fontSize="16" color="0xffffff" />
+			<s:List borderVisible="false" contentBackgroundAlpha="0"  id="list" styleName="darkPanel" requireSelection="true">
+				<s:dataProvider>
+					<s:ArrayList>
+						<fx:Object label="Slow" value="0" />
+						<fx:Object label="Medium" value="5" />
+						<fx:Object label="Fast" value="10" />
+					</s:ArrayList>
+				</s:dataProvider>
+				<s:itemRenderer>
+					<fx:Component>
+						<s:ItemRenderer autoDrawBackground="false" width="80" styleName="darkPanel">
+							<s:Button styleName="darkButton" label="{data.label}" width="80" click="this.outerDocument.list1_changeHandler(data)"/>
+						</s:ItemRenderer>
+					</fx:Component>
+				</s:itemRenderer>
+				<s:layout>
+					<s:HorizontalLayout gap="4" verticalAlign="middle" horizontalAlign="center" />
+				</s:layout>
+			</s:List> 				
+		</s:VGroup>
+	</s:Group>
+	
 </modules:Module>

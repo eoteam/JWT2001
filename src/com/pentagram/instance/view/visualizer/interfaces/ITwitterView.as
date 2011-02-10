@@ -9,5 +9,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function get topics():Array;
 		
 		function selectTweets(tweets:Vector.<Object>):void;
+		
+		function changeView(view:Object):void;
 	}
 }

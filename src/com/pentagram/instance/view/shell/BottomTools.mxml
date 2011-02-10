@@ -133,31 +133,15 @@
 		</s:HGroup>
 		
 		
-<!--		<s:HGroup  verticalAlign="middle"  includeIn="twitter">
-			<s:Label text="Language:  "/>
-			<s:DropDownList width="180" labelField="name">
-				<s:ArrayList>
-					<fx:Object value="all" name="Any Language"/>
-					<fx:Object value="ar" name="Arabic (العربية)"/>
-					<fx:Object value="da" name="Danish (dansk)"/>
-					<fx:Object value="nl" name="Dutch (Nederlands)"/>
-					<fx:Object value="en" name="English"/>
-					<fx:Object value="fa" name="Farsi / Persian (فارسی)"/>
-					<fx:Object value="fi" name="Finnish (suomen kieli)"/>
-					<fx:Object value="fr" name="French (français)"/>
-					<fx:Object value="de" name="German (Deutsch)"/>
-					<fx:Object value="hu" name="Hungarian (Magyar)"/>
-					<fx:Object value="is" name="Icelandic (Íslenska)"/>
-					<fx:Object value="it" name="Italian (Italiano)"/>
-					<fx:Object value="ja" name="Japanese (日本語)"/>
-					<fx:Object value="no" name="Norwegian (Norsk)"/>
-					<fx:Object value="pl" name="Polish (polski)"/>
-					<fx:Object value="pt" name="Portuguese (Português)"/>
-					<fx:Object value="ru" name="Russian (русский язык)"/>
-					<fx:Object value="es" name="Spanish (español)"/>
-					<fx:Object value="sv" name="Swedish (Svenska)"/>
-					<fx:Object value="th" name="Thai (ไทย)"/>
-				</s:ArrayList>
+		<s:HGroup  verticalAlign="middle" includeIn="twitter">
+			<s:Label text="Color by:  "/>
+			<s:DropDownList width="180" labelField="name" selectedIndex="0" id="twitterOptions"  >
+				<s:dataProvider>
+					<s:ArrayList>
+						<fx:Object value="lang" name="Languages"/>
+						<fx:Object value="tude" name="Attitude" />
+					</s:ArrayList>
+				</s:dataProvider>
 			</s:DropDownList>
 			<s:Rect width="10"/>
 			<s:Path data="M 1 33 L 0 33 L 0 32 L 1 32 L 1 33 Z M 1 31 L 0 31 L 0 30 L 1 30 L 1 31 Z M 1 29 L 0 29 L 0 28 L 1 28 L 1 29 Z M 1 27 L 0 27 L 0 26 L 1 26 L 1 27 Z M 1 25 L 0 25 L 0 24 L 1 24 L 1 25 Z M 1 23 L 0 23 L 0 22 L 1 22 L 1 23 Z M 1 21 L 0 21 L 0 20 L 1 20 L 1 21 Z M 1 19 L 0 19 L 0 18 L 1 18 L 1 19 Z M 1 17 L 0 17 L 0 16 L 1 16 L 1 17 Z M 1 15 L 0 15 L 0 14 L 1 14 L 1 15 Z M 1 13 L 0 13 L 0 12 L 1 12 L 1 13 Z M 1 11 L 0 11 L 0 10 L 1 10 L 1 11 Z M 1 9 L 0 9 L 0 8 L 1 8 L 1 9 Z M 1 7 L 0 7 L 0 6 L 1 6 L 1 7 Z M 1 5 L 0 5 L 0 4 L 1 4 L 1 5 Z M 1 3 L 0 3 L 0 2 L 1 2 L 1 3 Z M 1 1 L 0 1 L 0 0 L 1 0 L 1 1 Z" winding="nonZero" x="0.838" y="0.862">
@@ -166,8 +150,19 @@
 				</s:fill>
 			</s:Path>
 			<s:Rect width="10"/>		
-		</s:HGroup>-->
+		</s:HGroup>
 
+		<s:HGroup  verticalAlign="middle" includeIn="twitter">
+			<s:Label text="Search term:  "/>
+			<s:TextInput width="180" prompt="enter term ..." id="twitterSearch"/>
+			<s:Rect width="10"/>
+			<s:Path data="M 1 33 L 0 33 L 0 32 L 1 32 L 1 33 Z M 1 31 L 0 31 L 0 30 L 1 30 L 1 31 Z M 1 29 L 0 29 L 0 28 L 1 28 L 1 29 Z M 1 27 L 0 27 L 0 26 L 1 26 L 1 27 Z M 1 25 L 0 25 L 0 24 L 1 24 L 1 25 Z M 1 23 L 0 23 L 0 22 L 1 22 L 1 23 Z M 1 21 L 0 21 L 0 20 L 1 20 L 1 21 Z M 1 19 L 0 19 L 0 18 L 1 18 L 1 19 Z M 1 17 L 0 17 L 0 16 L 1 16 L 1 17 Z M 1 15 L 0 15 L 0 14 L 1 14 L 1 15 Z M 1 13 L 0 13 L 0 12 L 1 12 L 1 13 Z M 1 11 L 0 11 L 0 10 L 1 10 L 1 11 Z M 1 9 L 0 9 L 0 8 L 1 8 L 1 9 Z M 1 7 L 0 7 L 0 6 L 1 6 L 1 7 Z M 1 5 L 0 5 L 0 4 L 1 4 L 1 5 Z M 1 3 L 0 3 L 0 2 L 1 2 L 1 3 Z M 1 1 L 0 1 L 0 0 L 1 0 L 1 1 Z" winding="nonZero" x="0.838" y="0.862">
+				<s:fill>
+					<s:SolidColor/>
+				</s:fill>
+			</s:Path>
+			<s:Rect width="10"/>		
+		</s:HGroup>
 		
 		<s:Rect width="100%" />
 		<s:Line height="100%" width="1" bottom="34">

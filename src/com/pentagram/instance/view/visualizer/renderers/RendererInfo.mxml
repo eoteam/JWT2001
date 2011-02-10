@@ -44,7 +44,7 @@
 		<vo:Country id="country" />
 		<fx:Boolean id="tipVisible">true</fx:Boolean>
 		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
-		<fx:Boolean id="rightTipVisible">true</fx:Boolean>
+		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
 		<s:TextFlow id="ctf" />
 	</fx:Declarations>
