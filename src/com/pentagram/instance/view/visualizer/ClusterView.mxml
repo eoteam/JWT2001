@@ -149,11 +149,11 @@
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}
-			private function handleTimer(event:TimerEvent):void {
-				updateSize();
-			}	
 			public function get viewOptions():Array {
 				return [maxRadius,opacity,currentYear];
+			}
+			private function handleTimer(event:TimerEvent):void {
+				updateSize();
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();

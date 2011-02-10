@@ -35,6 +35,9 @@ package com.pentagram.instance.view.mediators.shell
 
 			view.searchInput.visible = true;	
 			view.searchInput.dataProvider = model.clients.source;
+			if(model.user) {
+				view.loggedIn = true;
+			}
 		}
 
 		private function handleSelect(event:CustomEvent):void

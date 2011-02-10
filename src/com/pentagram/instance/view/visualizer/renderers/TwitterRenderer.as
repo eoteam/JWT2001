@@ -76,7 +76,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(value && !stateFlag)
 				dirtyFlag = true;
 			stateFlag = value;
-			this.invalidateDisplayList();
+			//this.invalidateDisplayList();
 		}
 		public function get state():Boolean {
 			return stateFlag;

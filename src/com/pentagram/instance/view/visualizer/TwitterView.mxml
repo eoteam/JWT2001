@@ -27,15 +27,22 @@
 			private var _flamaBook:Class;
 			
 			private var baseURL:String = "http://search.twitter.com/search.json?q=";
-			private var counter:int = 1;
-			private var pageTotal:int = 4;
+
 			private var maxRadius:Number = 25;
 			private var opacity:Boolean = true;
-			private var arr:Array = [];
-			private var _client:Client;
+
+			private var counter:int = 1;
+			private var pageTotal:int = 16;
+			private var allTweets:Array;
+			private var _searchTerm:String;
+			private var apiSearchTerm:String;
 			private var text:String = '';
+			private var currentCommonWords:Array;
+			private var _topics:Array;	
+			private var english:Boolean
 			private var firstPass:Boolean = true;
-			private var common:Array = ["the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do",
+			
+			private var commonWords:Array = ["the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do",
 				"at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there",
 				"their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no",
 				"just","him","know","take","person","into","year","your","good","some","could","them","see","other","than","then",
@@ -45,8 +52,10 @@
 				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has",
 				"quot","amp","'s"];
 			
+			
+			
 			protected var resizeFlag:Boolean = false
-			private var _topics:Array;	
+		
 			private var limit:int;
 			
 			public function updateSize():void {
@@ -56,11 +65,32 @@
 			public function update():void {
 				
 			}
-			public function set client(value:Client):void {
-				if(_client != value) {
-					_client = value;
-					if(!firstPass)
-						doVisualize();
+			public function set searchTerm(q:String):void {
+				if(_searchTerm != q) {
+					_searchTerm = q;
+					counter = 1;
+					currentCommonWords = [];
+					allTweets = [];
+					_topics = [];
+					apiSearchTerm = '';
+					text = '';
+					var tmp:Array = _searchTerm.split(" ");
+					for each(var token:String in tmp) {
+						apiSearchTerm += token+'+';
+						token = token.toLowerCase();
+						currentCommonWords.push(token);
+						currentCommonWords.push("@"+token);
+						currentCommonWords.push("@"+token+":");
+						currentCommonWords.push("@"+token+".");
+						currentCommonWords.push("@"+token+",");
+						currentCommonWords.push("@"+token+")");
+					}
+					apiSearchTerm = apiSearchTerm.substr(0,apiSearchTerm.length-1);
+					currentCommonWords = currentCommonWords.concat(commonWords);
+					if(!firstPass) {
+						this.currentState = "preload";
+						holder.removeAllElements();
+					}
 				}
 			}
 			public function changeView(view:Object):void {
@@ -112,11 +142,10 @@
 			
 			public function list1_changeHandler(value:Object):void
 			{
-				firstPass = false;
 				currentState = "loading";
 				limit = value.value;
-				if(_client)
-					doVisualize();
+				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
+				service.send();
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);
@@ -134,12 +163,12 @@
 			}
 			private function httpservice1_resultHandler(event:ResultEvent):void {
 				var o:Object  = JSON.decode(event.result.toString());
-				arr = arr.concat(o.results);
+				allTweets = allTweets.concat(o.results);
 				for each(var item:Object in o.results) {
 					text+= item.text + "\n";
 				}
-				if(counter < pageTotal) {
-					service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page="+counter.toString();
+				if(counter < pageTotal && o.results.length == 100) {
+					service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page="+counter.toString();
 					service.send();
 				}
 				else  {	
@@ -259,7 +288,7 @@
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(common.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] > limit) {
+					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] > limit) {
 						var topic:TwitterTopic = new TwitterTopic();
 						topic.count = N[i];
 						topic.value = m1[i];
@@ -269,21 +298,6 @@
 				}
 				return results;
 			}	
-			private function doVisualize():void {
-				counter = 1;
-				var arr:Array = _client.shortname.toLowerCase().split(" ");
-				for each(var token:String in arr) {
-					common.push(token);
-					common.push("@"+token);
-					common.push("@"+token+":");
-					common.push("@"+token+".");
-					common.push("@"+token+",");
-					common.push("@"+token+")");
-				}
-				service.url = baseURL+_client.shortname+"&lang=en&rpp=100&page=1";
-				service.send();
-				firstPass = false;
-			}
 			private function linksService_resultHandler(event:ResultEvent):void {
 				_topics = countWords(text,0);
 				var o:Array  = JSON.decode(event.result.toString()) as Array;
@@ -296,17 +310,25 @@
 						_topics.push(topic);
 					}
 				}
-				var pack2:TwitterPacking = new TwitterPacking(_topics,this);
-				pack2.percentHeight = pack2.percentWidth = 100;
-				holder.addElement(pack2);
-				pack2.build();
-				pack2.addEventListener("layoutComplete",handleLayout);	
+				var pack:TwitterPacking;
+				//if(firstPass) {
+					pack = new TwitterPacking(_topics,this);
+					pack.percentHeight = pack.percentWidth = 100;
+					holder.addElement(pack);
+				//}
+				//else 
+				//	pack = holder.getElementAt(0) as TwitterPacking;
+				
+				pack.build();
+				pack.addEventListener("layoutComplete",handleLayout);
 				this.dispatchEvent(new Event("vizLoaded"));
 				this.updateSize();
+				firstPass = false;
 			}
 			private function handleLayout(event:Event):void {
 				updateSize();
 				this.currentState = "loaded";
+				_searchTerm = null;
 			}
 		]]>
 	</fx:Script>

@@ -56,6 +56,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);		
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_SEARCH,handleTwitterSearch);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.STOP_TIMELINE,handleStopTimeline);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.PLAY_TIMELINE,handlePlayTimeline);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange);
@@ -163,7 +164,7 @@ package com.pentagram.instance.view.mediators.shell
 					loaders.push(util);
 				}
 				else {
-					view.twitterView.client = model.client;
+					//client selected
 					restoreViewOptions(view.twitterView);
 				}
 			}
@@ -211,6 +212,10 @@ package com.pentagram.instance.view.mediators.shell
 					view.filterTools.adjustCategories(event.args[0]);
 				break;
 			}
+		}
+		private function handleTwitterSearch(event:VisualizerEvent):void {
+			view.twitterView.searchTerm = event.args[0];
+			view.vizTitle.text = 'Twitter Vizualisation for term "' + event.args[0] + '"';
 		}
 		private function handleStopTimeline(event:VisualizerEvent):void {
 			//view.currentVisualizer.continous = false;
@@ -403,7 +408,7 @@ package com.pentagram.instance.view.mediators.shell
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is ITwitterView) {
 				view.twitterView = util.view as ITwitterView;
-				view.twitterView.client = model.client;
+				view.twitterView.searchTerm = model.client.shortname;
 				view.twitterHolder.addElement(util.view as Group);	
 				view.twitterView.addEventListener("vizLoaded",handleTwitterViz);
 			}			

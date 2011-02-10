@@ -132,11 +132,14 @@ package com.pentagram.instance.view.mediators.shell
 				case model.TWITTER_INDEX:
 					view.currentState = 'twitter';
 					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-					//view.twitterSearch.addEventListener(TextOperationEvent.CHANGE,handleTwitterSearch,false,0,true);
+					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);
 				break;	
 			}
 		}	
-		//private function handleTwitterSearch
+		private function handleTwitterSearch(event:FlexEvent):void {
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SEARCH,model.client.shortname + " " + view.twitterSearch.text));
+		}
+		
 		private function handleDatasetSelection(event:Event):void {
 			var years:ArrayList = new ArrayList();
 			var i:int;

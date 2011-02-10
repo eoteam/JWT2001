@@ -18,10 +18,10 @@ package com.pentagram.instance.view.visualizer.views
 	
 	public class TwitterPacking extends SpriteVisualElement
 	{
-		public var spriteArray:Vector.<TwitterRenderer> = new Vector.<TwitterRenderer>;
+		public var spriteArray:Vector.<TwitterRenderer>;
 		private var circlePositions:Vector.<Point3D>;
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
-		public var numberList:Array = [];
+		public var dataProvider:Array = [];
 		public var scaler:Number = 1;
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
@@ -29,25 +29,33 @@ package com.pentagram.instance.view.visualizer.views
 		public function TwitterPacking(arr:Array,parent:Group)
 		{
 			super();			
-			this.numberList = arr;
+			this.dataProvider = arr;
 			this.tooltipContainer = parent;
 		}
 		public function build():void {
-			var counter:uint = 0;
-			while(counter < numberList.length) {
-				var sprite:TwitterRenderer = new  TwitterRenderer(tooltipContainer,this);  
-				sprite.data = numberList[counter];
+			spriteArray = new Vector.<TwitterRenderer>;
+			for(var i:int=0; i < dataProvider.length;i++) {
+				var sprite:TwitterRenderer;
+				if(i < this.numChildren) {
+					sprite = this.getChildAt(i) as TwitterRenderer;
+				}
+				else {
+				  sprite = new  TwitterRenderer(tooltipContainer,this); 
+				  
+				  this.addChild(sprite);
+				}
+				sprite.state = false;
+				sprite.data = dataProvider[i];
 				sprite.fillColor = 0x5599BB;
 				sprite.fillAlpha = 0.2;
-
 				sprite.textColor = 0x5599BB;
-				sprite.radiusBeforeRendering = numberList[counter].count;
+				sprite.radiusBeforeRendering = dataProvider[i].count;
 				sprite.scaleX= -1;
+				
 				spriteArray.push(sprite);
-				this.addChild(sprite);
-				counter++;
 			}
-			doLayout();
+			if(this.dataProvider.length > 2 )
+				doLayout();
 		}
 		private var disposeCounter:int = 2;
 		private var c:TwitterRenderer = null;
@@ -59,23 +67,17 @@ package com.pentagram.instance.view.visualizer.views
 		private var timer:Timer;
 		private function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
-
 			circlePositions = new Vector.<Point3D>;			
 			circlePositions.push(new Point3D(0, 0, this.spriteArray[0].radiusBeforeRendering));
 			circlePositions.push(new Point3D(this.spriteArray[0].radiusBeforeRendering + this.spriteArray[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.spriteArray[1].radiusBeforeRendering));
 			_loc_5 = this.circlePositions[1].x + this.circlePositions[1].z;
-			
-//			while (disposeCounter < this.numberList.length){
-//				
-//				
-//			}
 			timer = new Timer(5);
 			timer.addEventListener(TimerEvent.TIMER,onTimer);
 			timer.start();
 
 		}
 		protected function onTimer(event:TimerEvent):void {
-			if(disposeCounter < this.numberList.length){
+			if(disposeCounter < this.dataProvider.length){
 				timer.stop();
 				c = this.spriteArray[disposeCounter];
 				//this.graphics.moveTo(0, 0);
@@ -125,12 +127,12 @@ package com.pentagram.instance.view.visualizer.views
 		
 		public function draw(fast:Boolean=false) : void {			
 			var c:TwitterRenderer;
-			if (this.numberList.length < 2){
+			if (this.dataProvider.length < 2){
 				return;
 			}
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
 			var i:uint = 0;
-			while (i < this.circlePositions.length){
+			for (i=0; i < this.circlePositions.length;i++){
 				c = this.spriteArray[i];
 				c.state = true;
 				if(animateCoord) {
@@ -158,7 +160,6 @@ package com.pentagram.instance.view.visualizer.views
 						c.force();
 					}
 				}
-				i++;
 			}
 			cacheAsBitmap = true;
 		}
