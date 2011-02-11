@@ -130,6 +130,9 @@ s|DropDownList {
 .darkButton {
 	skinClass: ClassReference("com.pentagram.view.skins.buttons.DarkButton");
 }
+.grayButton {
+	skinClass: ClassReference("com.pentagram.view.skins.buttons.GrayButton");
+}
 .darkPanel s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.BlackTextInput');
 }

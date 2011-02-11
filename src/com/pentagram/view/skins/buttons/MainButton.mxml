@@ -111,7 +111,7 @@
 	</s:Rect>
 	
 	<s:RichText id="labelDisplay"  tabStops="S0 S50 S100 S150 S200"
-			 maxDisplayedLines="1"  fontFamily="FlamaBook"
+			 maxDisplayedLines="1"  fontFamily="FlamaMedium"
 			  verticalCenter="0" left="7" right="7"	/>
 
 </s:SparkButtonSkin>
