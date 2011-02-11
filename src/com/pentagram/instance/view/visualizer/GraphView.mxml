@@ -218,7 +218,7 @@
 		 tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true"> 
 			<mx:axisStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
-			</mx:axisStroke>
+			</mx:axisStroke> 
 			<mx:tickStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
 			</mx:tickStroke>

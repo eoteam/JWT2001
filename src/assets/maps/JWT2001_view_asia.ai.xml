@@ -1545,7 +1545,7 @@
         </Ellipse>
       </Group>
     </Group>
-    <Group  x="6.79199" y="16.3184" visible="true" ai:seqID="312" d:type="layer" d:userLabel="countries">
+    <Group  x="6.79199" y="16.3184" visible="false" ai:seqID="312" d:type="layer" d:userLabel="countries">
         <Rect x="25.8906" y="21.125" width="2" height="2" ai:seqID="314" d:userLabel="AZE">
           <fill>
             <SolidColor/>

@@ -47,6 +47,7 @@ public function unload():void {
 		mapView.unload();
 }
 public function get currentVisualizer():IVisualizer {
+	
 	return NavigatorContent(visualizerArea.selectedChild).getElementAt(0) as IVisualizer;
 
 }

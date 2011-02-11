@@ -56,6 +56,9 @@
 			<s:stroke>
 				<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
 			</s:stroke>
+			<s:fill>
+				<s:SolidColor color="0xFFFFFF" alpha="0.9" />
+			</s:fill>
 		</s:Rect>
 		
 		<editor:DatasetEditor id="datasetEditor" width="100%" top="15" left="16" right="16" bottom="52" includeIn="dataset"  />

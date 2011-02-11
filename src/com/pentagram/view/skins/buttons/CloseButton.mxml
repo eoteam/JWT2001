@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:ai="http://ns.adobe.com/ai/2009" xmlns:lib="assets.graphics.*" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009">
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>
@@ -7,29 +7,80 @@
 		<s:State name="down"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<s:Rect left="0" right="0" top="0" bottom="0">
-		<s:fill>
-			<s:SolidColor color="#B3B3B3"  alpha="0"/>
-		</s:fill>
+	<s:Group id="group34" includeIn="disabled,up" x="5" y="5">
+		<s:Ellipse height="15" d:id="3" flm:variant="1" width="15" x="0" y="0">
+			<s:fill>
+				<s:LinearGradient rotation="290.808" scaleX="14.1515" x="5.3252" y="13.2246">
+					<s:GradientEntry color="#8C8C8C" ratio="0"/>
+					<s:GradientEntry color="#A9A9A9" ratio="0.496393"/>
+					<s:GradientEntry color="#B3B3B3" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Ellipse>
+		<s:Group x="3" y="3">
+			<s:Line x="1" xTo="7" y="1" yTo="7">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+			</s:Line>
+			<s:Line x="1" xTo="7" y="1" yFrom="7">
+				<s:stroke>
+					<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="2"/>
+				</s:stroke>
+			</s:Line>
+		</s:Group>
+	</s:Group>
+	<s:Rect alpha="0.8" height="24" id="rect21" width="24" x="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="10" weight="1"/>
+		</s:stroke>
 	</s:Rect>
-	<s:Line id="line4" includeIn="disabled,over,up" x="0.5" xTo="8" y="0.5" yTo="8">
+	<fx:DesignLayer d:id="2" d:userLabel="Layer 29">
+		<s:Group id="group35" includeIn="over" x="5" y="5">
+			<s:Ellipse height="15" d:id="3" flm:variant="1" width="15" x="0" y="0">
+				<s:fill>
+					<s:LinearGradient rotation="290.808" scaleX="14.152" x="5.3252" y="13.2246">
+						<s:GradientEntry color="#262626" ratio="0"/>
+						<s:GradientEntry color="#424242" ratio="0.247676"/>
+						<s:GradientEntry color="#565656" ratio="0.496393"/>
+						<s:GradientEntry color="#626262" ratio="0.74638"/>
+						<s:GradientEntry color="#666666" ratio="1"/>
+					</s:LinearGradient>
+				</s:fill>
+			</s:Ellipse>
+			<s:Group x="3" y="3">
+				<s:Line x="1" xTo="7" y="1" yTo="7">
+					<s:stroke>
+						<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="2"/>
+					</s:stroke>
+				</s:Line>
+				<s:Line x="1" xTo="7" y="1" yFrom="7">
+					<s:stroke>
+						<s:SolidColorStroke caps="none" color="#FFFFFF" joints="miter" miterLimit="4" weight="2"/>
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+		</s:Group>
+	</fx:DesignLayer>
+	<s:Ellipse height="15" d:id="3" includeIn="down" flm:variant="1" width="15" x="5" y="5">
+		<s:fill>
+			<s:LinearGradient rotation="290.808" scaleX="14.152" x="5.3252" y="13.2246">
+				<s:GradientEntry color="#262626" ratio="0"/>
+				<s:GradientEntry color="#424242" ratio="0.247676"/>
+				<s:GradientEntry color="#565656" ratio="0.496393"/>
+				<s:GradientEntry color="#626262" ratio="0.74638"/>
+				<s:GradientEntry color="#666666" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Ellipse>
+	<s:Line includeIn="down" x="9" xTo="7" y="9" yTo="7">
 		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#333333" color.over="#999999" joints="miter" miterLimit="10" weight="1"/>
+			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="2"/>
 		</s:stroke>
 	</s:Line>
-	<s:Line id="line3" includeIn="disabled,over,up" x="0.5" xFrom="8" y="0.5" yTo="8">
+	<s:Line includeIn="down" x="9" xTo="7" y="9" yFrom="7">
 		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#333333" color.over="#999999" joints="miter" miterLimit="10" weight="1"/>
-		</s:stroke>
-	</s:Line>
-	<s:Line includeIn="down" x="0.5" xTo="8" y="0.5" yTo="8" id="line6">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="10" weight="1"/>
-		</s:stroke>
-	</s:Line>
-	<s:Line includeIn="down" x="0.5" xFrom="8" y="0.5" yTo="8" id="line5">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="10" weight="1"/>
+			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="2"/>
 		</s:stroke>
 	</s:Line>
 </s:Skin>

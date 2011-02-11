@@ -280,7 +280,7 @@
         </Ellipse>
       </Group>
     </Group>
-    <Group ai:seqID="59" d:type="layer" d:userLabel="countries">
+    <Group ai:seqID="59" d:type="layer" d:userLabel="countries" visible="false">
       <Rect x="67.7422" y="17.5444" width="2" height="2" ai:seqID="60" d:userLabel="IRN">
         <fill>
           <SolidColor color="#010101"/>

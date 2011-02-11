@@ -32,7 +32,7 @@
 			private var opacity:Boolean = true;
 
 			private var counter:int = 1;
-			private var pageTotal:int = 16;
+			private var pageTotal:int = 3;
 			private var allTweets:Array;
 			private var _searchTerm:String;
 			private var apiSearchTerm:String;

@@ -4,6 +4,15 @@
     <compilerSourcePath/>
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
+        <modifiedEntries>
+          <libraryPathEntry index="1" kind="3" linkType="4" path="${PROJECT_FRAMEWORKS}/libs/framework.swc" useDefaultLinkType="true">
+            <crossDomainRsls>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.5.0.12683.swz"/>
+              <crossDomainRslEntry autoExtract="true" policyFileUrl="" rslUrl="framework_3.5.0.12683.swf"/>
+            </crossDomainRsls>
+          </libraryPathEntry>
+          <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/rpc.swc" useDefaultLinkType="false"/>
+        </modifiedEntries>
         <excludedEntries>
           <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/flex.swc" useDefaultLinkType="false"/>
         </excludedEntries>
@@ -19,7 +28,28 @@
   </compiler>
   <applications>
     <application path="View.mxml">
-      <airExcludes/>
+      <airExcludes>
+        <airExclude path="com/pentagram/services"/>
+        <airExclude path="com/pentagram/instance/.DS_Store"/>
+        <airExclude path="com/.DS_Store"/>
+        <airExclude path="com/ericfeminella"/>
+        <airExclude path="assets/maps/.DS_Store"/>
+        <airExclude path="org"/>
+        <airExclude path="com/adobe"/>
+        <airExclude path="assets/icons/cursor_resize.gif"/>
+        <airExclude path="flex"/>
+        <airExclude path="com/pentagram/instance/view/visualizer/renderers"/>
+        <airExclude path="assets/icons/cursor_move.gif"/>
+        <airExclude path="com/pentagram/instance/view/visualizer/.DS_Store"/>
+        <airExclude path="assets/.DS_Store"/>
+        <airExclude path="com/pentagram/view"/>
+        <airExclude path="com/pentagram/instance/view/.DS_Store"/>
+        <airExclude path="com/pentagram/.DS_Store"/>
+        <airExclude path="assets/fonts"/>
+        <airExclude path="ws"/>
+        <airExclude path=".DS_Store"/>
+        <airExclude path="com/pentagram/events"/>
+      </airExcludes>
     </application>
   </applications>
   <modules>

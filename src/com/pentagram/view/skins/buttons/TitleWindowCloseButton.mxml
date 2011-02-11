@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:SolidColor color="#B3B3B3"  alpha="0"/>
+		</s:fill>
+	</s:Rect>
+	<s:Line id="line4" includeIn="disabled,over,up" x="0.5" xTo="8" y="0.5" yTo="8">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#333333" color.over="#999999" joints="miter" miterLimit="10" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line id="line3" includeIn="disabled,over,up" x="0.5" xFrom="8" y="0.5" yTo="8">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#333333" color.over="#999999" joints="miter" miterLimit="10" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line includeIn="down" x="0.5" xTo="8" y="0.5" yTo="8" id="line6">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="10" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:Line includeIn="down" x="0.5" xFrom="8" y="0.5" yTo="8" id="line5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="10" weight="1"/>
+		</s:stroke>
+	</s:Line>
+</s:Skin>

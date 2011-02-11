@@ -178,6 +178,4 @@
 		</s:Line> 
 		<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.GearButton" id="settingsBtn" label="Export Settings" />
 	</s:HGroup>
-
-		
 </s:Group>

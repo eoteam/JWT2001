@@ -88,6 +88,10 @@ s|RichText {
 s|CheckBox {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }
+s|Button {
+	skinClass: ClassReference('com.pentagram.view.skins.buttons.MainButton');
+}
+
 flashcommander|AutoComplete s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.SearchInput');
 }

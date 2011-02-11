@@ -35,7 +35,7 @@
 	<s:layout>
 		<s:VerticalLayout  />
 	</s:layout>
-	
+
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 		<s:Rect width="8" />

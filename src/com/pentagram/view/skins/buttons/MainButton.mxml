@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkButtonSkin xmlns:s="library://ns.adobe.com/flex/spark" 
+		xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		xmlns:d="http://ns.adobe.com/fxg/2008/dt" 
+		xmlns:fb="http://ns.adobe.com/flashbuilder/2009"   
+		xmlns:flm="http://ns.adobe.com/flame/2008">
+	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
+	
+	<fx:Script fb:purpose="styling">
+		<![CDATA[         
+			import spark.components.Group;
+			/* Define the skin elements that should not be colorized. 
+			For button, the graphics are colorized but the label is not. */
+			static private const exclusions:Array = ["labelDisplay"];
+			
+			/** 
+			 * @private
+			 */     
+			override public function get colorizeExclusions():Array {return exclusions;}
+			
+			/**
+			 * @private
+			 */
+			override protected function initializationComplete():void
+			{
+				useChromeColor = true;
+				super.initializationComplete();
+			}  
+			
+			/**
+			 *  @private
+			 */
+//			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number) : void
+//			{
+//				var cr:Number = getStyle("cornerRadius");
+//				
+//				if (cornerRadius != cr)
+//				{
+//					cornerRadius = cr;
+//					shadow.radiusX = cornerRadius;
+//					fill.radiusX = cornerRadius;
+//					lowlight.radiusX = cornerRadius;
+//					highlight.radiusX = cornerRadius;
+//					border.radiusX = cornerRadius;
+//				}
+//				
+//				if (highlightStroke) highlightStroke.radiusX = cornerRadius;
+//				if (hldownstroke1) hldownstroke1.radiusX = cornerRadius;
+//				if (hldownstroke2) hldownstroke2.radiusX = cornerRadius;
+//				
+//				super.updateDisplayList(unscaledWidth, unscaledHeight);
+//			}
+			
+			private var cornerRadius:Number = 2;
+			
+		]]>        
+	</fx:Script>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+	</s:states>
+	<s:Rect height="20" d:id="4" includeIn="disabled,up" radiusX="5.97482" radiusY="5.97482" flm:variant="1" right="1" left="1" y="1" id="rect1">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="19.7344" x="43.1768" y="19.7344">
+				<s:GradientEntry color="#EBEBEB" ratio="0"/>
+				<s:GradientEntry color="#FAFAFA" ratio="0.476168"/>
+				<s:GradientEntry color="#FFFFFF" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="20" includeIn="disabled,up" radiusX="6"  right="1" left="0" y="0.5" id="rect2">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Group id="group0" includeIn="over" left="0" right="0" height="21">
+		<s:filters>
+			<s:BevelFilter angle="45.0" blurX="3" blurY="3" distance="3" highlightAlpha="0.45" highlightColor="#FFFFFF" knockout="false" quality="2" shadowAlpha="0.45" shadowColor="#999999" strength="1" type="inner"/>
+		</s:filters>
+		<s:Rect height="20" d:id="4" radiusX="5.97482" radiusY="5.97482" flm:variant="1" right="1" left="1" y="1.5">
+			<s:fill>
+				<s:LinearGradient rotation="270" scaleX="19.7344" x="43.1768" y="19.7344">
+					<s:GradientEntry color="#EBEBEB" ratio="0"/>
+					<s:GradientEntry color="#FAFAFA" ratio="0.476168"/>
+					<s:GradientEntry color="#FFFFFF" ratio="1"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Rect height="20" radiusX="6" right="1" left="0" y="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
+	</s:Group>
+	
+	<s:Rect height="20" d:id="4" includeIn="down" radiusX="5.97482" radiusY="5.97482" flm:variant="1" left="1" right="1" y="1" id="rect3">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="19.7344" x="43.1768" y="19.7344">
+				<s:GradientEntry color="#FFFFFF" ratio="0" alpha="1.0"/>
+				<s:GradientEntry color="#FAFAFA" ratio="0.476168"/>
+				<s:GradientEntry color="#EBEBEB" ratio="1" alpha="1.0"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="20" includeIn="down" radiusX="6" left="0" right="1"  y="0.5" id="rect4">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	
+	<s:RichText id="labelDisplay"  tabStops="S0 S50 S100 S150 S200"
+			 maxDisplayedLines="1"  fontFamily="FlamaBook"
+			  verticalCenter="0" left="7" right="7"	/>
+
+</s:SparkButtonSkin>
