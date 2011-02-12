@@ -25,26 +25,35 @@
 		override public function get contentItems():Array {return contentFill};
 	</fx:Script>
 	
-	<!-- border -->
-	<s:Rect left="0" right="0" top="19" bottom="0">
+	<s:Rect height="30" radiusX="3.98381" radiusY="3.98381"  right="0" left="0">
+		<s:fill>
+			<s:LinearGradient rotation="270" scaleX="36.5378" x="241.928" y="37.8193">
+				<s:GradientEntry color="#E6E6E6" ratio="0"/>
+				<s:GradientEntry color="#FAFAFA" ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="30" radiusX="3.98381" radiusY="3.98381" right="0" left="0.5" top="0.5">
 		<s:stroke>
-			<s:SolidColorStroke color="0x686868" weight="1"/>
+			<s:SolidColorStroke caps="none" color="#B3B3B3" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect  bottom="0"  right="0" left="0.5" top="20">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="10.0812" x="241.83" y="0.318848">
+				<s:GradientEntry color="#CFCFCF" ratio="0"/>
+				<s:GradientEntry color="#E5E5E5" ratio="0.0719558"/>
+				<s:GradientEntry color="#F4F4F4" ratio="0.146581"/>
+				<s:GradientEntry color="#FDFDFD" ratio="0.224491"/>
+				<s:GradientEntry color="#FFFFFF" ratio="0.312883"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#B3B3B3" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Rect>
 	
-	<!-- fill -->
-	<!--- Defines the background appearance of the list-based component. -->
-<!--	<s:Rect id="background" left="1" right="1" top="20" bottom="1" >
-		<s:fill>
-			<s:SolidColor color="#EEEEEE" />
-		</s:fill>
-	</s:Rect>-->
-	
-	<s:Scroller id="scroller"
-				left="0" top="19" right="0" bottom="0"
-				minViewportInset="1"
-				focusEnabled="false">
-		
+	<s:Scroller id="scroller" left="1" top="20" right="1" bottom="0" minViewportInset="1" focusEnabled="false">
 		<!--The container for the data items.-->
 		<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer">
 			<s:layout>
@@ -53,6 +62,7 @@
 		</s:DataGroup>
 	</s:Scroller>
 	
-	<s:Button id="header" label="{hostComponent.headerText}" left="0" right="0"   height="20"  fontFamily="FlamaBold" skinClass="com.pentagram.view.skins.buttons.LeftAlignedButton" />
+	<s:Button id="header" label="{hostComponent.headerText}" right="4" left="2"   height="20"  fontFamily="FlamaBold" 
+	skinClass="com.pentagram.view.skins.buttons.MiGListHeaderButton" />
 	
 </s:SparkSkin>

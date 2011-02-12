@@ -14,8 +14,7 @@
 		<s:layout>
 			<s:HorizontalLayout gap="0" verticalAlign="middle"  paddingLeft="5"/>
 		</s:layout>
-		<s:Image id="logo" height="{barHeight-5}"  smooth="true" smoothingQuality="high"  scaleMode="letterbox"  fillMode="scale" 
-		source="{client.thumb}" />
+		<mx:Image scaleContent="true" maintainAspectRatio="true" id="logo" height="{barHeight-5}" source="{client.thumb}"  smoothBitmapContent="true"/>
 		
 		<s:Rect width="15" excludeFrom="editor" />
 		<s:Line height="100%" excludeFrom="editor">

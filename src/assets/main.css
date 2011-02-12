@@ -90,6 +90,7 @@ s|CheckBox {
 }
 s|Button {
 	skinClass: ClassReference('com.pentagram.view.skins.buttons.MainButton');
+	fontFamily: FlamaMedium;
 }
 
 flashcommander|AutoComplete s|TextInput {
@@ -158,5 +159,9 @@ mx|ToolTip {
 	font-family: "FlamaBold";
 }
 controls|MiGList {
-	
+	skinClass: ClassReference("com.pentagram.view.skins.controls.MiGListSkin");
+	alternatingItemColors: #ffffff,#DFDFDF; 
+}
+controls|EditorPanel {
+	skinClass: ClassReference("com.pentagram.view.skins.controls.EditorPanel");
 }

@@ -50,31 +50,13 @@
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Logo" />
 		<s:Rect width="8" />
-		<s:Group width="{FIELD_WIDTH}" id="logoHolder">
-			<s:Rect left="0" right="0" top="0" bottom="0">
-				<s:stroke>
-					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
-				</s:stroke>
-			</s:Rect>
-			<mx:Image id="logo"  top="30" left="1" right="1" bottom="1"  scaleContent="true" maintainAspectRatio="true" source="{client.thumb}" />
-			<s:Group left="1" right="1" top="1" height="30">
-				<s:Rect left="0" right="0" top="0" bottom="0">
-					<s:fill>
-						<s:LinearGradient>
-							<s:GradientEntry color="#FFFFFF" />
-							<s:GradientEntry color="#F5F6F6" />
-						</s:LinearGradient>
-					</s:fill>
-					<s:stroke>
-						<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
-					</s:stroke>
-				</s:Rect>
-				<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
-					<s:Button label="Change Logo" />
-					<s:Button label="Download Logo" />
-				</s:HGroup>
-			</s:Group>		
-		</s:Group>
+		<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder" height="45" >
+			<mx:Image id="logo"   scaleContent="true" maintainAspectRatio="true" top="4" bottom="4" left="4" right="4" source="{client.thumb}" smoothBitmapContent="true" />
+			<controls:controlBarContent>
+				<s:Button label="Change Logo" />
+				<s:Button label="Download Logo" />
+			</controls:controlBarContent>
+		</controls:EditorPanel>
 	</s:HGroup>		
 	
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
@@ -98,35 +80,19 @@
 	<s:HGroup verticalAlign="top" gap="0" width="100%" height="100%">  
 		<s:Label width="{LABEL_WIDTH}" text="Countries" />
 		<s:Rect width="8" />
-		<s:Group width="100%" height="100%">
-			<s:Rect left="0" right="0" top="0" bottom="0">
-				<s:stroke>
-					<s:SolidColorStroke weight="0.5" caps="square" color="#B3B3B3" />
-				</s:stroke>
-			</s:Rect>
-			<s:Scroller top="30" left="1" right="1" bottom="1" >
+		
+		<controls:EditorPanel height="100%" width="100%">
+			<s:Scroller width="100%" height="100%" >
 				<s:VGroup width="100%" height="100%" id="regionHolder" />
-			</s:Scroller>
-			<s:Group left="1" right="1" top="1" height="30">
-				<s:Rect left="0" right="0" top="0" bottom="0">
-					<s:fill>
-						<s:LinearGradient>
-							<s:GradientEntry color="#FFFFFF" />
-							<s:GradientEntry color="#F5F6F6" />
-						</s:LinearGradient>
-					</s:fill>
-				</s:Rect>
-				<s:HGroup width="100%" paddingLeft="4" paddingRight="4" paddingTop="4">
-					<s:Label id="countryTotal" text="Total: {client.countries.length}" />
-					<components:AutoComplete  labelField="name" width="160" id="countryInput"/>
-					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
-					<s:Rect width="100%" />
-					<s:Button label="- Delete" color="0xC61023" id="deleteBtn" />
-				</s:HGroup>
-				<s:filters>
-					<s:DropShadowFilter angle="90" distance="2" blurX="1.5" blurY="1.5" alpha="0.6" />
-				</s:filters>
-			</s:Group>			
-		</s:Group>
+			</s:Scroller>   
+			<controls:controlBarContent>
+				<s:Label id="countryTotal" text="Total: {client.countries.length}" styleName="FlamaBold" />
+				<components:AutoComplete height="19"  labelField="name" width="160" id="countryInput"/>
+				<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
+				<s:Rect width="100%" />
+				<s:Button label="— Delete" color="0xC61023" id="deleteBtn" />         
+			</controls:controlBarContent>
+		</controls:EditorPanel>
+		
 	</s:HGroup>
 </s:Group>

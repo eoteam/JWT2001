@@ -82,5 +82,5 @@
 		</s:stroke>
 	</s:Line>
 	<controls:ButtonToolTip bodyText="Cluster View" includeInLayout="false"   y="{-height-5}" x="5" tipPlacement="10"  
-							visible="false" visible.overAndSelected="true"  visible.over="true" rectWidth="85" labelFontSize="12"/>
+	visible="false" visible.overAndSelected="true"  visible.over="true" rectWidth="85" labelFontSize="12"/>
 </s:Skin>

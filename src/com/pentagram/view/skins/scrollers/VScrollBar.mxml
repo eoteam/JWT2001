@@ -10,6 +10,6 @@
 	<s:Group d:id="8" flm:knockout="false" x="2" top="18" bottom="18">
 		<s:Button id="thumb" skinClass="com.pentagram.view.skins.scrollers.VScrollBarThumb" x="0" y="0"/>
 	</s:Group>
-	<s:Button skinClass="com.pentagram.view.skins.scrollers.IncrementButton"  bottom="0" id="incrementButton"/>
-	<s:Button skinClass="com.pentagram.view.skins.scrollers.DecrementButton"  top="0" id="decrementButton"/>
+	<s:Button skinClass="com.pentagram.view.skins.scrollers.VIncrementButton"  bottom="0" id="incrementButton"/>
+	<s:Button skinClass="com.pentagram.view.skins.scrollers.VDecrementButton"  top="0" id="decrementButton"/>
 </s:Skin>

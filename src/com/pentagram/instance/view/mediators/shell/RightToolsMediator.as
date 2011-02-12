@@ -9,6 +9,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.ViewUtils;
 	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -184,7 +185,9 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleCloseTooltips(event:MouseEvent):void {
 			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
 				trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
-				if(getQualifiedClassName(view.systemManager.getChildAt(i))=='com.pentagram.instance.view.visualizer.renderers::RendererInfo'){
+				var child:DisplayObject = view.systemManager.getChildAt(i);
+				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
+				   getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
 					view.systemManager.removeChildAt(i);
 				}
 			}

@@ -20,6 +20,8 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.filesystem.FileStream;
 	import flash.net.FileFilter;
 	
+	import mx.collections.ArrayCollection;
+	
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
@@ -57,12 +59,13 @@ package com.pentagram.instance.view.mediators.editor
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_COMPLETE,onDragComplete,false,0,true);
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
 			view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,dataSetList_nativeDragDropHandler,false,0,true);
+			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
 			
 			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,view.client));
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,model.client));
 			}
 			else if(view.currentState == "dataset") {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_DATASET));

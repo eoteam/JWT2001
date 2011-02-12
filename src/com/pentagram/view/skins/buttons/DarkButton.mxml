@@ -7,35 +7,57 @@
 		<s:State name="down"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<s:Group d:id="5" flm:knockout="false"  left="0"  right="0" top="0" bottom="0">
+
+	
+	<s:Rect height="21" id="rect11" includeIn="disabled,up" radiusX="1.99102" radiusY="1.99102" right="1" left="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#666666" ratio="0"/>
+				<s:GradientEntry ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="20" id="rect13" includeIn="disabled,up" radiusX="1.99102" radiusY="1.99102" right="0.5" left="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect height="21" id="rect1" includeIn="over" radiusX="1.99102" radiusY="1.99102" right="1" left="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#666666" ratio="0.00784313725490196"/>
+				<s:GradientEntry ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
 		<s:filters>
-			<s:GlowFilter includeIn="over" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
-			<s:GlowFilter includeIn="down" blurX="4" blurY="4" color="#FFFFFF" inner="true" strength="1" alpha="0.9" quality="2" knockout="false"/>
+			<s:BevelFilter blurX="3" blurY="3" distance="3" highlightColor="#999999" strength="1" quality="2" highlightAlpha="0.45" knockout="false" shadowAlpha="0.45" type="inner" shadowColor="#333333" angle="45.0"/>
 		</s:filters>
-		<s:Rect height="27" d:id="6" radiusX="3.98381" radiusY="3.98381" flm:variant="2" left="0"  right="0" bottom="0"  top="1">
-			<s:fill>
-				<s:LinearGradient rotation="270" scaleX="21.8075" x="46.499" y="23.0215">
-					<s:GradientEntry color="#262626" ratio="0"/>
-					<s:GradientEntry color="#262626" ratio="0.472393"/>
-					<s:GradientEntry color="#4F4F4F" ratio="1"/>
-				</s:LinearGradient>
-			</s:fill>
-			<s:filters>
-				<s:DropShadowFilter includeIn="down" blurX="2" blurY="2" distance="2" hideObject="false" color="#999999" inner="true" strength="1" alpha="0.45" quality="2" knockout="false" angle="45.0"/>
-			</s:filters>
-		</s:Rect>
-		<s:Rect height="27" radiusX="3.98381" radiusY="3.98381"  left="0.5"  right=".5" top=".5" bottom="0.5">
-			<s:stroke>
-				<s:SolidColorStroke caps="none" color="#333333" joints="miter" miterLimit="4" weight="1"/>
-			</s:stroke>
-		</s:Rect>
-	</s:Group>
-	<!-- layer 8: text -->
-	<!--- @copy spark.components.supportClasses.ButtonBase#labelDisplay  -->
+	</s:Rect>
+	<s:Rect height="20" id="rect2" includeIn="over" radiusX="1.99102" radiusY="1.99102" right="0.5" left="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect height="21" id="rect0" includeIn="down" radiusX="1.99102" radiusY="1.99102"  left="1" right="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#000000" ratio="0.00784313725490196"/>
+				<s:GradientEntry ratio="1" color="#666666" alpha="1.0"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="3" blurY="3" color="#666666" distance="2" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="20" id="rect3" includeIn="down" radiusX="1.99102" radiusY="1.99102" left="0.5" right="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
 	<s:Label id="labelDisplay"
 			 textAlign="center"
 			 maxDisplayedLines="1"  color="#ffffff"
 			 horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
-			 left="10" right="10" top="2" bottom="2">
+			 left="20" right="20" y="5">
 	</s:Label>
 </s:Skin>

@@ -28,7 +28,7 @@
         /** 
          * @copy spark.skins.spark.ApplicationSkin#hostComponent
          */
-        [HostComponent("spark.components.SkinnableContainer")]
+        [HostComponent("com.pentagram.view.controls.EditorPanel")]
     ]]>
     </fx:Metadata> 
     
@@ -62,7 +62,7 @@
         <s:State name="disabled" />
     </s:states>
     
-	<s:Rect height="39" radiusX="3.98381" radiusY="3.98381"  right="0" left="0">
+	<s:Rect height="45" radiusX="3.98381" radiusY="3.98381"  right="0" left="0">
 		<s:fill>
 			<s:LinearGradient rotation="270" scaleX="36.5378" x="241.928" y="37.8193">
 				<s:GradientEntry color="#E6E6E6" ratio="0"/>
@@ -70,12 +70,12 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Rect>
-	<s:Rect height="39" radiusX="3.98381" radiusY="3.98381" right="0" left="0.5" top="0.5">
+	<s:Rect height="45" radiusX="3.98381" radiusY="3.98381" right="0" left="0.5" top="0.5">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#B3B3B3" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Rect>
-	<s:Rect  bottom="0"  right="0" left="0.5" top="30.5">
+	<s:Rect  bottom="0"  right="0" left="0.5" top="35">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="10.0812" x="241.83" y="0.318848">
 				<s:GradientEntry color="#CFCFCF" ratio="0"/>
@@ -89,10 +89,10 @@
 			<s:SolidColorStroke caps="none" color="#B3B3B3" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Rect>
-    
+    <s:HGroup id="controlBarGroup" right="0" left="0" height="35" verticalAlign="middle" paddingLeft="6" paddingRight="6" paddingTop="4" /> 
 
     <!--- @copy spark.components.SkinnableContainer#contentGroup -->
-    <s:Group id="contentGroup" left="1" right="1" top="40" bottom="1" minWidth="0" minHeight="0">
+    <s:Group id="contentGroup" left="1" right="1" top="38" bottom="1" minWidth="0" minHeight="0">
         <s:layout>
             <s:BasicLayout/>
         </s:layout>

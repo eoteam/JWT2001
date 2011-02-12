@@ -77,7 +77,15 @@ viewport property to link them together.
         }
     ]]>
     </fx:Script>
-        
+	<s:Rect left="0" right="0" top="0" bottom="0">
+		<s:fill>
+			<s:LinearGradient scaleX="13.038" x="3.593" y="9.002">
+				<s:GradientEntry color="#141414" ratio="0"/>
+				<s:GradientEntry color="#222222" ratio="0.277032"/>
+				<s:GradientEntry color="#242424" ratio="0.834356"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
     <!---  A vertical scrollbar that lets you control the portion of data that is displayed 
             when there is too much data to fit vertically in a display area.
             The Scroller determines whether the vertical ScrollBar is visible. -->
@@ -86,6 +94,6 @@ viewport property to link them together.
     <!---  A horizontal scrollbar that lets you control the portion of data that is displayed 
             when there is too much data to fit horizontally in a display area.
             The Scroller determines whether the horizontal ScrollBar is visible. -->
-    <s:HScrollBar id="horizontalScrollBar" visible="false" />
+    <s:HScrollBar id="horizontalScrollBar" visible="false"	skinClass="com.pentagram.view.skins.scrollers.HScrollBar" />
 
 </s:SparkSkin>

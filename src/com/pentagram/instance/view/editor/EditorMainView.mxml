@@ -2,7 +2,7 @@
 <mx:HDividedBox xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:editor="com.pentagram.instance.view.editor.*">
+		 xmlns:editor="com.pentagram.instance.view.editor.*" xmlns:controls="com.pentagram.view.controls.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -13,7 +13,7 @@
 			import mx.events.FlexEvent;
 			
 			import spark.events.IndexChangeEvent;
-			[Bindable] public var client:Client;
+		
 
 			protected function dataSetList_changeHandler(event:IndexChangeEvent):void
 			{
@@ -37,16 +37,12 @@
 	</mx:states>
 	
 	<s:VGroup width="200" gap="0">
-		<s:Button width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)" />
+		<s:Button width="100%" label="Overview" fontFamily="FlamaBold"  textAlignLast="left" click="button1_clickHandler(event)" />
 		<s:Rect height="8" />
-		<s:Label text="Data Sets" />
-		<s:Rect height="4"/>
-
-		<s:List width="100%" dataProvider="{client.datasets}" labelField="name"
-		change="dataSetList_changeHandler(event)"
-		alternatingItemColors="[#ffffff,#cccccc]" id="dataSetList" selectionColor="0x3A9DCC" />			
-		
-		<s:HGroup width="100%" gap="0">
+		<controls:MiGList width="100%"  labelField="name"
+		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets" 
+		id="dataSetList" selectionColor="0x3A9DCC" />					
+		<s:HGroup width="100%" gap="0" paddingLeft="1">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" styleName="grayButton" />
 			<s:Button width="100%" label="- Delete" id="deleteListBtn" styleName="grayButton"/>
 		</s:HGroup>
@@ -77,6 +73,5 @@
 			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" id="deleteBtn" creationComplete="this.dispatchEvent(new Event('datasetState'))" />
 		</s:HGroup>			
 	</s:Group>
-	<s:SkinnableContainer skinClass="com.pentagram.view.skins.controls.EditorPanel" height="100%" width="500" />
 </mx:HDividedBox>
 

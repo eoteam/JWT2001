@@ -37,7 +37,7 @@
 		
     </s:PopUpAnchor>
 	
-	<s:TextInput  id="inputTxt" left="0" right="0" top="0" bottom="0" />
+	<s:TextInput  skinClass="com.pentagram.view.skins.controls.TextInput" id="inputTxt" left="0" right="0" top="0" bottom="0" />
 
 
 </s:Skin>
