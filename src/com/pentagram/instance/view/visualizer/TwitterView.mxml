@@ -12,6 +12,8 @@
 			import com.adobe.serialization.json.JSON;
 			import com.greensock.TweenNano;
 			import com.pentagram.controller.Constants;
+			import com.pentagram.instance.view.visualizer.renderers.TWRendererInfo;
+			import com.pentagram.instance.view.visualizer.renderers.TWRendererToolTip;
 			import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
 			import com.pentagram.instance.view.visualizer.views.TwitterPacking;
 			import com.pentagram.model.vo.Client;
@@ -139,7 +141,22 @@
 					pack.draw();
 				}
 			}
-			
+			public function reload():void {
+				counter = 1;
+				allTweets = [];
+				_topics = [];
+				text = '';
+				this.currentState = "preload";
+				holder.removeAllElements();			
+			}	
+			public function clearTooltips():void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					for each(var r:TwitterRenderer in pack.renderers) {
+						r.closeInfo()
+					}
+				}
+			}
 			public function list1_changeHandler(value:Object):void
 			{
 				currentState = "loading";
@@ -180,7 +197,7 @@
 				}
 				counter++;
 			}
-			private function countWords(text:String,p:int):Array {
+			private function countWords(tweet:Object,p:int):void {
 				var m:Array = new Array();
 				var m1:Array = new Array();
 				var N:Array = new Array ();
@@ -188,7 +205,7 @@
 				var Numwords:int = 0;
 				var ch:int=p;
 				var k1:int;var k:int;var j:int;
-				var A:String = text;			// original message 
+				var A:String = tweet.text;			// original message 
 				var B:String = "";
 				var C:String="";
 				var str:String=" ";
@@ -288,22 +305,49 @@
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
 					//trace(N[0],N[i],N[0]*0.1);
-					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1 && N[i] > limit) {
-						var topic:TwitterTopic = new TwitterTopic();
-						topic.count = N[i];
-						topic.value = m1[i];
-						results.push(topic);
+					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
+						var topic:Object;
+						
+						if(!allwords[m1[i]]) {
+							topic =  new Object();
+							topic.count = Number(N[i]);
+							topic.value = m1[i];
+							topic.tweets = [];
+							topic.tweets.push(tweet);
+							allwords[m1[i]] = topic;
+						}
+						else {
+							topic = allwords[m1[i]];
+							topic.tweets.push(tweet);
+							topic.count +=  Number(N[i]);
+						}
 					}
 					//C=C + N[i]+ "\t" + m1[i] + "\n";
 				}
-				return results;
-			}	
+				//return results; 
+			}
+			private var allwords:Dictionary; 
 			private function linksService_resultHandler(event:ResultEvent):void {
-				_topics = countWords(text,0);
-				var o:Array  = JSON.decode(event.result.toString()) as Array;
-				for each(var item:Object  in o) {
+				allwords = new Dictionary();
+				var topic:TwitterTopic
+				var item:Object
+				for each(item in allTweets) {
+					countWords(item,0);
+				}				
+				for each(item in allwords) {
 					if(item.count > limit) {
-						var topic:TwitterTopic = new TwitterTopic();
+						topic = new TwitterTopic();;
+						topic.count = item.count;
+						topic.value = item.value;
+						topic.tweets = new ArrayList(item.tweets);
+						_topics.push(topic);
+					}
+				}
+				// allwords = null;
+				var o:Array  = JSON.decode(event.result.toString()) as Array;
+				for each(item  in o) {
+					if(item.count > limit) {
+						topic = new TwitterTopic();
 						topic.link = true;
 						topic.count = item.count;
 						topic.value = item.value;
@@ -320,7 +364,7 @@
 				//	pack = holder.getElementAt(0) as TwitterPacking;
 				
 				pack.build();
-				pack.addEventListener("layoutComplete",handleLayout);
+				pack.addEventListener("layoutComplete",handleLayout,false,0,true);
 				this.dispatchEvent(new Event("vizLoaded"));
 				this.updateSize();
 				firstPass = false;
@@ -329,6 +373,12 @@
 				updateSize();
 				this.currentState = "loaded";
 				_searchTerm = null;
+			}
+			public function sort():void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+					pack.sort();
+				}
 			}
 		]]>
 	</fx:Script>
@@ -346,7 +396,7 @@
 	
 	<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
 		
-	<s:Group verticalCenter="0" horizontalCenter="0" styleName="darkPanel" includeIn="preload" width="300" height="100">
+	<s:Group verticalCenter="0" horizontalCenter="0" styleName="darkPanel" includeIn="preload" width="300" height="120">
 		<s:Rect radiusX="6" radiusY="6" top="0" bottom="0" left="0" right="0">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
@@ -355,7 +405,7 @@
 				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 			</s:filters>
 		</s:Rect>
-		<s:VGroup verticalCenter="0" horizontalCenter="0">
+		<s:VGroup verticalCenter="0" horizontalCenter="0" >
 			<s:Label fontFamily="FlamaBold" text="Choose rendering speed"  fontSize="16" color="0xffffff" />
 			<s:List borderVisible="false" contentBackgroundAlpha="0"  id="list" styleName="darkPanel" requireSelection="true">
 				<s:dataProvider>
@@ -368,14 +418,20 @@
 				<s:itemRenderer>
 					<fx:Component>
 						<s:ItemRenderer autoDrawBackground="false" width="80" styleName="darkPanel">
-							<s:Button styleName="darkButton" label="{data.label}" width="80" click="this.outerDocument.list1_changeHandler(data)"/>
+							<s:Button skinClass="com.pentagram.view.skins.buttons.DarkButton" label="{data.label}" width="85" click="this.outerDocument.list1_changeHandler(data)"/>
 						</s:ItemRenderer>
 					</fx:Component>
 				</s:itemRenderer>
 				<s:layout>
 					<s:HorizontalLayout gap="4" verticalAlign="middle" horizontalAlign="center" />
 				</s:layout>
-			</s:List> 				
+			</s:List> 
+			<s:Rect height="10" />
+
+			<s:Label fontFamily="FlamaBold" text="# of pages (100 tweets per page)"  fontSize="16" color="0xffffff" />
+			<s:HSlider minimum="1" maximum="15" id="pageSlider" skinClass="com.pentagram.view.skins.controls.DarkHSlider" stepSize="1"
+			showDataTip="true"  change="this.pageTotal=pageSlider.value" width="255"  />
+		
 		</s:VGroup>
 	</s:Group>
 	

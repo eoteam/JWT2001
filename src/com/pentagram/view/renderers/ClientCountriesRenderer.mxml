@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
-				xmlns:mx="library://ns.adobe.com/flex/mx" height="30"
-				autoDrawBackground="true" xmlns:components="org.flashcommander.components.*">
+				xmlns:mx="library://ns.adobe.com/flex/mx" height="20"  
+				autoDrawBackground="false" xmlns:components="org.flashcommander.components.*">
 	<fx:Script>
 		<![CDATA[
 			import spark.skins.spark.ButtonSkin;
+			override protected function updateDisplayList(w:Number, h:Number):void {
+				super.updateDisplayList(w,h);
+			}
 		]]>
 	</fx:Script>
-
-	<s:Button label="{data.name}"  verticalCenter="0"  />
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="hovered" />
+		<s:State name="selected" />
+	</s:states>
+	
+	<s:Rect height="20"  radiusX="6"  right="1" left="0" y="0.5" id="rect2">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+		<s:fill>
+			<s:SolidColor id="bgFill" alpha="0.2" alpha.hovered="0.5"  alpha.selected="1"  />
+		</s:fill>
+	</s:Rect>
+	
+	<s:Label text="{data.name}" verticalCenter="0"  horizontalCenter="0" fontFamily="FlamaMedium"
+			  color="0" color.selected="0xffffff" left="4" right="4"/>
 
 </s:ItemRenderer>

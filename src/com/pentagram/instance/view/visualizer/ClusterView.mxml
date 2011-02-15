@@ -12,6 +12,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.TweenNano;
+			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
@@ -144,8 +145,23 @@
 				t.start();
 			}
 			public function selectAllCategories():void {
-				
+				for (var i:int=0;i<holder.numElements;i++) {
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
+					c.show();
+				}
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
+			public function clearTooltips():void {
+				for (var i:int=0;i<holder.numElements;i++) {
+					var pack:CirclePacking = holder.getElementAt(i) as CirclePacking;
+					for each(var r:ClusterRenderer in pack.renderers) {
+						r.closeInfo()
+					}
+				}
+			}
+
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}

@@ -237,6 +237,12 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.content = v;
 			}
 		}
+		public function closeInfo():void {
+			if(infoVisible) {
+				infoVisible = false;
+				this.info.close();
+			}
+		}
 	}
 	
 }

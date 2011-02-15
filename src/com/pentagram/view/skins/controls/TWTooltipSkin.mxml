@@ -22,8 +22,8 @@
      @productversion Flex 4
 -->
 <s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" 
-    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" blendMode="normal" mouseEnabled="false"
-    minWidth="76" minHeight="76" alpha.disabled="0.5" alpha.disabledWithControlBar="0.5">
+    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" blendMode="normal" mouseEnabled="false" minWidth="200" minHeight="100"
+     alpha.disabled="0.5" alpha.disabledWithControlBar="0.5">
     
     <fx:Metadata>
         <![CDATA[ 
@@ -186,5 +186,14 @@
                 </s:Group>
             </s:Group>
         </s:Group>
+		
+		<!-- resize handle -->
+		<s:Group id="resizeHandle" right="1" bottom="1" width="15" height="15" >
+			<s:Path data="M 4 13 L 13 4 L 13 13 L 4 13">
+				<s:fill>
+					<s:SolidColor color="0xB3B3B3" />
+				</s:fill>
+			</s:Path>
+		</s:Group>
     </s:Group>
 </s:SparkSkin>

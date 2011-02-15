@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.powerflasher.fdt.ui.AirReleaseGroup">
+<listAttribute key="ASSET_DIRECTORY_LIST"/>
+<listAttribute key="ASSET_FILE_LIST"/>
+<stringAttribute key="CERTIFICATE_CHOOSEN" value="0"/>
+<stringAttribute key="CERTIFICATE_COUNTRY" value=""/>
+<booleanAttribute key="CERTIFICATE_DISABLE_TIMESTAMP" value="false"/>
+<stringAttribute key="CERTIFICATE_KEY_TYPE" value="0"/>
+<stringAttribute key="CERTIFICATE_NAME" value=""/>
+<stringAttribute key="CERTIFICATE_O_NAME" value=""/>
+<stringAttribute key="CERTIFICATE_O_UNIT" value=""/>
+<stringAttribute key="CERTIFICATE_PASSWORD" value=""/>
+<stringAttribute key="CERTIFICATE_PATH" value=""/>
+<stringAttribute key="CERTIFICATE_STORE_PASSWORD" value=""/>
+<stringAttribute key="DESCRIPTOR_PATH" value=""/>
+<stringAttribute key="OUTPUT" value=""/>
+<stringAttribute key="PROJECT_NAME" value="View2"/>
+</launchConfiguration>

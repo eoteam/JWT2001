@@ -4,7 +4,14 @@ package com.pentagram.instance.view.visualizer.views
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 	import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
+	import com.somerandomdude.coordy.constants.LayoutUpdateMethod;
+	import com.somerandomdude.coordy.layouts.twodee.Flow;
+	import com.somerandomdude.coordy.layouts.twodee.Grid;
+	import com.somerandomdude.coordy.layouts.twodee.ILayout2d;
+	import com.somerandomdude.coordy.nodes.twodee.INode2d;
+	import com.somerandomdude.coordy.utils.LayoutTransitioner;
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
@@ -18,7 +25,7 @@ package com.pentagram.instance.view.visualizer.views
 	
 	public class TwitterPacking extends SpriteVisualElement
 	{
-		public var spriteArray:Vector.<TwitterRenderer>;
+		public var renderers:Vector.<TwitterRenderer>;
 		private var circlePositions:Vector.<Point3D>;
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var dataProvider:Array = [];
@@ -26,14 +33,13 @@ package com.pentagram.instance.view.visualizer.views
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
 		
-		public function TwitterPacking(arr:Array,parent:Group)
-		{
+		public function TwitterPacking(arr:Array,parent:Group) {
 			super();			
 			this.dataProvider = arr;
 			this.tooltipContainer = parent;
 		}
 		public function build():void {
-			spriteArray = new Vector.<TwitterRenderer>;
+			renderers = new Vector.<TwitterRenderer>;
 			for(var i:int=0; i < dataProvider.length;i++) {
 				var sprite:TwitterRenderer;
 				if(i < this.numChildren) {
@@ -52,8 +58,12 @@ package com.pentagram.instance.view.visualizer.views
 				sprite.radiusBeforeRendering = dataProvider[i].count;
 				sprite.scaleX= -1;
 				
-				spriteArray.push(sprite);
+				renderers.push(sprite);
 			}
+			_layout = new Flow(width-40,height-40);
+			_layout.x=20; _layout.y=20; 
+			_layout.updateMethod = 	LayoutUpdateMethod.UPDATE_AND_RENDER;
+			LayoutTransitioner.tweenFunction=tweenItem;
 			if(this.dataProvider.length > 2 )
 				doLayout();
 		}
@@ -68,8 +78,8 @@ package com.pentagram.instance.view.visualizer.views
 		private function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
 			circlePositions = new Vector.<Point3D>;			
-			circlePositions.push(new Point3D(0, 0, this.spriteArray[0].radiusBeforeRendering));
-			circlePositions.push(new Point3D(this.spriteArray[0].radiusBeforeRendering + this.spriteArray[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.spriteArray[1].radiusBeforeRendering));
+			circlePositions.push(new Point3D(0, 0, this.renderers[0].radiusBeforeRendering));
+			circlePositions.push(new Point3D(this.renderers[0].radiusBeforeRendering + this.renderers[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.renderers[1].radiusBeforeRendering));
 			_loc_5 = this.circlePositions[1].x + this.circlePositions[1].z;
 			timer = new Timer(5);
 			timer.addEventListener(TimerEvent.TIMER,onTimer);
@@ -79,9 +89,9 @@ package com.pentagram.instance.view.visualizer.views
 		protected function onTimer(event:TimerEvent):void {
 			if(disposeCounter < this.dataProvider.length){
 				timer.stop();
-				c = this.spriteArray[disposeCounter];
+				c = this.renderers[disposeCounter];
 				//this.graphics.moveTo(0, 0);
-				_loc_2 = this.spriteArray[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
+				_loc_2 = this.renderers[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
 				while (_loc_7 < 10000) {
@@ -133,8 +143,9 @@ package com.pentagram.instance.view.visualizer.views
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
 			var i:uint = 0;
 			for (i=0; i < this.circlePositions.length;i++){
-				c = this.spriteArray[i];
+				c = this.renderers[i];
 				c.state = true;
+				c.finalPosition = this.circlePositions[i];
 				if(animateCoord) {
 					c.alpha = 0;
 					if(!fast)
@@ -169,6 +180,58 @@ package com.pentagram.instance.view.visualizer.views
 		public function show():void {
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
+		}
+		private var _layout:ILayout2d;
+		public function sort():void {
+			quickSort(0,renderers.length-1);
+			for(var i:int=0; i<renderers.length; i++) 
+			{
+				_layout.addNode(renderers[i],true);
+			}
+
+			_layout.updateAndRender();
+			//_layout.
+			//(LAYOUT_WIDTH-40, LAYOUT_HEIGHT-40);
+		}
+		
+		private function quickSort(left:int,right:int):void {
+			var i:int = left;
+			var j:int = right;
+			var tempStore:TwitterRenderer;
+			var pivotPoint:Number = renderers[Math.round((left+right)*.5)].radiusBeforeRendering;
+			// Loop
+			while (i<=j) {
+				while (renderers[i].radiusBeforeRendering < pivotPoint) {
+					i++;
+				}
+				while (renderers[j].radiusBeforeRendering > pivotPoint) {
+					j--;
+				}
+				if (i<=j) {
+					tempStore = renderers[i];
+					renderers[i] = renderers[j];
+					i++;
+					renderers[j] = tempStore;
+					j--;
+				}
+			}
+			// Swap
+			if (left<j) {
+				quickSort(left, j);
+			}
+			if (i<right) {
+				quickSort(i, right);
+			}
+		}
+		private function tweenItem(node:INode2d):void
+		{ 
+			var link:DisplayObject = node.link as DisplayObject;
+			/*
+			* Please, do not ever use Adobe's internal Tween class. This class was used only for increased
+			* compatibility.
+			*/
+			TweenNano.to(link,1+Math.random()*2, {x:node.x,y:node.y});
+			//_tweens.push(new Tween(link, 'rotation', Cubic.easeInOut, link.rotation, node.rotation, 1+Math.random()*2, true));
 		}
 	}
 }

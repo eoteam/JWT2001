@@ -14,5 +14,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function updateMaxRadius(value:Number):void;
 		
+		function clearTooltips():void;
+		
 	}
 }

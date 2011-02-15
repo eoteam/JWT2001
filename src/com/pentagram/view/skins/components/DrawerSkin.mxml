@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin
+<s:Skin 
 		xmlns:fx="http://ns.adobe.com/mxml/2009"
 		xmlns:s="library://ns.adobe.com/flex/spark"
 		alpha.disabled="0.5"
@@ -9,6 +9,18 @@
 		[HostComponent("com.pentagram.view.controls.Drawer")]
 	</fx:Metadata>
 
+	<fx:Script>
+		<![CDATA[
+
+
+
+			protected function openButton_clickHandler(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+		]]>
+	</fx:Script>
 	<fx:Declarations>
 		<s:Sine id="sineIn" easeInFraction="0.1" />
 		<s:Sine id="sineOut" easeInFraction="0.9" />
@@ -22,7 +34,7 @@
 
 	<s:transitions>
 		<s:Transition fromState="normal" toState="opened">
-			<s:Resize target="{this}" duration="250" easer="{sineOut}" />
+			<s:Resize   target="{this}" duration="250" easer="{sineOut}" />
 		</s:Transition>
 		<s:Transition fromState="opened" toState="normal">
 			<s:Sequence>
@@ -40,7 +52,7 @@
 	</s:Rect>-->
 
 	<s:Button id="openButton" left="0" top="0" width="100%"
-			label="{this.hostComponent.label}"
+			label="{this.hostComponent.label}" click="openButton_clickHandler(event)"
 			skinClass="com.pentagram.view.skins.buttons.DrawerOpenButton"
 			skinClass.opened="com.pentagram.view.skins.buttons.DrawerCloseButton" />
 

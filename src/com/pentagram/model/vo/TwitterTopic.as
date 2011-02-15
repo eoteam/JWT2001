@@ -1,5 +1,7 @@
 package com.pentagram.model.vo
 {
+	import mx.collections.ArrayList;
+
 	[Bindable]
 	public class TwitterTopic
 	{
@@ -8,5 +10,6 @@ package com.pentagram.model.vo
 		public var selected:Boolean = true;
 		public var link:Boolean = false;
 		public var color:uint;
+		public var tweets:ArrayList = new ArrayList();
 	}
 }

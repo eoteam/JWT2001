@@ -29,6 +29,19 @@
 				else if(visualizerArea.selectedIndex == 3 && twitterView)
 					this.currentVisualizer.updateSize();
 			}
+
+			protected function viewArea_hideHandler(event:FlexEvent):void
+			{
+				for (var i:int = systemManager.numChildren-1;i>=0;i--){
+					trace(getQualifiedClassName(systemManager.getChildAt(i)));
+					var child:DisplayObject = systemManager.getChildAt(i);
+					if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
+						getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
+						systemManager.removeChildAt(i);
+					}
+				}
+			}
+
 		]]>
 	</fx:Script>
 
@@ -55,19 +68,19 @@
 
 	
 	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack" backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
-		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea">
+		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea" hide="viewArea_hideHandler(event)">
 			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{tools.height}" />
 			<!-- viewing area -->
 			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="41" bottom="{tools.height}" 
 						   
 			id="visualizerArea" selectedIndex="2" updateComplete="visualizerArea_updateCompleteHandler(event)">
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" hideEffect="{fadeOut}" showEffect="{fadeIn}"/>
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" hideEffect="{fadeOut}" showEffect="{fadeIn}"	/>
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="clusterView.clearTooltips()"/>
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="graphView.clearTooltips()"/>
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="mapView.clearTooltips()"/>
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="twitterView.clearTooltips()"	/>
 			</mx:ViewStack>
 			
-			<s:HGroup verticalAlign="middle" height="40" left="5" right="5">
+			<s:HGroup verticalAlign="middle" height="40" left="7" right="5">
 				<s:Label fontSize="24" fontFamily="FlamaBold" id="vizTitle" />
 				<s:Button  skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton"  id="setInfoBtn"  click="setInfoBtn_clickHandler(event)" />
 			</s:HGroup>

@@ -38,6 +38,9 @@
 			public function set content(value:String):void {
 				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
 			}
+			public function close():void {
+				dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>

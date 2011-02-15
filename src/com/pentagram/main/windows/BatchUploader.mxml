@@ -45,7 +45,7 @@
 	
 	<s:Group width="100%" id="buttonHolder">
 		<s:layout>
-			<layouts:FlowLayout gap="4" id="flowLayout"/>
+			<layouts:FlowLayout id="flowLayout"/>
 		</s:layout>
 			
 		<s:Button  label="Choose File(s)" id="browseBtn" click="browseFiles()" enabled.uploading="false"/>
@@ -58,7 +58,7 @@
 		<s:TextInput id="path" text="/flags/" />
 	</s:Group>
 	
-	<s:Rect height="{flowLayout.runningHeight}" />
+	<s:Rect height="{flowLayout.currentHeight}" />
 	
 	<s:Group id="progressBar" width="100%" height="2" alpha="0" hideEffect="fadeOut" showEffect="fadeIn" visible.browse="false" visible.uploading="true">
 		<s:Rect id="bg" width="100%" height="1">

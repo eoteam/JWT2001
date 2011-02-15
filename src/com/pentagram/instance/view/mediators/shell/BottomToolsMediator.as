@@ -49,6 +49,7 @@ package com.pentagram.instance.view.mediators.shell
 		private var counter:uint = 0;
 		private var normalizedData:Array;
 		private var maxRadius:Number = 25;
+		
 		override public function onRegister():void
 		{
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);	
@@ -133,11 +134,19 @@ package com.pentagram.instance.view.mediators.shell
 					view.currentState = 'twitter';
 					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);
+					view.reloadVisualization.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
+					view.sortButton.addEventListener(MouseEvent.CLICK,handleSort,false,0,true);
 				break;	
 			}
 		}	
 		private function handleTwitterSearch(event:FlexEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SEARCH,model.client.shortname + " " + view.twitterSearch.text));
+		}
+		private function handleReload(event:MouseEvent):void {
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_RELOAD));
+		}
+		private function handleSort(event:MouseEvent):void {
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SORT));
 		}
 		
 		private function handleDatasetSelection(event:Event):void {
@@ -224,16 +233,22 @@ package com.pentagram.instance.view.mediators.shell
 			counter++;
 			
 			if(counter == view.yearSlider.dataProvider.length) {
-				counter = 0;
-//				yearTimer.stop();
-//				view.playBtn.label = "Play";		
-//				view.playBtn.selected = false;
-//				this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.STOP_TIMELINE));
-			}
-			//else {
+				if(view.lopBtn.selected) {
+					counter = 0;
+					view.yearSlider.selectedIndex = counter;
+					handleYearSelection();
+				}
+				else {
+					yearTimer.stop();
+					view.playBtn.label = "Play";		
+					view.playBtn.selected = false;
+					this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.STOP_TIMELINE));					
+				}
+			} 
+			else {
 				view.yearSlider.selectedIndex = counter;
 				handleYearSelection();
-			//}
+			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent=null):void {
 		

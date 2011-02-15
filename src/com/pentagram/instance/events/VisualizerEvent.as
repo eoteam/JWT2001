@@ -25,6 +25,8 @@ package com.pentagram.instance.events
 		public static const WINDOW_RESIZE:String = "windowResize";
 		
 		public static const TWITTER_SEARCH:String = "twitterSearch";
+		public static const TWITTER_RELOAD:String = "twitterReload";
+		public static const TWITTER_SORT:String = "twitterSort";
 		
 		
 		public var args:Array;

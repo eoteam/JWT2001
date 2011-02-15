@@ -75,11 +75,16 @@ package com.pentagram.instance.view.visualizer.renderers
 			sprite.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			sprite.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			sprite.addEventListener(Event.REMOVED_FROM_STAGE,handleRemoved);
 			
+			//this.tooltip = tip;
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(tooltip);
 			tooltip.visible = false;
 			
+		}
+		private function handleRemoved(event:Event):void {
+			tooltipContainer.removeElement(tooltip);
 		}
 		public function draw():void {
 			if(countrySprite) {
@@ -153,31 +158,33 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
+					var xPos:Number; var yPos:Number;
 					if(sprite.alpha == 1) {
 						if(sprite.parent.x + this.px + radius + tooltip.width + 10 > this.tooltipContainer.width) {
 							tooltip.leftTip.visible = false;
 							tooltip.rightTp.visible = true;
-							tooltip.x = sprite.parent.x + this.px - radius - tooltip.width - offset;
+							xPos = sprite.parent.x + this.px - radius - tooltip.width - offset;
 						}
 						else { 
 							tooltip.leftTip.visible = true;
 							tooltip.rightTp.visible = false;
-							tooltip.x = sprite.parent.x + this.px + radius + offset;
+							xPos = sprite.parent.x + this.px + radius + offset;
 						}
-						tooltip.y = this.py - tooltip.height/2;
+						yPos = this.py - tooltip.height/2;
 						tooltip.visible = true;
 						tooltip.content = _content;
 						tooltip.country = data.country;
+						tooltip.updatePosition(xPos,yPos);
 						break;
 					}
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-					if(sprite.alpha == 1) {
-						tooltip.visible = false;
-						break;
-					}
+						if(sprite.alpha == 1) {
+							tooltip.visible = false;
+							break;
+						}
 				}
 					
 				case MouseEvent.MOUSE_DOWN:
@@ -228,6 +235,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			_content = v;
 			if(this.infoVisible) {
 				info.content = v;
+			}
+		}
+		public function closeInfo():void {
+			if(infoVisible) {
+				infoVisible = false;
+				this.info.close();
 			}
 		}
 	}

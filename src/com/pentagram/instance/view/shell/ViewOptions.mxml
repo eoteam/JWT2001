@@ -74,7 +74,7 @@
 			
 			<s:HGroup paddingLeft="8" verticalAlign="middle">
 				<s:Label text="Radius" color="0xffffff"/>
-				<s:HSlider minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>				
+				<s:HSlider showDataTip="true" minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>				
 			</s:HGroup>
 		</s:VGroup>
 	</s:Scroller>

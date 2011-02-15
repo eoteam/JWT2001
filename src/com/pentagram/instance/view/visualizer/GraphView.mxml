@@ -11,6 +11,8 @@
 				 contentBackgroundAlpha="0" xmlns:views="com.pentagram.instance.view.visualizer.views.*"  >
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
+			
 			import mx.charts.HitData;
 			import mx.charts.events.ChartItemEvent;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
@@ -153,6 +155,15 @@
 			public function get viewOptions():Array {
 				return [maxRadius,opacity,currentYear];
 			}
+			public function clearTooltips():void {
+	
+			}
+			public function selectAllCategories():void {
+				for each(var item:NormalizedVO in _visdata) {
+					item.radius = item.prevRadius;
+				}
+			}
+			
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}
@@ -172,16 +183,6 @@
 				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
 				result += "</p></TextFlow>";					
 				return result;
-			}
-			public function selectAllCategories():void {
-				for each(var item:NormalizedVO in _visdata) {
-					item.radius = item.prevRadius;
-				}
-			}
-
-			protected function chart_itemClickHandler(event:ChartItemEvent):void
-			{
-				// TODO Auto-generated method stub
 			}
 
 		]]>
@@ -226,7 +227,7 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"  itemClick="chart_itemClickHandler(event)"
+	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
 	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18">
 		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 

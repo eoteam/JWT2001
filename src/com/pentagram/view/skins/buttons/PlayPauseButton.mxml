@@ -11,6 +11,11 @@
 		<s:State name="downAndSelected"/>
 		<s:State name="disabledAndSelected"/>
 	</s:states>
+	<s:Rect id="rect21" width="30" height="30">
+		<s:fill>
+			<s:SolidColor alpha="0" />
+		</s:fill>
+	</s:Rect>
 	<s:Path data="M 0 1.851 C 0 0.201 1.169 -0.474 2.598 0.351 L 22.177 11.655 C 23.606 12.48 23.606 13.83 22.177 14.655 L 2.598 25.96 C 1.169 26.785 0 26.11 0 24.46 L 0 1.851 Z" height="26.311" id="path2" d:id="6" includeIn="up" d:userLabel="Play_button" flm:variant="2" width="23" winding="nonZero" x="0" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="270" scaleX="20.795" x="11.501" y="22.189">

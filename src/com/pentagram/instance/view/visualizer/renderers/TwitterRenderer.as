@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
+	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.TwitterTopic;
 	import com.pentagram.utils.Colors;
@@ -25,7 +26,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	public class TwitterRenderer extends BaseRenderer
 	{
 		public var radiusBeforeRendering:Number;
-
+		public var finalPosition:Point3D;
+		
 		private var info:TWRendererInfo;
 		private var infoVisible:Boolean = false;
 		private var tooltip:TWRendererToolTip;
@@ -67,11 +69,14 @@ package com.pentagram.instance.view.visualizer.renderers
 			this.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
 			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			
+			this.addEventListener(Event.REMOVED_FROM_STAGE,handleRemoved);
 			tooltip = new TWRendererToolTip();
 			tooltipContainer.addElement(tooltip);
 			tooltip.visible = false;
 		}		
+		private function handleRemoved(event:Event):void {
+			tooltipContainer.removeElement(tooltip);
+		}
 		public function set state(value:Boolean):void {
 			if(value && !stateFlag)
 				dirtyFlag = true;
@@ -186,6 +191,7 @@ package com.pentagram.instance.view.visualizer.renderers
 						tooltip.visible = false;
 						info = new TWRendererInfo();
 						info.content = _data.value + ": "+ _data.count;
+						info.topic = _data as TwitterTopic;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
 						if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
@@ -232,6 +238,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltip.content = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>"+
 				'<span color="#ffffff" fontSize="18">'+_data.value + ": "+ _data.count + '</span>' +
 				"</p></TextFlow>";
+		}
+		public function closeInfo():void {
+			if(infoVisible) {
+				infoVisible = false;
+				this.info.close();
+			}
 		}
 	}
 	

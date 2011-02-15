@@ -11,6 +11,9 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function selectTweets(tweets:Vector.<Object>):void;
 		
 		function changeView(view:Object):void;
-		 
+		
+		function reload():void;
+		
+		function sort():void; 
 	}
 }

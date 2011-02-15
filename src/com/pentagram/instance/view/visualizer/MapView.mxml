@@ -14,6 +14,9 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
+			import com.pentagram.instance.view.visualizer.renderers.RendererToolTip;
+			
 			import mx.collections.ArrayList;
 			
 			import org.cove.ape.APEngine;
@@ -198,6 +201,11 @@
 			public function get viewOptions():Array {
 				return [maxRadius,opacity,currentYear];
 			}
+			public function clearTooltips():void {
+				for each(var r:MapRenderer in this.renderers) {
+					r.closeInfo()
+				}
+			}
 			protected function doVisualize():void {
 				var r:Number;
 				var c:MapRenderer;
@@ -310,8 +318,12 @@
 			private function creationCompleteHandler(event:FlexEvent):void {	
 				renderers = new Vector.<MapRenderer>;
 				renderersDictionary = new Dictionary();
+//				var tooltip:RendererToolTip = new RendererToolTip();
+//				this.addElement(tooltip);
+//				tooltip.visible = false;		
+//				var i:int = 0;
 				for each(var country:Country in _client.countries.source) {
-					var c:MapRenderer = new MapRenderer(holder.engine,this);
+					var c:MapRenderer = new MapRenderer(holder.engine,this);//tooltip
 					c.id = country.shortname;						
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;

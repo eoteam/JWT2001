@@ -33,7 +33,9 @@
 	<fx:Metadata>
 		[Event(name="change",type="spark.events.IndexChangeEvent")]
 	</fx:Metadata>
-	<controls:Drawer width="100%" label="{region.name}" contentHeight="{flowLayout.runningHeight+5}">
+	<fx:Binding source="{flowLayout.currentHeight}" destination="drawer.contentHeight" />
+	
+	<controls:Drawer width="100%" label="{region.name}" contentHeight="{flowLayout.currentHeight+6}" id="drawer">
 		
 		<s:List  allowMultipleSelection="true" id="countryList" width="100%" height="100%" creationComplete="countryList_creationCompleteHandler(event)"
 		dataProvider="{region.countries}" labelField="name" borderVisible="false" contentBackgroundAlpha="0" change="countryList_changeHandler(event)">
@@ -43,7 +45,7 @@
 				</fx:Component>
 			</s:itemRenderer>
 			<s:layout>
-				<layouts:FlowLayout gap="4" id="flowLayout" autoCompleteWidth="160" />
+				<layouts:FlowLayout verticalGap="6" padding="6" horizontalGap="4" id="flowLayout"  />
 			</s:layout>
 		</s:List>
 	</controls:Drawer>

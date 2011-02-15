@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="200" height="100" alpha="0" 
+<controls:ResizableTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  x.open="5" y.open="100" 
+		width="200" height="100" alpha="0"  width.open="{wVar}" height.open="{hVar}" minWidth="200" minHeight="100"
 		xmlns:s="library://ns.adobe.com/flex/spark"  
 		close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
 		skinClass="com.pentagram.view.skins.controls.TWTooltipSkin" 
 		move="titlewindow1_moveHandler(event)"
-		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
+		xmlns:mx="library://ns.adobe.com/flex/mx"
+		xmlns:vo="com.pentagram.model.vo.*" 
+		xmlns:controls="com.pentagram.view.controls.*">
+	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.view.skins.scrollers.ScrollBarSkin;
+			
 			import flashx.textLayout.conversion.TextConverter;
 			
 			import mx.events.CloseEvent;
@@ -18,7 +24,7 @@
 
 			protected function titlewindow1_closeHandler(event:CloseEvent):void {
 				tipVisible = true;
-				PopUpManager.removePopUp(this);
+				PopUpManager.removePopUp(this); 
 			}
 
 
@@ -29,6 +35,22 @@
 			public function set content(value:String):void {
 				ctf =  value;//TextConverter.importToFlow(value,TextConverter.PLAIN_TEXT_FORMAT);
 			}
+			[Bindable] private var wVar:Number = 400;
+			[Bindable] private var hVar:Number = 400;
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				if(this.currentState == "closed") {
+					wVar = parent.width*.9>700 ? 700:parent.width*.9;
+					hVar = this.parent.height-300;
+					this.currentState = "open";
+					
+				}
+				else
+					this.currentState = "closed";
+			}
+			public function close():void {
+				dispatchEvent(new CloseEvent(CloseEvent.CLOSE)); 
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -37,7 +59,56 @@
 		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
 		<fx:String id="ctf" />
+		<vo:TwitterTopic id="topic" />
 	</fx:Declarations>	
-	<s:Label verticalCenter="0" horizontalCenter="0" id="dataText" color="0xffffff"
-	fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6" text="{ctf}" fontSize="18" />	
-</s:TitleWindow>
+	<controls:states>
+		<s:State name="closed" />
+		<s:State name="open" />
+	</controls:states>
+
+
+	
+	<controls:transitions>
+		<s:Transition toState="*">
+			<s:Parallel>
+				<s:Move target="{this}" />
+				<s:Resize targets="{[infoContainer,this]}" duration="500" />
+			</s:Parallel>
+			
+		</s:Transition>
+	</controls:transitions>
+	
+	<controls:layout>
+		<s:VerticalLayout paddingBottom="5" />
+	</controls:layout>
+	
+	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
+		<s:Label fontSize="14" text="{ctf}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
+		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" click="button1_clickHandler(event)" />
+	</s:HGroup>
+	<s:Line  width="100%" height="1">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	<s:List width="100%" visible="true" height.open="100%" height.closed="0" id="infoContainer"  
+	creationComplete="infoContainer.scroller.setStyle('skinClass',ScrollBarSkin)"
+	labelField="text" dataProvider="{topic.tweets}" contentBackgroundAlpha="0" borderVisible="false" rollOverColor="0x333333" >
+		<s:itemRenderer>
+			<fx:Component>
+				<s:ItemRenderer autoDrawBackground="false">
+					<s:layout>
+						<s:VerticalLayout paddingLeft="5" paddingRight="5" />
+					</s:layout>
+					<s:Label fontFamily="FlamaBook"  color="0xffffff" text="{data.text}" />
+					<s:Rect width="100%" height="0.25">
+						<s:stroke>
+							<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+						</s:stroke>
+					</s:Rect>
+					<s:Rect height="5" />
+				</s:ItemRenderer>
+			</fx:Component>
+		</s:itemRenderer>
+	</s:List>
+</controls:ResizableTitleWindow>

@@ -18,7 +18,7 @@ package com.pentagram.instance.view.visualizer.views
 	public class CirclePacking extends SpriteVisualElement
 	{
 		 
-		public var spriteArray:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
+		public var renderers:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
 		private var circlePositions:Vector.<Point3D>;
 		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var numberList:Array = [];
@@ -43,7 +43,7 @@ package com.pentagram.instance.view.visualizer.views
 				sprite.textColor = numberList[counter].color;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				sprite.scaleX= -1;
-				spriteArray.push(sprite);
+				renderers.push(sprite);
 				this.addChild(sprite);
 				counter++;
 			}
@@ -58,14 +58,14 @@ package com.pentagram.instance.view.visualizer.views
 			var _loc_3:Number = 0;
 			var _loc_4:* = new Point();
 			circlePositions = new Vector.<Point3D>;			
-			circlePositions.push(new Point3D(0, 0, this.spriteArray[0].radiusBeforeRendering));
-			circlePositions.push(new Point3D(this.spriteArray[0].radiusBeforeRendering + this.spriteArray[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.spriteArray[1].radiusBeforeRendering));
+			circlePositions.push(new Point3D(0, 0, this.renderers[0].radiusBeforeRendering));
+			circlePositions.push(new Point3D(this.renderers[0].radiusBeforeRendering + this.renderers[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.renderers[1].radiusBeforeRendering));
 			var _loc_5:Number = this.circlePositions[1].x + this.circlePositions[1].z;
 			while (disposeCounter < this.numberList.length){
 				
-				c = this.spriteArray[disposeCounter];
+				c = this.renderers[disposeCounter];
 				//this.graphics.moveTo(0, 0);
-				_loc_2 = this.spriteArray[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
+				_loc_2 = this.renderers[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
 				while (_loc_7 < 5000) {
@@ -112,7 +112,7 @@ package com.pentagram.instance.view.visualizer.views
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
 			var i:uint = 0;
 			while (i < this.circlePositions.length){
-				c = this.spriteArray[i];
+				c = this.renderers[i];
 				c.state = true;
 				if(animateCoord) {
 					c.alpha = 0;
