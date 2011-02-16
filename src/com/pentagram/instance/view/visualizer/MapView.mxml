@@ -53,6 +53,7 @@
 			private var _categories:ArrayList;
 			private var _isCompare:Boolean = true;
 			
+			
 			public function get datasets():Array {
 				return [null,null,dataset,null];
 			}
@@ -206,48 +207,58 @@
 					r.closeInfo()
 				}
 			}
+			public function get didVisualize():Boolean {
+				return !firstPass;
+			}
+			public function clear():void {
+				mapHolder.removeAllElements();
+				while(holder.numChildren > 0){
+					holder.removeChildAt(0);
+				} 
+			}
 			protected function doVisualize():void {
 				var r:Number;
 				var c:MapRenderer;
 				var row:DataRow;
 				
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				
-				for each(row in dataset.rows) {
-					if(dataset.type == 1) {
-						var content:String;
-						if(dataset.time == 1) {
-							r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
-							currentYear = dataset.years[0];
-							content =  generateContent(row[dataset.years[0]],dataset.years[0]);
-						}
-						else {
-							r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
-							content = generateContent(row.value);
-						}
-					}
-					c = renderersDictionary[row.country.shortname];
-					if(c) {
-						c.data = row;
-						c.content = content;
-						var region:Region;
-						for each(var reg:Region in _categories.source) {
-							if(c.data.country.region.name == reg.name) {
-								region = reg;
+				if(dataset) {
+					for each(row in dataset.rows) {
+						if(dataset.type == 1) {
+							var content:String;
+							if(dataset.time == 1) {
+								r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+								currentYear = dataset.years[0];
+								content =  generateContent(row[dataset.years[0]],dataset.years[0]);
+							}
+							else {
+								r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+								content = generateContent(row.value);
 							}
 						}
-						if(region.selected) {
-							c.visible = true;
+						c = renderersDictionary[row.country.shortname];
+						if(c) {
+							c.data = row;
+							c.content = content;
+							var region:Region;
+							for each(var reg:Region in _categories.source) {
+								if(c.data.country.region.name == reg.name) {
+									region = reg;
+								}
+							}
+							if(region.selected) {
+								c.visible = true;
+							}
+							else {
+								c.visible = false;
+							}								
+							c.radius = r;
 						}
-						else {
-							c.visible = false;
-						}								
-						c.radius = r;
 					}
+					firstPass = false;
+					var timer:CallTimer = new CallTimer(adjustRenderers,null,250,1);
+					timer.start();	
 				}
-				firstPass = false;
-				var timer:CallTimer = new CallTimer(adjustRenderers,null,250,1);
-				timer.start();	
 			}			
 			private function adjustRenderers():void {
 				var visibleItems:Array = [];

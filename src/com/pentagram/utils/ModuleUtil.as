@@ -4,6 +4,8 @@ package com.pentagram.utils
 	import flash.events.EventDispatcher;
 	
 	import mx.core.IUIComponent;
+	import mx.core.IVisualElement;
+	import mx.core.IVisualElementContainer;
 	import mx.events.ModuleEvent;
 	import mx.modules.IModuleInfo;
 	import mx.modules.ModuleManager;
@@ -64,6 +66,7 @@ package com.pentagram.utils
 		//Module unload complete event handler
 		private function unloadEventHandler(e:ModuleEvent):void {
 			info.removeEventListener(ModuleEvent.UNLOAD, unloadEventHandler);
+			IVisualElementContainer(view.parent).removeElement(view as IVisualElement);
 			view = null;
 			info = null;
 		}		

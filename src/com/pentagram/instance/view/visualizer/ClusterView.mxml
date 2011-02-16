@@ -161,7 +161,9 @@
 					}
 				}
 			}
-
+			public function get didVisualize():Boolean {
+				return !firstPass;
+			}
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}
@@ -173,42 +175,44 @@
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();
-				if(ds1.type == 0) { //quantitative
-					for each(var item:Category in ds1.optionsArray) {
-						item.selected = true;
-						var arr:Array = [];
-						var r:Number = 1;
-						for each(var row:DataRow in ds1.rows) {
-							var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
-							if(value == item.name) {
-								if(ds2 && ds2.type == 1) {
-									var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
-									var content:String;
-									if(ds2.time == 1) {
-										r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-										content = generateContent(row2[ds2.years[0]],ds2.years[0]);
+				if(ds1 && ds2) {
+					if(ds1.type == 0) { //quantitative
+						for each(var item:Category in ds1.optionsArray) {
+							item.selected = true;
+							var arr:Array = [];
+							var r:Number = 1;
+							for each(var row:DataRow in ds1.rows) {
+								var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
+								if(value == item.name) {
+									if(ds2 && ds2.type == 1) {
+										var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
+										var content:String;
+										if(ds2.time == 1) {
+											r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+											content = generateContent(row2[ds2.years[0]],ds2.years[0]);
+										}
+										else {
+											r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+											content = generateContent(row2.value);
+										}
 									}
-									else {
-										r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-										content = generateContent(row2.value);
-									}
-								}
-								arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
-							}	
-						}
-						var circle:CirclePacking = new CirclePacking(arr,this);
-						circle.percentHeight = circle.percentWidth = 100;
-						circle.name = item.name;
-						holder.addElement(circle);
-						circle.build();
-						updateSize();
-					} 
+									arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
+								}	
+							}
+							var circle:CirclePacking = new CirclePacking(arr,this);
+							circle.percentHeight = circle.percentWidth = 100;
+							circle.name = item.name;
+							holder.addElement(circle);
+							circle.build();
+							updateSize();
+						} 
+					}
+					firstPass = false;
+					this.callLater(updateSize);
+					var t:Timer = new Timer(100,1);
+					t.addEventListener(TimerEvent.TIMER,handleTimer);
+					t.start();
 				}
-				firstPass = false;
-				this.callLater(updateSize);
-				var t:Timer = new Timer(100,1);
-				t.addEventListener(TimerEvent.TIMER,handleTimer);
-				t.start();
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);

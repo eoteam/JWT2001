@@ -106,7 +106,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {
 			var util:ModuleUtil;
-			if(event.newIndex == model.MAP_INDEX){
+			if(event.newIndex == model.MAP_INDEX && view.mapView.didVisualize){
 				restoreDatasets(view.mapView);
 				view.mapView.updateSize();
 				view.vizTitle.text = view.mapView.datasets[2].name + " by Region";
@@ -122,7 +122,7 @@ package com.pentagram.instance.view.mediators.shell
 					util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
 					loaders.push(util);
 				}
-				else {
+				else if(view.graphView.didVisualize){
 					if(view.graphView.datasets[3])
 						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[3].optionsArray));
 					view.graphView.updateSize();
@@ -147,7 +147,7 @@ package com.pentagram.instance.view.mediators.shell
 					loaders.push(util);
 					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
 				}
-				else  {
+				else if(view.clusterView.didVisualize)  {
 					if(view.clusterView.datasets[2])
 						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[2].optionsArray));
 					view.clusterView.updateSize();
@@ -313,27 +313,38 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
 			view.client = model.client;
-			var util:ModuleUtil = new ModuleUtil();
-			util.addEventListener("moduleLoaded",handleMapLoaded);
-			util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");
-			loaders.push(util);
+			var util:ModuleUtil;
+			if(view.mapView) {
+				for each(util in loaders) {
+					util.unloadModule();
+				}
+				view.mapView = null;
+				view.clusterView = null;
+				view.graphView = null;
+				view.twitterView = null;
+				
+			}
+			view.callLater(function resume():void {
+				var util:ModuleUtil
+				util = new ModuleUtil();
+				util.addEventListener("moduleLoaded",handleMapLoaded);
+				util.loadModule("com/pentagram/instance/view/visualizer/MapView.swf");
+				loaders.push(util);
+			});
 			model.client.notes.filterFunction = findNoteByDatasets;
 		}
-		private function handleLoadSearchView(event:VisualizerEvent):void
-		{
+		private function handleLoadSearchView(event:VisualizerEvent):void {
 			view.client = null;
 			view.clientBar.infoBtn.selected = false;
 			view.clientBar.currentState = view.clientBar.closedState.name;
 		}
-		private function handleLogin(event:AppEvent):void
-		{
+		private function handleLogin(event:AppEvent):void {
 			model.user = event.args[0] as User;
 			model.exportMenuItem.enabled = true;
 			model.importMenuItem.enabled = true;
 			view.currentState = view.loggedInState.name;
 		}
-		private function handleLogout(event:AppEvent):void
-		{
+		private function handleLogout(event:AppEvent):void {
 			model.user = null;
 			view.currentState = view.loggedOutState.name;
 		}	
@@ -342,16 +353,18 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
-				var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-				var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
-				var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
-				var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
-				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
-				view.vizTitle.text = ds1.name + " vs " + ds2.name + ", sized by " + ds3.name;
-				view.vizTitle.text += ", grouped by region";
-				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
-				checkNotes();
+				if(model.client.datasets.length > 0) {
+					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
+					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
+					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
+					var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
+					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
+					view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
+					view.vizTitle.text = ds1.name + " vs " + ds2.name + ", sized by " + ds3.name;
+					view.vizTitle.text += ", grouped by region";
+					datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
+					checkNotes();
+				}
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}
@@ -359,12 +372,19 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleMapLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IMapView) {
-				view.filterTools.continentList.dataProvider = model.regions;
-				this.view.mapView = util.view as IMapView;
-				IMapView(util.view).client = model.client;
-				IMapView(util.view).categories = model.regions;
-				IMapView(util.view).isCompare = model.isCompare;
 				view.mapHolder.addElement(util.view as Group);
+				this.view.mapView = util.view as IMapView;
+				this.setupMapView();
+				view.visualizerArea.selectedIndex = model.MAP_INDEX;
+			}
+		}
+		private function setupMapView():void {
+			view.filterTools.continentList.dataProvider = model.regions;			
+			view.mapView.client = model.client;
+			view.mapView.categories = model.regions;
+			view.mapView.isCompare = model.isCompare;
+			
+			if(model.client.datasets.length > 0) {
 				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(0) as Dataset;
 				view.vizTitle.text = dataset.name + " by Region";
 				if(model.isCompare) {
@@ -375,43 +395,44 @@ package com.pentagram.instance.view.mediators.shell
 						else
 							r.selected = false;
 					}
-				}				
-				view.mapView.visualize(dataset);
-				view.tools.thirdSet.selectedItem = dataset;
+				}	
+				if(model.client.quantityDatasets.length > 0) {
+					view.mapView.visualize(dataset);
+					view.tools.thirdSet.selectedItem = dataset;
 				
-				var years:ArrayList = new ArrayList();
-				if(dataset.time == 1) {
-					view.tools.timelineContainer.visible = true;
-					
-					for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-						years.addItem(new Year(i,1)); 
+					var years:ArrayList = new ArrayList();
+					if(dataset.time == 1) {
+						view.tools.timelineContainer.visible = true;
+						
+						for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
+							years.addItem(new Year(i,1)); 
+						}
+						view.tools.yearSlider.dataProvider = years;
 					}
-					view.tools.yearSlider.dataProvider = years;
+					datasetids = dataset.id.toString();
+					checkNotes();
 				}
-				datasetids = dataset.id.toString();
-				checkNotes();
 			}
+			
 		}
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
-				
-				var dataset1:Dataset = model.client.qualityDatasets.getItemAt(0) as Dataset;
-				var dataset2:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
-				view.tools.thirdSet.selectedItem = dataset1;
-				view.tools.fourthSet.selectedItem = dataset2;
-				view.clusterView.visualize(dataset1,dataset2);
-				view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));
-				
+				if(model.client.datasets.length > 0 && model.client.qualityDatasets.length > 1 && model.client.quantityDatasets.length > 1) {
+					var dataset1:Dataset = model.client.qualityDatasets.getItemAt(0) as Dataset;
+					var dataset2:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
+					view.tools.thirdSet.selectedItem = dataset1;
+					view.tools.fourthSet.selectedItem = dataset2;
+					view.clusterView.visualize(dataset1,dataset2);
+					view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
+					view.vizTitle.text = dataset1.name + " by " + dataset2.name;
+					datasetids = dataset1.id.toString()+','+dataset2.id.toString();
+					checkNotes();
+				}
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
-				
-				view.vizTitle.text = dataset1.name + " by " + dataset2.name;
-				datasetids = dataset1.id.toString()+','+dataset2.id.toString();
-				checkNotes();
-				
 			}			
 		}
 		private function handleTwitterLoaded(event:Event):void {

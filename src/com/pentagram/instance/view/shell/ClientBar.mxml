@@ -11,49 +11,49 @@
 	</fx:Declarations>
 	<s:SkinnableContainer backgroundColor="0xE3E4E4" height="{barHeight}" width="100%">
 		
-		<s:layout>
-			<s:HorizontalLayout gap="0" verticalAlign="middle"  paddingLeft="5"/>
-		</s:layout>
-		<mx:Image scaleContent="true" maintainAspectRatio="true" id="logo" height="{barHeight-5}" source="{client.thumb}"  smoothBitmapContent="true"/>
+		<s:Image id="logo" horizontalAlign="left" verticalAlign="middle" left="4" top="4" complete="logo_completeHandler(event)" 
+		height="37"  scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
+		source="{client.thumb}"/>
 		
-		<s:Rect width="15" excludeFrom="editor" />
-		<s:Line height="100%" excludeFrom="editor">
-			<s:stroke>
-				<s:SolidColorStroke weight="1" color="0xB3B1AC" />
-			</s:stroke>
-		</s:Line>
-		
-		<s:Rect width="15" excludeFrom="editor"/>
-		
-		<s:Label text="Full Name:" excludeFrom="editor"/>
-		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.name}"  excludeFrom="editor"  fontFamily="FlamaBold"/>
-		<s:Rect width="10" excludeFrom="editor"/>
-		
-		<s:Label text="Founded:" excludeFrom="editor" />
-		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.founded.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>
-		<s:Rect width="10" excludeFrom="editor"/>
-		
-		<s:Label text="Industry:" excludeFrom="editor" />
-		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.tags.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>		
-		<s:Rect width="10" excludeFrom="editor"/>
-		
-		<s:Label text="Website:" excludeFrom="editor"/>
-		<s:Rect width="4" excludeFrom="editor"/>
-		<s:Label text="{client.website}" excludeFrom="editor"  fontFamily="FlamaBold"/>
-		<s:Rect width="100%" excludeFrom="editor"/>
-		
-		<s:Rect width="1" height="100%" excludeFrom="editor">
-			<s:fill>
-				<s:SolidColor color="0xB3B1AC" />
-			</s:fill>
-		</s:Rect>	
-		
-		<s:ToggleButton id="infoBtn" excludeFrom="editor" selected.editor="false"
-		click="togglebutton1_clickHandler(event)" skinClass="com.pentagram.view.skins.buttons.ClientInfoButton" 
-		width="120" height="100%" focusEnabled="false" />
+		<s:HGroup gap="0" verticalAlign="middle" width="100%" height="100%" id="holder">
+			<s:Line height="100%" excludeFrom="editor">
+				<s:stroke>
+					<s:SolidColorStroke weight="1" color="0xB3B1AC" />
+				</s:stroke>
+			</s:Line>
+			
+			<s:Rect width="15" excludeFrom="editor"/>
+			
+			<s:Label text="Full Name:" excludeFrom="editor"/>
+			<s:Rect width="4" excludeFrom="editor"/>
+			<s:Label text="{client.name}"  excludeFrom="editor"  fontFamily="FlamaBold"/>
+			<s:Rect width="10" excludeFrom="editor"/>
+			
+			<s:Label text="Founded:" excludeFrom="editor" />
+			<s:Rect width="4" excludeFrom="editor"/>
+			<s:Label text="{client.founded.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>
+			<s:Rect width="10" excludeFrom="editor"/>
+			
+			<s:Label text="Industry:" excludeFrom="editor" />
+			<s:Rect width="4" excludeFrom="editor"/>
+			<s:Label text="{client.tags.toString()}"  excludeFrom="editor" fontFamily="FlamaBold"/>		
+			<s:Rect width="10" excludeFrom="editor"/>
+			
+			<s:Label text="Website:" excludeFrom="editor"/>
+			<s:Rect width="4" excludeFrom="editor"/>
+			<s:Label text="{client.website}" excludeFrom="editor"  fontFamily="FlamaBold"/>
+			<s:Rect width="100%" excludeFrom="editor"/>
+			
+			<s:Rect width="1" height="100%" excludeFrom="editor">
+				<s:fill>
+					<s:SolidColor color="0xB3B1AC" />
+				</s:fill>
+			</s:Rect>	
+			
+			<s:ToggleButton id="infoBtn" excludeFrom="editor" selected.editor="false"
+			click="togglebutton1_clickHandler(event)" skinClass="com.pentagram.view.skins.buttons.ClientInfoButton" 
+			width="120" height="100%" focusEnabled="false" />
+		</s:HGroup>	
 	</s:SkinnableContainer>											
 
 	<s:Rect width="100%" height="1" top="{barHeight}">
@@ -184,6 +184,14 @@
 					url = "http://"+client.website;
 				var req:URLRequest = new URLRequest(url);
 				navigateToURL(req, "_blank");
+			}
+
+
+			protected function logo_completeHandler(event:Event):void
+			{
+				var r:Number = logo.sourceWidth / logo.sourceHeight;
+				var w:Number = r*37;
+				holder.setStyle('left',w+8);
 			}
 
 		]]>

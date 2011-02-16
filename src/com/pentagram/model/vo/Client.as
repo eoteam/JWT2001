@@ -35,6 +35,6 @@ package com.pentagram.model.vo
 			this.created = created;
 		}
 		
-		public var notes:ArrayCollection;
+		public var notes:ArrayCollection = new ArrayCollection();
 	}
 }

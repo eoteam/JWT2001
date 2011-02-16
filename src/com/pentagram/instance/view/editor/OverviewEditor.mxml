@@ -50,8 +50,10 @@
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Logo" />
 		<s:Rect width="8" />
-		<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder" height="45" >
-			<mx:Image id="logo"   scaleContent="true" maintainAspectRatio="true" top="4" bottom="4" left="4" right="4" source="{client.thumb}" smoothBitmapContent="true" />
+		<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder" height="110">
+			<s:Image id="logo" horizontalAlign="left"
+			 height="67" left="4" right="4" top="1" bottom="4" scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
+			 source="{client.thumb}"/>
 			<controls:controlBarContent>
 				<s:Button label="Change Logo" />
 				<s:Button label="Download Logo" />
@@ -65,6 +67,12 @@
 		<s:TextInput width="{FIELD_WIDTH}" text="{client.website}" change="handlePropChange(event,'website')" />
 	</s:HGroup>
 	
+	<s:HGroup verticalAlign="top" width="90%" gap="0">  
+		<s:Label width="{LABEL_WIDTH}" text="Founded" />
+		<s:Rect width="8" />
+		<s:TextInput width="{FIELD_WIDTH}" text="{client.founded}" change="handlePropChange(event,'founded')" />
+	</s:HGroup>
+
 	<s:HGroup verticalAlign="top" width="90%" gap="0">  
 		<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
 		<s:Rect width="8" />

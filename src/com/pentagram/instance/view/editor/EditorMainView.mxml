@@ -37,11 +37,24 @@
 	</mx:states>
 	
 	<s:VGroup width="200" gap="0">
-		<s:Button width="100%" label="Overview" fontFamily="FlamaBold"  textAlignLast="left" click="button1_clickHandler(event)" />
+		<s:Button   width="100%" label="Overview" fontFamily="FlamaBold"  textAlignLast="left" click="button1_clickHandler(event)" />
 		<s:Rect height="8" />
-		<controls:MiGList width="100%"  labelField="name"
+		<controls:MiGList width="100%"  labelField="name" rollOverColor="0x3A9DCC"
 		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets" 
-		id="dataSetList" selectionColor="0x3A9DCC" />					
+		id="dataSetList" selectionColor="0x3A9DCC">
+			<controls:itemRenderer>
+				<fx:Component>
+					<s:ItemRenderer autoDrawBackground="true"  height="25">
+						<s:states>
+							<s:State name="normal" />
+							<s:State name="hovered" />
+							<s:State name="selected" />
+						</s:states>
+						<s:Label text="{data.name}" color.selected="0xffffff" color="0" left="6" verticalCenter="0" />
+					</s:ItemRenderer>
+				</fx:Component>
+			</controls:itemRenderer>
+		</controls:MiGList>					
 		<s:HGroup width="100%" gap="0" paddingLeft="1">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" styleName="grayButton" />
 			<s:Button width="100%" label="- Delete" id="deleteListBtn" styleName="grayButton"/>
@@ -68,7 +81,7 @@
 		</s:Line>
 		<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
 			<s:Button label="Save Changes" id="saveBtn" />
-			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
+			<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" visible.create="true" visible="false" includeInLayout="false" includeInLayout.create="true" />
 			<editor:StatusModule id="statusModule" width="100%" />
 			<s:Button label="- Delete Set" color="0xC61023" includeIn="dataset" id="deleteBtn" creationComplete="this.dispatchEvent(new Event('datasetState'))" />
 		</s:HGroup>			

@@ -149,6 +149,13 @@
 				this.currentState = "preload";
 				holder.removeAllElements();			
 			}	
+			public function clear():void {
+				counter = 1;
+				allTweets = [];
+				_topics = [];
+				text = '';
+				holder.removeAllElements();
+			}
 			public function clearTooltips():void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;

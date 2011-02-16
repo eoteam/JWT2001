@@ -96,8 +96,10 @@
 				<s:HGroup verticalAlign="top" width="90%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Logo" />
 					<s:Rect width="8" />
-					<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder">
-						<s:Image id="logo" left="1" right="1"   scaleMode="letterbox" source="{client.thumb}" smooth="true"  smoothingQuality="high" />
+					<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder" height="110">
+						<s:Image id="logo" horizontalAlign="left"
+						 height="67" left="4" right="4" top="1" bottom="4" scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
+						 source="{client.thumb}"/>
 						<controls:controlBarContent>
 							<s:Button label="Change Logo" id="changeImageBtn"/>
 							<s:Button label="Download Logo" />

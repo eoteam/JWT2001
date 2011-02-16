@@ -33,6 +33,7 @@ package com.pentagram.instance.view.mediators.editor
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientSelected,VisualizerEvent);
+			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientUpdated,EditorEvent);
 			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
 			
@@ -58,6 +59,13 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function handleClientSelected(event:VisualizerEvent):void {
 			view.client = model.client;
+			view.regionHolder.removeAllElements();
+			for each(var region:Region in model.client.regions.source) {
+				var drawer:RegionDrawer = new RegionDrawer();
+				drawer.region = region;
+				drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+				view.regionHolder.addElement(drawer);
+			}
 		}
 		private function handleClientUpdated(event:EditorEvent):void {
 			view.countryTotal.text = "Total: "+model.client.countries.length;

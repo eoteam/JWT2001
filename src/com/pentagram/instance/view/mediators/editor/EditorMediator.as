@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.mediators.editor
 {
 	import com.pentagram.events.EditorEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.EditorMainView;
 	import com.pentagram.model.vo.Country;
@@ -8,6 +9,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.services.interfaces.IClientService;
+	import com.pentagram.utils.CSVUtils;
 	
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
@@ -25,6 +27,7 @@ package com.pentagram.instance.view.mediators.editor
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
+	import spark.validators.NumberValidator;
 	
 	public class EditorMediator extends Mediator
 	{
@@ -45,6 +48,8 @@ package com.pentagram.instance.view.mediators.editor
 		public override function onRegister():void {	
 		
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientDataUpdated,EditorEvent);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
+			
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_UPDATED,handleClientDataUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleDatasetCreated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
@@ -83,8 +88,12 @@ package com.pentagram.instance.view.mediators.editor
 		private function handleClientDataUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Client Data Updated");
 		}
+		private function handleClientLoaded(event:VisualizerEvent):void {
+			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
+		}
 		private function handleDatasetCreated(event:EditorEvent):void {
 			var dataset:Dataset = event.args[0] as Dataset;
+			ArrayCollection(view.dataSetList.dataProvider).refresh();
 			view.currentState = view.datasetState.name;
 			view.dataSetList.selectedItem = dataset;
 			model.selectedSet = view.dataSetList.selectedItem as Dataset;
@@ -97,6 +106,7 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");
+			ArrayCollection(view.dataSetList.dataProvider).refresh();
 			if(model.client.datasets.length == 0) {
 				if(view.datasetEditor)
 					view.datasetEditor.dataset = null;
@@ -159,122 +169,145 @@ package com.pentagram.instance.view.mediators.editor
 		private function readFile(file:File):void {
 			var fs:FileStream = new FileStream();
 			fs.open(file, FileMode.READ);
-			var csvFile:String = fs.readUTFBytes(fs.bytesAvailable);
+			var csvContent:String = fs.readUTFBytes(fs.bytesAvailable);
 			fs.close();
 			
-			// Choose the line ending to split the lines based on which one yields more than one line
-			var endings:Array = [File.lineEnding, "\n", "\r"];
-			var i:uint = 1;
-			var lines:Array = csvFile.split(endings[0]);
-			while(lines.length == 1 && i < endings.length) {
-				lines = csvFile.split(endings[i++]);
-			}
-			for (i=0;i<lines.length;i++) {
-				lines[i] = lines[i].toString().replace(/\r/gi,'');
-			}
-			//check line 0
 			var dataset:Dataset = new Dataset();
 			dataset.name =  file.name.replace(/.csv/gi,'');
-			var fields:Array = lines[0].split(',');
-
-			if(fields.length > 2) { //time based
-				
-				for (var j:int=1;j<fields.length;j++) {
-					var year:int = Number(fields[j]);
-					if(year == 0)  { //fail
-						eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Header Column doesnt container proper years"));
-						return;
-					}
-				}
-				dataset.time = 1;
-				dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
-				dataset.range = fields[1]+','+fields[fields.length-1];
-			}
-			else {
-				dataset.time = 0;
-			}
-			for(i=1;i<lines.length;i++) {
-				if(lines[i] != '') {
-					var countryName:String
-					var arr:Array = lines[i].toString().split('",');
-					var offset:uint = 1;
-					
-					if(arr.length == 1) {
-						arr = lines[i].toString().split(',');
-						offset = 0;
-					}
-					
-					countryName = arr[0].toString().substr(offset,arr[0].toString().length);
-					var isNumeric:uint = 1;
-					var countryFound:Boolean = false;
-					for each(var country:Country in model.countries.source) {
-						if(countryName == country.name) {
-							var row:DataRow = new DataRow();
-							row.name = countryName;
-							row.dataset = dataset;
-							row.country = country;
-						
-							//values are now after ",	
-							var values:Array;
-							var cleanValue:String;
-							if(offset == 1)
-								values = arr[1].toString().split(',');
-							else
-								values = arr.slice(1,arr.length);
-							
-							if(dataset.time == 1) {
-								if(values.length <= fields.length-1) {
-									for(j=1;j<values.length;j++) {
-										cleanValue = values[j-1].toString().split('"').join('');
-										row.modifiedProps.push(fields[j].toString());
-										
-										if(Number(cleanValue) > 0 || cleanValue == "0") {
-											isNumeric = 1;
-											row[fields[j].toString()] = Number(cleanValue);
-										}
-										else {
-											isNumeric = 0;
-											row[fields[j].toString()] = cleanValue;
-										}
-									}
-									//if the row is shorter than the number of columns
-									for(j=values.length;j<fields.length;j++) {
-										row[fields[j].toString()] = isNumeric == 1 ? 0:'';
-									}
-								}
-								else {
-									eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This row has more values than the set"));
-									return;
-								}
-							}
-							
-							
-							else {
-								cleanValue = arr[1].toString().split('"').join('');	
-								row.modifiedProps.push('value');
-								if(Number(cleanValue) > 0 || cleanValue == "0") {
-									isNumeric = 1;
-									row.value = Number(cleanValue);
-									
-								}
-								else {
-									isNumeric = 0;
-									row.value = cleanValue;
-								}								
-							}
-							dataset.rows.addItem(row);
-							countryFound = true;
-							break;	
-						}
-					}
-					if(!countryFound) {
-						eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Country Not Found"));
-						//return;
-					}
+			
+			var validator:NumberValidator = new NumberValidator();
+			validator.domain = "real";
+			validator.allowNegative = true;
+			var arr:Array = CSVUtils.CsvToArray(csvContent);
+			
+			for each(var row:Array in arr) {
+				for each(var cell:String in row) {
+					cell = cell.split(',').join('');
+					var res:Array = validator.validateNumber(cell,null);
+//					if(res.length > 0)
+//						;//csvResult.text += cell+"\t\t"+res[0].isError+"\n";
+//					else
+//						;//csvResult.text += cell+"\t\t"+Number(cell)+"\n";
 				}
 			}
-			dataset.type = isNumeric;
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));				
+			
 		}		
 	}
 }
+/*// Choose the line ending to split the lines based on which one yields more than one line
+var endings:Array = [File.lineEnding, "\n", "\r"];
+var i:uint = 1;
+var lines:Array = csvFile.split(endings[0]);
+while(lines.length == 1 && i < endings.length) {
+lines = csvFile.split(endings[i++]);
+}
+for (i=0;i<lines.length;i++) {
+lines[i] = lines[i].toString().replace(/\r/gi,'');
+}
+//check line 0
+
+var fields:Array = lines[0].split(',');
+
+if(fields.length > 2) { //time based
+
+for (var j:int=1;j<fields.length;j++) {
+var year:int = Number(fields[j]);
+if(year == 0)  { //fail
+view.statusModule.updateStatus("Header Column doesnt contain proper years");
+eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Header Column doesnt contain proper years"));
+return;
+}
+}
+dataset.time = 1;
+dataset.years = [Number(fields[1]),Number(fields[fields.length-1])];
+dataset.range = fields[1]+','+fields[fields.length-1];
+}
+else {
+dataset.time = 0;
+}
+for(i=1;i<lines.length;i++) {
+if(lines[i] != '') {
+var countryName:String
+var arr:Array = lines[i].toString().split('",');
+var offset:uint = 1;
+
+if(arr.length == 1) {
+arr = lines[i].toString().split(',');
+offset = 0;
+}
+
+countryName = arr[0].toString().substr(offset,arr[0].toString().length);
+var isNumeric:uint = 1;
+var countryFound:Boolean = false;
+for each(var country:Country in model.countries.source) {
+if(countryName == country.name) {
+var row:DataRow = new DataRow();
+row.name = countryName;
+row.dataset = dataset;
+row.country = country;
+
+//values are now after ",	
+var values:Array;
+var cleanValue:String;
+if(offset == 1)
+values = arr[1].toString().split(',');
+else
+values = arr.slice(1,arr.length);
+
+if(dataset.time == 1) {
+if(values.length <= fields.length-1) {
+for(j=1;j<values.length;j++) {
+cleanValue = values[j-1].toString().split('"').join('');
+row.modifiedProps.push(fields[j].toString());
+
+if(Number(cleanValue) > 0 || cleanValue == "0") {
+isNumeric = 1;
+row[fields[j].toString()] = Number(cleanValue);
+}
+else {
+isNumeric = 0;
+row[fields[j].toString()] = cleanValue;
+}
+}
+//if the row is shorter than the number of columns
+for(j=values.length;j<fields.length;j++) {
+row[fields[j].toString()] = isNumeric == 1 ? 0:'';
+}
+}
+else {
+view.statusModule.updateStatus("This row has more values than the set");
+eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This row has more values than the set"));
+return;
+}
+}
+
+
+else {
+cleanValue = arr[1].toString().split('"').join('');	
+row.modifiedProps.push('value');
+if(Number(cleanValue) > 0 || cleanValue == "0") {
+isNumeric = 1;
+row.value = Number(cleanValue);
+
+}
+else {
+isNumeric = 0;
+row.value = cleanValue;
+}								
+}
+dataset.rows.addItem(row);
+countryFound = true;
+break;	
+}
+}
+if(!countryFound) {
+view.statusModule.updateStatus("Country Not Found");
+eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"Country Not Found"));
+//return;
+}
+}
+}
+dataset.type = isNumeric;
+eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));				
+}
+*/

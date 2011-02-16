@@ -60,15 +60,16 @@
 			protected function doVisualize():void {	
 				chart.newXAxis = hAxisRenderer;
 				chart.newYAxis = vAxisRenderer;
+				if(ds1&&ds2) {
+					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");	
+					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
+					//if(ds3)
+					//	chart.radiusAxis = createRadiusAxis(ds3);
+					chart.verticalAxisRenderers = [vAxisRenderer]; 
+					chart.horizontalAxisRenderers = [hAxisRenderer];
 				
-				chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");	
-				chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
-				//if(ds3)
-				//	chart.radiusAxis = createRadiusAxis(ds3);
-				chart.verticalAxisRenderers = [vAxisRenderer]; 
-				chart.horizontalAxisRenderers = [hAxisRenderer];
-				
-				firstPass = false;	
+					firstPass = false;
+				}
 			}
 			private function createAxis(dataset:Dataset,axis:String):IAxis {
 				
@@ -163,7 +164,12 @@
 					item.radius = item.prevRadius;
 				}
 			}
-			
+			public function clear():void {
+				chart.dataProvider = null;
+			}
+			public function get didVisualize():Boolean {
+				return !firstPass;
+			}
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}

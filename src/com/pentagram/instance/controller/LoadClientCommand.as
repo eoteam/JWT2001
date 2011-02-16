@@ -101,7 +101,7 @@ package com.pentagram.instance.controller
 		}
 		private function handleClientNotes (event:ResultEvent):void {
 			var notes:Array = event.token.results as Array;
-			model.client.notes = new ArrayCollection(notes);
+			model.client.notes.source = notes;
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void {
 			counter++;

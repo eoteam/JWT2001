@@ -75,7 +75,7 @@ in accordance with the terms of the license agreement accompanying it.
     </s:Rect>
     
     <!-- Primary image display part -->
-    <s:BitmapImage id="imageDisplay" left="1" top="1" right="1" bottom="1"/>
+    <s:BitmapImage id="imageDisplay" left="1" top="1" right="1" bottom="1" horizontalAlign="left"   />
     
     <!-- Progress indicator part -->
     <s:Range id="progressIndicator" skinClass="spark.skins.spark.ImageLoadingSkin" verticalCenter="0" horizontalCenter="0" includeIn="loading" layoutDirection="ltr" />
