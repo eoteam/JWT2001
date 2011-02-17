@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<controls:CustomPopUpAnchor xmlns:fx="http://ns.adobe.com/mxml/2009"  horizontalCenter="0"  popUpPosition="above"
+		 xmlns:s="library://ns.adobe.com/flex/spark"  currentState="closed"
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:controls="com.pentagram.view.controls.*">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			public function set errorMessage(msg:String):void {
+				this.currentState = "opened";
+				textArea.text = msg
+			}
+
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				this.currentState = "closed";
+			}
+
+		]]>
+	</fx:Script>
+
+	<controls:states>
+		<s:State name="closed"/>
+		<s:State name="opened"/>
+	</controls:states>
+	<controls:transitions>
+		<s:Transition toState="closed">
+			<s:Sequence>
+				<s:Move target="{panel}" duration="500" />	
+				<s:SetAction property="visible" value="false" target="{holder}" /> 
+				<s:SetAction property="displayPopUp" value="false" target="{this}" startDelay="1000" /> 
+			</s:Sequence>
+				
+		</s:Transition>
+		<s:Transition toState="opened">
+			<s:Sequence>
+				<s:SetAction property="displayPopUp" value="true" target="{this}" /> 
+				<s:Move target="{panel}" duration="500" />				
+			</s:Sequence>
+		</s:Transition>
+	</controls:transitions>
+	<s:Group  horizontalCenter="0"  width="100%" visible="false" visible.opened="true" id="holder" clipAndEnableScrolling="true">
+		<s:Group horizontalCenter="0"   id="panel" styleName="darkPanel" width="400" height="150" y.closed="-150" y.opened="0"  contentBackgroundAlpha="0">
+			<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
+				<s:fill>
+					<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+				</s:fill>
+			</s:Rect>
+			<s:RichText  left="10" right="10"  top="10" id="textArea" fontFamily="FlamaBold" fontSize="16"/>
+			<s:Button right="5" bottom="5" label="OK" click="button1_clickHandler(event)" />
+		</s:Group>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.8" angle="90" distance="3" quality="2" />
+		</s:filters>
+	</s:Group>
+	
+</controls:CustomPopUpAnchor>

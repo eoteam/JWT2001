@@ -8,6 +8,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.utils.Downloader;
 	import com.pentagram.utils.Uploader;
 	
 	import flash.desktop.ClipboardFormats;
@@ -37,6 +38,8 @@ package com.pentagram.main.mediators
 		public var appService:IAppService;
 		
 		private var uploader:Uploader;
+		private var downloader:Downloader;
+		
 		private var currentCountry:Country;
 		private var fileToUpload:File;
 		
@@ -50,12 +53,17 @@ package com.pentagram.main.mediators
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
+			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
 			
 			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
 			
 			uploader = new Uploader(Constants.UPLOAD_URL);
 			uploader.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
 			uploader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
+			
+			downloader = new Downloader(Constants.FILES_URL);
+			downloader.addEventListener(Event.COMPLETE,handleUploadComplete);
+			downloader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_UPDATED,handleCountryUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_CREATED,handleCountryUpdated,EditorEvent);
@@ -94,15 +102,20 @@ package com.pentagram.main.mediators
 			fileToUpload.addEventListener(Event.SELECT, onFileLoad); 
 			fileToUpload.browse([new FileFilter("Images", ".gif;*.jpeg;*.jpg;*.png")]); 
 		}
+		private function handleDownload(event:MouseEvent):void {
+			downloader.download(this.currentCountry.thumb);
+		}
 		private function onFileLoad(event:Event):void {
 			view.logo.source = "file:///" + fileToUpload.nativePath;
 		}
 
 		private function handleUploadProgress(event:ProgressEvent):void {
-			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal);
+			var status:String = (event.target == uploader) ? "Uploading..." : "Downloading...";
+			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal,status);
 		}
 		private function handleUploadComplete(event:DataEvent):void {
-			view.uploadView.updateStatus(1);
+			var status:String = (event.target == uploader) ? "Upload Complete" : "Download Complete";
+			view.uploadView.updateStatus(1,status);
 		}
 		private function handleCountryUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Update Completed");

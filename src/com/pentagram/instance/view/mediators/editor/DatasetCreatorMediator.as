@@ -7,7 +7,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.model.vo.Dataset;
 	
 	import flash.events.Event;
-	
+		
 	import org.robotlegs.mvcs.Mediator;
 	
 	public class DatasetCreatorMediator extends Mediator
@@ -23,12 +23,16 @@ package com.pentagram.instance.view.mediators.editor
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleCancel,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
 			view.titlePrompt.sets = model.client.datasets.source;
+			view.titlePrompt.addEventListener("nameError",handleError);
 		}
 		private function handleCancel(event:Event):void {
 			view.reset();
 		}
 		private function handleDatasetCreatorComplete(event:ViewEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,event.args[0] as Dataset));
+		}
+		private function handleError(event:Event):void { 
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This name is already taken. Please choose another one."));
 		}
 	}
 }

@@ -113,6 +113,8 @@
 	
 	<shell:ClientBar width="100%" id="clientBar" client="{client}"/>
 	
+	<shell:ErrorPanel horizontalCenter="0"  id="errorPanel" />
+	
 	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0" skinClass="com.pentagram.view.skins.components.BottomBarBackground" id="bottomPanelContainer">	
 		<shell:BottomBar width="100%" height="40" bottom="10" id="bottomBarView"  />
 	</s:SkinnableContainer> 

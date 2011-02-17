@@ -138,7 +138,15 @@ s|DropDownList {
 	skinClass: ClassReference("com.pentagram.view.skins.buttons.GrayButton");
 }
 .darkPanel s|TextInput {
-	skinClass: ClassReference('com.pentagram.view.skins.controls.BlackTextInput');
+	skinClass: ClassReference('com.pentagram.view.skins.controls.DarkTextInput');
+}
+.darkPanel s|TextArea {
+	borderVisible:false;
+	contentBackgroundAlpha:0;
+	fontFamily:FlamaBold;
+	fontSize:16;
+	textAlign:center;
+	color:#ffffff;
 }
 .darkPanel s|DropDownList {
 	skinClass: ClassReference("com.pentagram.view.skins.controls.DarkDropDown");
@@ -167,4 +175,10 @@ controls|MiGList {
 }
 controls|EditorPanel {
 	skinClass: ClassReference("com.pentagram.view.skins.controls.EditorPanel");
+}
+global
+{
+	modal-transparency: 0;
+	modal-transparency-color: #1a1a1a;
+	modal-transparency-duration: 0;
 }

@@ -102,7 +102,7 @@
 						 source="{client.thumb}"/>
 						<controls:controlBarContent>
 							<s:Button label="Change Logo" id="changeImageBtn"/>
-							<s:Button label="Download Logo" />
+							<s:Button label="Download Logo" id="downloadBtn" />
 						</controls:controlBarContent>
 					</controls:EditorPanel>
 				</s:HGroup>		
@@ -169,7 +169,7 @@
 			</s:Rect>
 			<s:HGroup width="100%" bottom="0" height="40" verticalAlign="middle" paddingLeft="8" paddingRight="8">
 				<s:Button label="Save Changes" id="saveBtn" />
-				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" />
+				<s:Button label="Cancel" color="0xB3B1AC" id="cancelBtn" includeInLayout.edit="false" visible.edit="false" visible="true" includeInLayout="true" />
 				<s:Group width="100%">
 					<editor:StatusModule id="statusModule" width="100%" />
 					<editor:UploadView id="uploadView" width="100%" />

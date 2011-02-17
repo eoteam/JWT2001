@@ -182,9 +182,16 @@ package com.pentagram.instance.view.mediators.editor
 			var cell:String;
 			var dataRow:DataRow ;
 			
+			var fileName:String = file.name.replace(/.csv/gi,'');
+			for each(var ds:Dataset in model.client.datasets.source) {
+				if(ds.name == fileName) {
+					showError("This name is already taken. Please rename your file");
+					return;
+				}
+			}
 			var dataset:Dataset = new Dataset();
 			dataset.type = 1; //start with number
-			dataset.name =  file.name.replace(/.csv/gi,'');
+			dataset.name = fileName; 
 			
 			
 			var rows:Array = CSVUtils.CsvToArray(csvContent);

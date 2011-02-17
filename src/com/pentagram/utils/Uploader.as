@@ -17,8 +17,7 @@ package com.pentagram.utils
 	[Event(name="progress", type="flash.events.ProgressEvent")]
 	[Event(name="uploadCompleteData", type="flash.events.DataEvent")]
 	public class Uploader extends EventDispatcher
-	{
-		private var currentFile:File;		
+	{	
 		private var baseURL:String;
 		
 		public function Uploader(url:String):void {
@@ -29,6 +28,7 @@ package com.pentagram.utils
 			var url:String = baseURL + "?directory="+dir+"&fileType=images";
 			var urlRequest:URLRequest = new URLRequest(url);
 			urlRequest.method = URLRequestMethod.POST;  
+			
 			file.addEventListener(ProgressEvent.PROGRESS, uploadProgress);
 			file.addEventListener(Event.COMPLETE, uploadComplete);
 			file.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA , uploadServerData);
@@ -36,7 +36,7 @@ package com.pentagram.utils
 			file.addEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);	
 			file.addEventListener(IOErrorEvent.IO_ERROR, uploadError);
 			file.upload(urlRequest, "Filedata"); 
-			currentFile = file;
+			
 		}
 		public function upload2(file:FileReference,dir:String=''):void {
 			var url:String = baseURL + "?directory="+dir+"&fileType=file";
@@ -52,30 +52,24 @@ package com.pentagram.utils
 			//currentFile = file;
 		}
 		private function uploadProgress(event:ProgressEvent):void  {
-//			var uploadedAmt:uint = uploadedSoFar + event.bytesLoaded; 
-//			var progressEvt:ProgressEvent = event;
-//			event.bytesLoaded = uploadedAmt;
-//			event.bytesTotal = totalSize;
 			dispatchEvent(event);
 		}
 		private function uploadServerData(event:DataEvent):void {
 			trace(event.data);
-			dispatchEvent(event);
+			dispatchEvent(event); 
+			var file:File = event.target as File;
+			file.removeEventListener(ProgressEvent.PROGRESS, uploadProgress);
+			file.removeEventListener(Event.COMPLETE, uploadComplete);
+			file.removeEventListener(DataEvent.UPLOAD_COMPLETE_DATA , uploadServerData);
+			file.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, uploadError);
+			file.removeEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);	
+			file.removeEventListener(IOErrorEvent.IO_ERROR, uploadError);
 		}
 		private  function uploadError(event:Event):void {
 			var errorStr:String = event.toString();
-			trace("Error uploading: " + currentFile.nativePath + "\n  Message: " + errorStr);
+			trace("Error uploading: " + event.target.nativePath + "\n  Message: " + errorStr);
 			dispatchEvent(event);
 		} 
-		public function clearListeners():void {
-			currentFile.removeEventListener(ProgressEvent.PROGRESS, uploadProgress);
-			currentFile.removeEventListener(Event.COMPLETE, uploadComplete);
-			currentFile.removeEventListener(DataEvent.UPLOAD_COMPLETE_DATA , uploadServerData);
-			currentFile.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, uploadError);
-			currentFile.removeEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);	
-			currentFile.removeEventListener(IOErrorEvent.IO_ERROR, uploadError);	
-			currentFile = null;
-		}
 		private function uploadComplete(event:Event):void {
 
 		}                 

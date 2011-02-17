@@ -68,6 +68,9 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
 			
+			 
+			eventMap.mapListener(eventDispatcher,EditorEvent.IMPORT_FAILED,handleImportFailed);
+			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
@@ -484,6 +487,10 @@ package com.pentagram.instance.view.mediators.shell
 			view.filterTools.optionsPanel.maxRadiusSlider.value = arr[0];
 			view.filterTools.optionsPanel.xrayToggle.selected = arr[1];
 			//view.tools.yearSlider.selectedItem
+		}
+		
+		private function handleImportFailed(event:EditorEvent):void {
+			view.errorPanel.errorMessage = event.args[0];
 		}
 	}
 }

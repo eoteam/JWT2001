@@ -9,6 +9,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Region;
+	import com.pentagram.utils.Downloader;
 	import com.pentagram.utils.Uploader;
 	
 	import flash.events.DataEvent;
@@ -34,6 +35,8 @@ package com.pentagram.main.mediators
 		public var model:AppModel;
 		
 		private var uploader:Uploader;
+		private var downloader:Downloader;
+		
 		private var currentClient:Client;
 		private var fileToUpload:File;
 		
@@ -46,14 +49,21 @@ package com.pentagram.main.mediators
 			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
+			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
+			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
+			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
 			
 			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
 			
 			uploader = new Uploader(Constants.UPLOAD_URL);
 			uploader.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
 			uploader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
+			
+			downloader = new Downloader(Constants.FILES_URL);
+			downloader.addEventListener(Event.COMPLETE,handleUploadComplete);
+			downloader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
 			
 			eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event,false,0,true);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientUpdated,EditorEvent);
@@ -73,6 +83,9 @@ package com.pentagram.main.mediators
 			fileToUpload.addEventListener(Event.SELECT, onFileLoad); 
 			fileToUpload.browse([new FileFilter("Images", ".gif;*.jpeg;*.jpg;*.png")]); 
 		}
+		private function handleDownload(event:MouseEvent):void {
+			downloader.download(currentClient.thumb);
+		}
 		private function onFileLoad(event:Event):void {
 			view.logo.source = "file:///" + fileToUpload.nativePath;
 		}
@@ -88,10 +101,12 @@ package com.pentagram.main.mediators
 			client.modified = true;
 		}
 		private function handleUploadProgress(event:ProgressEvent):void {
-			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal);
+			var status:String = (event.target == uploader) ? "Uploading..." : "Download...";
+			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal,status);
 		}
-		private function handleUploadComplete(event:DataEvent):void {
-			view.uploadView.updateStatus(1);
+		private function handleUploadComplete(event:Event):void {
+			var status:String = (event.target == uploader) ? "Upload Complete" : "Download Complete";
+			view.uploadView.updateStatus(1,status);
 		}
 		private function handleCountryUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Update Completed");
@@ -177,6 +192,14 @@ package com.pentagram.main.mediators
 			model.clients.addItem(currentClient);
 			ArrayCollection(view.clientList.dataProvider).refresh();
 			view.clientList.selectedIndex = view.clientList.dataProvider.length-1;
+		}
+		private function handleCancel(event:MouseEvent):void {
+			model.clients.removeItem(currentClient);
+			ArrayCollection(view.clientList.dataProvider).refresh();
+			view.clientList.selectedIndex = 0;
+			currentClient = view.clientList.selectedItem;
+			view.client = currentClient;
+			view.currentState = "edit";
 		}
 		private function handleDelete(event:MouseEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_CLIENT,currentClient));

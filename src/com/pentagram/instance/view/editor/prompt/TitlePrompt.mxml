@@ -42,7 +42,7 @@
 						if(this.input.text.toLowerCase() == ds.name.toLowerCase())
 						{
 							message = "This name is already taken. Please choose another one.\n";
-							Alert.show(message);
+							this.dispatchEvent(new Event("nameError"));
 							error = true;
 							break;
 						}
@@ -55,6 +55,7 @@
 	</fx:Script>
 	<fx:Metadata>
         [Event(name="next", type="flash.events.Event")]
+		[Event(name="nameError", type="flash.events.Event")]
     </fx:Metadata>
 	<fx:Declarations>
 		<fx:String id="title"/>

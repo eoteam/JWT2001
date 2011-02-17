@@ -60,7 +60,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.newClientBtn.addEventListener(MouseEvent.CLICK,handleNewClientBtn,false,0,true);
 		}
 		private function handleNewClientBtn(event:MouseEvent):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"clientWindow"));
+			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"clientWindow"));
 		}
 	}
 }

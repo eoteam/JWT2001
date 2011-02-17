@@ -15,9 +15,9 @@
 				fill.alpha = 0;
 				status = "";
 			}
-			public function updateStatus(value:Number):void {
+			public function updateStatus(value:Number,status:String):void {
 				fill.alpha = 1;
-				status = "Uploading..."
+				this.status = status;
 				bar.width = width*value;
 				if(value == 1) {
 					status = "Upload Completed";

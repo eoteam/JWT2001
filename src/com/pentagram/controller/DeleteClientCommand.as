@@ -32,7 +32,7 @@ package com.pentagram.controller
 			var result:StatusResult = event.token.results as StatusResult;	
 			if(result.success) {
 				model.clients.removeItem(client);
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CLIENT_DELETED));
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CLIENT_DELETED,client));
 				
 				///????? DELETE tables after datasets are deleted?
 			}

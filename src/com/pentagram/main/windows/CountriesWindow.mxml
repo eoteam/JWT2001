@@ -100,7 +100,7 @@
 						source="{country.thumb}"/>
 						<controls:controlBarContent>
 							<s:Button label="Change Image" id="changeImageBtn" />
-							<s:Button label="Download Image" id="downloadImageBtn" />
+							<s:Button label="Download Image" id="downloadBtn" />
 						</controls:controlBarContent>
 					</controls:EditorPanel>
 				</s:HGroup>	

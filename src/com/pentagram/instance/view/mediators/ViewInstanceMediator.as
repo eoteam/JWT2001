@@ -2,6 +2,7 @@ package com.pentagram.instance.view.mediators
 {
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
+	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.events.VisualizerEvent;
@@ -16,6 +17,7 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.shell.Search;
 	import com.pentagram.instance.view.shell.Shell;
 	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
 	
 	import flash.display.NativeWindow;
@@ -47,6 +49,7 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
+			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent,false,0,true);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 					
@@ -56,6 +59,13 @@ package com.pentagram.instance.view.mediators
 		private function handleLogin(event:AppEvent):void
 		{
 			model.user = event.args[0] as User; 
+		}
+		private function handleClientDeleted(event:EditorEvent):void {
+			var c:Client = event.args[0];
+			if(c == model.client) {
+				model.client = null;
+				view.currentState = view.searchState.name;
+			}
 		}
 		private function handleInit(...args):void {
 			model.clients = args[0];

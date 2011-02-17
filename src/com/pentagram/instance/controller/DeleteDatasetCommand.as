@@ -31,6 +31,10 @@ package com.pentagram.instance.controller
 			if(result.success) {
 				var dataset:Dataset = this.event.args[0] as Dataset;
 				model.client.datasets.removeItem(dataset);
+				if(dataset.type == 1) 
+					model.client.quantityDatasets.removeItem(dataset);
+				else
+					model.client.qualityDatasets.removeItem(dataset);
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_DELETED));
 			}
 		}

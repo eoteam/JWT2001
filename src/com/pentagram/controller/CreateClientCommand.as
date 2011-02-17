@@ -52,6 +52,7 @@ package com.pentagram.controller
 		}
 		private function handleUploadComplete(event:DataEvent):void {
 			var file:Object = JSON.decode(event.data);
+			uploader.removeEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
 			client.thumb = Constants.FILES_URL + "/clients/"+file.name; 
 			appService.addFileToDatabase(file,"/clients/");
 			appService.addHandlers(fileAdded);
