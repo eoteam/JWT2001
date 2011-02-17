@@ -86,6 +86,8 @@ package com.pentagram.controller.startup
 				country.region = region;
 				country.thumb = Constants.FILES_URL+country.thumb;
 				//trace(country.thumb);
+				appModel.countryNames[country.name.toLowerCase()] = country;
+				appModel.countryNames[country.shortname.toLowerCase()] = country;
 				appModel.countries.addItem(country);
 			}
 			checkCount();

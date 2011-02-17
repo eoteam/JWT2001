@@ -62,7 +62,7 @@ package com.pentagram.controller
 			var result:StatusResult = event.token.results as StatusResult;	
 			if(result.success) {
 				var mediaid:int = Number(result.message);
-				appService.addFileToContent(client.id,mediaid);
+				appService.addFileToContent(client.id,mediaid,'thumb');
 				appService.addHandlers(contentmediaAdded);
 			}
 		}
@@ -88,7 +88,6 @@ package com.pentagram.controller
 		}
 		private function checkCount():void {
 			if(count == total) {
-				model.clients.addItem(client);
 				//country.region.countries.addItem(client);
 				this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CLIENT_CREATED));
 			}

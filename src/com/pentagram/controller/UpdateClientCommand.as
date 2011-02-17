@@ -44,7 +44,8 @@ package com.pentagram.controller
 			uploader.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA,handleUploadComplete);
 			
 			if(fileToUpload) {
-				uploader.upload(fileToUpload,"/clients/");
+				appService.removeClientThumb(client.id,"thumb");
+				appService.addHandlers(handleRemoveComplete);
 				total++;
 			}
 			if(client.modified) {
@@ -55,11 +56,10 @@ package com.pentagram.controller
 		}
 		private function handleUploadComplete(event:DataEvent):void {
 			var file:Object = JSON.decode(event.data);
+			uploader.clearListeners();
 			client.thumb = Constants.FILES_URL + "/clients/"+file.name; 
 			appService.addFileToDatabase(file,"/clients/");
 			appService.addHandlers(fileAdded);
-			count++;
-			checkCount();
 		}
 		private function fileAdded(event:ResultEvent):void {
 			var result:StatusResult = event.token.results as StatusResult;	
@@ -67,6 +67,12 @@ package com.pentagram.controller
 				var mediaid:int = Number(result.message);
 				appService.addFileToContent(client.id,mediaid,'thumb');
 				appService.addHandlers(contentmediaAdded);
+			}
+		}
+		private function handleRemoveComplete(event:ResultEvent):void {
+			var result:StatusResult = event.token.results as StatusResult;	
+			if(result.success) {
+				uploader.upload(fileToUpload,"/clients/");
 			}
 		}
 		private function contentmediaAdded(event:ResultEvent):void {
@@ -83,7 +89,6 @@ package com.pentagram.controller
 				client.modified = false;
 				count++;
 				checkCount();
-			
 			}
 		}
 		private function checkCount():void {

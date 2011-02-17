@@ -5,6 +5,8 @@ package com.pentagram.model
 	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ViewUtils;
 	
+	import flash.utils.Dictionary;
+	
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;
@@ -24,6 +26,8 @@ package com.pentagram.model
 		
 		[Bindable]
 		public var clients:ArrayList;
+		
+		public var countryNames:Dictionary = new Dictionary();
 		
 		public var colors:Vector.<uint>;
 		public var loggedIn:Boolean = false;

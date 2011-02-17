@@ -2,7 +2,7 @@
 <s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx" 
-		 xmlns:vo="com.pentagram.model.vo.*"
+		 xmlns:vo="com.pentagram.model.vo.*" paddingRight="100"
 		 xmlns:controls="com.pentagram.view.controls.*" 
 		 xmlns:renderers="com.pentagram.view.renderers.*"
 		 xmlns:datagrid="com.newtriks.display.datagrid.*"
@@ -13,6 +13,7 @@
 			import com.pentagram.view.renderers.BlankRenderer;
 			import com.pentagram.view.renderers.QualityEditor;
 			import com.pentagram.view.renderers.QuantityEditor;
+			import com.pentagram.view.renderers.QuantityRenderer;
 			
 			import mx.collections.ArrayList;
 			import mx.collections.Sort;
@@ -47,15 +48,18 @@
 				
 	
 				if(dataset.time == 1) {
-					var years:Array = dataset.range.split(',');
-					for(var i:int=years[0];i<=years[1];i++) {
+					for(var i:int=0;i<dataset.years.length;i++) {
+						var year:int = dataset.years[i];
 						column  = new GridColumn();
-						column.headerText = i.toString();
-						if(dataset.type == 1)
+						column.headerText = year.toString();
+						if(dataset.type == 1) {
 							column.itemEditor = new ClassFactory(QuantityEditor);
-						else
+							column.itemRenderer = new ClassFactory(QuantityRenderer);
+						}
+						else 
 							column.itemEditor = new ClassFactory(QualityEditor);
-						column.dataField = i.toString();
+						
+						column.dataField = year.toString();
 						column.width = 75;	
 						column.resizable = true;
 						column.sortable = true;
@@ -67,8 +71,10 @@
 					column = new GridColumn();
 					column.headerText = "Value";
 					column.editable = true;
-					if(dataset.type == 1)
+					if(dataset.type == 1) {
 						column.itemEditor = new ClassFactory(QuantityEditor);
+						column.itemRenderer = new ClassFactory(QuantityRenderer);
+					}
 					else
 						column.itemEditor = new ClassFactory(QualityEditor);
 					column.dataField = "value";
@@ -136,24 +142,24 @@
 		</s:ArrayList>
 	</fx:Declarations>
 
-	<s:HGroup verticalAlign="top" width="90%">
+	<s:HGroup verticalAlign="top" width="100%">
 		<s:Label text="Data Set Title" width="100" />
 		<s:TextInput width="100%" text="{dataset.name}"  change="handlePropChange(event,'name','text')" />
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="top" width="90%">
+	<s:HGroup verticalAlign="top" width="100%">
 		<s:Label text="Description" width="100" />
 		<s:TextArea heightInLines="2" width="100%" text="{dataset.description}" change="handlePropChange(event,'description','text')"/>	
 	</s:HGroup>		
 	
-	<s:HGroup verticalAlign="top" width="90%">
+	<s:HGroup verticalAlign="top" width="100%">
 		<s:Label text="Units" width="100" />
 		<s:DropDownList id="scaleInput" dataProvider="{scaleFactors}" labelField="label" change="handleScaleChange(event)" />
 		<s:Label text="of " />
 		<s:DropDownList selectedIndex="{units.getItemIndex(dataset.unit)}" dataProvider="{units}" labelField="label" change="handlePropChange(event,'unit','selectedItem')" />
 	</s:HGroup>	
 
-	<s:HGroup verticalAlign="top" width="90%" height="100%" gap="0">
+	<s:HGroup verticalAlign="top" width="100%" height="100%" gap="0">
 		<s:Label text="Data Set" width="100" />
 		<s:Rect width="5" />
 		<s:Group width="100%" height="100%">

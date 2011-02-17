@@ -48,6 +48,13 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function set data(d:DataRow):void { _data = d;fillColor=d.country.region.color }	
 		
 		
+		override public function set radius(r:Number):void {
+			if(isNaN(r)) this.collidable = false;
+			else this.collidable = true;
+			super.radius = r;
+		}
+		
+		
 		public function MapRenderer(engine:APEngine,parent:Group,radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
 		{
 			
@@ -106,40 +113,44 @@ package com.pentagram.instance.view.visualizer.renderers
 				var matr:Matrix = new Matrix();
 				matr.createGradientBox(radius*2, radius*2, Math.PI/1.7, 0, 0);
 				var colors:Array;
+				label.visible = false;
 				
-				if(_fillAlpha > 0.2) {
-					colors = [_fillColor,Colors.darker(_fillColor)];
-					textColor = 0xffffff;
-				}
-				else {
-					colors =  [_fillColor,_fillColor];
-					textColor = _fillColor;
-				}
-				g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
-				g.drawCircle(0, 0, radius);
-				g.endFill(); 
+				if(!isNaN(radius)) {
+					if(_fillAlpha > 0.2) {
+						colors = [_fillColor,Colors.darker(_fillColor)];
+						textColor = 0xffffff;
+					}
+					else {
+						colors =  [_fillColor,_fillColor];
+						textColor = _fillColor;
+					}
+					g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+					g.drawCircle(0, 0, radius);
+					g.endFill(); 
+					
+					if(radius < 30 && radius > 15)  {
+						textFormat.size = 10;
+						label.visible = true;
+					}
+					else if(radius <= 15)
+						label.visible = false;
+					else {
+						textFormat.size = 12;
+						label.visible = true;	
+					}
 				
-				if(radius < 30 && radius > 15)  {
-					textFormat.size = 10;
-					label.visible = true;
+					textFormat.color = _textColor;
+					label.defaultTextFormat = textFormat;
+					if(_data) {
+						label.text = _data.country.shortname;
+					}
+									
+					label.x = -label.textWidth/2;
+					label.y = -label.textHeight/2;
+					label.width = label.textWidth+4;
+					label.height = label.textHeight+4;	
+					label.defaultTextFormat = textFormat;
 				}
-				else if(radius <= 15)
-					label.visible = false;
-				else {
-					textFormat.size = 12;
-					label.visible = true;	
-				}
-				textFormat.color = _textColor;
-				label.defaultTextFormat = textFormat;
-				if(_data) {
-					label.text = _data.country.shortname;
-				}
-								
-				label.x = -label.textWidth/2;
-				label.y = -label.textHeight/2;
-				label.width = label.textWidth+4;
-				label.height = label.textHeight+4;	
-				label.defaultTextFormat = textFormat;
 			}
 			
 			if(sprite.visible != _visible) {

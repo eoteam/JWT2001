@@ -172,26 +172,97 @@ package com.pentagram.instance.view.mediators.editor
 			var csvContent:String = fs.readUTFBytes(fs.bytesAvailable);
 			fs.close();
 			
+			var i:int;
+			var j:int;
+			var header:Array;
+			var isNumeric:int = 1;
+			var badRows:Array = [];
+			var countryFound:Boolean = false;
+			var countryName:String;
+			var cell:String;
+			var dataRow:DataRow ;
+			
 			var dataset:Dataset = new Dataset();
+			dataset.type = 1; //start with number
 			dataset.name =  file.name.replace(/.csv/gi,'');
 			
-			var validator:NumberValidator = new NumberValidator();
-			validator.domain = "real";
-			validator.allowNegative = true;
-			var arr:Array = CSVUtils.CsvToArray(csvContent);
 			
-			for each(var row:Array in arr) {
-				for each(var cell:String in row) {
-					cell = cell.split(',').join('');
-					var res:Array = validator.validateNumber(cell,null);
-//					if(res.length > 0)
-//						;//csvResult.text += cell+"\t\t"+res[0].isError+"\n";
-//					else
-//						;//csvResult.text += cell+"\t\t"+Number(cell)+"\n";
+			var rows:Array = CSVUtils.CsvToArray(csvContent);
+			
+			if(rows.length > 2) {
+				header = rows[0];
+				if(header[0].toString().toLowerCase() != "country")
+					showError("First column is not named 'Country'");
+				if(header.length > 2) {
+					dataset.years = [];
+					for(i=1;i<header.length;i++) {
+						if(isNaN(parseInt(header[i]))) {
+							showError("Header doesnt contain proper years");
+							return;
+						}
+						dataset.time = 1;
+						dataset.years.push(parseInt(header[i]));
+					}
+				}
+				else 
+					dataset.time = 0;
+				for (i=1;i<rows.length;i++) {
+					var row:Array = rows[i];
+					if(row.length != header.length) {
+						showError("This row's columns dont match the header's columns");
+						badRows.push(row);
+					}
+					else {
+						countryName = row[0];
+						if(model.countryNames[countryName.toLowerCase()] == null) {
+							showError("This row's country is not found");
+							badRows.push(row);
+						}
+						else {
+							dataRow = new DataRow();
+							dataRow.name = countryName;
+							dataRow.dataset = dataset;
+							dataRow.country = model.countryNames[countryName.toLowerCase()] as Country;
+							
+							if(dataset.time == 0) 
+								parseCell(row[1],dataset,dataRow,"value");
+							
+							else {	
+								for(j=1;j<header.length;j++) 
+									parseCell(row[j],dataset,dataRow,header[j]);
+							}
+							dataset.rows.addItem(dataRow);
+						}
+					}
+				}
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));	
+				
+			}
+			else {
+				showError("Spreadsheet doesnt have enough rows");
+			}
+		}
+		private function parseCell(cell:String,dataset:Dataset,row:DataRow,field:String):void {
+			var copy:String = cell;
+			if(copy == '' || copy.toLowerCase() == 'n/a' || copy.toLowerCase() == 'na') {
+				row[field] = 'NULL';
+			}
+			else {
+				copy = cell.split(',').join('').toLowerCase();
+				if(isNaN(parseFloat(copy)) && copy.length > 1) { ///this is def a word, whole set is turned into a quantitative set
+					dataset.type = 0;
+					row[field] = cell;
+				}
+				else {
+					row[field] = copy;
 				}
 			}
-			
-		}		
+			row.modifiedProps.push(field);
+		}
+		private function showError(msg:String):void {
+			view.statusModule.updateStatus(msg);
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,msg));
+		}
 	}
 }
 /*// Choose the line ending to split the lines based on which one yields more than one line

@@ -167,8 +167,8 @@ package com.pentagram.instance.view.mediators.shell
 						if(dataset.time == 1) {
 							view.timelineContainer.visible = true;
 							
-							for (i=dataset.years[0];i<=dataset.years[1];i++) {
-								years.addItem(new Year(i,1)); 
+							for (i=0;i<dataset.years.length;i++) {
+								years.addItem(new Year(dataset.years[i],1)); 
 							}
 							view.yearSlider.dataProvider = years;
 						}
@@ -188,28 +188,28 @@ package com.pentagram.instance.view.mediators.shell
 						if(ds1.time == 1) {
 							showTime = true;
 							minYear = ds1.years[0];
-							maxYear = ds1.years[1];
+							maxYear = ds1.years[ds1.years.length-1];
 						}
 						if(ds2.time == 1) {
 							showTime = true;
 							if(ds2.years[0] < minYear)
 								minYear = ds2.years[0];
 							if(ds2.years[1] > maxYear)
-								maxYear = ds2.years[1];	
+								maxYear = ds2.years[ds2.years.length-1];	
 						} 
 						if(ds3 && ds3.time == 1) {
 							showTime = true;
 							if(ds3.years[0] < minYear)
 								minYear = ds3.years[0];
 							if(ds3.years[1] > maxYear)
-								maxYear = ds3.years[1];	
+								maxYear = ds3.years[ds3.years.length-1];	
 						}
 						if(ds4 && ds4.time ==1) {
 							showTime = true;
 							if(ds4.years[0] < minYear)
 								minYear = ds4.years[0];
 							if(ds4.years[1] > maxYear)
-								maxYear = ds4.years[1];	
+								maxYear = ds4.years[ds4.years.length-1];	
 						}
 						view.yearSlider.visible = showTime;
 						if(showTime) {

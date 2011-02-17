@@ -31,7 +31,7 @@ package com.pentagram.controller
 				exp = temp[0]; imp = temp[1];
 			}
 			//var arr:Array = appModel.cloneRegions();
-			callback.call(null,appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.user,appModel.colors,exp,imp);
+			callback.call(null,appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.countryNames,appModel.user,appModel.colors,exp,imp);
 		}
 	}
 }

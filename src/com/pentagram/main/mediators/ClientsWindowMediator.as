@@ -3,10 +3,12 @@ package com.pentagram.main.mediators
 	import com.pentagram.controller.Constants;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
+	import com.pentagram.instance.view.editor.RegionDrawer;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.main.windows.ClientsWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.Uploader;
 	
 	import flash.events.DataEvent;
@@ -18,6 +20,7 @@ package com.pentagram.main.mediators
 	
 	import mx.collections.ArrayCollection;
 	
+	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
@@ -38,6 +41,9 @@ package com.pentagram.main.mediators
 		{
 			view.clientList.dataProvider = new ArrayCollection(model.clients.source);
 			view.clientList.addEventListener(IndexChangeEvent.CHANGE,handleSelection,false,0,true);
+			view.clientList.selectedIndex = 0;
+			handleSelection();
+			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
@@ -53,7 +59,10 @@ package com.pentagram.main.mediators
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_CREATED,handleClientUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DELETED,handleClientDeleted,EditorEvent);
-
+			
+			view.countryInput.dataProvider = model.countries.source;
+			view.countryInput.addEventListener(CustomEvent.SELECT,countryList_selectHandler,false,0,true);
+			
 		}
 		private function handleWindowClose(event:Event):void {
 			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.WINDOW_CLOSED, view.id));
@@ -104,10 +113,12 @@ package com.pentagram.main.mediators
 			view.statusModule.updateStatus("Update Completed");
 			fileToUpload = null;
 			if(event.type == EditorEvent.CLIENT_CREATED) {
+				
 				view.clientList.selectedItem = currentClient;
 				ArrayCollection(view.clientList.dataProvider).filterFunction = null;
 				ArrayCollection(view.clientList.dataProvider).refresh(); 
 			}
+			view.currentState = "edit";
 		}
 		private function handleClientDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Update Completed");
@@ -120,17 +131,52 @@ package com.pentagram.main.mediators
 			view.client = currentClient;
 			view.currentState = "edit";
 		}
-		private function handleSelection(event:IndexChangeEvent):void {
+		private function handleSelection(event:IndexChangeEvent=null):void {
 			currentClient = view.clientList.selectedItem;
 			view.client = currentClient;
 			view.saveBtn.enabled = true;
-			view.currentState = "edit";
+			view.currentState = isNaN(currentClient.id) ? "add":"edit";
 			this.fileToUpload = null;
+			
+			view.regionHolder.removeAllElements();
+			for each(var region:Region in currentClient.regions.source) {
+				if(region.countries.length > 0) {
+					var drawer:RegionDrawer = new RegionDrawer();
+					drawer.region = region;
+					drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
+					view.regionHolder.addElement(drawer);
+				}
+			}
+		}
+		protected function countryList_selectHandler(event:CustomEvent):void {
+			if(currentClient.countries.getItemIndex(event.data) == -1) {
+				currentClient.countries.addItem(event.data);
+				currentClient.newCountries.addItem(event.data);
+				for each(var region:Region in currentClient.regions.source) {
+					if(region.id == event.data.region.id) {
+						region.countries.addItem(event.data);
+						if(region.countries.length == 1) {
+							var drawer:RegionDrawer = new RegionDrawer();
+							drawer.region = region;
+							drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
+							view.regionHolder.addElement(drawer);
+						}
+						break;
+					}
+				}
+			}
+		}
+		private function handleCountryListSelection(event:IndexChangeEvent):void {
+			
 		}
 		private function handleAdd(event:MouseEvent):void {
 			view.currentState = "add";	
 			currentClient = new Client();
+			currentClient.name = "New Client";
 			view.client = currentClient;
+			model.clients.addItem(currentClient);
+			ArrayCollection(view.clientList.dataProvider).refresh();
+			view.clientList.selectedIndex = view.clientList.dataProvider.length-1;
 		}
 		private function handleDelete(event:MouseEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_CLIENT,currentClient));

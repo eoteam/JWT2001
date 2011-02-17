@@ -64,12 +64,12 @@
 		private function updateMinMax():void {
 			for each(var row:DataRow in model.selectedSet.rows) {
 				if(model.selectedSet.time == 1) {
-					for (var i:int = model.selectedSet.years[0];i<= model.selectedSet.years[1];i++) {
-						if(row[i] < model.selectedSet.min) {
-							setPropChanged("min",row[i]);
+					for (var i:int = 0;i< model.selectedSet.years.length;i++) {
+						if(row[model.selectedSet.years[i]] < model.selectedSet.min) {
+							setPropChanged("min",row[model.selectedSet.years[i]]);
 						}
-						if(row[i] > model.selectedSet.max) {
-							setPropChanged("max",row[i]);
+						if(row[model.selectedSet.years[i]] > model.selectedSet.max) {
+							setPropChanged("max",row[model.selectedSet.years[i]]);
 						}			
 					}
 				}

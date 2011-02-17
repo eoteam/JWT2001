@@ -66,7 +66,16 @@ package com.pentagram.utils
 			var errorStr:String = event.toString();
 			trace("Error uploading: " + currentFile.nativePath + "\n  Message: " + errorStr);
 			dispatchEvent(event);
-		}     
+		} 
+		public function clearListeners():void {
+			currentFile.removeEventListener(ProgressEvent.PROGRESS, uploadProgress);
+			currentFile.removeEventListener(Event.COMPLETE, uploadComplete);
+			currentFile.removeEventListener(DataEvent.UPLOAD_COMPLETE_DATA , uploadServerData);
+			currentFile.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, uploadError);
+			currentFile.removeEventListener(HTTPStatusEvent.HTTP_STATUS, uploadError);	
+			currentFile.removeEventListener(IOErrorEvent.IO_ERROR, uploadError);	
+			currentFile = null;
+		}
 		private function uploadComplete(event:Event):void {
 
 		}                 

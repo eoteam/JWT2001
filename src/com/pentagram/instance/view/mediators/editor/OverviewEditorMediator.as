@@ -48,10 +48,12 @@ package com.pentagram.instance.view.mediators.editor
 			
 			view.regionHolder.removeAllElements();
 			for each(var region:Region in model.client.regions.source) {
-				var drawer:RegionDrawer = new RegionDrawer();
-				drawer.region = region;
-				drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
-				view.regionHolder.addElement(drawer);
+				if(region.countries.length > 0) {
+					var drawer:RegionDrawer = new RegionDrawer();
+					drawer.region = region;
+					drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+					view.regionHolder.addElement(drawer);
+				}
 			}
 		}
 		private function handleCancel(event:EditorEvent):void {
@@ -126,6 +128,12 @@ package com.pentagram.instance.view.mediators.editor
 				for each(var region:Region in model.client.regions.source) {
 					if(region.id == event.data.region.id) {
 						region.countries.addItem(event.data);
+						if(region.countries.length == 1) {
+							var drawer:RegionDrawer = new RegionDrawer();
+							drawer.region = region;
+							drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+							view.regionHolder.addElement(drawer);
+						}
 						break;
 					}
 				}

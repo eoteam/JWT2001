@@ -94,8 +94,8 @@ package com.pentagram.instance.controller
 						row.color = country.region.color;
 						row.dataset = dataset;
 						if(dataset.time == 1) {
-							for(var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-								row[i] = dataset.type == 1 ? 0:'';
+							for(var i:int=0;i<dataset.years.length;i++) {
+								row[dataset.years[i]] = dataset.type == 1 ? 0:'';
 							}
 						}
 						else

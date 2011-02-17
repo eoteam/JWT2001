@@ -42,8 +42,8 @@ package com.pentagram.main.mediators
 			var content:String = 'Country,';
 			var line:String = '';
 			if(view.dataset.time == 1) {
-				for(var i:int=view.dataset.years[0]; i <= view.dataset.years[1]; i++) {
-					content += i.toString()+',';
+				for(var i:int=0; i < view.dataset.years.length; i++) {
+					content += view.dataset.years[i].toString()+',';
 					line +=',';
 				}
 				content = content.substr(0,content.length-1);

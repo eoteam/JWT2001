@@ -7,7 +7,7 @@ package com.pentagram.model.vo
 	public class Client extends BaseVO
 	{
 		public var shortname:String;
-		public var employees:int;
+		public var employees:String;
 		public var founded:int;
 		public var headquarters:String;
 		public var website:String;

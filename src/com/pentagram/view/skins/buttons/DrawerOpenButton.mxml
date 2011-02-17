@@ -33,7 +33,7 @@
 	</s:Label>
 	<s:Rect left="{labelDisplay.width+35}" verticalCenter="0" right="0" height="0.25">
 		<s:stroke>
-			<s:SolidColorStroke weight="0.25" color="0xB3B1AC" />
+			<s:SolidColorStroke weight="0.25" color="0xcccccc" />
 		</s:stroke>
 	</s:Rect>
 </s:Skin>

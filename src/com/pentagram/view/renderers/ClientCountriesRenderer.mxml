@@ -19,11 +19,12 @@
 	
 	<s:Rect height="20"  radiusX="6"  right="1" left="0" y="0.5" id="rect2">
 		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1"/>
+			<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1" />
 		</s:stroke>
 		<s:fill>
 			<s:SolidColor id="bgFill" alpha="0.2" alpha.hovered="0.5"  alpha.selected="1"  />
 		</s:fill>
+		
 	</s:Rect>
 	
 	<s:Label text="{data.name}" verticalCenter="0"  horizontalCenter="0" fontFamily="FlamaMedium"

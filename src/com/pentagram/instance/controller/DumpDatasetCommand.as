@@ -62,12 +62,12 @@ package com.pentagram.instance.controller
 		private function updateMinMax():void {
 			for each(var row:DataRow in dataset.rows) {
 				if(dataset.time == 1) {
-					for (var i:int = dataset.years[0];i<= dataset.years[1];i++) {
-						if(row[i] < dataset.min) {
+					for (var i:int = 0;i< dataset.years.length;i++) {
+						if(row[dataset.years[i]] < dataset.min) {
 							setPropChanged("min",row[i]);
 						}
-						if(row[i] > dataset.max) {
-							setPropChanged("max",row[i]);
+						if(row[dataset.years[i]] > dataset.max) {
+							setPropChanged("max",row[dataset.years[i]]);
 						}			
 					}
 				}

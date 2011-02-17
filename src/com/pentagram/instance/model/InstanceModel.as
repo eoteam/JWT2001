@@ -9,6 +9,7 @@ package com.pentagram.instance.model
 	
 	import flash.display.NativeMenuItem;
 	import flash.filesystem.File;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
@@ -25,6 +26,9 @@ package com.pentagram.instance.model
 		
 		[Bindable]
 		public var clients:ArrayList;
+		
+		
+		public var countryNames:Dictionary;
 		
 		public var colors:Vector.<uint>;
 			
@@ -75,7 +79,7 @@ package com.pentagram.instance.model
 						for(prop in item) { 
 							if(prop != 'id' && prop != 'countryid') {
 								if(dataset.time == 1)
-									row[prop.toString()] = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+									row[prop.toString()] = dataset.type == 1 ? (item[prop] == ''?NaN:Number(item[prop])) : item[prop]; 
 								else row.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
 							}
 						}

@@ -118,6 +118,14 @@ package com.pentagram.services
 			params.id = vo.id;
 			this.createService(params,ResponseType.STATUS);
 		}
+		public function removeClientThumb(clientid:int,usage:String):void {
+			var params:Object = new  Object();
+			params.action = "deleteRecords";
+			params.tablename = 'content_media';
+			params.idfield = "contentid";
+			params.idvalues = clientid;
+			this.createService(params,ResponseType.STATUS);
+		}
 		
 	}
 }

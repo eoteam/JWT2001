@@ -33,7 +33,7 @@ package org.cove.ape {
 	 */
 	public class CircleParticle extends AbstractParticle {
 	
-		private var _radius:Number;
+		protected var _radius:Number;
 		
 		
 		/**

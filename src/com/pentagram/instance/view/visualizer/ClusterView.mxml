@@ -73,7 +73,7 @@
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
-						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[1]) {
+						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[ds2.years.length-1]) {
 							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
 							circle.content = this.generateContent(circle.data2[year.toString()],year);
 						}	
@@ -195,8 +195,10 @@
 											r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
 											content = generateContent(row2.value);
 										}
+										
 									}
-									arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
+									if(!isNaN(r))
+										arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
 								}	
 							}
 							var circle:CirclePacking = new CirclePacking(arr,this);

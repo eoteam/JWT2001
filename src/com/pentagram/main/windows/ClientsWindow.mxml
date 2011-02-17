@@ -43,7 +43,7 @@
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<fx:int id="LABEL_WIDTH">90</fx:int>
+		<fx:int id="LABEL_WIDTH">100</fx:int>
 		<fx:int id="FIELD_WIDTH">400</fx:int>
 		<vo:Client id="client" />
 	</fx:Declarations>
@@ -80,23 +80,23 @@
 				</s:fill>
 			</s:Rect>
 			
-			<s:VGroup id="clientEditor" width="100%" top="15" left="16" right="16" bottom="52">
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+			<s:VGroup id="clientEditor" width="100%" top="15" left="16" right="16" bottom="52" paddingRight="100">
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{client.name}" change="handlePropChange(event,'name')"/>
+					<s:TextInput width="100%" text="{client.name}" change="handlePropChange(event,'name')"/>
 				</s:HGroup>
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Short Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{client.shortname}" change="handlePropChange(event,'shortname')" />
+					<s:TextInput width="100%" text="{client.shortname}" change="handlePropChange(event,'shortname')" />
 				</s:HGroup>
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Logo" />
 					<s:Rect width="8" />
-					<controls:EditorPanel width="{FIELD_WIDTH}" id="logoHolder" height="110">
+					<controls:EditorPanel width="100%" id="logoHolder" height="110">
 						<s:Image id="logo" horizontalAlign="left"
 						 height="67" left="4" right="4" top="1" bottom="4" scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
 						 source="{client.thumb}"/>
@@ -107,30 +107,46 @@
 					</controls:EditorPanel>
 				</s:HGroup>		
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Website" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{client.website}" change="handlePropChange(event,'website')" />
+					<s:TextInput width="100%" text="{client.website}" change="handlePropChange(event,'website')" />
 				</s:HGroup>
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
+					<s:TextInput width="100%" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
 				</s:HGroup>
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Employees" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{client.employees}" change="handlePropChange(event,'employees')" />
+					<s:TextInput width="100%" text="{client.employees}" change="handlePropChange(event,'employees')" />
 				</s:HGroup>	
+				<s:HGroup verticalAlign="top" gap="0" width="100%" height="100%">  
+					<s:Label width="{LABEL_WIDTH}" text="Countries" />
+					<s:Rect width="8" />
+					
+					<controls:EditorPanel height="100%" width="100%">
+						<s:Scroller width="100%" height="100%" >
+							<s:VGroup width="100%" height="100%" id="regionHolder" />
+						</s:Scroller>   
+						<controls:controlBarContent>
+							<s:Label id="countryTotal" text="Total: {client.countries.length}" styleName="FlamaBold" />
+							<components:AutoComplete height="19"  labelField="name" width="160" id="countryInput"/>
+							<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
+							<s:Rect width="100%" />
+							<s:Button label="— Delete" color="0xC61023" id="deleteBtn3" />         
+						</controls:controlBarContent>
+					</controls:EditorPanel>
+				</s:HGroup>
 				
 				
-				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Similar Clients" />
 					<s:Rect width="8" />
-					<controls:EditorPanel  width="{FIELD_WIDTH}">
+					<controls:EditorPanel  width="100%">
 						
 						<s:List top="30" width="100%" contentBackgroundAlpha="0">
 							<s:layout>
@@ -138,7 +154,7 @@
 							</s:layout>
 						</s:List>
 						<controls:controlBarContent>
-							<s:Label id="countryTotal" text="Total: {client.countries.length}" />
+							<s:Label  text="Total: 0" />
 							<components:AutoComplete height="19" labelField="name" width="160" id="clientInput"/>
 							<s:Rect width="100%" />
 							<s:Button label="- Delete" color="0xC61023" id="deleteBtn2" />							

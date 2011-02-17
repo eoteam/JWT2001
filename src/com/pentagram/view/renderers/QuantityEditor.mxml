@@ -30,5 +30,5 @@
 			}			
 		]]>
 	</fx:Script>
-	<s:TextInput text="{value}" left="0" right="0" top="0" bottom="0" id="editorInput" />	
+	<s:TextInput text="{value.toString()=='NaN'?'':value}" left="0" right="0" top="0" bottom="0" id="editorInput" />	
 </s:GridItemEditor>

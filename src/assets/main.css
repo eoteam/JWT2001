@@ -92,6 +92,9 @@ s|Button {
 	skinClass: ClassReference('com.pentagram.view.skins.buttons.MainButton');
 	fontFamily: FlamaMedium;
 }
+s|TextArea {
+	skinClass: ClassReference('com.pentagram.view.skins.controls.TextArea');
+}
 
 flashcommander|AutoComplete s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.SearchInput');

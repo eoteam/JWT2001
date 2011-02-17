@@ -39,7 +39,7 @@ package com.pentagram.instance.controller
 				dataset.id = msg[0];
 				dataset.loaded = true;
 				if(dataset.time)
-					dataset.range = dataset.years[0].toString()+','+dataset.years[1].toString();
+					dataset.range = dataset.years.join(',');
 				var country:Country;
 				var row:DataRow;
 				if(dataset.rows.length == 0 ) {
@@ -49,8 +49,8 @@ package com.pentagram.instance.controller
 							row.name = country.name;
 							row.dataset = dataset;
 							row.country = country;
-							for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-								row[i.toString()] = dataset.type == 1 ? 0:'';
+							for (var i:int=0;i<dataset.years.length;i++) {
+								row[dataset.years[i]] = dataset.type == 1 ? 0:'';
 							}
 							dataset.rows.addItem(row);
 						}
@@ -74,7 +74,7 @@ package com.pentagram.instance.controller
 				if(dataset.type == 1)
 					model.client.quantityDatasets.addItem(dataset);
 				else
-					model.client.quantityDatasets.addItem(dataset);
+					model.client.qualityDatasets.addItem(dataset);
 				model.client.datasets.addItem(dataset);
 				
 			}

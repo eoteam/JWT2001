@@ -39,7 +39,7 @@ package com.pentagram.services
 			params.createdby = model.user.id;
 			params.modifiedby = model.user.id;
 			if(dataset.time == 1)
-				params.years = dataset.years[0]+','+dataset.years[1];
+				params.years = dataset.years.join(',');
 			this.createService(params,ResponseType.STATUS);			
 		}	
 		public function deleteDataset(dataset:Dataset):void {

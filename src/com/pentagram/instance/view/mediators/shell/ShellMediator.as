@@ -353,7 +353,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
-				if(model.client.datasets.length > 0) {
+				if(model.client.datasets.length > 2) {
 					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
 					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
 					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
@@ -404,8 +404,8 @@ package com.pentagram.instance.view.mediators.shell
 					if(dataset.time == 1) {
 						view.tools.timelineContainer.visible = true;
 						
-						for (var i:int=dataset.years[0];i<=dataset.years[1];i++) {
-							years.addItem(new Year(i,1)); 
+						for (var i:int=0;i<dataset.years.length;i++) {
+							years.addItem(new Year(dataset.years[i],1)); 
 						}
 						view.tools.yearSlider.dataProvider = years;
 					}
@@ -420,7 +420,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
-				if(model.client.datasets.length > 0 && model.client.qualityDatasets.length > 1 && model.client.quantityDatasets.length > 1) {
+				if(model.client.datasets.length > 0 && model.client.qualityDatasets.length > 0 && model.client.quantityDatasets.length > 0) {
 					var dataset1:Dataset = model.client.qualityDatasets.getItemAt(0) as Dataset;
 					var dataset2:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
 					view.tools.thirdSet.selectedItem = dataset1;
