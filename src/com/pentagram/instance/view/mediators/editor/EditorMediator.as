@@ -80,7 +80,9 @@ package com.pentagram.instance.view.mediators.editor
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CANCEL));
 		}
 		private function handleDelete(event:MouseEvent):void {
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_DATASET,view.dataSetList.selectedItem));
+			var eventLoad:EditorEvent = new EditorEvent(EditorEvent.DELETE_DATASET,view.dataSetList.selectedItem);
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.NOTIFY,"Are you sure you want to delete this dataset?\nThis change cannot be undone",eventLoad));
+			//eventDispatcher.dispatchEvent();
 		}
 		private function handleDatasetState(event:Event):void {
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
@@ -277,7 +279,7 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function showError(msg:String):void {
 			view.statusModule.updateStatus(msg);
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,msg));
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ERROR,msg));
 		}
 	}
 }

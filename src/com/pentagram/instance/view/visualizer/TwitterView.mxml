@@ -403,18 +403,30 @@
 	
 	<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
 		
-	<s:Group verticalCenter="0" horizontalCenter="0" styleName="darkPanel" includeIn="preload" width="300" height="120">
-		<s:Rect radiusX="6" radiusY="6" top="0" bottom="0" left="0" right="0">
-			<s:fill>
-				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
-			</s:fill>
-			<s:filters>
-				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
-			</s:filters>
-		</s:Rect>
-		<s:VGroup verticalCenter="0" horizontalCenter="0" >
-			<s:Label fontFamily="FlamaBold" text="Choose rendering speed"  fontSize="16" color="0xffffff" />
-			<s:List borderVisible="false" contentBackgroundAlpha="0"  id="list" styleName="darkPanel" requireSelection="true">
+	<s:Group left="5" bottom="0" styleName="darkPanel" includeIn="preload" width="240" height="200" >
+		<s:filters>
+			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+		</s:filters>
+		<s:VGroup width="240" height="200" gap="0">
+			<s:Rect radiusX="4" radiusY="4"  width="100%" height="100%">
+				<s:fill>
+					<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+				</s:fill>
+			</s:Rect>
+			<s:Group width="100%">
+				<s:Path id="path12"  winding="nonZero" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" left="10">
+					<s:fill>
+						<s:SolidColor color="#1A1A1A" alpha="0.9"/>
+					</s:fill>
+				</s:Path>
+			</s:Group>
+			
+		</s:VGroup>
+
+		
+		<s:VGroup gap="6" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" width="240" height="200">
+			<s:Label fontFamily="FlamaBold" text="Choose rendering speed"  color="0xffffff" />
+			<s:List borderVisible="false" contentBackgroundAlpha="0"  id="list" styleName="darkPanel" requireSelection="true" width="100%">
 				<s:dataProvider>
 					<s:ArrayList>
 						<fx:Object label="Slow" value="0" />
@@ -424,21 +436,21 @@
 				</s:dataProvider>
 				<s:itemRenderer>
 					<fx:Component>
-						<s:ItemRenderer autoDrawBackground="false" width="80" styleName="darkPanel">
-							<s:Button skinClass="com.pentagram.view.skins.buttons.DarkButton" label="{data.label}" width="85" click="this.outerDocument.list1_changeHandler(data)"/>
+						<s:ItemRenderer autoDrawBackground="false"  width="100%" styleName="darkPanel">
+							<s:Button skinClass="com.pentagram.view.skins.buttons.DarkButton" width="100%" label="{data.label}" click="this.outerDocument.list1_changeHandler(data)"/>
 						</s:ItemRenderer>
 					</fx:Component>
 				</s:itemRenderer>
 				<s:layout>
-					<s:HorizontalLayout gap="4" verticalAlign="middle" horizontalAlign="center" />
+					<s:VerticalLayout gap="4" verticalAlign="middle" horizontalAlign="center" />
 				</s:layout>
 			</s:List> 
 			<s:Rect height="10" />
 
-			<s:Label fontFamily="FlamaBold" text="# of pages (100 tweets per page)"  fontSize="16" color="0xffffff" />
+			<s:Label fontFamily="FlamaBold" text="# of pages (100 tweets per page)"  color="0xffffff" />
 			<s:HSlider minimum="1" maximum="15" id="pageSlider" skinClass="com.pentagram.view.skins.controls.DarkHSlider" stepSize="1"
 			showDataTip="true"  change="this.pageTotal=pageSlider.value" width="255"  />
-		
+			
 		</s:VGroup>
 	</s:Group>
 	

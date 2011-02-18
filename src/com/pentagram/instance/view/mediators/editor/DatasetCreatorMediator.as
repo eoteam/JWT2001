@@ -32,7 +32,7 @@ package com.pentagram.instance.view.mediators.editor
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,event.args[0] as Dataset));
 		}
 		private function handleError(event:Event):void { 
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.IMPORT_FAILED,"This name is already taken. Please choose another one."));
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ERROR,"This name is already taken. Please choose another one."));
 		}
 	}
 }

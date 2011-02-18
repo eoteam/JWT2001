@@ -69,7 +69,8 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
 			
 			 
-			eventMap.mapListener(eventDispatcher,EditorEvent.IMPORT_FAILED,handleImportFailed);
+			eventMap.mapListener(eventDispatcher,EditorEvent.ERROR,handleImportFailed);
+			eventMap.mapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
 			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
@@ -79,6 +80,8 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
+			
+			view.errorPanel.addEventListener("okEvent",handleOkEvent,false,0,true);
 			
 			
 			if(model.user) {
@@ -490,7 +493,20 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		
 		private function handleImportFailed(event:EditorEvent):void {
+			view.errorPanel.includeCancel = false;
 			view.errorPanel.errorMessage = event.args[0];
+		}
+		private var currentEvent:Event;
+		private function handleNotification(event:EditorEvent):void {
+			view.errorPanel.includeCancel = true;
+			currentEvent = event.args[1];
+			view.errorPanel.errorMessage = event.args[0];
+		}
+		private function handleOkEvent(event:Event):void {
+			if(currentEvent && view.errorPanel.includeCancel) {
+				this.eventDispatcher.dispatchEvent(currentEvent);
+				currentEvent = null;
+			}
 		}
 	}
 }

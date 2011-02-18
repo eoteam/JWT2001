@@ -30,7 +30,7 @@
 				this.displayPopUp = true;
 				
 			}
-
+			public var load:Event;
 		]]>
 	</fx:Script>
 

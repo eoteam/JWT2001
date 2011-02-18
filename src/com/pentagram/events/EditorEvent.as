@@ -23,8 +23,10 @@ package com.pentagram.events
 		
 		public static const CANCEL:String = "cancelEditor";
 		
-		public static const IMPORT_FAILED:String = "importFailed";
+		public static const ERROR:String = "importFailed";
 		public static const START_IMPORT:String = "startImport";
+		
+		public static const NOTIFY:String = "notify";
 		
 		public static const UPDATE_COUNTRY:String = "updateCountry";
 		public static const COUNTRY_UPDATED:String = "countryUpdated";
