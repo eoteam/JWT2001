@@ -5,11 +5,12 @@
 					xmlns:windows="com.pentagram.main.windows.*"
 					xmlns:editor="com.pentagram.instance.view.editor.*"
 					xmlns:controls="com.pentagram.view.controls.*" title="Countries"
-					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*">
+					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*" xmlns:components="com.pentagram.view.skins.components.*">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.main.event.ViewEvent;
 			import com.pentagram.model.vo.Country;
+			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.collections.ArrayCollection;
 			
@@ -61,7 +62,7 @@
 			skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />
 			<s:Rect height="6"/>
 			<controls:MiGList width="100%" height="100%"  id="countryList" labelField="name" sortField="name" headerText="Countries"
-			 keyboardLookUp="true" selectedIndex.add="-1"/>	
+			 keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"/>	
 			<s:HGroup width="100%" gap="0" paddingLeft="1">
 				<s:Button width="100%" label="+ Add Country" id="addButton" styleName="grayButton"/>
 				<s:Button width="100%" label="- Delete" id="deleteListBtn" styleName="grayButton"/>
@@ -121,5 +122,5 @@
 			</s:HGroup>	
 		</s:Group>
 	</mx:HDividedBox>
-	
+	<components:ErrorPanel id="errorPanel" horizontalCenter="0" width="100%" includeCancel="true"  />
 </windows:BaseWindow>

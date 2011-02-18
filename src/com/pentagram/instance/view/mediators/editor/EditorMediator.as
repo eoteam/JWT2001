@@ -90,6 +90,15 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void {
 			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
+			if(model.client.datasets.length > 0 ) {
+				view.dataSetList.selectedIndex = 0;
+				if(view.currentState == view.datasetState.name) {
+					view.datasetEditor.dataset = model.client.datasets.getItemAt(0) as Dataset;
+				}
+			}
+			else {
+				view.datasetEditor.dataset = null;
+			}
 		}
 		private function handleDatasetCreated(event:EditorEvent):void {
 			var dataset:Dataset = event.args[0] as Dataset;

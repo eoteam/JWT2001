@@ -128,7 +128,7 @@
 		<fx:Number id="hscrollValue" />
 		<fx:Number id="vscrollValue" />
 		<vo:Dataset id="dataset" />
-		<vo:Client id="client" />
+	<!--	<vo:Client id="client" />-->
 <!--		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>-->
 		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
 		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />

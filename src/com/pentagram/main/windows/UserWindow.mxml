@@ -7,6 +7,7 @@
 		<![CDATA[
 			import com.pentagram.controller.Constants;
 			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.collections.ArrayCollection;
 			
@@ -51,7 +52,7 @@
 			 skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />
 			<s:Rect height="6"/>
 			<controls:MiGList labelField="name" sortField="name" headerText="Clients" id="userList" width="100%"
-			keyboardLookUp="true" selectedIndex.add="-1" />			
+			keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer" />			
 			
 			<s:HGroup width="100%" gap="0">
 				<s:Button width="100%" label="+ Add user" id="addButton" />

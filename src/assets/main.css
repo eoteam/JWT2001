@@ -95,7 +95,11 @@ s|Button {
 s|TextArea {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.TextArea');
 }
-
+s|List {
+	selectionColor:#00BCFF;
+	rollOverColor:#99E4FF;
+	
+}
 flashcommander|AutoComplete s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.SearchInput');
 }

@@ -106,6 +106,9 @@ package com.pentagram.instance.view.mediators.editor
 					if(model.client.deletedCountries.getItemIndex(country) == -1) 
 						model.client.deletedCountries.addItem(country);
 				}
+				if(drawer.countryList.dataProvider.length == 0 ){
+					view.regionHolder.removeElement(drawer);
+				}
 			}
 		}
 		private function onDragDrop(event:NativeDragEvent):void {

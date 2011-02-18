@@ -7,12 +7,14 @@
 					xmlns:vo="com.pentagram.model.vo.*" 
 					xmlns:components="org.flashcommander.components.*" 
 					xmlns:layouts="com.pentagram.view.layouts.*" 
-					xmlns:controls="com.pentagram.view.controls.*">
+					xmlns:controls="com.pentagram.view.controls.*" 
+					xmlns:components1="com.pentagram.view.skins.components.*">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.controller.Constants;
 			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.collections.ArrayCollection;
 			
@@ -63,7 +65,7 @@
 			 skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />
 			<s:Rect height="6"/>
 			<controls:MiGList labelField="name" sortField="name" headerText="Clients" id="clientList" width="100%"
-			 keyboardLookUp="true" selectedIndex.add="-1" />			
+			 keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"/>			
 			<s:HGroup width="100%" gap="0" paddingLeft="1">
 				<s:Button width="100%" label="+ Add Client" id="addButton"  styleName="grayButton" />
 				<s:Button width="100%" label="- Delete" id="deleteListBtn"  styleName="grayButton" />
@@ -178,4 +180,5 @@
 			</s:HGroup>			
 		</s:Group>
 	</mx:HDividedBox>
+	<components1:ErrorPanel id="errorPanel" horizontalCenter="0" width="100%" includeCancel="true"  />
 </windows:BaseWindow>

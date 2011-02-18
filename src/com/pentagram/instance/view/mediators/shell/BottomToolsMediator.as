@@ -135,7 +135,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);
 					view.reloadVisualization.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
-					view.sortButton.addEventListener(MouseEvent.CLICK,handleSort,false,0,true);
+					//view.sortButton.addEventListener(MouseEvent.CLICK,handleSort,false,0,true);
 				break;	
 			}
 		}	

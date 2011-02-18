@@ -20,7 +20,7 @@ package com.pentagram.instance.view.mediators.editor
 			//eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_CREATED,handleDatasetCreated,EditorEvent);
 			//eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
 			//view.dataset = appModel.selectedSet;
-			view.client = model.client;
+			//Sview.client = model.client;
 			eventMap.mapListener(eventDispatcher,EditorEvent.UPDATE_CLIENT_DATA,saveDataset,EditorEvent);
 			view.dataset = model.selectedSet;
 			

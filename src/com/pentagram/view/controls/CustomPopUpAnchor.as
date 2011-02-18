@@ -197,7 +197,7 @@ package com.pentagram.view.controls
 		//----------------------------------
 		//  displayPopUp
 		//----------------------------------
-		
+		public var isModal:Boolean = false;
 		private var _displayPopUp:Boolean = false;
 		
 		
@@ -488,7 +488,7 @@ package com.pentagram.view.controls
 			
 			if (DisplayObject(popUp).parent == null && displayPopUp)
 			{
-				PopUpManager.addPopUp(popUp,this.parent,true);
+				PopUpManager.addPopUp(popUp,this.parent,isModal);
 				if (popUp is IUIComponent)
 					IUIComponent(popUp).owner = this;
 				popUpIsDisplayed = true;

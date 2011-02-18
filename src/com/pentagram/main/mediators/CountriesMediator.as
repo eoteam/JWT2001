@@ -49,11 +49,15 @@ package com.pentagram.main.mediators
 			view.continentList.dataProvider = model.regions;
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
+			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSave,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
+			
+			view.errorPanel.addEventListener("okEvent",handleNotification,false,0,true);
+			view.errorPanel.addEventListener("cancelEvent",handleNotification,false,0,true);
 			
 			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
 			
@@ -163,7 +167,11 @@ package com.pentagram.main.mediators
 			view.country = currentCountry;
 		}
 		private function handleDelete(event:MouseEvent):void {
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_COUNTRY,currentCountry));
+			view.errorPanel.errorMessage = "Are you sure you want to delete this country?\nThis change cannot be undone";
+		}
+		private function handleNotification(event:Event):void {
+			if(event.type == "okEvent")
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_COUNTRY,currentCountry));
 		}
 	}
 }

@@ -9,6 +9,7 @@
 			import com.pentagram.model.vo.Client;
 			import com.pentagram.model.vo.Dataset;
 			import com.pentagram.model.vo.MimeType;
+			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.events.FlexEvent;
 			
@@ -39,22 +40,9 @@
 	<s:VGroup width="200" gap="0">
 		<s:Button   width="100%" label="Overview" fontFamily="FlamaBold"  textAlignLast="left" click="button1_clickHandler(event)" />
 		<s:Rect height="8" />
-		<controls:MiGList width="100%"  labelField="name" rollOverColor="0x3A9DCC"
+		<controls:MiGList width="100%"  labelField="name"  itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
 		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets" 
-		id="dataSetList" selectionColor="0x3A9DCC">
-			<controls:itemRenderer>
-				<fx:Component>
-					<s:ItemRenderer autoDrawBackground="true"  height="25">
-						<s:states>
-							<s:State name="normal" />
-							<s:State name="hovered" />
-							<s:State name="selected" />
-						</s:states>
-						<s:Label text="{data.name}" color.selected="0xffffff" color="0" left="6" verticalCenter="0" />
-					</s:ItemRenderer>
-				</fx:Component>
-			</controls:itemRenderer>
-		</controls:MiGList>					
+		id="dataSetList"/>					
 		<s:HGroup width="100%" gap="0" paddingLeft="1">
 			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" styleName="grayButton" />
 			<s:Button width="100%" label="- Delete" id="deleteListBtn" styleName="grayButton"/>

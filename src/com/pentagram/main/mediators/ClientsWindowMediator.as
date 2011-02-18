@@ -25,7 +25,7 @@ package com.pentagram.main.mediators
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
-
+	
 	public class ClientsWindowMediator extends Mediator
 	{
 		[Inject]
@@ -54,6 +54,9 @@ package com.pentagram.main.mediators
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
+			
+			view.errorPanel.addEventListener("okEvent",handleNotification,false,0,true);
+			view.errorPanel.addEventListener("cancelEvent",handleNotification,false,0,true);
 			
 			this.addViewListener(ViewEvent.CLIENT_PROP_CHANGED,handlePropChange,ViewEvent);
 			
@@ -202,7 +205,11 @@ package com.pentagram.main.mediators
 			view.currentState = "edit";
 		}
 		private function handleDelete(event:MouseEvent):void {
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_CLIENT,currentClient));
+			view.errorPanel.errorMessage = "Are you sure you want to delete this client?\nThis change cannot be undone";
+		}
+		private function handleNotification(event:Event):void {
+			if(event.type == "okEvent")
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DELETE_CLIENT,currentClient));
 		}
 	}
 }

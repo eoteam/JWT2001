@@ -7,10 +7,7 @@
 		<![CDATA[
 			import mx.events.FlexEvent;
 			
-			protected function searchInput_enterHandler(event:FlexEvent):void
-			{
-				this.currentState = "notfound";
-			}
+
 			[Embed(source='/assets/library.swf#bigQuestion')]
 			[Bindable] private var bigQuestion:Class;
 			
@@ -36,7 +33,7 @@
 			</s:Sequence>
 		</s:Transition> 
 		<s:Transition fromState="notfound" toState="search">
-			<s:Sequence>
+			<s:Sequence effectEnd="this.searchInput.inputTxt.setFocus()"> 
 				<s:Resize  target="{redCircle}" duration="400" easer="{easeOutExpo}" />
 				<s:Fade target="{searchInput}" duration="400" easer="{easeOutExpo2}"/>
 			</s:Sequence>
@@ -56,7 +53,7 @@
 		</s:Ellipse>
 		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260" 
 		 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
-		 enter="searchInput_enterHandler(event)" includeIn="search" visible="false" 
+		 includeIn="search" visible="false" 
 		 labelField="name" creationComplete="this.setFocus();searchInput.inputTxt.prompt='Search for a client...'" />
 		
 		<s:VGroup id="errorMessageHolder"  horizontalCenter="0" verticalCenter="120" 

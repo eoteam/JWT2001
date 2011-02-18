@@ -144,7 +144,7 @@
 		</s:fill>
 	</s:Rect> 
 	
-	<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0">		
+	<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0" minWidth="160">		
 		<s:Group width="100%" contentBackgroundAlpha="1" height="21"  contentBackgroundColor="#595A5C">
 			<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.EyeButton" selected="true" id="check" verticalCenter="0" width="16" left="7"/>
 			<s:Rect width="0.25" height="100%" left="24">

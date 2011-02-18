@@ -12,9 +12,9 @@
 		<s:State name="disabledAndSelected" stateGroups="selected"/>
 	</s:states>
 	
-	<s:Rect width="30" height="30">
+	<s:Rect width="24" height="24">
 		<s:fill>
-			<s:SolidColor alpha="0" />
+			<s:SolidColor color="0xcccccc" />
 		</s:fill>
 	</s:Rect>
 	<s:Group verticalCenter="0" horizontalCenter="0">	
