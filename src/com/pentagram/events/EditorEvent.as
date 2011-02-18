@@ -25,6 +25,7 @@ package com.pentagram.events
 		
 		public static const ERROR:String = "importFailed";
 		public static const START_IMPORT:String = "startImport";
+		public static const RESUME_IMPORT:String = "resumeImport";
 		
 		public static const NOTIFY:String = "notify";
 		

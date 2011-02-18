@@ -180,5 +180,5 @@
 			</s:HGroup>			
 		</s:Group>
 	</mx:HDividedBox>
-	<components1:ErrorPanel id="errorPanel" horizontalCenter="0" width="100%" includeCancel="true"  />
+	<controls:ErrorPanel id="errorPanel" horizontalCenter="0" width="100%" includeCancel="true"  />
 </windows:BaseWindow>

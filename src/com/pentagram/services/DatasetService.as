@@ -24,7 +24,7 @@ package com.pentagram.services
 			var params:Object = new Object();
 			params.action = "createDataset";
 			params.contentid = model.client.id;
-			params.tablename = String(model.client.shortname+'_'+ dataset.name.split(' ').join('')).toLowerCase();
+			params.tablename = String(model.client.shortname+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();
 			params.name = dataset.name;
 			var countryids:String = '';
 			for each(var country:Country in model.client.countries.source) {

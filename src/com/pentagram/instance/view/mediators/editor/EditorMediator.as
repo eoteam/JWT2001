@@ -56,6 +56,7 @@ package com.pentagram.instance.view.mediators.editor
 			eventMap.mapListener(view,'datasetState',handleDatasetState,Event,false,0,true);
 
 			eventMap.mapListener(appEventDispatcher,EditorEvent.START_IMPORT,handleStartImport,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.RESUME_IMPORT,handleResumeImport,EditorEvent);
 			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true); 
@@ -165,24 +166,60 @@ package com.pentagram.instance.view.mediators.editor
 			file.addEventListener(Event.SELECT, onFileLoad); 
 			file.browse([new FileFilter("Spreadsheet", "*.csv")]);
 		}
+		private var currentFile:File;
+		private var currentRows:Array;
+		
 		private function onFileLoad(event:Event):void {
-			readFile(event.target as File);
+			currentFile = event.target as File;
+			
+			var fs:FileStream = new FileStream();
+			fs.open(currentFile, FileMode.READ);
+			var csvContent:String = fs.readUTFBytes(fs.bytesAvailable);
+			fs.close();
+			currentRows = CSVUtils.CsvToArray(csvContent);
+			var header:Array = currentRows[0];
+			
+			if(header.length > 2) 
+				this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT));
+			else	
+				readFile(event.target as File,currentRows,0);
+		}
+		private function handleResumeImport(event:EditorEvent):void {
+			readFile(currentFile,currentRows,event.args[0] =="okEvent"?1:0);
 		}
 		private function dataSetList_nativeDragDropHandler(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				readFile(files[0] as File);
+				//readFile(files[0] as File);
 			}
 		}
 		private function deleteDatasets(event:Event):void {
 			
 		}
-		private function readFile(file:File):void {
-			var fs:FileStream = new FileStream();
-			fs.open(file, FileMode.READ);
-			var csvContent:String = fs.readUTFBytes(fs.bytesAvailable);
-			fs.close();
-			
+		private function readFile(file:File,rows:Array,time:int):void {
+			var fileName:String = file.name.replace(/.csv/gi,'');
+			var header:Array = rows[0];
+			if(rows.length > 2) {
+				header = rows[0];
+				if(header[0].toString().toLowerCase() != "country")
+					showError("First column is not named 'Country'");
+				
+				if(header.length > 2) {
+					if(time == 1)
+						parseDataset(fileName,rows);
+					
+					else {
+						
+						//multiple single sets
+					}
+				}
+				else if(header.length == 2) 
+					parseDataset(fileName,rows);
+			}
+			else 
+				showError("Spreadsheet doesnt have enough rows");
+		}
+		private function parseDataset(fileName:String,rows:Array):void {
 			var i:int;
 			var j:int;
 			var header:Array;
@@ -191,9 +228,8 @@ package com.pentagram.instance.view.mediators.editor
 			var countryFound:Boolean = false;
 			var countryName:String;
 			var cell:String;
-			var dataRow:DataRow ;
+			var dataRow:DataRow;
 			
-			var fileName:String = file.name.replace(/.csv/gi,'');
 			for each(var ds:Dataset in model.client.datasets.source) {
 				if(ds.name == fileName) {
 					showError("This name is already taken. Please rename your file");
@@ -204,63 +240,55 @@ package com.pentagram.instance.view.mediators.editor
 			dataset.type = 1; //start with number
 			dataset.name = fileName; 
 			
-			
-			var rows:Array = CSVUtils.CsvToArray(csvContent);
-			
-			if(rows.length > 2) {
-				header = rows[0];
-				if(header[0].toString().toLowerCase() != "country")
-					showError("First column is not named 'Country'");
-				if(header.length > 2) {
-					dataset.years = [];
-					for(i=1;i<header.length;i++) {
-						if(isNaN(parseInt(header[i]))) {
-							showError("Header doesnt contain proper years");
-							return;
-						}
-						dataset.time = 1;
-						dataset.years.push(parseInt(header[i]));
-					}
+			header = rows[0];
+			if(header.length > 2) {
+				dataset.years = [];
+				for(i=1;i<header.length;i++) {
+					//						if(isNaN(parseInt(header[i]))) {
+					//							showError("Header doesnt contain proper years");
+					//							return;
+					//						
+					dataset.years.push(header[i]);
 				}
-				else 
-					dataset.time = 0;
-				for (i=1;i<rows.length;i++) {
-					var row:Array = rows[i];
-					if(row.length != header.length) {
-						showError("This row's columns dont match the header's columns");
+				dataset.time = 1;
+			}
+			else
+				dataset.time = 0;
+
+			
+			for (i=1;i<rows.length;i++) {
+				var row:Array = rows[i];
+				if(row.length != header.length) {
+					showError("This row's columns dont match the header's columns");
+					badRows.push(row);
+				}
+				else {
+					countryName = row[0];
+					if(model.countryNames[countryName.toLowerCase()] == null) {
+						showError("This row's country is not found");
 						badRows.push(row);
 					}
 					else {
-						countryName = row[0];
-						if(model.countryNames[countryName.toLowerCase()] == null) {
-							showError("This row's country is not found");
-							badRows.push(row);
-						}
-						else {
-							dataRow = new DataRow();
-							dataRow.name = countryName;
-							dataRow.dataset = dataset;
-							dataRow.country = model.countryNames[countryName.toLowerCase()] as Country;
+						dataRow = new DataRow();
+						dataRow.name = countryName;
+						dataRow.dataset = dataset;
+						dataRow.country = model.countryNames[countryName.toLowerCase()] as Country;
+						
+						if(dataset.time == 0) 
+							parseCell(row[1],dataset,dataRow,"value");
 							
-							if(dataset.time == 0) 
-								parseCell(row[1],dataset,dataRow,"value");
-							
-							else {	
-								for(j=1;j<header.length;j++) 
-									parseCell(row[j],dataset,dataRow,header[j]);
-							}
-							dataset.rows.addItem(dataRow);
+						else {	
+							for(j=1;j<header.length;j++) 
+								parseCell(row[j],dataset,dataRow,header[j]);
 						}
+						dataset.rows.addItem(dataRow);
 					}
 				}
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));	
-				
 			}
-			else {
-				showError("Spreadsheet doesnt have enough rows");
-			}
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
 		}
 		private function parseCell(cell:String,dataset:Dataset,row:DataRow,field:String):void {
+			
 			var copy:String = cell;
 			if(copy == '' || copy.toLowerCase() == 'n/a' || copy.toLowerCase() == 'na') {
 				row[field] = 'NULL';

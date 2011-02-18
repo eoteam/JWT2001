@@ -71,6 +71,7 @@ package com.pentagram.instance.view.mediators.shell
 			 
 			eventMap.mapListener(eventDispatcher,EditorEvent.ERROR,handleImportFailed);
 			eventMap.mapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
+			eventMap.mapListener(eventDispatcher,EditorEvent.START_IMPORT,handleStartImport);
 			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
@@ -81,8 +82,9 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			
-			view.errorPanel.addEventListener("okEvent",handleOkEvent,false,0,true);
-			
+			view.errorPanel.addEventListener("okEvent",handleOkError,false,0,true);
+			view.importPanel.addEventListener("okEvent",handleImport,false,0,true);
+			view.importPanel.addEventListener("cacelEvent",handleImport,false,0,true);
 			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -502,11 +504,17 @@ package com.pentagram.instance.view.mediators.shell
 			currentEvent = event.args[1];
 			view.errorPanel.errorMessage = event.args[0];
 		}
-		private function handleOkEvent(event:Event):void {
+		private function handleOkError(event:Event):void {
 			if(currentEvent && view.errorPanel.includeCancel) {
 				this.eventDispatcher.dispatchEvent(currentEvent);
 				currentEvent = null;
 			}
+		}
+		private function handleImport(event:Event):void {
+			this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.RESUME_IMPORT,event.type));
+		}
+		private function handleStartImport(event:Event):void {
+			view.importPanel.errorMessage ="Is this dataset over time?";
 		}
 	}
 }
