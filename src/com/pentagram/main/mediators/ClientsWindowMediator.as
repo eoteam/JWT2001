@@ -20,8 +20,10 @@ package com.pentagram.main.mediators
 	import flash.net.FileFilter;
 	
 	import mx.collections.ArrayCollection;
+	import mx.events.FlexEvent;
 	
 	import org.flashcommander.event.CustomEvent;
+	import org.fluint.uiImpersonation.flex.FlexEnvironmentBuilder;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
@@ -103,6 +105,7 @@ package com.pentagram.main.mediators
 			client[prop] = value;
 			client.modified = true;
 		}
+
 		private function handleUploadProgress(event:ProgressEvent):void {
 			var status:String = (event.target == uploader) ? "Uploading..." : "Download...";
 			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal,status);
@@ -166,7 +169,7 @@ package com.pentagram.main.mediators
 				}
 			}
 		}
-		protected function countryList_selectHandler(event:CustomEvent):void {
+		private function countryList_selectHandler(event:CustomEvent):void {
 			if(currentClient.countries.getItemIndex(event.data) == -1) {
 				currentClient.countries.addItem(event.data);
 				currentClient.newCountries.addItem(event.data);

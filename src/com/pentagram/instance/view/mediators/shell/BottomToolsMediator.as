@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.mediators.shell
 {
+	import com.flexoop.utilities.dateutils.DateUtils;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
@@ -92,14 +93,16 @@ package com.pentagram.instance.view.mediators.shell
 			
 			var bmd:BitmapData = new BitmapData(imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
 			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
-			
+				
 			bmd.copyPixels(imageSnap,rect,new Point( 0, 0 ));
 			imageSnap.dispose();
 			var enc:PNGEncoder = new PNGEncoder();
 			var imgByteArray:ByteArray = enc.encode(bmd);
 			var fs:FileStream = new FileStream();
 			var d:Date = new Date();
-			var fl:File = model.exportDirectory.resolvePath("viz"+d.time+".png");
+			var time:String = DateUtils.dateTimeFormat(d,"MM/DD/YY L:NN:SS A");
+			time = time.split('/').join('-').split(':').join('.');
+			var fl:File = model.exportDirectory.resolvePath("View Screen Shot "+time+".png");
 			try{
 				fs.open(fl,FileMode.WRITE); 
 				fs.writeBytes(imgByteArray);
@@ -168,7 +171,7 @@ package com.pentagram.instance.view.mediators.shell
 							view.timelineContainer.visible = true;
 							
 							for (i=0;i<dataset.years.length;i++) {
-								years.addItem(new Year(dataset.years[i],1)); 
+								years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
 							}
 							view.yearSlider.dataProvider = years;
 						}
@@ -190,31 +193,31 @@ package com.pentagram.instance.view.mediators.shell
 							minYear = ds1.years[0];
 							maxYear = ds1.years[ds1.years.length-1];
 						}
-						if(ds2.time == 1) {
-							showTime = true;
-							if(ds2.years[0] < minYear)
-								minYear = ds2.years[0];
-							if(ds2.years[1] > maxYear)
-								maxYear = ds2.years[ds2.years.length-1];	
-						} 
-						if(ds3 && ds3.time == 1) {
-							showTime = true;
-							if(ds3.years[0] < minYear)
-								minYear = ds3.years[0];
-							if(ds3.years[1] > maxYear)
-								maxYear = ds3.years[ds3.years.length-1];	
-						}
-						if(ds4 && ds4.time ==1) {
-							showTime = true;
-							if(ds4.years[0] < minYear)
-								minYear = ds4.years[0];
-							if(ds4.years[1] > maxYear)
-								maxYear = ds4.years[ds4.years.length-1];	
-						}
+//						if(ds2.time == 1) {
+//							showTime = true;
+//							if(ds2.years[0] < minYear)
+//								minYear = ds2.years[0];
+//							if(ds2.years[1] > maxYear)
+//								maxYear = ds2.years[ds2.years.length-1];	
+//						} 
+//						if(ds3 && ds3.time == 1) {
+//							showTime = true;
+//							if(ds3.years[0] < minYear)
+//								minYear = ds3.years[0];
+//							if(ds3.years[1] > maxYear)
+//								maxYear = ds3.years[ds3.years.length-1];	
+//						}
+//						if(ds4 && ds4.time ==1) {
+//							showTime = true;
+//							if(ds4.years[0] < minYear)
+//								minYear = ds4.years[0];
+//							if(ds4.years[1] > maxYear)
+//								maxYear = ds4.years[ds4.years.length-1];	
+//						}
 						view.yearSlider.visible = showTime;
 						if(showTime) {
-							for (i=minYear;i<=maxYear;i++) {
-								years.addItem(new Year(i,1));
+							for (i=0;i<ds1.years.length;i++) {
+								years.addItem(new Year(ds1.years[i],ds1.years[i].toString().split('_').join('-'),1));
 							}
 							view.yearSlider.dataProvider = years;					
 						}
@@ -261,7 +264,7 @@ package com.pentagram.instance.view.mediators.shell
 			ds3 = view.thirdSet.selectedItem as Dataset;
 			ds4 = view.fourthSet.selectedItem as Dataset;
 		
-			var year:int = view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year as int;
+			var year:String = view.yearSlider.dataProvider.getItemAt(view.yearSlider.selectedIndex).year;
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.PLAY_TIMELINE,year,ds1,ds2,ds3,ds4));	
 		}
 		private function handlePlayButton(event:Event):void {

@@ -11,7 +11,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		
 		function resume():void;
 		
-		function updateYear(year:int):void;
+		function updateYear(year:String):void;
 		
 		function get datasets():Array;
 		

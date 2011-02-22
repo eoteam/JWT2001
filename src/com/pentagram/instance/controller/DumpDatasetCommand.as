@@ -27,11 +27,11 @@ package com.pentagram.instance.controller
 			if(dataset.type == 1) {
 				updateMinMax();
 			}
-			
-			service.updateDataset(dataset);
-			service.addHandlers(handleDatasetUpdated);			
-			total++;
-		
+			if(dataset.modified) { 
+				service.updateDataset(dataset);
+				service.addHandlers(handleDatasetUpdated);			
+				total++;
+			}
 			for each(var row:DataRow in dataset.rows) {
 				service.updateDataRow(row);
 				service.addHandlers(handleRowUpdated);

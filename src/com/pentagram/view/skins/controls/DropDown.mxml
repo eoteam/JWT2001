@@ -105,7 +105,7 @@
     -->
     <s:PopUpAnchor id="popUp"  displayPopUp.normal="false" displayPopUp.open="true" includeIn="open"
         left="0" right="0" top="0" bottom="0" itemDestructionPolicy="auto"
-        popUpPosition="below" popUpWidthMatchesAnchorWidth="true">
+        popUpPosition="below" popUpWidthMatchesAnchorWidth="false">
         
         <!--- 
               This includes borders, background colors, scrollers, and filters.

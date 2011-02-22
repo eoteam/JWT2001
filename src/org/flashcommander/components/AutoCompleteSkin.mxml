@@ -28,8 +28,8 @@
 
 	<s:PopUpAnchor id="popUp"  displayPopUp="false"
         top="0" bottom="0" left="0" right="0" 
-		popUpWidthMatchesAnchorWidth="true"
-        popUpPosition="below" >
+		popUpWidthMatchesAnchorWidth="{this.hostComponent.popUpMatchesWidth}" minHeight="30"
+         popUpPosition="below">
         
         <s:Group id="dropDown" width="100%">
 			<components:ListAutoComplete id="list" width="100%"/>

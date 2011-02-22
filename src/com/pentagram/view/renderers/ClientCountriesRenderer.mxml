@@ -2,15 +2,8 @@
 <s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" height="20"  
-				autoDrawBackground="false" xmlns:components="org.flashcommander.components.*">
-	<fx:Script>
-		<![CDATA[
-			import spark.skins.spark.ButtonSkin;
-			override protected function updateDisplayList(w:Number, h:Number):void {
-				super.updateDisplayList(w,h);
-			}
-		]]>
-	</fx:Script>
+				autoDrawBackground="false">
+
 	<s:states>
 		<s:State name="normal" />
 		<s:State name="hovered" />

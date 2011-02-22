@@ -4,6 +4,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.EditorMainView;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
@@ -23,7 +24,9 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.net.FileFilter;
 	
 	import mx.collections.ArrayCollection;
+	import mx.utils.StringUtil;
 	
+	import org.hamcrest.mxml.collection.Array;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
@@ -62,9 +65,9 @@ package com.pentagram.instance.view.mediators.editor
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancelChange,false,0,true); 
 			
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_OVER,onDragIn,false,0,true);
-			view.addEventListener(NativeDragEvent.NATIVE_DRAG_COMPLETE,onDragComplete,false,0,true);
+			view.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
-			view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,dataSetList_nativeDragDropHandler,false,0,true);
+			//view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
 			
 			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
@@ -99,7 +102,7 @@ package com.pentagram.instance.view.mediators.editor
 					view.datasetEditor.dataset = model.client.datasets.getItemAt(0) as Dataset;
 				}
 			}
-			else {
+			else if(view.currentState == view.datasetState.name) {
 				view.datasetEditor.dataset = null;
 			}
 		}
@@ -115,6 +118,9 @@ package com.pentagram.instance.view.mediators.editor
 				view.datasetEditor.dataset = dataset;
 				view.datasetEditor.generateDataset();
 			}
+			
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,model.client));
+			
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");
@@ -156,21 +162,23 @@ package com.pentagram.instance.view.mediators.editor
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+				processFile(files[0] as File);
 			}
-		}
-		private function onDragComplete(event:NativeDragEvent):void {
-
 		}
 		private function handleStartImport(event:EditorEvent):void {
 			var file:File = File.desktopDirectory; 
 			file.addEventListener(Event.SELECT, onFileLoad); 
 			file.browse([new FileFilter("Spreadsheet", "*.csv")]);
 		}
+		//private var currentFiles:Array
 		private var currentFile:File;
 		private var currentRows:Array;
 		
 		private function onFileLoad(event:Event):void {
-			currentFile = event.target as File;
+			processFile(event.target as File);
+		}
+		private function processFile(file:File):void {
+			currentFile = file
 			
 			var fs:FileStream = new FileStream();
 			fs.open(currentFile, FileMode.READ);
@@ -182,16 +190,10 @@ package com.pentagram.instance.view.mediators.editor
 			if(header.length > 2) 
 				this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT));
 			else	
-				readFile(event.target as File,currentRows,0);
+				readFile(currentFile,currentRows,0);
 		}
 		private function handleResumeImport(event:EditorEvent):void {
 			readFile(currentFile,currentRows,event.args[0] =="okEvent"?1:0);
-		}
-		private function dataSetList_nativeDragDropHandler(event:NativeDragEvent):void {
-			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
-				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				//readFile(files[0] as File);
-			}
 		}
 		private function deleteDatasets(event:Event):void {
 			
@@ -209,8 +211,39 @@ package com.pentagram.instance.view.mediators.editor
 						parseDataset(fileName,rows);
 					
 					else {
-						
-						//multiple single sets
+						var i:int; var j:int;var set:Array;var newRow:Array; 
+						var datasets:Array = [];
+						for(i=1;i<header.length;i++) {
+							var newHeader:Array = [];
+							newHeader[0] = "Country";
+							newHeader[1] = header[i];
+							set = [];
+							set[0] = newHeader;
+							datasets.push(set);
+						} 
+						for(i=1;i<rows.length;i++) {
+							var row:Array = rows[i];
+							var limit:int = header.length > row.length?row.length:header.length;
+							for (j=0;j<limit-1;j++) {
+								set = datasets[j] as Array;
+								newRow = [];
+								newRow[0] = row[0];
+								newRow[1] = row[j+1];
+								set.push(newRow);
+							}
+							for(j=limit;j<header.length-1;j++) {
+								set = datasets[j] as Array;
+								newRow = [];
+								newRow[0] = row[0];
+								newRow[1] = '';
+								set.push(newRow);
+							}
+						}
+						trace("rotation finished");
+						for (i=0;i<datasets.length;i++) {
+							set = datasets[i];
+							parseDataset(header[i+1],set);
+						}
 					}
 				}
 				else if(header.length == 2) 
@@ -241,15 +274,19 @@ package com.pentagram.instance.view.mediators.editor
 			dataset.name = fileName; 
 			
 			header = rows[0];
+		
 			if(header.length > 2) {
 				dataset.years = [];
 				for(i=1;i<header.length;i++) {
 					//						if(isNaN(parseInt(header[i]))) {
 					//							showError("Header doesnt contain proper years");
 					//							return;
-					//						
-					dataset.years.push(header[i]);
+					//			
+					var h:String = header[i].toString().split(' ').join('').split('-').join('_');
+					header[i] = h;
+					dataset.years.push(h); 
 				}
+				dataset.years.sort();
 				dataset.time = 1;
 			}
 			else
@@ -258,14 +295,14 @@ package com.pentagram.instance.view.mediators.editor
 			
 			for (i=1;i<rows.length;i++) {
 				var row:Array = rows[i];
-				if(row.length != header.length) {
-					showError("This row's columns dont match the header's columns");
-					badRows.push(row);
-				}
-				else {
-					countryName = row[0];
+				//if(row.length != header.length) {
+					//showError("This row's columns dont match the header's columns");
+					//badRows.push(row);
+				//}
+				//else {
+					countryName = StringUtil.trim(row[0]);
 					if(model.countryNames[countryName.toLowerCase()] == null) {
-						showError("This row's country is not found");
+						//showError("This row's country is not found");
 						badRows.push(row);
 					}
 					else {
@@ -273,24 +310,41 @@ package com.pentagram.instance.view.mediators.editor
 						dataRow.name = countryName;
 						dataRow.dataset = dataset;
 						dataRow.country = model.countryNames[countryName.toLowerCase()] as Country;
-						
+						if(model.client.countries.getItemIndex(dataRow.country) == -1) //in the system, add to client
+							eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ADD_COUNTRY_FROM_IMPORT,dataRow.country));
 						if(dataset.time == 0) 
 							parseCell(row[1],dataset,dataRow,"value");
-							
 						else {	
-							for(j=1;j<header.length;j++) 
-								parseCell(row[j],dataset,dataRow,header[j]);
+							var limit:int = header.length > row.length?row.length:header.length;
+							for(j=1;j<limit;j++) 
+								parseCell(row[j],dataset,dataRow,header[j]);  
 						}
 						dataset.rows.addItem(dataRow);
 					}
-				}
+				//}
+			}
+			var err:String = '';
+			for each(row in badRows) {
+				if(row.lenght>0)
+					err += row[0].toString() + "\n";
+			}
+			if(err != '')
+				showError(err);
+			
+			dataset.options = '';	
+			if(dataset.type == 1)
+				updateMinMax(dataset);
+			else {
+				for each(var cat:Category in dataset.optionsArray) 
+					dataset.options += cat.name+',';
+				dataset.options = dataset.options.substr(0,dataset.options.length-1);	
 			}
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
 		}
+		
 		private function parseCell(cell:String,dataset:Dataset,row:DataRow,field:String):void {
-			
 			var copy:String = cell;
-			if(copy == '' || copy.toLowerCase() == 'n/a' || copy.toLowerCase() == 'na') {
+			if(copy == '' || copy.toLowerCase() == 'n/a' || copy.toLowerCase() == 'na' || copy.toLowerCase() == '-') {
 				row[field] = 'NULL';
 			}
 			else {
@@ -298,12 +352,52 @@ package com.pentagram.instance.view.mediators.editor
 				if(isNaN(parseFloat(copy)) && copy.length > 1) { ///this is def a word, whole set is turned into a quantitative set
 					dataset.type = 0;
 					row[field] = cell;
+					var f:Boolean = false;
+					for each(var cat:Category in dataset.optionsArray) {
+						if(cat.name.toLowerCase() == cell.toLowerCase()) {
+							f = true;
+							break;
+						}
+					}
+					if(!f) {
+						var category:Category = new Category();
+						category.name = cell;
+						dataset.optionsArray.push(category);
+					}
 				}
 				else {
-					row[field] = copy;
+					row[field] = parseFloat(copy);
 				}
 			}
 			row.modifiedProps.push(field);
+		}
+		private function updateMinMax(dataset:Dataset):void {
+			for each(var row:DataRow in dataset.rows) {
+				if(dataset.time == 1) {
+					for (var i:int = 0;i< dataset.years.length;i++) {
+						if(row[dataset.years[i]] < dataset.min) {
+							setPropChanged(dataset,"min",row[dataset.years[i]]);
+						}
+						if(row[dataset.years[i]] > dataset.max) {
+							setPropChanged(dataset,"max",row[dataset.years[i]]);
+						}			
+					}
+				}
+				else {
+					if(row.value < dataset.min) {
+						setPropChanged(dataset,"min",row.value);
+					}
+					else if(row.value > dataset.max) {
+						setPropChanged(dataset,"max",row.value);
+					}
+				}
+			}
+		}
+		private function setPropChanged(dataset:Dataset,prop:String,value:Number):void {
+			dataset[prop] = value;
+			dataset.modified = true;
+			if(dataset.modifiedProps.indexOf(prop) == -1)
+				dataset.modifiedProps.push(prop);
 		}
 		private function showError(msg:String):void {
 			view.statusModule.updateStatus(msg);

@@ -7,9 +7,12 @@ package com.pentagram.controller.startup
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.utils.CSVUtils;
+	import com.pentagram.utils.ViewUtils;
 	
 	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
+	import mx.utils.ArrayUtil;
 	
 	import org.robotlegs.mvcs.Command;
 
@@ -61,7 +64,7 @@ package com.pentagram.controller.startup
 			appModel.clients = new ArrayList(event.token.results as Array);
 			counter++;
 			for each(var client:Client in appModel.clients.source) {
-				client.thumb = Constants.FILES_URL+client.thumb
+				client.thumb = Constants.FILES_URL+client.thumb;
 				trace(client.thumb);
 				////??????????????????
 				for each(var region:Region in appModel.regions.source) {
@@ -85,9 +88,15 @@ package com.pentagram.controller.startup
 			{
 				country.region = region;
 				country.thumb = Constants.FILES_URL+country.thumb;
+				if(country.altnames) {
+					var alt:Array = CSVUtils.CsvToArray(country.altnames);
+					country.alternateNames.source = alt[0];
+				}
 				//trace(country.thumb);
 				appModel.countryNames[country.name.toLowerCase()] = country;
 				appModel.countryNames[country.shortname.toLowerCase()] = country;
+				for each(var altname:String in country.alternateNames.source)
+					appModel.countryNames[altname] = country;
 				appModel.countries.addItem(country);
 			}
 			checkCount();

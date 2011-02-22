@@ -8,6 +8,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.utils.CSVUtils;
 	import com.pentagram.utils.Downloader;
 	import com.pentagram.utils.Uploader;
 	
@@ -21,6 +22,7 @@ package com.pentagram.main.mediators
 	import flash.net.FileFilter;
 	
 	import mx.collections.ArrayCollection;
+	import mx.events.FlexEvent;
 	
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -49,13 +51,14 @@ package com.pentagram.main.mediators
 			view.continentList.dataProvider = model.regions;
 			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
+			view.altDelete.addEventListener(MouseEvent.CLICK,handleAltDelete,false,0,true);
 			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSave,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
-			
+			view.altNameInput.addEventListener(FlexEvent.ENTER,handleAltName,false,0,true);
 			view.errorPanel.addEventListener("okEvent",handleNotification,false,0,true);
 			view.errorPanel.addEventListener("cancelEvent",handleNotification,false,0,true);
 			
@@ -112,12 +115,34 @@ package com.pentagram.main.mediators
 		private function onFileLoad(event:Event):void {
 			view.logo.source = "file:///" + fileToUpload.nativePath;
 		}
-
+		private function handleAltName(event:FlexEvent):void {
+			if(currentCountry.alternateNames.getItemIndex(view.altNameInput.text) == -1) {
+				currentCountry.alternateNames.addItem(view.altNameInput.text);
+				currentCountry.altnames = CSVUtils.ArrayToCsv([currentCountry.alternateNames.source],',');	
+				currentCountry.modified = true;
+				model.countryNames[view.altNameInput.text] = currentCountry;
+				if(currentCountry.modifiedProps.indexOf("altnames") == -1)
+					currentCountry.modifiedProps.push("altnames");
+			}
+		}	
+		private function handleAltDelete(event:MouseEvent):void {
+			var items:Vector.<Object> = view.altnameList.selectedItems;
+			for each(var n:String in items) {
+				currentCountry.alternateNames.removeItem(n);	
+				model.countryNames[n] = null;
+			}
+			currentCountry.altnames = CSVUtils.ArrayToCsv([currentCountry.alternateNames.source],',');	
+			currentCountry.modified = true;
+			
+			view.altnameList.selectedIndex = -1;
+			if(currentCountry.modifiedProps.indexOf("altnames") == -1)
+				currentCountry.modifiedProps.push("altnames");
+		}
 		private function handleUploadProgress(event:ProgressEvent):void {
 			var status:String = (event.target == uploader) ? "Uploading..." : "Downloading...";
 			view.uploadView.updateStatus(event.bytesLoaded/event.bytesTotal,status);
 		}
-		private function handleUploadComplete(event:DataEvent):void {
+		private function handleUploadComplete(event:Event):void {
 			var status:String = (event.target == uploader) ? "Upload Complete" : "Download Complete";
 			view.uploadView.updateStatus(1,status);
 		}

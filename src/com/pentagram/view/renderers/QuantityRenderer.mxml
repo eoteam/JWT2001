@@ -10,7 +10,7 @@
 			override public function set label(value:String):void
 			{
 				super.label = value;
-				if(labelDisplay && value == "NaN")
+				if(labelDisplay && (value == "NaN" || value == "NULL"))
 					labelDisplay.text = '';
 			}
 		]]>

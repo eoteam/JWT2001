@@ -2,6 +2,7 @@ package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.instance.model.InstanceModel;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
@@ -42,6 +43,10 @@ package com.pentagram.instance.controller
 					dataset.range = dataset.years.join(',');
 				var country:Country;
 				var row:DataRow;
+				var i:int=0;
+				for (i=0;i<dataset.optionsArray.length;i++)  {
+					dataset.optionsArray[i].color = model.colors[i];
+				}
 				if(dataset.rows.length == 0 ) {
 					if(dataset.time == 1) {
 						for each(country in model.client.countries.source) {
@@ -49,7 +54,7 @@ package com.pentagram.instance.controller
 							row.name = country.name;
 							row.dataset = dataset;
 							row.country = country;
-							for (var i:int=0;i<dataset.years.length;i++) {
+							for (i=0;i<dataset.years.length;i++) {
 								row[dataset.years[i]] = dataset.type == 1 ? 0:'';
 							}
 							dataset.rows.addItem(row);
@@ -65,7 +70,6 @@ package com.pentagram.instance.controller
 							dataset.rows.addItem(row);
 						}
 					}
-					
 					eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_CREATED,dataset));
 				}
 				else {

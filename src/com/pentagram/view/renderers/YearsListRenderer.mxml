@@ -47,6 +47,7 @@
 			<s:TransformOffsets id="tOffsets" scaleX="1" scaleY.normal="1" scaleY.hovered="1.25" scaleY.selected="1.25"/>
 		</s:postLayoutTransformOffsets>
 	</s:Rect>
-	<controls:ButtonToolTip bodyText="{data.year}" includeInLayout="false"  alpha="{data.alpha}"
-	y="-50" x="-34.5"  visible="false" visible.selected="true"  visible.hovered="true"/>
+	<controls:ButtonToolTip bodyText="{data.label}" includeInLayout="false"  alpha="{data.alpha}" 
+	rectWidth="{data.label.length*12+10}" tipPlacement="{(data.label.length*12+10)/2-5}"
+	y="-50" x="{-(data.label.length*12+10)/2-4.5}"  visible="false" visible.selected="true"  visible.hovered="true"/>
 </s:ItemRenderer>

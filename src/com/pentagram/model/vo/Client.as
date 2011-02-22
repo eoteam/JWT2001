@@ -14,6 +14,7 @@ package com.pentagram.model.vo
 		public var description:String;
 		public var thumb:String;
 		
+		
 		public var datasets:ArrayList;
 		public var quantityDatasets:ArrayList;
 		public var qualityDatasets:ArrayList;
@@ -24,6 +25,8 @@ package com.pentagram.model.vo
 		public var newCountries:ArrayList = new ArrayList();
 		public var deletedCountries:ArrayList = new ArrayList();
 		
+	
+		//.<String> = new Vector.<String>();
 		
 		public var loaded:Boolean = false;
 		public var created:Boolean = true;

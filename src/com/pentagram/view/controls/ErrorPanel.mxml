@@ -61,7 +61,7 @@
 					<s:SolidColor color="#1A1A1A" alpha="0.8"/>
 				</s:fill>
 			</s:Rect>
-			<s:RichText  left="10" right="10"  top="10" id="textArea" fontFamily="FlamaBold" fontSize="16"/>
+			<s:RichEditableText color="#ffffff"  left="10" right="10"  top="10" id="textArea" fontFamily="FlamaBold" fontSize="16"/>
 			<s:HGroup right="5" bottom="5"> 
 				<s:Button label="Cancel" visible="{includeCancel}" click="button1_clickHandler(event,'cancelEvent')" />
 				<s:Button  label="OK" click="button1_clickHandler(event,'okEvent')" />

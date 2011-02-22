@@ -51,7 +51,7 @@
 				</s:LinearGradient>
 			</s:fill>
 		</s:Ellipse>
-		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260" 
+		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260"  popUpMatchesWidth="true"
 		 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
 		 includeIn="search" visible="false" 
 		 labelField="name" creationComplete="this.setFocus();searchInput.inputTxt.prompt='Search for a client...'" />

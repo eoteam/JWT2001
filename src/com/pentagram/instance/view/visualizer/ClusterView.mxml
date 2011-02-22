@@ -28,7 +28,7 @@
 			import spark.core.SpriteVisualElement;
 			
 			private var maxRadius:Number = 25;
-			private var currentYear:int;
+			private var currentYear:String;
 			private var opacity:Boolean = true;
 
 			private var firstPass:Boolean = true;
@@ -67,15 +67,15 @@
 				
 			}
 			
-			public function updateYear(year:int):void {
+			public function updateYear(year:String):void {
 				currentYear = year;
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
-						if(ds2.time == 1 && year >= ds2.years[0] && year <= ds2.years[ds2.years.length-1]) {
+						if(ds2.time == 1 && ds2.years.indexOf(year) != -1) {
 							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-							circle.content = this.generateContent(circle.data2[year.toString()],year);
+							circle.content = this.generateContent(circle.data2[year],year);
 						}	
 							
 					}
@@ -233,10 +233,10 @@
 					}
 				}
 			}
-			private function generateContent(value:String,year:int=-1):String {
+			private function generateContent(value:String,year:String=null):String {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result += '<span color="#cccccc">'+ds2.name;
-				if(year != -1)
+				if(year != null)
 					result += '('+year+')';
 				result += ': </span><span color="#ffffff">'+value+'</span>';
 				result += "</p></TextFlow>";

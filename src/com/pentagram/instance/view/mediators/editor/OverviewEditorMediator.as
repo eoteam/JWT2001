@@ -32,6 +32,7 @@ package com.pentagram.instance.view.mediators.editor
 		public override function onRegister():void {
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CANCEL,handleCancel,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.ADD_COUNTRY_FROM_IMPORT,handleAddCountryFromImport,EditorEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientSelected,VisualizerEvent);
 			
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientUpdated,EditorEvent);
@@ -124,13 +125,19 @@ package com.pentagram.instance.view.mediators.editor
 				}
 			}
 		}
-		protected function countryList_selectHandler(event:CustomEvent):void {
-			if(model.client.countries.getItemIndex(event.data) == -1) {
-				model.client.countries.addItem(event.data);
-				model.client.newCountries.addItem(event.data);
+		private function countryList_selectHandler(event:CustomEvent):void {
+			processAddCountry(event.data  as Country);
+		}
+		private function handleAddCountryFromImport(event:EditorEvent):void {
+			processAddCountry(event.args[0] as Country);
+		}
+		private function processAddCountry(country:Country):void {
+			if(model.client.countries.getItemIndex(country) == -1) {
+				model.client.countries.addItem(country);
+				model.client.newCountries.addItem(country);
 				for each(var region:Region in model.client.regions.source) {
-					if(region.id == event.data.region.id) {
-						region.countries.addItem(event.data);
+					if(region.id == country.region.id) {
+						region.countries.addItem(country);
 						if(region.countries.length == 1) {
 							var drawer:RegionDrawer = new RegionDrawer();
 							drawer.region = region;
@@ -142,7 +149,7 @@ package com.pentagram.instance.view.mediators.editor
 				}
 			}
 		}
-		protected function handlePropChange(event:ViewEvent):void {
+		private function handlePropChange(event:ViewEvent):void {
 			var prop:String = event.args[0] as String;
 			var value:String = event.args[1] as String;
 			if(model.client.modifiedProps.indexOf(prop) == -1) {

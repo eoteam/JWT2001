@@ -9,6 +9,8 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	
+	import mx.events.FlexEvent;
+	
 	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;
 	
@@ -28,6 +30,7 @@ package com.pentagram.instance.view.mediators.shell
 		{
 			view.searchInput.dataProvider = model.clients.source;
 			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect,false,0,true);
+			view.searchInput.addEventListener(FlexEvent.ENTER,searchInput_enterHandler,false,0,true);
 			view.homeButton.addEventListener(MouseEvent.CLICK,handleHomeButton,false,0,true);
 			view.loginBtn.addEventListener(MouseEvent.CLICK,handleUserButton,false,0,true);
 		}
@@ -47,5 +50,13 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			view.searchInput.text = '';
 		}
+		protected function searchInput_enterHandler(event:FlexEvent):void
+		{
+			if(view.searchInput.list.dataProvider.length == 0)
+				view.currentState = "notfound";
+			else {
+				view.searchInput.list.selectedIndex = 0;
+			}
+		} 
 	}
 }

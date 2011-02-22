@@ -78,6 +78,15 @@ s|Scroller {
 }
 s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.TextInput');
+	focusedTextSelectionColor:#00BCFF;
+	unfocusedTextSelectionColor:#99E4FF;
+	focusColor:#99E4FF;
+}
+s|GridItemRenderer {
+	focusColor:#99E4FF;
+}
+s|GridItemEditor {
+	focusColor:#99E4FF;
 }
 #editorInput {
 	skinClass: ClassReference('spark.skins.spark.TextInputSkin');

@@ -84,7 +84,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.errorPanel.addEventListener("okEvent",handleOkError,false,0,true);
 			view.importPanel.addEventListener("okEvent",handleImport,false,0,true);
-			view.importPanel.addEventListener("cacelEvent",handleImport,false,0,true);
+			view.importPanel.addEventListener("cancelEvent",handleImport,false,0,true);
 			
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
@@ -413,7 +413,7 @@ package com.pentagram.instance.view.mediators.shell
 						view.tools.timelineContainer.visible = true;
 						
 						for (var i:int=0;i<dataset.years.length;i++) {
-							years.addItem(new Year(dataset.years[i],1)); 
+							years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
 						}
 						view.tools.yearSlider.dataProvider = years;
 					}

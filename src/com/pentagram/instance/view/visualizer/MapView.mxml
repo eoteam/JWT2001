@@ -43,7 +43,7 @@
 			private var renderersDictionary:Dictionary;
 			
 			private var maxRadius:Number = 25;
-			private var currentYear:int;
+			private var currentYear:String;
 			private var opacity:Boolean = true;
 			
 			private var dataset:Dataset;
@@ -52,7 +52,7 @@
 			private var _client:Client;
 			private var _categories:ArrayList;
 			private var _isCompare:Boolean = true;
-			
+			private var created:Boolean = false;
 			
 			public function get datasets():Array {
 				return [null,null,dataset,null];
@@ -75,10 +75,28 @@
 			public function set categories(value:ArrayList):void {
 				this._categories = value;
 			}
-			public function visualize(dataset:Dataset):void {
-				
+			public function visualize(dataset:Dataset):void {	
 				this.dataset = dataset;
-				if(!firstPass) {
+				if(this.renderers && _client.countries.length != this.renderers.length) {
+					for each(var country:Country in _client.countries.source) {
+						var found:Boolean = false;
+						for each(var c:MapRenderer in this.renderers) {
+							if(c.id == country.shortname) {
+								found = true;
+								//break;
+							}	
+						}
+						if(!found) {
+							c = new MapRenderer(holder.engine,this);//tooltip
+							c.id = country.shortname;						
+							renderers.push(c);
+							renderersDictionary[country.shortname] = c;
+							holder.balls.addParticle(c);
+							c.visible = false;
+						}
+					}
+				}
+				if(!firstPass || created) {
 					doVisualize();
 				}
 			}
@@ -98,7 +116,7 @@
 				this.maxRadius = value;
 				update();
 			}
-			public function updateYear(year:int):void {
+			public function updateYear(year:String):void {
 				this.currentYear = year;
 				update();	
 			}
@@ -108,14 +126,23 @@
 					if(c.data) {
 						var content:String;
 						if(dataset.time == 1) {
-							r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-							content = generateContent(c.data[currentYear],currentYear);
+							if(!isNaN(c.data[currentYear])) {
+								r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+								content = generateContent(c.data[currentYear],currentYear);
+							}
+							else
+								r = 0;
 						}
 						else {
-							r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-							content = generateContent(c.data.value);
+							if(!isNaN(c.data.value)) {
+								r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+								content = generateContent(c.data.value);
+							}
+							else {
+								r = 0;
+							}
 						}
-						TweenNano.to(c, .5, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
+						TweenNano.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
 						c.content = content;
 						c.draw();
 					}
@@ -353,6 +380,7 @@
 				}
 			}
 			private function handleMapLoaded(event:Event):void {
+				created = true;
 				FXGLoader(event.target).removeEventListener(Event.COMPLETE,handleMapLoaded);
 				if(firstPass) {
 					doVisualize();
@@ -386,10 +414,10 @@
 					//holder.visible = true;
 				}
 			}
-			private function generateContent(value:String,year:int=-1):String {
+			private function generateContent(value:String,year:String=null):String {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result += '<span color="#cccccc">'+dataset.name;
-				if(year != -1)
+				if(year != null)
 					result += '('+year+')';
 				result += ': </span><span color="#ffffff">'+value+'</span>';
 				result += "</p></TextFlow>"	;

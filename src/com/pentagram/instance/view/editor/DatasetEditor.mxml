@@ -49,9 +49,9 @@
 	
 				if(dataset.time == 1) {
 					for(var i:int=0;i<dataset.years.length;i++) {
-						var year:int = dataset.years[i];
+						var year:String = dataset.years[i];
 						column  = new GridColumn();
-						column.headerText = year.toString();
+						column.headerText = year.toString().split('_').join('-');
 						if(dataset.type == 1) {
 							column.itemEditor = new ClassFactory(QuantityEditor);
 							column.itemRenderer = new ClassFactory(QuantityRenderer);
@@ -59,7 +59,7 @@
 						else 
 							column.itemEditor = new ClassFactory(QualityEditor);
 						
-						column.dataField = year.toString();
+						column.dataField = year;
 						column.width = 75;	
 						column.resizable = true;
 						column.sortable = true;

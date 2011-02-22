@@ -42,6 +42,7 @@ package com.pentagram.events
 		public static const CREATE_NOTE:String = "createNote";
 		public static const NOTE_CREATED:String = "noteCreated";
 		
+		public static const ADD_COUNTRY_FROM_IMPORT:String = "addCountryFromImport";
 		
 		public var args:Array;
 		public function EditorEvent(type:String,...args)

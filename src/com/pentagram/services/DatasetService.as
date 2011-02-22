@@ -36,7 +36,8 @@ package com.pentagram.services
 			params.type = dataset.type;
 			params.unit = dataset.unit;
 			params.multiplier = dataset.multiplier;
-			params.createdby = model.user.id;
+			params.createdby = model.user.id;				
+			params.options = (dataset.options == '' || dataset.options == null) ? 'NULL':dataset.options;
 			params.modifiedby = model.user.id;
 			if(dataset.time == 1)
 				params.years = dataset.years.join(',');

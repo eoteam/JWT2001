@@ -5,7 +5,7 @@
 					xmlns:windows="com.pentagram.main.windows.*"
 					xmlns:editor="com.pentagram.instance.view.editor.*"
 					xmlns:controls="com.pentagram.view.controls.*" title="Countries"
-					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*" xmlns:components="com.pentagram.view.skins.components.*">
+					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*" xmlns:components="com.pentagram.view.skins.components.*" xmlns:layouts="com.pentagram.view.layouts.*">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.main.event.ViewEvent;
@@ -13,6 +13,8 @@
 			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.collections.ArrayCollection;
+			import mx.core.ScrollPolicy;
+			import mx.events.FlexEvent;
 			
 			import spark.events.TextOperationEvent;
 
@@ -43,11 +45,17 @@
 			private function handlePropChange(event:Event,prop:String,tprop:String):void {
 				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,country,prop,event.target[tprop]));
 			}
+			protected function altnameList_creationCompleteHandler(event:FlexEvent):void
+			{
+				altnameList.scroller.setStyle("horizontalScrollPolicy",ScrollPolicy.OFF); 
+				altnameList.scroller.setStyle("verticalScrollPolicy",ScrollPolicy.OFF); 
+			}
+
 
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<fx:int id="LABEL_WIDTH">90</fx:int>
+		<fx:int id="LABEL_WIDTH">100</fx:int>
 		<fx:int id="FIELD_WIDTH">400</fx:int>
 		<vo:Country id="country" />
 	</fx:Declarations>
@@ -75,27 +83,29 @@
 					<s:SolidColorStroke color="0xB3B1AC" weight="0.7" caps="square" />
 				</s:stroke>
 			</s:Rect>
-			<s:VGroup id="countryEditor" width="100%" top="15" left="16" right="16" bottom="52">
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+			<s:VGroup id="countryEditor" width="100%" top="15" left="16" right="16" bottom="52" paddingRight="100">
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{country.name}" change="handlePropChange(event,'name','text')"/>
+					<s:TextInput width="100%" text="{country.name}" change="handlePropChange(event,'name','text')"/>
 				</s:HGroup>
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Short Name" />
 					<s:Rect width="8" />
-					<s:TextInput width="{FIELD_WIDTH}" text="{country.shortname}" change="handlePropChange(event,'shortname','text')"/>
+					<s:TextInput width="100%" text="{country.shortname}" change="handlePropChange(event,'shortname','text')"/>
 				</s:HGroup>
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Region" />
 					<s:Rect width="8" />
 					<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Select a Region" selectedItem="{country.region}" change="handlePropChange(event,'region','selectedItem')" />
 				</s:HGroup>
 				
-				<s:HGroup verticalAlign="top" width="90%" gap="0">  
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Image" />
 					<s:Rect width="8" />
-					<controls:EditorPanel width="{FIELD_WIDTH}" height="130" id="logoHolder" nativeDragDrop="logoHolder_nativeDragDropHandler(event)">
+					<controls:EditorPanel width="100%" height="130" id="logoHolder" nativeDragDrop="logoHolder_nativeDragDropHandler(event)">
 						<s:Image id="logo" horizontalAlign="left"
 						height="87" left="4" right="4" top="1" bottom="4" scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
 						source="{country.thumb}"/>
@@ -105,6 +115,52 @@
 						</controls:controlBarContent>
 					</controls:EditorPanel>
 				</s:HGroup>	
+				
+				<s:HGroup verticalAlign="top" gap="0" width="100%" height="100%">  
+					<s:Label width="{LABEL_WIDTH}" text="Alt. Names" />
+					<s:Rect width="8" />		
+					<controls:EditorPanel height="100%" width="100%">
+						<s:List  allowMultipleSelection="true" id="altnameList" width="100%" height="100%"  creationComplete="altnameList_creationCompleteHandler(event)"
+								 dataProvider="{country.alternateNames}" labelField="name" borderVisible="false" contentBackgroundAlpha="0">
+							<s:itemRenderer>
+								<fx:Component>
+									<s:ItemRenderer height="20" autoDrawBackground="false" >	
+										<s:states>
+											<s:State name="normal" />
+											<s:State name="hovered" />
+											<s:State name="selected" />
+										</s:states>
+										
+										<s:Rect height="20"  radiusX="6"  right="1" left="0" y="0.5" id="rect2">
+											<s:stroke>
+												<s:SolidColorStroke caps="none" color="#A5A6A6" joints="miter" miterLimit="4" weight="1" />
+											</s:stroke>
+											<s:fill>
+												<s:SolidColor id="bgFill" alpha="0.2" alpha.hovered="0.5"  alpha.selected="1"  />
+											</s:fill>
+											
+										</s:Rect>
+										
+										<s:Label text="{data}" verticalCenter="0"  horizontalCenter="0" fontFamily="FlamaMedium"
+												 color="0" color.selected="0xffffff" left="4" right="4"/>
+										
+									</s:ItemRenderer>
+									
+								</fx:Component>
+							</s:itemRenderer>
+							<s:layout>
+								<layouts:FlowLayout verticalGap="6" padding="6" horizontalGap="4" id="flowLayout"  />
+							</s:layout>
+						</s:List>	
+						<controls:controlBarContent>
+							<s:Label  text="Total: {country.alternateNames.length}" styleName="FlamaBold" />
+							<s:TextInput id="altNameInput" height="19"  width="160"/>
+							<s:Rect width="100%" />
+							<s:Button label="— Delete" color="0xC61023" id="altDelete" /> 
+						</controls:controlBarContent>
+						
+					</controls:EditorPanel>
+				</s:HGroup>
 			</s:VGroup>
 			<s:Rect left="0" right="0"  bottom="40">
 				<s:stroke>

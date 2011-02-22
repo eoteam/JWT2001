@@ -52,6 +52,7 @@ package org.flashcommander.components
 		public var minChars:Number = 1;
 		public var prefixOnly:Boolean = true;
 		public var requireSelection:Boolean = false;
+		public var popUpMatchesWidth:Boolean = false;
 		
 		[SkinPart(required="true",type="spark.components.Group")]
 		public var dropDown:Group;

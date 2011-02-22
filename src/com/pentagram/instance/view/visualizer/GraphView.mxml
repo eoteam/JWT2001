@@ -39,7 +39,7 @@
 			private var  ds4:Dataset;
 			
 			[Bindable] private var maxRadius:Number = 25;
-			private var currentYear:int;
+			private var currentYear:String;
 			private var opacity:Boolean = true;
 			
 			private var categories:Array;
@@ -141,7 +141,7 @@
 			public function pause():void {
 				
 			}
-			public function updateYear(year:int):void {
+			public function updateYear(year:String):void {
 				currentYear = year;
 			}
 			public function toggleOpacity(value:Number):void {
