@@ -50,6 +50,7 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent,false,0,true);
+			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 					
@@ -99,20 +100,25 @@ package com.pentagram.instance.view.mediators
 		
 		}
 		private function handleClientSelected(event:ViewEvent):void {
-			if(!model.client.loaded)
-				view.currentState = view.visualizerAndLoadingState.name;
-			else
-				view.currentState = view.visualizerAndLoadedState.name;
+			//if(!model.client.loaded)
+			view.currentState = view.visualizerAndLoadingState.name;
+			//else
+			//	view.currentState = view.visualizerAndLoadedState.name;
 			view.client = model.client;
 			view.title = model.client.name;
 			//mediatorMap.createMediator(view.shellView);
 			//selectedClient = event.args[0] as Client;
+			if(view.shellView)
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+		}
+		private function handleProgress(event:VisualizerEvent):void {
+			view.currentState = event.args[0] == true? view.state+"AndLoading":view.state+"AndLoaded";
 		}
 		private function handleShellLoaded(event:ViewEvent):void {
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void {
-			view.currentState = view.visualizerAndLoadedState.name;
+			//view.currentState = view.visualizerAndLoadedState.name;
 			view.title = model.client.name;
 		}
 		private function loadSearchView(event:VisualizerEvent):void {

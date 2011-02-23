@@ -30,6 +30,8 @@ package com.pentagram.instance.events
 		public static const TWITTER_SORT:String = "twitterSort";
 		
 		
+		public static const TOGGLE_PROGRESS:String = "toggleProgress";
+		
 		public var args:Array;
 		public function VisualizerEvent(type:String,...args)
 		{

@@ -7,7 +7,7 @@
 		 gap="0" verticalAlign="middle" xmlns:graphics="ws.tink.spark.graphics.*">
 
 		
-	<components:AutoComplete width="260" id="searchInput" labelField="name"  popUpMatchesWidth="true"
+	<components:AutoComplete width="260" id="searchInput" labelField="name"  popUpMatchesWidth="true" popUpPosition="above"
 	creationComplete="searchInput.inputTxt.prompt='Search for a client...'" />
 	
 	<s:Rect width="12" />

@@ -75,7 +75,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltip.visible = false;
 		}		
 		private function handleRemoved(event:Event):void {
-			tooltipContainer.removeElement(tooltip);
+			if(tooltipContainer.contains(tooltip))
+				tooltipContainer.removeElement(tooltip);
 		}
 		public function set state(value:Boolean):void {
 			if(value && !stateFlag)

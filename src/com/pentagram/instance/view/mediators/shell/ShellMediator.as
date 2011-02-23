@@ -393,6 +393,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IMapView) {
 				view.mapHolder.addElement(util.view as Group);
 				this.view.mapView = util.view as IMapView;
+				util.view.addEventListener('vizComplete',handleVizComplete,false,0,true);
 				this.setupMapView();
 				view.visualizerArea.selectedIndex = model.MAP_INDEX;
 			}
@@ -457,6 +458,8 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleTwitterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is ITwitterView) {
+				util.view.addEventListener('vizComplete',handleVizComplete,false,0,true);
+				util.view.addEventListener('vizStarted',handleVizComplete,false,0,true);
 				view.twitterView = util.view as ITwitterView;
 				view.twitterView.searchTerm = model.client.shortname;
 				view.twitterHolder.addElement(util.view as Group);	
@@ -465,6 +468,12 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function  handleTwitterViz(event:Event):void {
 			view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
+		}
+		
+		
+		private function handleVizComplete(event:Event):void {
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,event.type=='vizComplete'?false:true));
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();

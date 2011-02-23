@@ -91,7 +91,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 		}
 		private function handleRemoved(event:Event):void {
-			tooltipContainer.removeElement(tooltip);
+			if(tooltipContainer.contains(tooltip))
+				tooltipContainer.removeElement(tooltip);
 		}
 		public function draw():void {
 			if(countrySprite) {

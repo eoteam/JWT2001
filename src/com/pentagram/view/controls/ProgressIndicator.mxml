@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx">
 	
 	<fx:Declarations>
-		<fx:Number id="radius">400</fx:Number>
+		<fx:Number id="radius">125</fx:Number>
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
@@ -18,8 +18,8 @@
 				var radius:Number = radius;
 				var iniX:Number = 0;
 				var iniY:Number = 0;
-				var increment:Number = increment;
-				var totalDegrees:Number = 0;
+				var increment:Number = 1;
+				var totalDegrees:Number = -90;
 				var degInRad:Number = -Math.PI/2;
 				var degInRad1:Number =  -Math.PI/2;
 				
@@ -34,7 +34,7 @@
 				matr.createGradientBox(radius*2,radius*2, Math.PI/1.7, 0, 0);     
 				
 				function drawSegment(e:TimerEvent):void{
-					if(totalDegrees < 362 && keepLoading){
+					if(totalDegrees < 272 && keepLoading){
 						degInRad = totalDegrees * (Math.PI / 180);
 						degInRad1 = Number(totalDegrees+increment) * (Math.PI / 180);
 						var x1:Number = radius * Math.cos( degInRad ) + iniX;
@@ -52,7 +52,9 @@
 						totalDegrees+= increment;
 					}
 					else{
-						totalDegrees = 0;
+						
+						totalDegrees = -90;
+						container.graphics.clear();
 					}
 				}
 			}
@@ -87,16 +89,16 @@
 
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
-				// TODO Auto-generated method stub
+				startProgress();
 			}
 
 		]]>
 	</fx:Script>
 	<s:Ellipse verticalCenter="0" horizontalCenter="0" width="{radius*2}" height="{radius*2}" maskType="alpha">
 		<s:fill>
-			<s:SolidColor color="#E3E3E3"/>
+			<s:SolidColor color="#E3E3E3" alpha="0.8"/>
 		</s:fill>
 	</s:Ellipse>	
 	
-	<s:SpriteVisualElement verticalCenter="0" horizontalCenter="0" id="container"/>
+	<s:SpriteVisualElement verticalCenter="0" horizontalCenter="0" id="container" alpha="0.8"/>
 </s:Group>

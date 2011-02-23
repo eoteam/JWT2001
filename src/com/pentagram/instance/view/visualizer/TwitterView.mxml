@@ -6,7 +6,7 @@
 				xmlns:views="com.pentagram.instance.view.visualizer.views.*"
 				implements="com.pentagram.instance.view.visualizer.interfaces.ITwitterView"
 				resize="updateSize()"
-				width="100%" height="100%" xmlns:assets="com.pentagram.view.assets.*" >
+				width="100%" height="100%" xmlns:assets="com.pentagram.view.assets.*" xmlns:controls="com.pentagram.view.controls.*" >
 	<fx:Script>
 		<![CDATA[
 			import com.adobe.serialization.json.JSON;
@@ -80,34 +80,7 @@
 			public function update():void {
 				
 			}
-			public function set searchTerm(q:String):void {
-				if(_searchTerm != q) {
-					_searchTerm = q;
-					counter = 1;
-					currentCommonWords = [];
-					allTweets = [];
-					_topics = [];
-					apiSearchTerm = '';
-					text = '';
-					var tmp:Array = _searchTerm.split(" ");
-					for each(var token:String in tmp) {
-						apiSearchTerm += token+'+';
-						token = token.toLowerCase();
-						currentCommonWords.push(token);
-						currentCommonWords.push("@"+token);
-						currentCommonWords.push("@"+token+":");
-						currentCommonWords.push("@"+token+".");
-						currentCommonWords.push("@"+token+",");
-						currentCommonWords.push("@"+token+")");
-					}
-					apiSearchTerm = apiSearchTerm.substr(0,apiSearchTerm.length-1);
-					currentCommonWords = currentCommonWords.concat(commonWords);
-					if(!firstPass) {
-						this.currentState = "preload";
-						holder.removeAllElements();
-					}
-				}
-			}
+		
 			public function changeView(view:Object):void {
 				
 			}
@@ -154,16 +127,6 @@
 					pack.draw();
 				}
 			}
-			public function reload():void {
-				counter = 1;
-				allTweets = [];
-				_topics = [];
-				text = '';
-				holder.removeAllElements();			
-				currentState = "loading";
-				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
-				service.send();
-			}	
 			public function showOptions(value:Boolean):void {
 				optionsPanel.visible = value;
 				if(!value) {
@@ -387,7 +350,6 @@
 				
 				pack.build();
 				pack.addEventListener("layoutComplete",handleLayout,false,0,true);
-				this.dispatchEvent(new Event("vizLoaded"));
 				this.updateSize();
 				firstPass = false;
 			}
@@ -395,6 +357,7 @@
 				updateSize();
 				this.currentState = "loaded";
 				_searchTerm = null;
+				this.dispatchEvent(new Event('vizComplete'));
 			}
 			public function sort():void {
 				for (var i:int=0;i<holder.numElements;i++) {
@@ -407,13 +370,49 @@
 				this.pageTotal = pageSlider.value
 				optionsPanel.visible = false;
 				if(firstPass) {
+					start();
+				}
+			}
+			private function start():void {
+				this.dispatchEvent(new Event('vizStarted'));
+				counter = 1;
+				allTweets = [];
+				_topics = [];
+				text = '';	
+				currentState = "loading";
+				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
+				service.send();
+			}
+			public function reload():void {
+				holder.removeAllElements();
+				start();
+			}
+			public function set searchTerm(q:String):void {
+				if(_searchTerm != q) {
+					_searchTerm = q;
 					counter = 1;
+					currentCommonWords = [];
 					allTweets = [];
 					_topics = [];
-					text = '';	
-					currentState = "loading";
-					service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
-					service.send();
+					apiSearchTerm = '';
+					text = '';
+					var tmp:Array = _searchTerm.split(" ");
+					for each(var token:String in tmp) {
+						apiSearchTerm += token+'+';
+						token = token.toLowerCase();
+						currentCommonWords.push(token);
+						currentCommonWords.push("@"+token);
+						currentCommonWords.push("@"+token+":");
+						currentCommonWords.push("@"+token+".");
+						currentCommonWords.push("@"+token+",");
+						currentCommonWords.push("@"+token+")");
+					}
+					apiSearchTerm = apiSearchTerm.substr(0,apiSearchTerm.length-1);
+					currentCommonWords = currentCommonWords.concat(commonWords);
+					if(!firstPass) {
+						this.currentState = "preload";
+						holder.removeAllElements();
+					}
 				}
 			}
 		]]>
@@ -421,17 +420,17 @@
 	<fx:Declarations>
 		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple" result="httpservice1_resultHandler(event)" method="GET"/>
 		<s:HTTPService id="linksService" resultFormat="text" concurrency="multiple" method="POST" result="linksService_resultHandler(event)"/>
-		
 	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="vizComplete",type="flash.events.Event")]
+	</fx:Metadata>
 	<modules:states>
 		<s:State name="preload" />
 		<s:State name="loading" />
 		<s:State name="loaded" />
 	</modules:states>
 	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
-	
-	<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
-		
+			
 	<s:Group left="5" bottom="0" styleName="darkPanel" id="optionsPanel" 	 width="240" height="200" >
 		<s:filters>
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>

@@ -53,6 +53,7 @@ package org.flashcommander.components
 		public var prefixOnly:Boolean = true;
 		public var requireSelection:Boolean = false;
 		[Bindable] public var popUpMatchesWidth:Boolean = false;
+		[Bindable] public var popUpPosition:String = "below";
 		
 		[SkinPart(required="true",type="spark.components.Group")]
 		public var dropDown:Group;
@@ -90,7 +91,7 @@ package org.flashcommander.components
 				dropDown.addEventListener(SandboxMouseEvent.MOUSE_WHEEL_SOMEWHERE, mouseOutsideHandler);
 			}
 			if(instance == popUp) {
-				popUp.minWidth = this.width;
+				popUp.popUpPosition = this.popUpPosition;
 			}
 		}
 		
