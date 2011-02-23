@@ -35,6 +35,7 @@
 
 			private var counter:int = 1;
 			private var pageTotal:int = 3;
+			private var limit:int = 10;
 			private var allTweets:Array;
 			private var _searchTerm:String;
 			private var apiSearchTerm:String;
@@ -52,13 +53,25 @@
 				"way","even","new","want","because","any","these","give","day","most","us",
 				
 				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has",
-				"quot","amp","'s"];
+				"quot","amp","'s","youtu",
+			
+				//spanish
+				"de","la","que","y","el","en","a","los","se","no","un","las","del","por","con","una","es","lo","para","su","al","como",
+				"más","o","pero","me","le","ha","sus","si","yo","ya","este","porque","muy","todo","cuando","qué","sin","son","sobre",
+				"está","también","esta","hay","sí","entre","ser","era","mi","dos","había","nos","años","tiene","hasta","desde","te",
+				"eso","fue","todos","puede","han","pues","así","bien","vez","ni","sólo","él","ahora","uno","parte","ese","vida","tiempo",
+				"mismo","otro","día","cada","siempre","hacer","donde","esa","nada","hace","tan","entonces","decir","bueno","otra","esto",
+				"después","ella","mundo","tanto","otros","menos","va","poco","aquí","mucho","e","usted","estado","estaba","gran","sea","ver",
+				"cómo","aunque","están","les","tres","antes","gobierno","sido","casa","algo","hombre","país","dijo","sino","forma","año","estos",
+				"caso","hecho","durante","hoy","momento","he","unos","luego","general","creo","ellos","cosas","todas","además","mayor","España",
+				"mejor","trabajo","toda","días","tienen","política","tenía","contra","dice","hacia","tal","otras","vamos","veces","gente","lugar",
+				"ejemplo","tener","casi","estas","personas","parece","primera","mujer","según","mientras","poder","mí","nunca","nosotros","tu","algunos","pueden"];
 			
 			
 			
 			protected var resizeFlag:Boolean = false
 		
-			private var limit:int;
+			
 			
 			public function updateSize():void {
 				resizeFlag = true;
@@ -146,9 +159,18 @@
 				allTweets = [];
 				_topics = [];
 				text = '';
-				this.currentState = "preload";
 				holder.removeAllElements();			
+				currentState = "loading";
+				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
+				service.send();
 			}	
+			public function showOptions(value:Boolean):void {
+				optionsPanel.visible = value;
+				if(!value) {
+					this.limit = list.selectedItem.value;
+					this.pageTotal = pageSlider.value
+				}
+			}
 			public function clear():void {
 				counter = 1;
 				allTweets = [];
@@ -163,13 +185,6 @@
 						r.closeInfo()
 					}
 				}
-			}
-			public function list1_changeHandler(value:Object):void
-			{
-				currentState = "loading";
-				limit = value.value;
-				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
-				service.send();
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);
@@ -387,6 +402,20 @@
 					pack.sort();
 				}
 			}
+			private function handleClick(event:MouseEvent):void {
+				this.limit = list.selectedItem.value;
+				this.pageTotal = pageSlider.value
+				optionsPanel.visible = false;
+				if(firstPass) {
+					counter = 1;
+					allTweets = [];
+					_topics = [];
+					text = '';	
+					currentState = "loading";
+					service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
+					service.send();
+				}
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -403,7 +432,7 @@
 	
 	<assets:CircularProgress includeIn="loading"  verticalCenter="0" horizontalCenter="0" />
 		
-	<s:Group left="5" bottom="0" styleName="darkPanel" includeIn="preload" width="240" height="200" >
+	<s:Group left="5" bottom="0" styleName="darkPanel" id="optionsPanel" 	 width="240" height="200" >
 		<s:filters>
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 		</s:filters>
@@ -419,14 +448,12 @@
 						<s:SolidColor color="#1A1A1A" alpha="0.9"/>
 					</s:fill>
 				</s:Path>
-			</s:Group>
-			
+			</s:Group>	
 		</s:VGroup>
-
 		
-		<s:VGroup gap="6" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" width="240" height="200">
+		<s:VGroup gap="6" paddingLeft="5" paddingRight="5" paddingTop="5" paddingBottom="5" width="240" height="200" styleName="darkPanel">
 			<s:Label fontFamily="FlamaBold" text="Choose rendering speed"  color="0xffffff" />
-			<s:List borderVisible="false" contentBackgroundAlpha="0"  id="list" styleName="darkPanel" requireSelection="true" width="100%">
+			<s:TabBar id="list" styleName="darkPanel" requireSelection="true" width="100%" selectedIndex="2">
 				<s:dataProvider>
 					<s:ArrayList>
 						<fx:Object label="Slow" value="0" />
@@ -436,21 +463,26 @@
 				</s:dataProvider>
 				<s:itemRenderer>
 					<fx:Component>
-						<s:ItemRenderer autoDrawBackground="false"  width="100%" styleName="darkPanel">
-							<s:Button skinClass="com.pentagram.view.skins.buttons.DarkButton" width="100%" label="{data.label}" click="this.outerDocument.list1_changeHandler(data)"/>
-						</s:ItemRenderer>
+						<s:ButtonBarButton width="100%" skinClass="com.pentagram.view.skins.buttons.DarkToggleButton" label="{data.label}" />
 					</fx:Component>
 				</s:itemRenderer>
+				<!--<s:itemRenderer>
+					<fx:Component>
+						<s:ItemRenderer autoDrawBackground="false"  width="100%" styleName="darkPanel">
+							<s:Button skinClass="com.pentagram.view.skins.buttons.DarkButton" width="100%" label="{data.label}"/>
+						</s:ItemRenderer>
+					</fx:Component>
+				</s:itemRenderer>-->
 				<s:layout>
 					<s:VerticalLayout gap="4" verticalAlign="middle" horizontalAlign="center" />
 				</s:layout>
-			</s:List> 
+			</s:TabBar>
 			<s:Rect height="10" />
 
 			<s:Label fontFamily="FlamaBold" text="# of pages (100 tweets per page)"  color="0xffffff" />
 			<s:HSlider minimum="1" maximum="15" id="pageSlider" skinClass="com.pentagram.view.skins.controls.DarkHSlider" stepSize="1"
 			showDataTip="true"  change="this.pageTotal=pageSlider.value" width="255"  />
-			
+			<s:Button label="Save" width="100%" click="handleClick(event)"  skinClass="com.pentagram.view.skins.buttons.DarkButton"/>
 		</s:VGroup>
 	</s:Group>
 	

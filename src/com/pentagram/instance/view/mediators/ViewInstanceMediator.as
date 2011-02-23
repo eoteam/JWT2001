@@ -113,6 +113,7 @@ package com.pentagram.instance.view.mediators
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void {
 			view.currentState = view.visualizerAndLoadedState.name;
+			view.title = model.client.name;
 		}
 		private function loadSearchView(event:VisualizerEvent):void {
 			view.currentState = view.searchState.name;

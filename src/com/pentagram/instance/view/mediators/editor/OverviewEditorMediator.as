@@ -64,10 +64,12 @@ package com.pentagram.instance.view.mediators.editor
 			view.client = model.client;
 			view.regionHolder.removeAllElements();
 			for each(var region:Region in model.client.regions.source) {
-				var drawer:RegionDrawer = new RegionDrawer();
-				drawer.region = region;
-				drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
-				view.regionHolder.addElement(drawer);
+				if(region.countries.length > 0) {
+					var drawer:RegionDrawer = new RegionDrawer();
+					drawer.region = region;
+					drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+					view.regionHolder.addElement(drawer);
+				}
 			}
 		}
 		private function handleClientUpdated(event:EditorEvent):void {

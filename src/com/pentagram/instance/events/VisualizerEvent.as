@@ -26,6 +26,7 @@ package com.pentagram.instance.events
 		
 		public static const TWITTER_SEARCH:String = "twitterSearch";
 		public static const TWITTER_RELOAD:String = "twitterReload";
+		public static const TWITTER_OPTIONS:String = "twitterOptions";
 		public static const TWITTER_SORT:String = "twitterSort";
 		
 		

@@ -21,7 +21,7 @@ package com.pentagram.instance.controller
 		public var service:IClientService;
 		
 		[Inject]
-		public var event:EditorEvent;
+		public var editorEvent:EditorEvent;
 		
 		private var counter:int;
 		private var total:int;
@@ -38,11 +38,13 @@ package com.pentagram.instance.controller
 				service.addClientCountries(model.client,model.client.newCountries);
 				service.addHandlers(handleAddClientCountry);
 				total++;
-				for each(dataset in model.client.datasets.source) {
-					service.addDatasetCountries(dataset,model.client.newCountries);
-					service.addProperties('dataset',dataset);
-					service.addHandlers(handleAddDatasetCountry);
-					total++;
+				if(editorEvent.args[0] == true) {
+					for each(dataset in model.client.datasets.source) {
+						service.addDatasetCountries(dataset,model.client.newCountries);
+						service.addProperties('dataset',dataset);
+						service.addHandlers(handleAddDatasetCountry);
+						total++;
+					}
 				}
 			}
 			if(model.client.deletedCountries.length > 0) {
@@ -103,7 +105,7 @@ package com.pentagram.instance.controller
 						dataset.rows.addItem(row);
 						break;
 					}
-				}
+				}			
 			}
 			counter++;
 			checkCount();

@@ -248,7 +248,7 @@ in accordance with the terms of the license agreement accompanying it.
 			 mouseEnabled="false" mouseChildren="false"
 			 includeIn="normalWithPrompt,disabledWithPrompt" 
 			 includeInLayout="false"
-			 color="#aaaaaa" fontFamily="FlamaBookItalic" fontStyle="normal"    
+			 color="#aaaaaa" fontFamily="FlamaBook" fontStyle="normal"    
 			 />   
 	
 </s:SparkSkin>

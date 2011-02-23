@@ -59,8 +59,9 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_SEARCH,handleTwitterSearch);
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_RELOAD,handleTwitterReload);
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_SORT,handleTwitterSort);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_RELOAD,handleTwitter);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_SORT,handleTwitter);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.TWITTER_OPTIONS,handleTwitter);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.STOP_TIMELINE,handleStopTimeline);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.PLAY_TIMELINE,handlePlayTimeline);
@@ -229,11 +230,21 @@ package com.pentagram.instance.view.mediators.shell
 			view.twitterView.searchTerm = event.args[0];
 			view.vizTitle.text = 'Twitter Visualization for term "' + event.args[0] + '"';
 		}
-		private function handleTwitterReload(event:VisualizerEvent):void {
-			view.twitterView.reload();
+		private function handleTwitter(event:VisualizerEvent):void {
+			switch(event.type) {
+				case VisualizerEvent.TWITTER_OPTIONS:
+					view.twitterView.showOptions(event.args[0]);
+				break;
+				case VisualizerEvent.TWITTER_RELOAD:
+					view.twitterView.reload();
+				break;
+				case VisualizerEvent.TWITTER_SORT:
+					view.twitterView.sort();
+				break;
+			}
 		}
 		private function handleTwitterSort(event:VisualizerEvent):void {
-			view.twitterView.sort();
+			
 		}
 		private function handleStopTimeline(event:VisualizerEvent):void {
 			//view.currentVisualizer.continous = false;

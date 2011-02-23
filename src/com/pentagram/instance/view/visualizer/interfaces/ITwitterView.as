@@ -15,5 +15,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function reload():void;
 		
 		function sort():void; 
+		
+		function showOptions(value:Boolean):void;
 	}
 }

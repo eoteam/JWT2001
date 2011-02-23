@@ -138,6 +138,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);
 					view.reloadVisualization.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
+					view.twitterOptionsBtn.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
 					//view.sortButton.addEventListener(MouseEvent.CLICK,handleSort,false,0,true);
 				break;	
 			}
@@ -146,7 +147,11 @@ package com.pentagram.instance.view.mediators.shell
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SEARCH,model.client.shortname + " " + view.twitterSearch.text));
 		}
 		private function handleReload(event:MouseEvent):void {
-			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_RELOAD));
+			 var arg:Boolean;
+			var type:String = event.target == view.reloadVisualization ? VisualizerEvent.TWITTER_RELOAD : VisualizerEvent.TWITTER_OPTIONS;
+			if(type == VisualizerEvent.TWITTER_OPTIONS)
+				arg = view.twitterOptionsBtn.selected;
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(type,arg));
 		}
 		private function handleSort(event:MouseEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SORT));
@@ -236,7 +241,7 @@ package com.pentagram.instance.view.mediators.shell
 			counter++;
 			
 			if(counter == view.yearSlider.dataProvider.length) {
-				if(view.lopBtn.selected) {
+				if(view.loopBtn.selected) {
 					counter = 0;
 					view.yearSlider.selectedIndex = counter;
 					handleYearSelection();

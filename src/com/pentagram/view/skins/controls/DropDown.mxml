@@ -111,7 +111,7 @@
               This includes borders, background colors, scrollers, and filters.
               @copy spark.components.supportClasses.DropDownListBase#dropDown
         -->
-        <s:Group id="dropDown" width="100%">
+        <s:Group id="dropDown" width="100%" minWidth="{this.hostComponent.width}">
         
             <!--- @private -->
             <s:RectangularDropShadow id="dropShadow" blurX="20" blurY="20" alpha="0.45" distance="7" 

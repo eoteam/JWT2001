@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="group1_creationCompleteHandler(event)" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Declarations>
+		<fx:Number id="radius">400</fx:Number>
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			private const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
+			private const FILL_ALPHAS:Array = [1,1,1,1,1];
+			private const FILL_RATIO:Array = [0,255*0.23137254901960785,255*0.45098039215686275,0.7294117647058823*255,255];   
+			private const FILL_COLORS:Array =[0xE91E2E,0xE5202E,0xD4242F,0xBB2A31,0x983333];
+			
+			private function startProgress():void {
+				var radius:Number = radius;
+				var iniX:Number = 0;
+				var iniY:Number = 0;
+				var increment:Number = increment;
+				var totalDegrees:Number = 0;
+				var degInRad:Number = -Math.PI/2;
+				var degInRad1:Number =  -Math.PI/2;
+				
+				var maskTimer:Timer = new Timer(1);
+				maskTimer.addEventListener(TimerEvent.TIMER, drawSegment);
+				maskTimer.start();
+				
+				container.graphics.moveTo(iniX, iniY);
+				container.graphics.clear();
+				var keepLoading:Boolean = true;
+				var matr:Matrix = new Matrix();
+				matr.createGradientBox(radius*2,radius*2, Math.PI/1.7, 0, 0);     
+				
+				function drawSegment(e:TimerEvent):void{
+					if(totalDegrees < 362 && keepLoading){
+						degInRad = totalDegrees * (Math.PI / 180);
+						degInRad1 = Number(totalDegrees+increment) * (Math.PI / 180);
+						var x1:Number = radius * Math.cos( degInRad ) + iniX;
+						var y1:Number = radius * Math.sin( degInRad ) + iniY;
+						
+						var x2:Number = radius * Math.cos( degInRad1 ) + iniX;
+						var y2:Number = radius * Math.sin( degInRad1 ) + iniY;
+						
+						container.graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,FILL_COLORS,FILL_ALPHAS,FILL_RATIO,matr);	
+						container.graphics.moveTo(iniX, iniY);
+						container.graphics.lineTo(x1, y1);
+						container.graphics.lineTo(x2, y2);
+						container.graphics.lineTo(iniX, iniY);
+						
+						totalDegrees+= increment;
+					}
+					else{
+						totalDegrees = 0;
+					}
+				}
+			}
+			public  function set progress(value:Number):void {
+				var iniX:Number = 0;
+				var iniY:Number = 0;
+				var totalDegrees:Number = 0;
+				var degInRad:Number = -Math.PI/2;
+				var degInRad1:Number = -Math.PI/2;
+				container.graphics.moveTo(iniX, iniY);
+				container.graphics.clear();
+				var matr:Matrix = new Matrix();
+				matr.createGradientBox(radius*2,radius*2, Math.PI/1.7, 0, 0);     
+				
+				for (var i:int=-90;i<value-90;i++) {
+					degInRad = i * (Math.PI / 180);
+					degInRad1 = (i+1) * (Math.PI / 180);
+					
+					var x1:Number = radius * Math.cos( degInRad ) + iniX;
+					var y1:Number = radius * Math.sin( degInRad ) + iniY;
+					
+					var x2:Number = radius * Math.cos( degInRad1 ) + iniX;
+					var y2:Number = radius * Math.sin( degInRad1 ) + iniY;
+					
+					container.graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,FILL_COLORS,FILL_ALPHAS,FILL_RATIO,matr);			
+					container.graphics.moveTo(iniX, iniY);
+					container.graphics.lineTo(x1, y1);
+					container.graphics.lineTo(x2, y2);
+					container.graphics.lineTo(iniX, iniY);
+				}
+			}
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				// TODO Auto-generated method stub
+			}
+
+		]]>
+	</fx:Script>
+	<s:Ellipse verticalCenter="0" horizontalCenter="0" width="{radius*2}" height="{radius*2}" maskType="alpha">
+		<s:fill>
+			<s:SolidColor color="#E3E3E3"/>
+		</s:fill>
+	</s:Ellipse>	
+	
+	<s:SpriteVisualElement verticalCenter="0" horizontalCenter="0" id="container"/>
+</s:Group>

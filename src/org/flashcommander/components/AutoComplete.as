@@ -52,7 +52,7 @@ package org.flashcommander.components
 		public var minChars:Number = 1;
 		public var prefixOnly:Boolean = true;
 		public var requireSelection:Boolean = false;
-		public var popUpMatchesWidth:Boolean = false;
+		[Bindable] public var popUpMatchesWidth:Boolean = false;
 		
 		[SkinPart(required="true",type="spark.components.Group")]
 		public var dropDown:Group;
@@ -88,6 +88,9 @@ package org.flashcommander.components
 				dropDown.addEventListener(FlexMouseEvent.MOUSE_WHEEL_OUTSIDE, mouseOutsideHandler);				
 				dropDown.addEventListener(SandboxMouseEvent.MOUSE_DOWN_SOMEWHERE, mouseOutsideHandler);
 				dropDown.addEventListener(SandboxMouseEvent.MOUSE_WHEEL_SOMEWHERE, mouseOutsideHandler);
+			}
+			if(instance == popUp) {
+				popUp.minWidth = this.width;
 			}
 		}
 		

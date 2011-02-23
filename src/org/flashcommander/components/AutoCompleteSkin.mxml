@@ -27,11 +27,11 @@
     -->
 
 	<s:PopUpAnchor id="popUp"  displayPopUp="false"
-        top="0" bottom="0" left="0" right="0" 
+        top="0" bottom="0" left="0" right="0"
 		popUpWidthMatchesAnchorWidth="{this.hostComponent.popUpMatchesWidth}" minHeight="30"
          popUpPosition="below">
         
-        <s:Group id="dropDown" width="100%">
+        <s:Group id="dropDown" width="100%" minWidth="{this.hostComponent.width}">
 			<components:ListAutoComplete id="list" width="100%"/>
         </s:Group>
 		

@@ -282,7 +282,7 @@
 
     <!-- includeInLayout is false so prompt doesn't affect measurement -->
     <s:Label id="promptDisplay"
-                mouseEnabled="false" mouseChildren="false"  color="#aaaaaa" fontFamily="FlamaBookItalic" fontStyle="normal"
+                mouseEnabled="false" mouseChildren="false"  color="#aaaaaa" fontFamily="FlamaBook" fontStyle="normal"
                 includeIn="normalWithPrompt,disabledWithPrompt" 
                 includeInLayout="false"
                 />            

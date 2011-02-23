@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:controls="com.pentagram.view.controls.*">
+	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
+	<s:states>
+		<s:State name="up"/>
+		<s:State name="over"/>
+		<s:State name="down"/>
+		<s:State name="disabled"/>
+		<s:State name="upAndSelected"/>
+		<s:State name="overAndSelected"/>
+		<s:State name="downAndSelected"/>
+		<s:State name="disabledAndSelected"/>
+	</s:states>
+	<s:Rect height="21" id="rect11" includeIn="disabledAndSelected,disabled,up,downAndSelected" radiusX="1.99102" radiusY="1.99102" right="1" left="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#666666" ratio="0"/>
+				<s:GradientEntry ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+	</s:Rect>
+	<s:Rect height="20" id="rect13" includeIn="disabledAndSelected,disabled,up,downAndSelected" radiusX="1.99102" radiusY="1.99102" right="0.5" left="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect height="21" id="rect1" includeIn="over" radiusX="1.99102" radiusY="1.99102" right="1" left="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#666666" ratio="0.00784313725490196"/>
+				<s:GradientEntry ratio="1"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:BevelFilter blurX="3" blurY="3" distance="3" highlightColor="#999999" strength="1" quality="2" highlightAlpha="0.45" knockout="false" shadowAlpha="0.45" type="inner" shadowColor="#333333" angle="45.0"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="20" id="rect2" includeIn="over" radiusX="1.99102" radiusY="1.99102" right="0.5" left="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Rect height="21" id="rect0" includeIn="down,upAndSelected,overAndSelected" radiusX="1.99102" radiusY="1.99102"  left="1" right="1" y="0">
+		<s:fill>
+			<s:LinearGradient rotation="90" scaleX="17.669" x="75.019" y="0.982">
+				<s:GradientEntry alpha="1.0" color="#000000" ratio="0.00784313725490196"/>
+				<s:GradientEntry ratio="1" color="#666666" alpha="1.0"/>
+			</s:LinearGradient>
+		</s:fill>
+		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="3" blurY="3" color="#666666" distance="2" hideObject="false" inner="true" knockout="false" quality="2" strength="1"/>
+		</s:filters>
+	</s:Rect>
+	<s:Rect height="20" id="rect3" includeIn="down,upAndSelected,overAndSelected" radiusX="1.99102" radiusY="1.99102" left="0.5" right="0.5" y="0.5">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Rect>
+	<s:Label id="labelDisplay"
+			 textAlign="center"
+			 maxDisplayedLines="1"  color="#ffffff"
+			 horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
+			 left="20" right="20" y="5">
+	</s:Label>
+</s:Skin>

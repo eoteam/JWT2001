@@ -7,7 +7,7 @@
 				preinitialize="preinit(event)"  title="View"
 				xmlns:shell="com.pentagram.instance.view.shell.*" 
 				xmlns:vo="com.pentagram.model.vo.*" creationPolicy="none" 
-				xmlns:events="flash.events.*">
+				xmlns:events="flash.events.*" xmlns:controls="com.pentagram.view.controls.*">
 				<!--    -->
 	<fx:Script>
 		<![CDATA[
@@ -81,7 +81,8 @@
 	
 	
 	<shell:Search id="searchView" width="100%" height="100%" includeIn="search" horizontalCenter="0" verticalCenter="0"/>
-	<assets:CircularProgress includeIn="loading" verticalCenter="0" horizontalCenter="0" />
+<!--	<assets:CircularProgress includeIn="loading" verticalCenter="0" horizontalCenter="0" />-->
+	<controls:ProgressIndicator  includeIn="loading" verticalCenter="0" horizontalCenter="0" />
 	<shell:Shell id="shellView" width="100%" height="100%"  includeIn="visualizer" horizontalCenter="0" verticalCenter="0"/>
 	
 	<s:HGroup bottom="4" verticalAlign="middle" width="100%" paddingLeft="18" paddingRight="10" includeIn="search">

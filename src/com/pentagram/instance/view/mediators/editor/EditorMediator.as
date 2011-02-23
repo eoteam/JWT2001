@@ -48,6 +48,11 @@ package com.pentagram.instance.view.mediators.editor
 		public var appEventDispatcher:EventDispatcher;   
 		
 		
+		//private var currentFiles:Array
+		private var currentFile:File;
+		private var currentRows:Array;
+		private var totalSets:int;
+		private var counter:int;
 		public override function onRegister():void {	
 		
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DATA_UPDATED,handleClientDataUpdated,EditorEvent);
@@ -74,7 +79,7 @@ package com.pentagram.instance.view.mediators.editor
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,model.client));
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,true));
 			}
 			else if(view.currentState == "dataset") {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_DATASET));
@@ -118,8 +123,9 @@ package com.pentagram.instance.view.mediators.editor
 				view.datasetEditor.dataset = dataset;
 				view.datasetEditor.generateDataset();
 			}
-			
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,model.client));
+			counter++;
+			if(counter == totalSets) //in casenew countries are added
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,false));
 			
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
@@ -170,10 +176,6 @@ package com.pentagram.instance.view.mediators.editor
 			file.addEventListener(Event.SELECT, onFileLoad); 
 			file.browse([new FileFilter("Spreadsheet", "*.csv")]);
 		}
-		//private var currentFiles:Array
-		private var currentFile:File;
-		private var currentRows:Array;
-		
 		private function onFileLoad(event:Event):void {
 			processFile(event.target as File);
 		}
@@ -199,6 +201,7 @@ package com.pentagram.instance.view.mediators.editor
 			
 		}
 		private function readFile(file:File,rows:Array,time:int):void {
+			totalSets = 1;counter = 0;
 			var fileName:String = file.name.replace(/.csv/gi,'');
 			var header:Array = rows[0];
 			if(rows.length > 2) {
@@ -240,6 +243,7 @@ package com.pentagram.instance.view.mediators.editor
 							}
 						}
 						trace("rotation finished");
+						totalSets = datasets.length;
 						for (i=0;i<datasets.length;i++) {
 							set = datasets[i];
 							parseDataset(header[i+1],set);
