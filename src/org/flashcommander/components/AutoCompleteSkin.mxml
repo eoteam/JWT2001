@@ -15,15 +15,6 @@
         [HostComponent("org.flashcommander.components.AutoComplete")]
     ]]>
     </fx:Metadata> 
-	<fx:Script>
-		<![CDATA[
-			private function draw():void {
-				popUp.graphics.beginFill(0xff00ff,1);
-				popUp.graphics.drawRect(0,0,popUp.width,popUp.height);
-				
-			}
-		]]>
-	</fx:Script>
     <s:states>
         <s:State name="normal" />
         <s:State name="open" />
@@ -35,14 +26,14 @@
     -->
 
 	<s:PopUpAnchor id="popUp"  displayPopUp="false"
-        top="0" bottom="0" left="0" right="0" creationComplete="draw()"
+        top="0" bottom="0" left="0" right="0"  popUpHeightMatchesAnchorHeight="false"
 		popUpWidthMatchesAnchorWidth="{this.hostComponent.popUpMatchesWidth}" 
          popUpPosition="{this.hostComponent.popUpPosition}">
         
-        <s:Group id="dropDown" width="100%" minWidth="{this.hostComponent.width}" clipAndEnableScrolling="false">
-			<components:ListAutoComplete id="list" width="100%">
+        <s:Group id="dropDown" width="100%" minWidth="{this.hostComponent.width}">
+			<components:ListAutoComplete id="list" width="100%" top="2" verticalScrollPolicy="off">
 				<components:layout>
-					<s:VerticalLayout clipAndEnableScrolling="true" gap="0" />
+					<s:VerticalLayout clipAndEnableScrolling="false" gap="0" requestedMinRowCount="1" requestedMaxRowCount="6"  />
 				</components:layout>
 				<components:itemRenderer>
 					<fx:Component>

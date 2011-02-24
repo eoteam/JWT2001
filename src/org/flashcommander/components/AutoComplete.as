@@ -187,11 +187,11 @@ package org.flashcommander.components
 					list.selectedIndex = 0;
 				else
 					list.selectedIndex = -1;
-				list.dataGroup.verticalScrollPosition = 0
-				list.dataGroup.horizontalScrollPosition = 0
-				list.height = Math.min(maxRows, collection.length) * 22 + 2 ;
-				list.validateNow()
-				popUp.width = inputTxt.width
+//				list.dataGroup.verticalScrollPosition = 0
+//				list.dataGroup.horizontalScrollPosition = 0
+				//list.height = Math.min(maxRows, collection.length) * 22 + 2 ;
+				//list.validateNow()
+				//popUp.width = inputTxt.width
 			}
 		}
 		

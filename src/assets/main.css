@@ -94,6 +94,9 @@ s|GridItemEditor {
 s|RichText {
 	fontFamily: FlamaBook;
 }
+s|RichEditableText {
+	fontFamily: FlamaBook;
+}
 s|CheckBox {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.CheckBox');
 }
@@ -107,7 +110,6 @@ s|TextArea {
 s|List {
 	selectionColor:#00BCFF;
 	rollOverColor:#99E4FF;
-	
 }
 flashcommander|AutoComplete s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.SearchInput');

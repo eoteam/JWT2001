@@ -1,6 +1,7 @@
 package com.pentagram.main.mediators
 {
 	import com.pentagram.controller.Constants;
+	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.main.windows.CountriesWindow;
@@ -72,11 +73,15 @@ package com.pentagram.main.mediators
 			downloader.addEventListener(Event.COMPLETE,handleUploadComplete);
 			downloader.addEventListener(ProgressEvent.PROGRESS,handleUploadProgress);
 			
+			eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_UPDATED,handleCountryUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_CREATED,handleCountryUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.COUNTRY_DELETED,handleCountryDeleted,EditorEvent);
 		}
-		
+		private function handleWindowClose(event:Event):void {
+			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.WINDOW_CLOSED, view.id));
+			mediatorMap.removeMediator(this);
+		}
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;

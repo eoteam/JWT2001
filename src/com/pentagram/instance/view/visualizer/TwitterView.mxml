@@ -183,6 +183,7 @@
 				counter++;
 			}
 			private function countWords(tweet:Object,p:int):void {
+								
 				var m:Array = new Array();
 				var m1:Array = new Array();
 				var N:Array = new Array ();
@@ -292,7 +293,6 @@
 					//trace(N[0],N[i],N[0]*0.1);
 					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
 						var topic:Object;
-						
 						if(!allwords[m1[i]]) {
 							topic =  new Object();
 							topic.count = Number(N[i]);
@@ -318,6 +318,11 @@
 				var item:Object
 				for each(item in allTweets) {
 					countWords(item,0);
+					var regExp:RegExp = /((?:http|https):\/\/[a-z0-9\/\?=_#&%~-]+(\.[a-z0-9\/\?=_#&%~-]+)+)|(www(\.[a-z0-9\/\?=_#&%~-]+){2,})/gi;
+					var output:String = '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008"><p fontFamily="FlamaBook"><span color="#cccccc">';
+					output += item.text.replace(regExp,'</span><a href="$&"><span color="#ffffff">$&</span></a><span color="#cccccc">');
+					output += "</span></p></TextFlow>";
+					item.text = output;
 				}				
 				for each(item in allwords) {
 					if(item.count > limit) {

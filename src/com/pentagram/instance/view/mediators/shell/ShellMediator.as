@@ -317,7 +317,10 @@ package com.pentagram.instance.view.mediators.shell
 						var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
 						var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
-						var year:int =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year as int;
+						var year:String = '';
+						if(view.tools.yearSlider.dataProvider) {
+							year =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year;
+						}
 						model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
 					}
 					viz.updateMaxRadius(value);
@@ -463,17 +466,17 @@ package com.pentagram.instance.view.mediators.shell
 				view.twitterView = util.view as ITwitterView;
 				view.twitterView.searchTerm = model.client.shortname;
 				view.twitterHolder.addElement(util.view as Group);	
-				view.twitterView.addEventListener("vizLoaded",handleTwitterViz);
 			}			
 		}
-		private function  handleTwitterViz(event:Event):void {
-			view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
-			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
-		}
-		
-		
+
 		private function handleVizComplete(event:Event):void {
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,event.type=='vizComplete'?false:true));
+			if(event.target == view.twitterView) {
+				if(event.type == 'vizStarted')
+					view.tools.twitterOptionsBtn.selected = false;
+				else
+					view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
+			}
 		}
 		private function handleFullScreen(event:Event):void{
 			view.currentVisualizer.updateSize();

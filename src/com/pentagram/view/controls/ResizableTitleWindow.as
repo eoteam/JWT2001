@@ -137,7 +137,12 @@ package com.pentagram.view.controls
 			var h:Number =  prevHeight + (event.stageY - clickOffset.y);
 			if( w >= this.minWidth)
 				width = w;
-			else width = this.minWidth;
+			else 
+				width = this.minWidth;
+			if(w <= this.maxWidth)
+				width = w;
+			else
+				width = this.maxWidth;
 			if( h >= this.minHeight)
 				height = h;
 			else height = this.minHeight;

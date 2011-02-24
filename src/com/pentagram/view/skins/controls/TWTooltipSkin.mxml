@@ -161,7 +161,7 @@
 			</s:filters>
 		</s:Rect>
         
-        <s:Group left="0" right="0" top="0" bottom="0" id="contents">
+        <s:Group left="0" right="0" top="0" bottom="10" id="contents">
             <s:layout>
                 <s:VerticalLayout gap="0" horizontalAlign="justify" />
             </s:layout>
@@ -188,7 +188,7 @@
         </s:Group>
 		
 		<!-- resize handle -->
-		<s:Group id="resizeHandle" right="1" bottom="1" width="15" height="15" >
+		<s:Group id="resizeHandle" right="1" bottom="1" width="15" height="15" visible="{this.hostComponent.currentState=='open'?true:false}">
 			<s:Path data="M 4 13 L 13 4 L 13 13 L 4 13">
 				<s:fill>
 					<s:SolidColor color="0xB3B3B3" />

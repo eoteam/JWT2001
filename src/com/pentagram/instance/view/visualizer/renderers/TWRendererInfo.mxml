@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <controls:ResizableTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  x.open="5" y.open="100" 
-		width="200" height="100" alpha="0"  width.open="{wVar}" height.open="{hVar}" minWidth="200" minHeight="100"
+		width="200" maxWidth="{wVar}" minWidth="200" 
+		height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80" 
 		xmlns:s="library://ns.adobe.com/flex/spark"  
 		close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
 		skinClass="com.pentagram.view.skins.controls.TWTooltipSkin" 
@@ -33,14 +34,14 @@
 					tipVisible = false;
 			}
 			public function set content(value:String):void {
-				ctf =  value;//TextConverter.importToFlow(value,TextConverter.PLAIN_TEXT_FORMAT);
+				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_FIELD_HTML_FORMAT);
 			}
-			[Bindable] private var wVar:Number = 400;
+			[Bindable] private var wVar:Number = 350;
 			[Bindable] private var hVar:Number = 400;
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				if(this.currentState == "closed") {
-					wVar = parent.width*.9>700 ? 700:parent.width*.9;
+					wVar = 350;///parent.width*.9>700 ? 700:parent.width*.9;
 					hVar = this.parent.height-300;
 					this.currentState = "open";
 					
@@ -58,7 +59,7 @@
 		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
 		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
-		<fx:String id="ctf" />
+		<s:TextFlow id="ctf" />
 		<vo:TwitterTopic id="topic" />
 	</fx:Declarations>	
 	<controls:states>
@@ -73,17 +74,16 @@
 			<s:Parallel>
 				<s:Move target="{this}" />
 				<s:Resize targets="{[infoContainer,this]}" duration="500" />
-			</s:Parallel>
-			
+			</s:Parallel>	
 		</s:Transition>
 	</controls:transitions>
 	
 	<controls:layout>
-		<s:VerticalLayout paddingBottom="5" />
+		<s:VerticalLayout paddingBottom="5" gap="3" />
 	</controls:layout>
 	
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
-		<s:Label fontSize="14" text="{ctf}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
+		<s:Label fontSize="14"  text="{topic.value}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" click="button1_clickHandler(event)" />
 	</s:HGroup>
 	<s:Line  width="100%" height="1">
@@ -91,16 +91,39 @@
 			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Line>
+	
+	<s:RichText  paddingLeft="6" paddingRight="6" fontSize="14" textFlow="{ctf}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="1"  width="100%"/>
+	<s:Line  width="100%" height="1" includeIn="open">
+		<s:stroke>
+			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+		</s:stroke>
+	</s:Line>
+	
 	<s:List width="100%" visible="true" height.open="100%" height.closed="0" id="infoContainer"  
-	creationComplete="infoContainer.scroller.setStyle('skinClass',ScrollBarSkin)"
+	creationComplete="infoContainer.scroller.setStyle('skinClass',ScrollBarSkin)" horizontalScrollPolicy="off"
 	labelField="text" dataProvider="{topic.tweets}" contentBackgroundAlpha="0" borderVisible="false" >
 		<s:itemRenderer>
 			<fx:Component>
-				<s:ItemRenderer autoDrawBackground="true">
+				<s:ItemRenderer autoDrawBackground="false" width="100%">
 					<s:layout>
-						<s:VerticalLayout paddingLeft="5" paddingRight="5" />
+						<s:VerticalLayout paddingLeft="5" paddingRight="5"/>
 					</s:layout>
-					<s:Label fontFamily="FlamaBook"  color="0xffffff" text="{data.text}" />
+					<fx:Script>
+						<![CDATA[
+							import flashx.textLayout.conversion.TextConverter;
+							import flashx.textLayout.elements.TextFlow;
+							[Bindable] private var textFlow:TextFlow
+							override  public function set data(value:Object):void
+							{
+								super.data = value;
+								if(value)
+									textFlow = TextConverter.importToFlow(value.text,TextConverter.TEXT_LAYOUT_FORMAT)
+									
+							}
+						]]>
+					</fx:Script>
+					<s:RichEditableText  focusedTextSelectionColor="0x333333" unfocusedTextSelectionColor="0x333333" 
+					editable="false" selectable="true"   width="100%" textFlow="{textFlow}"  />
 					<s:Rect width="100%" height="0.25">
 						<s:stroke>
 							<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>

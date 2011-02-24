@@ -101,7 +101,8 @@ package com.pentagram.instance.view.mediators
 		}
 		private function handleClientSelected(event:ViewEvent):void {
 			//if(!model.client.loaded)
-			view.currentState = view.visualizerAndLoadingState.name;
+			view.progressIndicator.visible = true;
+			view.currentState = view.visualizerState.name;
 			//else
 			//	view.currentState = view.visualizerAndLoadedState.name;
 			view.client = model.client;
@@ -112,7 +113,8 @@ package com.pentagram.instance.view.mediators
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
 		}
 		private function handleProgress(event:VisualizerEvent):void {
-			view.currentState = event.args[0] == true? view.state+"AndLoading":view.state+"AndLoaded";
+			view.progressIndicator.visible = event.args[0]
+			//view.currentState = event.args[0] == true? view.state+"AndLoading":view.state+"AndLoaded";
 		}
 		private function handleShellLoaded(event:ViewEvent):void {
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));

@@ -154,19 +154,28 @@ package com.pentagram.instance.model
 			}
 			return data;
 		}
-		public function updateData(categories:Array,data:ArrayCollection,year:int,...datasets):void {
+		public function updateData(categories:Array,data:ArrayCollection,year:String,...datasets):void {
 			var dataset:Dataset;
 			var row:DataRow;
 			for each(var item:NormalizedVO in data) {
 				if(Dataset(datasets[0]).time == 1)
 					item.x =  Dataset(datasets[0]).rows.getItemAt(item.index)[year];
+				else
+					item.x = item.x =  Dataset(datasets[0]).rows.getItemAt(item.index).value;
+				
 				if(Dataset(datasets[1]).time == 1)	
 					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index)[year];
+				else
+					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index).value;
 				
-				if(datasets[2] && Dataset(datasets[2]).time == 1) {
+				if(datasets[2]) {
 					dataset = datasets[2] as Dataset;
 					row = dataset.rows.getItemAt(item.index) as DataRow;
-					item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
+					if(Dataset(datasets[2]).time == 1)
+						item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
+					else
+						item.radius = item.prevRadius = (row.value - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
+						
 				}	
 				if(datasets[3] &&  Dataset(datasets[3]).time == 1) {
 					dataset = datasets[3] as Dataset;

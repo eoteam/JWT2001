@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="group1_creationCompleteHandler(event)" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx">
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		  creationComplete="group1_creationCompleteHandler(event)">
 	
 	<fx:Declarations>
 		<fx:Number id="radius">125</fx:Number>
+		<fx:Number id="iniX">0</fx:Number>
+		<fx:Number id="iniY">0</fx:Number>
+		<fx:Number id="increment">1</fx:Number>
+		<fx:Number id="totalDegrees">-90</fx:Number>
+		<fx:Number id="degInRad">{-Math.PI/2}</fx:Number>
+		<fx:Number id="degInRad1">{-Math.PI/2}</fx:Number>
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
@@ -13,49 +20,46 @@
 			private const FILL_ALPHAS:Array = [1,1,1,1,1];
 			private const FILL_RATIO:Array = [0,255*0.23137254901960785,255*0.45098039215686275,0.7294117647058823*255,255];   
 			private const FILL_COLORS:Array =[0xE91E2E,0xE5202E,0xD4242F,0xBB2A31,0x983333];
-			
+			private var maskTimer:Timer;
+			private var matr:Matrix = new Matrix();
+			override public function set visible(value:Boolean):void {
+				super.visible = value;
+				if(maskTimer){
+					if(value)
+						startProgress();
+					else
+						maskTimer.stop();
+				}
+			}
 			private function startProgress():void {
-				var radius:Number = radius;
-				var iniX:Number = 0;
-				var iniY:Number = 0;
-				var increment:Number = 1;
-				var totalDegrees:Number = -90;
-				var degInRad:Number = -Math.PI/2;
-				var degInRad1:Number =  -Math.PI/2;
-				
-				var maskTimer:Timer = new Timer(1);
-				maskTimer.addEventListener(TimerEvent.TIMER, drawSegment);
 				maskTimer.start();
-				
 				container.graphics.moveTo(iniX, iniY);
 				container.graphics.clear();
 				var keepLoading:Boolean = true;
-				var matr:Matrix = new Matrix();
 				matr.createGradientBox(radius*2,radius*2, Math.PI/1.7, 0, 0);     
-				
-				function drawSegment(e:TimerEvent):void{
-					if(totalDegrees < 272 && keepLoading){
-						degInRad = totalDegrees * (Math.PI / 180);
-						degInRad1 = Number(totalDegrees+increment) * (Math.PI / 180);
-						var x1:Number = radius * Math.cos( degInRad ) + iniX;
-						var y1:Number = radius * Math.sin( degInRad ) + iniY;
-						
-						var x2:Number = radius * Math.cos( degInRad1 ) + iniX;
-						var y2:Number = radius * Math.sin( degInRad1 ) + iniY;
-						
-						container.graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,FILL_COLORS,FILL_ALPHAS,FILL_RATIO,matr);	
-						container.graphics.moveTo(iniX, iniY);
-						container.graphics.lineTo(x1, y1);
-						container.graphics.lineTo(x2, y2);
-						container.graphics.lineTo(iniX, iniY);
-						
-						totalDegrees+= increment;
-					}
-					else{
-						
-						totalDegrees = -90;
-						container.graphics.clear();
-					}
+			}
+			private function drawSegment(e:TimerEvent):void{
+				if(totalDegrees < 272){
+					degInRad = totalDegrees * (Math.PI / 180);
+					degInRad1 = Number(totalDegrees+increment) * (Math.PI / 180);
+					var x1:Number = radius * Math.cos( degInRad ) + iniX;
+					var y1:Number = radius * Math.sin( degInRad ) + iniY;
+					
+					var x2:Number = radius * Math.cos( degInRad1 ) + iniX;
+					var y2:Number = radius * Math.sin( degInRad1 ) + iniY;
+					
+					container.graphics.beginGradientFill(DEFAULT_GRADIENTTYPE,FILL_COLORS,FILL_ALPHAS,FILL_RATIO,matr);	
+					container.graphics.moveTo(iniX, iniY);
+					container.graphics.lineTo(x1, y1);
+					container.graphics.lineTo(x2, y2);
+					container.graphics.lineTo(iniX, iniY);
+					
+					totalDegrees+= increment;
+				}
+				else{
+					
+					totalDegrees = -90;
+					container.graphics.clear();
 				}
 			}
 			public  function set progress(value:Number):void {
@@ -89,7 +93,8 @@
 
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
-				startProgress();
+				maskTimer = new Timer(1);
+				maskTimer.addEventListener(TimerEvent.TIMER, drawSegment);
 			}
 
 		]]>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"  alpha="0"
-		 implements="mx.core.IToolTip" width="200" height="85"  styleName="darkPanel" click="group1_clickHandler(event)"
+		 implements="mx.core.IToolTip" width="200" height.link="85" height="55"   
+		 styleName="darkPanel" click="group1_clickHandler(event)"
 		 showEffect="{fadeIn}" hideEffect="{fadeOut}" show="group1_showHandler(event)" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
@@ -18,7 +19,7 @@
 			}
 			
 			public function set content(value:String):void {
-				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
+				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_FIELD_HTML_FORMAT);
 			}
 
 			protected function group1_showHandler(event:FlexEvent):void
@@ -75,7 +76,6 @@
 		</s:filters>
 	</s:Path>
 	
-	
 	<s:Rect radiusX="4" radiusY="4" top="0" bottom="0" left="0" right="0">
 		<s:fill>
 			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
@@ -85,9 +85,25 @@
 		</s:filters>
 	</s:Rect>
 	
-	<s:Button label="This is a link!" includeIn="link" click="button1_clickHandler(event)" styleName="darkButton" verticalCenter="0" horizontalCenter="0"/>
-	<s:RichText verticalCenter="0" horizontalCenter="0" id="dataText" includeIn="normal"
-	fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6"  textFlow="{ctf}" />	
-	
+	<s:VGroup paddingBottom="5" paddingTop="5" gap="3" verticalCenter="0" left="0" right="0"   horizontalAlign="center">
+		<s:Label fontSize="14" maxHeight="35" text="{topic.value}"  paddingLeft="7" paddingRight="7"
+		color="#ffffff" maxDisplayedLines="2"  width="100%" fontFamily="FlamaBook"/>
+		<s:Line  width="100%" height="1">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:RichText fontSize="14" textFlow="{ctf}" paddingLeft="7" paddingRight="7" color="#ffffff" maxDisplayedLines="1"  width="100%"/>
+		<s:Line  width="100%" height="1" includeIn="link">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+		<s:Rect height="1" />
+		<s:HGroup paddingLeft="7" paddingRight="7" width="100%">
+			<s:Button label="This is a link!"  includeIn="link" click="button1_clickHandler(event)" skinClass="com.pentagram.view.skins.buttons.DarkButton" width="100%"/>		
+		</s:HGroup>
+	</s:VGroup>
+
 </s:Group>	
 

@@ -191,7 +191,8 @@ package com.pentagram.instance.view.visualizer.renderers
 					if(!infoVisible) {
 						tooltip.visible = false;
 						info = new TWRendererInfo();
-						info.content = _data.value + ": "+ _data.count;
+						info.content = '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
+										'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
 						info.topic = _data as TwitterTopic;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
@@ -236,9 +237,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltip.y = this.y - tooltip.height/2;
 			tooltip.topic = this._data as TwitterTopic;
 			tooltip.visible = true;	
-			tooltip.content = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>"+
-				'<span color="#ffffff" fontSize="18">'+_data.value + ": "+ _data.count + '</span>' +
-				"</p></TextFlow>";
+			tooltip.content = '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
+				'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
 		}
 		public function closeInfo():void {
 			if(infoVisible) {

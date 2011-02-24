@@ -41,7 +41,7 @@
 
 			
 			protected var monitor:URLMonitor;
-			protected var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
+			public var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
 			protected var file:File; // Used for preferences file
 			protected var currentVersion:String="2.0.0";			
 			public var context:ViewContext;
@@ -124,6 +124,9 @@
 					var version:String = StatusUpdateEvent(event).version;
 					if(version != currentVersion) {
 						this.currentVersion = version;
+						var v:NativeWindow = NativeApplication.nativeApplication.openedWindows[1] as NativeWindow;
+						v.x = v.y = 50;
+						v.alwaysInFront = true;
 					}
 				}
 				if(event is DownloadErrorEvent) {
