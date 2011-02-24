@@ -1,5 +1,6 @@
 package com.pentagram.instance.model
 {
+	import com.greensock.easing.Back;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
@@ -27,6 +28,7 @@ package com.pentagram.instance.model
 		[Bindable]
 		public var clients:ArrayList;
 		
+		public var singletonWindowModel:Boolean = false;
 		
 		public var countryNames:Dictionary;
 		
@@ -39,6 +41,7 @@ package com.pentagram.instance.model
 		
 		public var exportMenuItem:NativeMenuItem;
 		public var importMenuItem:NativeMenuItem;
+		public var toolBarMenuItem:NativeMenuItem;
 		
 		public var maxRadius:Number = 25;
 		

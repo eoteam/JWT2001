@@ -132,18 +132,9 @@
     
     <s:Group left="0" right="0" top="0" bottom="0">
 
-		<s:Path rotation="90" y="39" id="path12"  winding="nonZero" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1" visible="{hostComponent.tipVisible &amp;&amp; hostComponent.leftTipVisible}">
-			<s:fill>
-				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
-			</s:fill>
-			<s:filters>
-				<s:DropShadowFilter id="dropShadow" alpha="0.4" angle="90" distance="2" quality="2"/>
-			</s:filters>
-		</s:Path>
 		
-		
-		<s:Path id="rightTp" right="-16" data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" rotation="270" visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}"
-				verticalCenter="-4" winding="nonZero">
+		<s:Path verticalCenter="0" id="leftTip"  winding="nonZero" data="M 0 0 L -16 10 L 0 20 L 0 0 Z"
+		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.leftTipVisible}">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 			</s:fill>
@@ -151,7 +142,17 @@
 				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 			</s:filters>
 		</s:Path>
-			
+		
+		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="0" winding="nonZero"
+		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}">
+			<s:fill>
+				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
+			</s:fill>
+			<s:filters>
+				<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
+			</s:filters>
+		</s:Path>
+		
 		<s:Rect bottomLeftRadiusX="4" bottomRightRadiusX="4" top="15" bottom="0" left="0" right="0">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>

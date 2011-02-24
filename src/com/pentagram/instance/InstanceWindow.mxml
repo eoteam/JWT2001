@@ -11,6 +11,8 @@
 				<!--    -->
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.main.event.ViewEvent;
+			
 			import flashx.textLayout.conversion.TextConverter;
 			
 			import mx.events.AIREvent;
@@ -66,6 +68,11 @@
 				}
 			}
 			public var compareArgs:Array;
+			
+			public function set windowFocused(value:Boolean):void {
+				this.dispatchEvent(new ViewEvent(ViewEvent.WINDOW_FOCUS,value));
+			 // ("focusEvent
+			}
 
 		]]>
 	</fx:Script>

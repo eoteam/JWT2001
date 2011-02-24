@@ -26,12 +26,19 @@ package com.pentagram.controller
 			var callback:Function = event.args[0]; 
 			var exp:NativeMenuItem = windowModel.exportMenuItem;
 			var imp:NativeMenuItem = windowModel.importMenuItem;
+			var tool:NativeMenuItem = windowModel.toolBarMenuItem;
 			if(NativeWindow.supportsMenu) {
 			 	var temp:Array = windowModel.buildMenu(windowModel.getWindowFromUID(event.uid));
-				exp = temp[0]; imp = temp[1];
+				exp = temp[0]; imp = temp[1]; tool = temp[2];
 			}
 			//var arr:Array = appModel.cloneRegions();
-			callback.call(null,appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.countryNames,appModel.user,appModel.colors,exp,imp);
+			callback.call(null,
+				appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.countryNames,appModel.user,appModel.colors,
+				exp,imp,tool,
+				!NativeWindow.supportsMenu);
+			
+			
+			
 		}
 	}
 }

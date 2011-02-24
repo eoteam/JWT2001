@@ -22,6 +22,7 @@ package com.pentagram.controller
 		override public function execute():void
 		{
 			appModel.user = null;
+			
 		}
 	}
 }

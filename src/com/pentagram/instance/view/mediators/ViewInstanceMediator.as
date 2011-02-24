@@ -48,18 +48,23 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
-			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent,false,0,true);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent);
 			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 					
 			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize,false,0,true);
+			this.addViewListener(ViewEvent.WINDOW_FOCUS,handleWindowFocusChange,ViewEvent);
 
 		} 
-		private function handleLogin(event:AppEvent):void
-		{
+		private function handleLogin(event:AppEvent):void {
 			model.user = event.args[0] as User; 
+			model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+		}
+		private function handleLogout(event:AppEvent):void {
+			model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
 		}
 		private function handleClientDeleted(event:EditorEvent):void {
 			var c:Client = event.args[0];
@@ -77,6 +82,9 @@ package com.pentagram.instance.view.mediators
 			model.colors = args[5];
 			model.exportMenuItem = args[6];	
 			model.importMenuItem = args[7];	
+			model.toolBarMenuItem = args[8];
+			model.singletonWindowModel = args[9];
+			
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
 			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
@@ -93,14 +101,68 @@ package com.pentagram.instance.view.mediators
 				model.isCompare = true;
 				model.compareArgs = view.compareArgs;
 				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
-			}
+			}		
+			if(model.singletonWindowModel)
+				appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
 		}
 		private function handleWindowFocus(event:AIREvent):void {
-			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
+			if(model.singletonWindowModel)
+				appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
 		
 		}
+		private function handleWindowFocusChange(event:ViewEvent):void {
+			if(event.args[0] == true) 
+				processMenuItems();
+			else
+				removeMenuListeners();
+		}
+		private function processMenuItems():void {
+			
+			if(view.currentState == view.visualizerState.name)  {
+				model.toolBarMenuItem.enabled = true;
+				
+				model.toolBarMenuItem.label = view.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
+				if(model.user) {
+					model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+				}
+			}
+			else if(view.currentState == view.searchState.name) {
+				model.toolBarMenuItem.label = "Hide Tool Bars";
+				model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
+			}
+			model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem);
+			model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem);
+			model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
+			
+		}
+		private function handleToggle(event:Event):void {
+			if(event.target.label == "Hide Tool Bars") {
+				view.shellView.currentState = "fullScreen";
+				event.target.label = "Show Tool Bars";
+			}
+			else {
+				event.target.label = "Hide Tool Bars";
+				view.shellView.currentState = model.user ? "loggedIn":"loggedOut";
+			}
+		}
+		private function handleMenuItem(event:Event):void {
+			var args:Array = event.target.data as Array;
+			var classRef:Class = args[0] as Class;
+			appEventDispatcher.dispatchEvent(new classRef(args[1],args[2]));
+		}
+		private function handleImportMenuItem(event:Event):void {
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.SELECT_IMPORT_FILE));
+		}
+		private function removeMenuListeners():void {
+			model.toolBarMenuItem.removeEventListener(Event.SELECT,handleToggle);
+			model.exportMenuItem.removeEventListener(Event.SELECT,handleMenuItem);
+			model.importMenuItem.removeEventListener(Event.SELECT,handleImportMenuItem);	
+		}
+		
+		
 		private function handleClientSelected(event:ViewEvent):void {
 			//if(!model.client.loaded)
+			model.toolBarMenuItem.enabled = true;
 			view.progressIndicator.visible = true;
 			view.currentState = view.visualizerState.name;
 			//else
@@ -125,6 +187,8 @@ package com.pentagram.instance.view.mediators
 		}
 		private function loadSearchView(event:VisualizerEvent):void {
 			view.currentState = view.searchState.name;
+			model.toolBarMenuItem.label = "Hide Tool Bars";
+			model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
 		}
 		private function handleUserButton(event:MouseEvent):void {
 			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,model.LOGIN_WINDOW)); 

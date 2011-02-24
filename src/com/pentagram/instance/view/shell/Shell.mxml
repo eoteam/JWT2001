@@ -63,14 +63,19 @@
 	<s:states>
 		<s:State name="loggedOut" id="loggedOutState"/>
 		<s:State name="loggedIn" id="loggedInState"/>
+		<s:State name="fullScreen" />
 	</s:states>
 
 	
-	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" id="mainStack" backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
+	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" top.fullScreen="0" bottom.fullScreen="0" selectedIndex.fullScreen="0" 
+		id="mainStack" backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
+		
 		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea" hide="viewArea_hideHandler(event)">
-			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{tools.height}" />
+			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{tools.height}" 
+			top.fullScreen="0" bottom.fullScreen="0"/>
 			<!-- viewing area -->
-			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="41" bottom="{tools.height}" 		   
+			
+			<mx:ViewStack contentBackgroundAlpha="0"  width="100%" top="41" bottom="{tools.height}" top.fullScreen="0" bottom.fullScreen="0"		   
 			id="visualizerArea" selectedIndex="2" updateComplete="visualizerArea_updateCompleteHandler(event)" >
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(clusterView)clusterView.clearTooltips()"/>
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(graphView)graphView.clearTooltips()"/>
@@ -78,16 +83,17 @@
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(twitterView)twitterView.clearTooltips()"	/>
 			</mx:ViewStack>
 			
-			<s:HGroup verticalAlign="middle" height="40" left="7" right="5">
+			<s:HGroup verticalAlign="middle" height="40" left="7" right="5" excludeFrom="fullScreen">
 				<s:Label fontSize="24" fontFamily="FlamaBold" id="vizTitle" />
 				<s:Button  skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton"  id="setInfoBtn"  click="setInfoBtn_clickHandler(event)" />
 			</s:HGroup>
-			<s:Line width="100%" height="1" y="40">
+			<s:Line width="100%" height="1" y="40" excludeFrom="fullScreen">
 				<s:stroke>
 					<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
 				</s:stroke>
 			</s:Line>
-			<s:Group width="100%" top="41" visible="false" id="infoPanelContainer">
+			
+			<s:Group width="100%" top="41" visible="false" id="infoPanelContainer" excludeFrom="fullScreen">
 				<s:clipAndEnableScrolling>true</s:clipAndEnableScrolling>
 				<s:SkinnableContainer id="infoPanel" width="100%"  backgroundColor="0xFAFCFB" backgroundAlpha="0.8" y="-120">
 					<s:TextArea heightInLines="{NaN}" contentBackgroundAlpha="0"
@@ -100,7 +106,7 @@
 			
 			<!-- filters and tools -->
 			<shell:RightTools right="0" id="filterTools" top="41" visualizerArea="{visualizerArea}"/>
-			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false"/>
+			<shell:BottomTools id="tools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false" excludeFrom="fullScreen"/>
 		</s:NavigatorContent>
 	
 		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
@@ -113,12 +119,13 @@
 		</s:NavigatorContent>
 	</mx:ViewStack>
 	
-	<shell:ClientBar width="100%" id="clientBar" client="{client}"/>
+	<shell:ClientBar width="100%" id="clientBar" client="{client}" excludeFrom="fullScreen"/>
 	
 	<controls:ErrorPanel horizontalCenter="0"  id="errorPanel" width="100%" />
 	<controls:ImportPanel horizontalCenter="0" id="importPanel" width="100%"/>
 	
-	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0" skinClass="com.pentagram.view.skins.components.BottomBarBackground" id="bottomPanelContainer">	
+	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0" excludeFrom="fullScreen"
+	skinClass="com.pentagram.view.skins.components.BottomBarBackground" id="bottomPanelContainer">	
 		<shell:BottomBar width="100%" height="40" bottom="10" id="bottomBarView"  />
 	</s:SkinnableContainer> 
 	
@@ -133,7 +140,8 @@
 		</s:layout>
 	</s:TabBar>
 	
-	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" />
-	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel"/>
-	<shell:SavingImagePanel right="49"  bottom="83" styleName="darkPanel" visible="false" id="savingPanel"/>
+	<shell:LoginPanel id="loginPanel" bottom="60" left="184" visible="{bottomBarView.loginBtn.selected}" visible.fullScreen="false" />
+	<shell:ExportSettingsPanel  right="10"  bottom="95" styleName="darkPanel" visible="{tools.settingsBtn.selected}" id="exportPanel" visible.fullScreen="false"/>
+	<shell:SavingImagePanel right="49"  bottom="83" styleName="darkPanel" visible="false" id="savingPanel" visible.fullScreen="false"/>
+	
 </s:Group>
