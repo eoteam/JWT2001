@@ -133,7 +133,7 @@ package com.pentagram.instance.view.mediators.shell
 				}
 				else if(view.graphView.didVisualize){
 					if(view.graphView.datasets[3])
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[3].optionsArray));
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.graphView.datasets[3].optionsArray));
 					view.graphView.updateSize();
 					restoreDatasets(view.graphView);
 					view.vizTitle.text = view.graphView.datasets[0].name + " vs " + view.graphView.datasets[1].name + ", sized by " + view.graphView.datasets[2].name;
@@ -158,7 +158,7 @@ package com.pentagram.instance.view.mediators.shell
 				}
 				else if(view.clusterView.didVisualize)  {
 					if(view.clusterView.datasets[2])
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[2].optionsArray));
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(view.clusterView.datasets[2].optionsArray));
 					view.clusterView.updateSize();
 					restoreDatasets(view.clusterView);
 					view.vizTitle.text = view.clusterView.datasets[2].name + " by " + view.clusterView.datasets[3].name;
@@ -186,9 +186,9 @@ package com.pentagram.instance.view.mediators.shell
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					if(event.args[0])
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[0]).optionsArray));
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[0]).optionsArray));
 					else
-						view.filterTools.continentList.dataProvider = null;
+						view.filterTools.categoriesPanel.continentList.dataProvider = null;
 					view.clusterView.visualize(event.args[0],event.args[1]);
 					view.vizTitle.text = event.args[0].name + " by " + event.args[1].name;
 					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
@@ -196,7 +196,7 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case model.MAP_INDEX:
 					view.mapView.visualize(event.args[0]);
-					view.filterTools.continentList.dataProvider = model.regions;
+					view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
 					view.vizTitle.text = event.args[0].name + " by Region";
 					datasetids = event.args[0].id.toString();
 					checkNotes();
@@ -204,9 +204,9 @@ package com.pentagram.instance.view.mediators.shell
 				case model.GRAPH_INDEX:
 					
 					if(event.args[3] && Dataset(event.args[3]).type == 0)
-						view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
 					else
-						view.filterTools.continentList.dataProvider = model.regions;
+						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
 					
 					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3]);	
 					view.graphView.visualize(model.maxRadius,d,event.args[0],event.args[1],event.args[2],event.args[3]);
@@ -402,7 +402,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function setupMapView():void {
-			view.filterTools.continentList.dataProvider = model.regions;			
+			view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;			
 			view.mapView.client = model.client;
 			view.mapView.categories = model.regions;
 			view.mapView.isCompare = model.isCompare;
@@ -449,7 +449,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.tools.thirdSet.selectedItem = dataset1;
 					view.tools.fourthSet.selectedItem = dataset2;
 					view.clusterView.visualize(dataset1,dataset2);
-					view.filterTools.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
+					view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
 					view.vizTitle.text = dataset1.name + " by " + dataset2.name;
 					datasetids = dataset1.id.toString()+','+dataset2.id.toString();
 					checkNotes();

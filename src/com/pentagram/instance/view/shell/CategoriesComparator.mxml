@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark"  creationComplete="group1_creationCompleteHandler(event)"
+		 xmlns:s="library://ns.adobe.com/flex/spark"  
 		 xmlns:mx="library://ns.adobe.com/flex/mx">
 
 	<fx:Script>
@@ -11,13 +11,6 @@
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				currentState = currentState == "open"?"closed":"open";
-			}
-
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
-			{
-				categoryHolder.scroller.setStyle("horizontalScrollPolicy","off");
-				categoryHolder.scroller.setStyle("verticalScrollPolicy","off");
-				
 			}
 
 
@@ -50,7 +43,7 @@
 				<s:SolidColorStroke weight="0.25" color="0x666666"/>
 			</s:stroke>
 		</s:Rect>
-		<s:Label verticalCenter="0" text="Compare Region" left="25" right="0"  click="button1_clickHandler(event)"  mouseChildren="false"
+		<s:Label verticalCenter="0" text="Compare Regions" left="25" right="0"  click="button1_clickHandler(event)"  mouseChildren="false"
 		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold"/>		
 	</s:Group>
 	
@@ -60,8 +53,10 @@
 		</s:stroke>
 	</s:Rect>	
 	
-	<s:List id="categoryHolder" width="100%" contentBackgroundAlpha="0" borderVisible="false" height.closed="0" height.open="150" 
-	 top="25" bottom.open="24" itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer" >
+	<s:List id="categoryHolder" width="100%"  height.closed="0" height.open="150"  top="25" bottom.open="24" 
+	 contentBackgroundAlpha="0" borderVisible="false"
+	 horizontalScrollPolicy="off" verticalScrollPolicy="off"
+	 itemRenderer="com.pentagram.view.renderers.RegionsToolListRenderer">
 		<s:layout>
 			<s:VerticalLayout  clipAndEnableScrolling="false"  gap="0" paddingLeft="4"  horizontalAlign="center"/>
 		</s:layout>

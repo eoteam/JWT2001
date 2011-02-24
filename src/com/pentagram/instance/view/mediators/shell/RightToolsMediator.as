@@ -19,6 +19,7 @@ package com.pentagram.instance.view.mediators.shell
 	import mx.events.IndexChangedEvent;
 	import mx.events.StateChangeEvent;
 	
+	import org.flashcommander.event.CustomEvent;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.GridSelectionEvent;
@@ -37,16 +38,18 @@ package com.pentagram.instance.view.mediators.shell
 		override public function onRegister():void
 		{	
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-			view.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-			view.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-			view.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
+			view.categoriesPanel.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
+			view.categoriesPanel.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
+			view.categoriesPanel.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
 			view.optionsPanel.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
 			view.optionsPanel.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
-			view.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
+			view.categoriesPanel.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 			
+			view.optionsPanel.countryFilter.dataProvider = model.client.countries.source;
+			view.optionsPanel.countryFilter.addEventListener(CustomEvent.SELECT,handleCountrySelection);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
@@ -66,7 +69,7 @@ package com.pentagram.instance.view.mediators.shell
 					}
 				}
 				view.comparator.categoryHolder.dataProvider = newDP;
-				view.check.selected = false;
+				view.categoriesPanel.check.selected = false;
 			}
 			for(var i:int=0;i<view.twitterLanguages.length;i++) {
 				view.twitterLanguages.getItemAt(i).color = model.colors[i];
@@ -86,7 +89,7 @@ package com.pentagram.instance.view.mediators.shell
 					break;
 				case model.MAP_INDEX:
 					view.currentState = view.isOpen? 'openAndMap' : 'closedAndMap';
-					view.continentList.dataProvider = model.regions;
+					view.categoriesPanel.continentList.dataProvider = model.regions;
 					break;					
 				case model.GRAPH_INDEX:
 					view.currentState = view.isOpen? 'openAndGraph' : 'closedAndGraph';
@@ -96,14 +99,16 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 			}
 		}
-
+	    private function handleCountrySelection(event:CustomEvent):void {
+			
+		}
 		private function handleRegionSelect(event:Event):void {
 			if(view.state != "twitter") {
 				var item:Category = event.target.data as Category;
-				view.check.selected = false;	
+				view.categoriesPanel.check.selected = false;	
 				var region:Category;
 				var selectCount:int = 0;
-				for each(region in ArrayList(view.continentList.dataProvider).source) {
+				for each(region in ArrayList(view.categoriesPanel.continentList.dataProvider).source) {
 					if(region.selected)
 						selectCount++;
 				} 
@@ -115,7 +120,7 @@ package com.pentagram.instance.view.mediators.shell
 					
 					case "selectRegion":
 						var newDP:ArrayList = new ArrayList();
-						for each(var category:Category in  ArrayList(view.continentList.dataProvider).source) {
+						for each(var category:Category in  ArrayList(view.categoriesPanel.continentList.dataProvider).source) {
 							if(category != item) {
 								category.selected = false;
 								var item2:Category = new Category();
@@ -136,8 +141,8 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function adjustSelection(count:int):void {
-			if(count == view.continentList.dataProvider.length) {
-				view.check.selected = true;
+			if(count == view.categoriesPanel.continentList.dataProvider.length) {
+				view.categoriesPanel.check.selected = true;
 			}
 			if(count > 1) {
 				view.comparator.enabled = false;
@@ -172,11 +177,11 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleDatasetSelection(event:VisualizerEvent):void {
 			switch(view.visualizerArea.selectedIndex) {
 				case 0:
-					view.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[0].optionsArray)); 
+					view.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[0].optionsArray)); 
 					break; 
 				case 2:
 					if(event.args[4])
-						view.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[4].optionsArray));
+						view.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[4].optionsArray));
 				break;
 				default:
 					break;
@@ -193,8 +198,8 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function check_changeHandler(event:Event):void {
-			view.check.selected = true;
-			for each(var item:Category in view.continentList.dataProvider.toArray()) {
+			view.categoriesPanel.check.selected = true;
+			for each(var item:Category in view.categoriesPanel.continentList.dataProvider.toArray()) {
 				item.selected = true;
 			}
 			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));

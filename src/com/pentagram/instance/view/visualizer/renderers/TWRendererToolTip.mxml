@@ -56,9 +56,9 @@
 		<s:State name="normal" />
 		<s:State name="link" />
 	</s:states>
-	<s:Path rotation="90" y="39"	
+	<s:Path verticalCenter="0"
 			id="leftTip"  winding="nonZero"
-			data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
+			data="M 0 0 L -16 10 L 0 20 L 0 0 Z">
 		<s:fill>
 			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 		</s:fill>
