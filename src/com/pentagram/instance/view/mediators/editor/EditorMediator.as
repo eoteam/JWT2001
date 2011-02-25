@@ -43,10 +43,10 @@ package com.pentagram.instance.view.mediators.editor
 		[Inject]
 		public var service:IClientService;
 		
-		
-		[Inject(name="ApplicationEventDispatcher")]
-		public var appEventDispatcher:EventDispatcher;   
-		
+//		
+//		[Inject(name="ApplicationEventDispatcher")]
+//		public var appEventDispatcher:EventDispatcher;   
+//		
 		
 		//private var currentFiles:Array
 		private var currentFile:File;
@@ -63,7 +63,7 @@ package com.pentagram.instance.view.mediators.editor
 			eventMap.mapListener(eventDispatcher,EditorEvent.DATASET_DELETED,handleDatasetDeleted,EditorEvent);
 			eventMap.mapListener(view,'datasetState',handleDatasetState,Event,false,0,true);
 
-			eventMap.mapListener(appEventDispatcher,EditorEvent.START_IMPORT,handleStartImport,EditorEvent);
+			eventMap.mapListener(eventDispatcher,EditorEvent.SELECT_IMPORT_FILE,handleStartImport,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.RESUME_IMPORT,handleResumeImport,EditorEvent);
 			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);

@@ -66,8 +66,17 @@ package com.pentagram.main.mediators
 			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
 		}
 		private function handleWindowFocus(event:InstanceWindowEvent):void {
+			
 			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
+			window.windowFocused = true;
 			instanceWindowModel.currentWindow = window;
+			for each(var w:InstanceWindow in instanceWindowModel.getAllWindows()) {
+				if(w != window)
+					w.windowFocused = false;
+			}
+			
+//			if(window.currentState == "visualizer") 
+//				instanceWindowModel.toggleToolBars.label = window.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
 		}
 		private function handleStartUp(event:Event):void {
 			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));

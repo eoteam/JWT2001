@@ -6,6 +6,7 @@ package com.pentagram.model
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.utils.RectInterpolator;
 	
 	import flash.desktop.NativeApplication;
@@ -40,6 +41,13 @@ package com.pentagram.model
 		protected var windowMap:IMap;
 		
 		public var currentWindow:InstanceWindow;
+		public var exportMenuItem:NativeMenuItem;
+		public var importMenuItem:NativeMenuItem;
+		public var clientMenuItem:NativeMenuItem;
+		public var userMenuItem:NativeMenuItem;
+		public var countriesMenuItem:NativeMenuItem;
+		public var toolBarMenuItem:NativeMenuItem;
+		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
 		public const CLIENT_WINDOW:String = "clientWindow";
@@ -48,21 +56,15 @@ package com.pentagram.model
 		public const UPLOADER_WINDOW:String = "uploaderWindow";
 		public const HELP_WINDOW:String = "helpWindow";
 		
+		private var tileMinimize:Boolean = true;
+		private var tileMinimizeWidth:int = 200;
+		private var tilePadding:Number = 8;
+		private var minTilePadding:Number = 5;
 		
 		public function InstanceWindowsProxy()
 		{
 			windowMap = new HashMap();
 		}
-		
-		/**
-		 * Create a new <code>BaseWindow</code>. If the <code>windowMap</code>
-		 * already contains a window with the specified UID, return that window
-		 * instead
-		 *
-		 * @param uid identifies the window
-		 * @return
-		 *
-		 */
 		public function createWindow():InstanceWindow
 		{
 			var instanceWindow:InstanceWindow;
@@ -84,26 +86,10 @@ package com.pentagram.model
 			//dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_ADDED, uid));
 			return instanceWindow;
 		}
-		
-		/**
-		 * Retrieve an <code>BaseWindow</code> by its unique identifier
-		 *
-		 * @param uid
-		 * @return
-		 *
-		 */
 		public function getWindowFromUID(uid:String):InstanceWindow
 		{
 			return this.windowMap.getValue(uid) as InstanceWindow;
 		}
-		
-		/**
-		 * Remove a <code>BaseWindow</code> from the <code>windowMap</code>
-		 * by its unique identifier.
-		 *
-		 * @param uid
-		 *
-		 */
 		public function removeWindowByUID(uid:String):void
 		{
 			var w:InstanceWindow = windowMap.getValue(uid) as InstanceWindow;
@@ -115,15 +101,6 @@ package com.pentagram.model
 				NativeApplication.nativeApplication.exit();
 			}
 		}
-		
-		/**
-		 * Check if the <code>windowMap</code> contains an <code>BaseWindow</code>
-		 * unique identifier as a key.
-		 *
-		 * @param uid
-		 * @return
-		 *
-		 */
 		public function hasWindowUID(uid:String):Boolean
 		{
 			return this.windowMap.containsKey(uid);
@@ -164,10 +141,6 @@ package com.pentagram.model
 			}
 			return array;
 		}
-		private var tileMinimize:Boolean = true;
-		public var tileMinimizeWidth:int = 200;
-		public var tilePadding:Number = 8;
-		public var minTilePadding:Number = 5;
 		public function tile(fillAvailableSpace:Boolean = false,gap:Number = 0):void
 		{			
 			var openWinList:Array = getOpenWindowList();
@@ -292,14 +265,7 @@ package com.pentagram.model
 
 			}
 			eff.play();
-			//dispatchEvent(new MDIManagerEvent(MDIManagerEvent.CASCADE, null, this, null, effectItems));
-		}	
-		public var exportMenuItem:NativeMenuItem;
-		public var importMenuItem:NativeMenuItem;
-		public var clientMenuItem:NativeMenuItem;
-		public var userMenuItem:NativeMenuItem;
-		public var countriesMenuItem:NativeMenuItem;
-		
+		}			
 		public	function buildMenu(window:Window=null):Array {
 			//Arrange memu
 			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
@@ -322,46 +288,59 @@ package com.pentagram.model
 			//help
 			var helpItem:NativeMenuItem = new NativeMenuItem("Help");
 			//helpItem.keyEquivalent = "h";
-			//helpItem.keyEquivalentModifiers = [Keyboard.COMMAND];			
-			helpItem.addEventListener(Event.SELECT,handleHelp);
+			//helpItem.keyEquivalentModifiers = [Keyboard.COMMAND];		
+			helpItem.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,HELP_WINDOW];
+			helpItem.addEventListener(Event.SELECT,handleMenuItem);
 			
 			//Manager Menu Items
 			var clients:NativeMenuItem = new NativeMenuItem("Clients");
-			clients.addEventListener(Event.SELECT,handleClient);
+			clients.addEventListener(Event.SELECT,handleMenuItem);
+			clients.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,CLIENT_WINDOW];
 			clients.enabled = false;
 			
 			var countries:NativeMenuItem = new NativeMenuItem("Countries");
-			countries.addEventListener(Event.SELECT,handleCountries);
+			countries.addEventListener(Event.SELECT,handleMenuItem);
+			countries.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,COUNTRIES_WINDOW];
 			countries.enabled = false;
 			
 			var users:NativeMenuItem = new NativeMenuItem("Users");
-			users.addEventListener(Event.SELECT,handleUsers);
+			users.addEventListener(Event.SELECT,handleMenuItem);
+			users.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW];
 			users.enabled = false;
 			
 			var uploader:NativeMenuItem = new NativeMenuItem("Uploader");
-			uploader.addEventListener(Event.SELECT,handleUploader);
+			uploader.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW];
+			uploader.addEventListener(Event.SELECT,handleMenuItem);
 			//uploader.enabled = false;
 			
 			//Item within Window Menu
 			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
 			newWindow.keyEquivalent = "n";
 			newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
-			newWindow.addEventListener(Event.SELECT,handleStartUp);				
+			newWindow.data = [InstanceWindowEvent,InstanceWindowEvent.CREATE_WINDOW];
+			newWindow.addEventListener(Event.SELECT,handleMenuItem);				
 			
 			var fullScreen:NativeMenuItem = new NativeMenuItem("Full Screen");
 			fullScreen.keyEquivalent 	= "f";
 			fullScreen.keyEquivalentModifiers = [Keyboard.COMMAND];			
 			fullScreen.addEventListener(Event.SELECT,onItemSelect);
 			
+	
+			var toolBar:NativeMenuItem = new NativeMenuItem("Hide Tool Bars");
+			toolBar.keyEquivalent = "b";
+			toolBar.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			
 			//Items within File Menu
 			var exp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
-			exp.addEventListener(Event.SELECT,handleExportMenu);
+			exp.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,SPREADSHEET_WINDOW];
 			exp.enabled = false;
 			
 			var imp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
 			imp.enabled = false;
-			imp.addEventListener(Event.SELECT,handleImportMenu);
+			//imp.data = [EditorEvent,EditorEvent.START_IMPORT];
 			
+			
+			/////////
 			var windowMenu:NativeMenuItem;
 			var fileMenu:NativeMenuItem;
 			
@@ -378,6 +357,11 @@ package com.pentagram.model
 				
 				exportMenuItem = exp;
 				importMenuItem  = imp;
+				toolBarMenuItem = toolBar;
+				
+//				exp.addEventListener(Event.SELECT,handleMenuItem);
+//				imp.addEventListener(Event.SELECT,handleMenuItem);
+//				toolBar.addEventListener(Event.SELECT,handleToggle);
 				
 			}	
 			else if(NativeWindow.supportsMenu) {
@@ -406,6 +390,7 @@ package com.pentagram.model
 			windowMenu.submenu.addItemAt(arrange,0);
 			windowMenu.submenu.addItem(fullScreen);
 			windowMenu.submenu.addItem(newWindow);		
+			windowMenu.submenu.addItem(toolBar);
 			
 			fileMenu.submenu.addItemAt(exp,0);	
 			fileMenu.submenu.addItemAt(imp,0);
@@ -416,12 +401,10 @@ package com.pentagram.model
 			managers.addItem(uploader);
 			
 			help.addItem(helpItem);
-			
-			
-			
-			return [exp,imp];
+
+			return [exp,imp,toolBar];
 		}
-		protected function handleArrange(event:Event):void {
+		private function handleArrange(event:Event):void {
 			if(event.target.label == "Tile")
 				tile(false,10);
 			else if(event.target.label == "Tile w Fill")
@@ -429,10 +412,7 @@ package com.pentagram.model
 			else
 				cascade();
 		}
-		protected function handleStartUp(event:Event):void {
-			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
-		}
-		protected function onItemSelect(e:Event):void {
+		private function onItemSelect(e:Event):void {
 			if(currentWindow.stage.displayState == StageDisplayState.NORMAL ) {
 				currentWindow.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
 				currentWindow.showStatusBar = false;
@@ -442,26 +422,35 @@ package com.pentagram.model
 				currentWindow.showStatusBar = true;
 			}
 		}
-		private function handleExportMenu(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,SPREADSHEET_WINDOW));
+		private function handleMenuItem(event:Event):void {
+			var args:Array = event.target.data as Array;
+			var classRef:Class = args[0] as Class;
+			eventDispatcher.dispatchEvent(new classRef(args[1],args[2]));
 		}
-		private function handleImportMenu(event:Event):void {
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT)); 
-		}
-		private function handleClient(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,CLIENT_WINDOW));
-		}
-		private function handleCountries(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,COUNTRIES_WINDOW));
-		}
-		private function handleUsers(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW));
-		}
-		private function handleUploader(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW));
-		}				
-		private function handleHelp(event:Event):void {
-			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,HELP_WINDOW));
-		}
+
+		//		protected function handleStartUp(event:Event):void {
+		//			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
+		//		}
+//		private function handleExportMenu(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,SPREADSHEET_WINDOW));
+//		}
+//		private function handleImportMenu(event:Event):void {
+//			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.START_IMPORT)); 
+//		}
+//		private function handleClient(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,CLIENT_WINDOW));
+//		}
+//		private function handleCountries(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,COUNTRIES_WINDOW));
+//		}
+//		private function handleUsers(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW));
+//		}
+//		private function handleUploader(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW));
+//		}				
+//		private function handleHelp(event:Event):void {
+//			eventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,HELP_WINDOW));
+//		}
 	}
 }

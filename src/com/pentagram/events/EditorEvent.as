@@ -24,6 +24,7 @@ package com.pentagram.events
 		public static const CANCEL:String = "cancelEditor";
 		
 		public static const ERROR:String = "importFailed";
+		public static const SELECT_IMPORT_FILE:String = "selectImportFile";
 		public static const START_IMPORT:String = "startImport";
 		public static const RESUME_IMPORT:String = "resumeImport";
 		

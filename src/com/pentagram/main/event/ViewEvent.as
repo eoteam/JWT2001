@@ -18,6 +18,9 @@ package com.pentagram.main.event
 		public static const END_IMAGE_SAVE:String = "endSaveImage";
 		
 		public static const START_COMPARE:String = "startCompare";
+		
+		public static const WINDOW_FOCUS:String = "windowFocus";
+		
 		public var args:Array;
 		public function ViewEvent(type:String,...args)
 		{

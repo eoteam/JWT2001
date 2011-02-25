@@ -32,7 +32,10 @@
 				}
 			}
 			private function startProgress():void {
+				totalDegrees = -90;
+				degInRad = degInRad1 = -Math.PI/2;
 				maskTimer.start();
+				container.graphics.clear();
 				container.graphics.moveTo(iniX, iniY);
 				container.graphics.clear();
 				var keepLoading:Boolean = true;

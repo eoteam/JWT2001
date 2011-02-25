@@ -171,7 +171,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				case MouseEvent.ROLL_OVER:
 				{
 					var xPos:Number; var yPos:Number;
-					if(sprite.alpha == 1) {
+					if(data && sprite.alpha == 1) {
 						if(sprite.parent.x + this.px + radius + tooltip.width + 10 > this.tooltipContainer.width) {
 							tooltip.leftTip.visible = false;
 							tooltip.rightTp.visible = true;
@@ -226,7 +226,7 @@ package com.pentagram.instance.view.visualizer.renderers
 							info.rightTipVisible = false;
 							info.x = sprite.parent.x + this.px + radius + offset;
 						}
-						info.y = this.py+60;
+						info.y = this.py+40;
 						PopUpManager.addPopUp(info, this.tooltipContainer, false);
 						infoVisible = true;
 					}
