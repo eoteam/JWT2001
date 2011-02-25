@@ -44,7 +44,7 @@
 			private var _topics:Array;	
 			private var english:Boolean
 			private var firstPass:Boolean = true;
-			
+			private var termChanged:Boolean = false;
 			private var commonWords:Array = ["the","be","to","of","and","a","in","that","have","I","it","for","not","on","with","he","as","you","do",
 				"at","this","but","his","by","from","they","we","say","her","she","or","an","will","my","one","all","would","there",
 				"their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no",
@@ -374,7 +374,8 @@
 				this.limit = list.selectedItem.value;
 				this.pageTotal = pageSlider.value
 				optionsPanel.visible = false;
-				if(firstPass) {
+				if(firstPass || termChanged) {
+					termChanged = false;
 					start();
 				}
 			}
@@ -394,6 +395,7 @@
 			}
 			public function set searchTerm(q:String):void {
 				if(_searchTerm != q) {
+					termChanged = true;
 					_searchTerm = q;
 					counter = 1;
 					currentCommonWords = [];
@@ -415,6 +417,7 @@
 					apiSearchTerm = apiSearchTerm.substr(0,apiSearchTerm.length-1);
 					currentCommonWords = currentCommonWords.concat(commonWords);
 					if(!firstPass) {
+						this.optionsPanel.visible = true;
 						this.currentState = "preload";
 						holder.removeAllElements();
 					}
@@ -436,7 +439,7 @@
 	</modules:states>
 	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
 			
-	<s:Group left="5" bottom="0" styleName="darkPanel" id="optionsPanel" 	 width="240" height="200" >
+	<s:Group left="5" bottom="0" styleName="darkPanel" id="optionsPanel" width="240" height="200">
 		<s:filters>
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>
 		</s:filters>

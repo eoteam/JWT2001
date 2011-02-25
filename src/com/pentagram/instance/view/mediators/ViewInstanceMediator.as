@@ -130,8 +130,8 @@ package com.pentagram.instance.view.mediators
 				model.toolBarMenuItem.label = "Hide Tool Bars";
 				model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
 			}
-			model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem);
-			model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem);
+			model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem,false,0,true);
+			model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem,false,0,true);
 			model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
 			
 		}
@@ -139,10 +139,12 @@ package com.pentagram.instance.view.mediators
 			if(event.target.label == "Hide Tool Bars") {
 				view.shellView.currentState = "fullScreen";
 				event.target.label = "Show Tool Bars";
+				view.showStatusBar = false;
 			}
 			else {
 				event.target.label = "Hide Tool Bars";
 				view.shellView.currentState = model.user ? "loggedIn":"loggedOut";
+				view.showStatusBar = true;
 			}
 		}
 		private function handleMenuItem(event:Event):void {
