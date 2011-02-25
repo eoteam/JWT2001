@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <controls:ResizableTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  x.open="5" y.open="100" 
-		width="200" maxWidth="{wVar}" minWidth="200" 
-		height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80" 
-		xmlns:s="library://ns.adobe.com/flex/spark"  
-		close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
-		skinClass="com.pentagram.view.skins.controls.TWTooltipSkin" 
-		move="titlewindow1_moveHandler(event)"
-		xmlns:mx="library://ns.adobe.com/flex/mx"
-		xmlns:vo="com.pentagram.model.vo.*" 
-		xmlns:controls="com.pentagram.view.controls.*">
+							   width="200" maxWidth="{wVar}" minWidth="200" 
+							   height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80" 
+							   xmlns:s="library://ns.adobe.com/flex/spark"  
+							   close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
+							   skinClass="com.pentagram.view.skins.controls.TWTooltipSkin" 
+							   move="titlewindow1_moveHandler(event)"
+							   xmlns:mx="library://ns.adobe.com/flex/mx"
+							   xmlns:vo="com.pentagram.model.vo.*" 
+							   xmlns:controls="com.pentagram.view.controls.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -22,13 +22,13 @@
 			import mx.managers.PopUpManager;
 			
 			import spark.skins.spark.TitleWindowSkin;
-
+			
 			protected function titlewindow1_closeHandler(event:CloseEvent):void {
 				tipVisible = true;
 				PopUpManager.removePopUp(this); 
 			}
-
-
+			
+			
 			protected function titlewindow1_moveHandler(event:MoveEvent):void {
 				if(event.oldX != 0 && event.oldX != 0)
 					tipVisible = false;
@@ -66,8 +66,8 @@
 		<s:State name="closed" />
 		<s:State name="open" />
 	</controls:states>
-
-
+	
+	
 	
 	<controls:transitions>
 		<s:Transition toState="*">
@@ -100,8 +100,8 @@
 	</s:Line>
 	
 	<s:List width="100%" visible="true" height.open="100%" height.closed="0" id="infoContainer"  
-	creationComplete="infoContainer.scroller.setStyle('skinClass',ScrollBarSkin)" horizontalScrollPolicy="off"
-	labelField="text" dataProvider="{topic.tweets}" contentBackgroundAlpha="0" borderVisible="false" >
+			creationComplete="infoContainer.scroller.setStyle('skinClass',ScrollBarSkin)" horizontalScrollPolicy="off"
+			labelField="text" dataProvider="{topic.tweets}" contentBackgroundAlpha="0" borderVisible="false" >
 		<s:itemRenderer>
 			<fx:Component>
 				<s:ItemRenderer autoDrawBackground="false" width="100%">
@@ -118,12 +118,12 @@
 								super.data = value;
 								if(value)
 									textFlow = TextConverter.importToFlow(value.text,TextConverter.TEXT_LAYOUT_FORMAT)
-									
+								
 							}
 						]]>
 					</fx:Script>
 					<s:RichEditableText  focusedTextSelectionColor="0x333333" unfocusedTextSelectionColor="0x333333" 
-					editable="false" selectable="true"   width="100%" textFlow="{textFlow}"  />
+										 editable="false" selectable="true"   width="100%" textFlow="{textFlow}"  />
 					<s:Rect width="100%" height="0.25">
 						<s:stroke>
 							<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>

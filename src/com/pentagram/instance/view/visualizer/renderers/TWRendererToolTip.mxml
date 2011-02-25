@@ -21,13 +21,13 @@
 			public function set content(value:String):void {
 				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_FIELD_HTML_FORMAT);
 			}
-
+			
 			protected function group1_showHandler(event:FlexEvent):void
 			{
 				currentState = topic.link ? "link":"normal";
 			}
-
-
+			
+			
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				var url:String = topic.value;
@@ -36,14 +36,14 @@
 				var req:URLRequest = new URLRequest(url);
 				navigateToURL(req, "_blank");
 			}
-
-
+			
+			
 			protected function group1_clickHandler(event:MouseEvent):void
 			{
 				// TODO Auto-generated method stub
 			}
-	
-
+			
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
@@ -56,9 +56,9 @@
 		<s:State name="normal" />
 		<s:State name="link" />
 	</s:states>
-	<s:Path verticalCenter="0"
+	<s:Path rotation="90" y="39"	
 			id="leftTip"  winding="nonZero"
-			data="M 0 0 L -16 10 L 0 20 L 0 0 Z">
+			data="M 0 0 L 10.231 16.626 L 20.466 0 L 0 0 Z" x="1">
 		<s:fill>
 			<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 		</s:fill>
@@ -87,7 +87,7 @@
 	
 	<s:VGroup paddingBottom="5" paddingTop="5" gap="3" verticalCenter="0" left="0" right="0"   horizontalAlign="center">
 		<s:Label fontSize="14" maxHeight="35" text="{topic.value}"  paddingLeft="7" paddingRight="7"
-		color="#ffffff" maxDisplayedLines="2"  width="100%" fontFamily="FlamaBook"/>
+				 color="#ffffff" maxDisplayedLines="2"  width="100%" fontFamily="FlamaBook"/>
 		<s:Line  width="100%" height="1">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
@@ -104,6 +104,5 @@
 			<s:Button label="This is a link!"  includeIn="link" click="button1_clickHandler(event)" skinClass="com.pentagram.view.skins.buttons.DarkButton" width="100%"/>		
 		</s:HGroup>
 	</s:VGroup>
-
+	
 </s:Group>	
-
