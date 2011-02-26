@@ -190,6 +190,17 @@
 				result += "</p></TextFlow>";					
 				return result;
 			}
+			public function selectCountries(countries:Vector.<Object>):void {
+//				for (var i:int=0;i<holder.numElements;i++) {
+//					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
+//					for (var j:int=0;j<c.numChildren;j++) {
+//						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
+//						if(countries.indexOf(circle.data2.country) != -1)
+//							circle.fillAlpha =1;
+//						else circle.fillAlpha = 0.2;
+//					}
+//				}
+			}
 
 		]]>
 	</fx:Script>

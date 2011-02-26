@@ -19,6 +19,8 @@ package com.pentagram.view.controls
 	[SkinState("disabled")]
 	[Event(name="sortStarted",type="flash.events.Event")]
 	[Event(name="sortComplete",type="flash.events.Event")]
+	[Event(name="addButtonClick",type="flash.events.Event")]
+	[Event(name="removeButtonClick",type="flash.events.Event")]
 	
 	public class MiGList extends List
 	{
@@ -27,7 +29,11 @@ package com.pentagram.view.controls
 		public var includeHeader:Boolean = true;
 		
 		public var dragFormat:String;
+		
 		[Bindable] public var headerText:String;
+		[Bindable] public var addLabel:String;
+		[Bindable] public var removeLabel:String;
+		
 		public function MiGList()
 		{
 			super();
@@ -73,6 +79,14 @@ package com.pentagram.view.controls
 		[SkinPart(required="true")]
 		public var header:Button;
 		
+		
+		[SkinPart(required="true")]
+		public var addButton:Button;
+		
+		
+		[SkinPart(required="true")]
+		public var removeButton:Button;
+		
 		/**
 		 * 
 		 * @return 
@@ -112,6 +126,8 @@ package com.pentagram.view.controls
 				header.addEventListener(MouseEvent.CLICK, header_clickHandler);
 				//header.addEventListener(ResizeEvent.RESIZE,handleButtonResize);
 			}
+			if(instance == addButton || instance == removeButton)
+				instance.addEventListener(MouseEvent.CLICK, addremove_clickHandler);
 		}
 		
 		/**
@@ -128,6 +144,8 @@ package com.pentagram.view.controls
 			{
 				header.removeEventListener(MouseEvent.CLICK, header_clickHandler);
 			}
+			if(instance == addButton || instance == removeButton)
+				instance.removeEventListener(MouseEvent.CLICK, addremove_clickHandler);
 		}
 
 
@@ -137,7 +155,10 @@ package com.pentagram.view.controls
 			sortList();
 		}
 		
-		
+		protected function addremove_clickHandler(event:MouseEvent):void 
+		{
+			this.dispatchEvent(new Event(event.target==addButton?"addButtonClick":"removeButtonClick"));	
+		}
 		private function sortList():void 
 		{
 			var dp:ICollectionView = this.dataProvider as ICollectionView;

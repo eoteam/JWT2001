@@ -24,5 +24,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function selectAllCategories():void;
 		
 		function get didVisualize():Boolean;
+		
+		function selectCountries(countries:Vector.<Object>):void;
 	}
 }

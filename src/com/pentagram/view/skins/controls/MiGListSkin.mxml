@@ -53,7 +53,7 @@
 		</s:stroke>
 	</s:Rect>
 	
-	<s:Scroller id="scroller" left="1" top="20" right="1" bottom="0" minViewportInset="1" focusEnabled="false">
+	<s:Scroller id="scroller" left="1" top="20" right="1" bottom="18" minViewportInset="1" focusEnabled="false">
 		<!--The container for the data items.-->
 		<s:DataGroup id="dataGroup" itemRenderer="spark.skins.spark.DefaultItemRenderer" >
 			<s:layout>
@@ -65,4 +65,9 @@
 	<s:Button id="header" label="{hostComponent.headerText}" right="4" left="2"   height="20"  fontFamily="FlamaBold" 
 	skinClass="com.pentagram.view.skins.buttons.MiGListHeaderButton" />
 	
+	
+	<s:HGroup width="100%" gap="0" paddingLeft="1" bottom="0">
+		<s:Button width="100%" id="addButton" label="{hostComponent.addLabel}"  styleName="grayButton" />
+		<s:Button width="100%" label="{hostComponent.removeLabel}"  id="removeButton" styleName="grayButton"/>
+	</s:HGroup>
 </s:SparkSkin>

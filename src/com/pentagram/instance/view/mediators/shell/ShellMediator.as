@@ -328,6 +328,9 @@ package com.pentagram.instance.view.mediators.shell
 				case "topics" :
 					view.twitterView.selectTweets(value as Vector.<Object>);
 				break;
+				case "countrySelection":
+					IDataVisualizer(view.currentVisualizer).selectCountries(event.args[1]);
+				break;
 			}
 			
 		}

@@ -112,6 +112,16 @@
 			public function pause():void {
 				
 			}
+			public function selectCountries(countries:Vector.<Object>):void {
+				for each(var renderer:MapRenderer in renderers) {
+					if(countries.indexOf(renderer.data.country) != -1)
+						renderer.fillAlpha = 1;
+					else 
+						renderer.fillAlpha = 0.2;	
+					
+					renderer.draw();
+				}
+			}
 			public function updateMaxRadius(value:Number):void {
 				this.maxRadius = value;
 				update();

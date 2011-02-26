@@ -70,11 +70,12 @@
 			 skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />
 			<s:Rect height="6"/>
 			<controls:MiGList labelField="name" sortField="name" headerText="Clients" id="clientList" width="100%"
-			 keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"/>			
-			<s:HGroup width="100%" gap="0" paddingLeft="1">
-				<s:Button width="100%" label="+ Add Client" id="addButton"  styleName="grayButton" />
-				<s:Button width="100%" label="- Delete" id="deleteListBtn"  styleName="grayButton" />
-			</s:HGroup>
+			 keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
+			 addLabel="+ Add Client" removeLabel="+ Add Client"/>			
+<!--			<s:HGroup width="100%" gap="0" paddingLeft="1"  >
+				<s:Button width="100%"  id="addButton"  styleName="grayButton" />
+				<s:Button width="100%"  id="deleteListBtn"  styleName="grayButton" />
+			</s:HGroup>-->
 		</s:VGroup>
 		
 		<s:Group width="100%" height="100%">

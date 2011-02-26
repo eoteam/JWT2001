@@ -15,6 +15,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
+	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
 	import mx.events.StateChangeEvent;
@@ -48,9 +49,9 @@ package com.pentagram.instance.view.mediators.shell
 			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
 			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
 			
-			view.optionsPanel.countryFilter.dataProvider = model.client.countries.source;
-			view.optionsPanel.countryFilter.addEventListener(CustomEvent.SELECT,handleCountrySelection);
+			view.countriesPanel.countryList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,false,0,true);
 			
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
 			eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
@@ -78,6 +79,9 @@ package com.pentagram.instance.view.mediators.shell
 				view.twitterOptions.getItemAt(i).color = model.colors[i];
 			}
 		}
+		private function handleClientDataLoaded(event:VisualizerEvent):void {
+			view.countriesPanel.countryList.dataProvider = new ArrayCollection(model.client.countries.source);
+		}
 		private function handleImageSaveStart(event:ViewEvent):void {
 			if(!model.includeTools)
 				view.visible == false;
@@ -99,8 +103,8 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 			}
 		}
-	    private function handleCountrySelection(event:CustomEvent):void {
-			
+	    private function handleCountrySelection(event:GridSelectionEvent):void {
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",view.countriesPanel.countryList.selectedItems));
 		}
 		private function handleRegionSelect(event:Event):void {
 			if(view.state != "twitter") {

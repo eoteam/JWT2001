@@ -25,9 +25,9 @@
 			override public function set visible(value:Boolean):void {
 				super.visible = value;
 				if(maskTimer){
-					if(value)
+					if(value && !maskTimer.running)
 						startProgress();
-					else
+					else if(!value)
 						maskTimer.stop();
 				}
 			}

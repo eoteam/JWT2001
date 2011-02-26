@@ -50,10 +50,13 @@ package com.pentagram.main.mediators
 			view.countryList.dataProvider = new ArrayCollection(model.countries.source);
 			view.countryList.addEventListener(IndexChangeEvent.CHANGE,handleSelection,false,0,true);
 			view.continentList.dataProvider = model.regions;
-			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
+			
+			view.countryList.addEventListener("removeButtonClick",handleDelete,false,0,true);
+			view.countryList.addEventListener("addButtonClick",handleAdd,false,0,true);
+					
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 			view.altDelete.addEventListener(MouseEvent.CLICK,handleAltDelete,false,0,true);
-			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
+			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSave,false,0,true);
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.logoHolder.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
@@ -190,13 +193,13 @@ package com.pentagram.main.mediators
 			view.currentState = "edit";
 			this.fileToUpload = null;
 		}
-		private function handleAdd(event:MouseEvent):void {
+		private function handleAdd(event:Event):void {
 			view.currentState = "add";
 			view.saveBtn.enabled = false;
 			currentCountry = new Country();
 			view.country = currentCountry;
 		}
-		private function handleDelete(event:MouseEvent):void {
+		private function handleDelete(event:Event):void {
 			view.errorPanel.errorMessage = "Are you sure you want to delete this country?\nThis change cannot be undone";
 		}
 		private function handleNotification(event:Event):void {

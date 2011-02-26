@@ -82,8 +82,8 @@ package com.pentagram.instance.model
 						for(prop in item) { 
 							if(prop != 'id' && prop != 'countryid') {
 								if(dataset.time == 1)
-									row[prop.toString()] = dataset.type == 1 ? (item[prop] == ''?NaN:Number(item[prop])) : item[prop]; 
-								else row.value = dataset.type == 1 ? Number(item[prop]) : item[prop]; 
+									row[prop.toString()] = dataset.type == 1 ? (item[prop] == '' ?NaN:Number(item[prop])) : item[prop]; 
+								else row.value = dataset.type == 1 ? (item[prop] == '' ?NaN:Number(item[prop])) : item[prop];
 							}
 						}
 						dataset.rows.addItem(row);

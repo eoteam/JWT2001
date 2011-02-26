@@ -47,7 +47,8 @@ package com.pentagram.instance.view.visualizer.views
 				this.addChild(sprite);
 				counter++;
 			}
-			doLayout();
+			if(renderers.length >= 2)
+				doLayout();
 		}
 		public function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
@@ -106,10 +107,17 @@ package com.pentagram.instance.view.visualizer.views
 		
 		public function draw() : void {			
 			var c:ClusterRenderer;
-			if (this.numberList.length < 2){
+			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
+			if (this.renderers.length < 2){
+					c = this.renderers[0];
+					TweenNano.to(c,.5,{radius:25 * scaler,
+						alpha:1,
+						x:_loc_2 + width/2,
+						y:_loc_2+ height/2});		
+				
 				return;
 			}
-			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
+			
 			var i:uint = 0;
 			while (i < this.circlePositions.length){
 				c = this.renderers[i];

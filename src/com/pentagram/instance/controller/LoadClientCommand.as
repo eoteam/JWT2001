@@ -105,6 +105,7 @@ package com.pentagram.instance.controller
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void {
 			counter++;
+			trace("Dataset counter",counter,model.client.datasets.length);
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.data = event.result.toString();
 			dataset.loaded = true;
@@ -112,6 +113,7 @@ package com.pentagram.instance.controller
 			if(counter == model.client.datasets.length) {
 				model.client.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				trace("CLIENT LOADED");
 			}
 		}
 		

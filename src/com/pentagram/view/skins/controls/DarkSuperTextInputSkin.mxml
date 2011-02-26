@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:SparkSkin
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:s="library://ns.adobe.com/flex/spark"
+		minWidth="100" minHeight="22"
+		alpha.disabled="0.5"
+		blendMode="normal">
+
+	<fx:Metadata>
+		[HostComponent("com.pentagram.view.controls.SuperTextInput")]
+	</fx:Metadata> 
+
+	<s:states>
+		<s:State name="normal"/>
+		<s:State name="disabled" stateGroups="disabledStates"/>
+		<s:State name="normalWithPrompt"/>
+		<s:State name="disabledWithPrompt" stateGroups="disabledStates"/>
+	</s:states>
+
+
+	<s:Group id="group14"  top="0" left="0" right="0" bottom="0">
+		<s:Rect height="24"  right="0.5" left="0" top="1">
+			<s:fill>
+				<s:LinearGradient rotation="90" scaleX="16.0078" x="75.5195" y="0.84082">
+					<s:GradientEntry ratio="0"/>
+					<s:GradientEntry color="#0F0F0F" ratio="0.0659366"/>
+					<s:GradientEntry color="#181818" ratio="0.143804"/>
+					<s:GradientEntry color="#1C1C1C" ratio="0.404908"/>
+				</s:LinearGradient>
+			</s:fill>
+		</s:Rect>
+		<s:Rect height="24" right="0" left="0.5" top="0.5">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Rect>
+	</s:Group>
+	
+	<!-- text -->
+	<s:RichEditableText id="textDisplay" left="4" right="24" top="1" bottom="0"
+			color="#ffffff"
+			verticalAlign="middle" />
+
+	<!-- prompt -->
+	<s:Label id="promptDisplay" left="4" right="4" top="1" bottom="0" includeIn="normalWithPrompt"
+			color="#aaaaaa" fontFamily="FlamaBook" fontStyle="normal"
+			maxDisplayedLines="1"
+			verticalAlign="middle" />
+
+	<!-- clear button -->
+	<s:Button id="clearButton" right="4" verticalCenter="0" excludeFrom="normalWithPrompt"
+			skinClass="com.pentagram.view.skins.controls.SuperTextInputClearButtonSkin" />
+</s:SparkSkin>

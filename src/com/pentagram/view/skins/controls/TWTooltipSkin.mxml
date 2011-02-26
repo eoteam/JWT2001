@@ -144,7 +144,8 @@
 		</s:Path>
 		
 		
-		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z" rotation="270" verticalCenter="0"><!-- visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}"-->
+		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="0" winding="nonZero"
+		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}"> <!-- -->
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 			</s:fill>

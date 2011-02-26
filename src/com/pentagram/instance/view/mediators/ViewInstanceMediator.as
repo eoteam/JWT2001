@@ -41,7 +41,7 @@ package com.pentagram.instance.view.mediators
 		[Inject(name="ApplicationEventDispatcher")]
 		public var appEventDispatcher:EventDispatcher;   
 		
-		//private var selectedClient:Client;
+		private var shellLoaded:Boolean = false;
 		public override function onRegister():void
 		{
 			eventMap.mapListener( eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
@@ -163,29 +163,29 @@ package com.pentagram.instance.view.mediators
 		
 		
 		private function handleClientSelected(event:ViewEvent):void {
-			//if(!model.client.loaded)
 			model.toolBarMenuItem.enabled = true;
 			view.progressIndicator.visible = true;
 			view.currentState = view.visualizerState.name;
-			//else
-			//	view.currentState = view.visualizerAndLoadedState.name;
 			view.client = model.client;
 			view.title = model.client.name;
-			//mediatorMap.createMediator(view.shellView);
-			//selectedClient = event.args[0] as Client;
-			if(view.shellView)
+			if(shellLoaded) {
+				view.progressIndicator.visible = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+			}
 		}
 		private function handleProgress(event:VisualizerEvent):void {
 			view.progressIndicator.visible = event.args[0]
-			//view.currentState = event.args[0] == true? view.state+"AndLoading":view.state+"AndLoaded";
 		}
 		private function handleShellLoaded(event:ViewEvent):void {
-			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+			if(!shellLoaded) {
+				shellLoaded = true;
+				view.progressIndicator.visible = true;
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+			}
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void {
-			//view.currentState = view.visualizerAndLoadedState.name;
 			view.title = model.client.name;
+			//view.progressIndicator.visible = false;
 		}
 		private function loadSearchView(event:VisualizerEvent):void {
 			view.currentState = view.searchState.name;

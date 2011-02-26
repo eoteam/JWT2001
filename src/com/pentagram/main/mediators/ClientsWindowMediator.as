@@ -51,8 +51,10 @@ package com.pentagram.main.mediators
 			
 			view.saveBtn.addEventListener(MouseEvent.CLICK,handleSaveChanges,false,0,true);
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
-			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
-			view.addButton.addEventListener(MouseEvent.CLICK,handleAdd,false,0,true);
+			
+			view.clientList.addEventListener("removeButtonClick",handleDelete,false,0,true);
+			view.clientList.addEventListener("addButtonClick",handleAdd,false,0,true);
+			
 			view.cancelBtn.addEventListener(MouseEvent.CLICK,handleCancel,false,0,true);
 			view.changeImageBtn.addEventListener(MouseEvent.CLICK,handleChangeImage,false,0,true);
 			view.downloadBtn.addEventListener(MouseEvent.CLICK,handleDownload,false,0,true);
@@ -190,7 +192,7 @@ package com.pentagram.main.mediators
 		private function handleCountryListSelection(event:IndexChangeEvent):void {
 			
 		}
-		private function handleAdd(event:MouseEvent):void {
+		private function handleAdd(event:Event):void {
 			view.currentState = "add";	
 			currentClient = new Client();
 			currentClient.name = "New Client";
@@ -207,7 +209,7 @@ package com.pentagram.main.mediators
 			view.client = currentClient;
 			view.currentState = "edit";
 		}
-		private function handleDelete(event:MouseEvent):void {
+		private function handleDelete(event:Event):void {
 			view.errorPanel.errorMessage = "Are you sure you want to delete this client?\nThis change cannot be undone";
 		}
 		private function handleNotification(event:Event):void {

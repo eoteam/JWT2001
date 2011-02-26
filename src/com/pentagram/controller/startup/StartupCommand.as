@@ -65,7 +65,6 @@ package com.pentagram.controller.startup
 			counter++;
 			for each(var client:Client in appModel.clients.source) {
 				client.thumb = Constants.FILES_URL+client.thumb;
-				trace(client.thumb);
 				////??????????????????
 				for each(var region:Region in appModel.regions.source) {
 					var cRegion:Region = new Region();

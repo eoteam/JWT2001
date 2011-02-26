@@ -71,11 +71,11 @@ package com.pentagram.instance.view.mediators.editor
 			
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_OVER,onDragIn,false,0,true);
 			view.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
-			view.dataSetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
-			//view.dataSetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
-			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
+			view.datasetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
+			//view.datasetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
+			view.datasetList.dataProvider = new ArrayCollection(model.client.datasets.source);
 			
-			view.deleteListBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
+			view.datasetList.addEventListener("removeButtonClick",handleDelete,false,0,true);
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
 			if(view.currentState == "overview") {
@@ -88,8 +88,8 @@ package com.pentagram.instance.view.mediators.editor
 		private function handleCancelChange(event:MouseEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CANCEL));
 		}
-		private function handleDelete(event:MouseEvent):void {
-			var eventLoad:EditorEvent = new EditorEvent(EditorEvent.DELETE_DATASET,view.dataSetList.selectedItem);
+		private function handleDelete(event:Event):void {
+			var eventLoad:EditorEvent = new EditorEvent(EditorEvent.DELETE_DATASET,view.datasetList.selectedItem);
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.NOTIFY,"Are you sure you want to delete this dataset?\nThis change cannot be undone",eventLoad));
 			//eventDispatcher.dispatchEvent();
 		}
@@ -100,9 +100,9 @@ package com.pentagram.instance.view.mediators.editor
 			view.statusModule.updateStatus("Client Data Updated");
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void {
-			view.dataSetList.dataProvider = new ArrayCollection(model.client.datasets.source);
+			view.datasetList.dataProvider = new ArrayCollection(model.client.datasets.source);
 			if(model.client.datasets.length > 0 ) {
-				view.dataSetList.selectedIndex = 0;
+				view.datasetList.selectedIndex = 0;
 				if(view.currentState == view.datasetState.name) {
 					view.datasetEditor.dataset = model.client.datasets.getItemAt(0) as Dataset;
 				}
@@ -113,10 +113,10 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function handleDatasetCreated(event:EditorEvent):void {
 			var dataset:Dataset = event.args[0] as Dataset;
-			ArrayCollection(view.dataSetList.dataProvider).refresh();
+			ArrayCollection(view.datasetList.dataProvider).refresh();
 			view.currentState = view.datasetState.name;
-			view.dataSetList.selectedItem = dataset;
-			model.selectedSet = view.dataSetList.selectedItem as Dataset;
+			view.datasetList.selectedItem = dataset;
+			model.selectedSet = view.datasetList.selectedItem as Dataset;
 			view.statusModule.updateStatus("Data Set Created");
 			
 			if(view.datasetEditor) {
@@ -130,14 +130,14 @@ package com.pentagram.instance.view.mediators.editor
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");
-			ArrayCollection(view.dataSetList.dataProvider).refresh();
+			ArrayCollection(view.datasetList.dataProvider).refresh();
 			if(model.client.datasets.length == 0) {
 				if(view.datasetEditor)
 					view.datasetEditor.dataset = null;
 				view.currentState = view.overviewState.name;
 			}
 			else {
-				view.dataSetList.selectedIndex = 0;
+				view.datasetList.selectedIndex = 0;
 				if(view.datasetEditor) {
 					view.datasetEditor.dataset = model.client.datasets.getItemAt(0) as Dataset;
 					view.datasetEditor.generateDataset();
@@ -145,16 +145,16 @@ package com.pentagram.instance.view.mediators.editor
 			}
 		}
 		private function handleDatasetChange(event:IndexChangeEvent):void {
-			model.selectedSet = view.dataSetList.selectedItem as Dataset;
+			model.selectedSet = view.datasetList.selectedItem as Dataset;
 			if(view.currentState == view.datasetState.name && view.datasetEditor)
-				view.datasetEditor.dataset = view.dataSetList.selectedItem as Dataset;
+				view.datasetEditor.dataset = view.datasetList.selectedItem as Dataset;
 				view.datasetEditor.generateDataset();
 		}
 		private function onDragIn(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {	
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
 				if(MimeType.getMimetype(File(files[0]).extension) == MimeType.FILE && File(files[0]).extension == "csv") {
-					NativeDragManager.acceptDragDrop(view.dataSetList); 
+					NativeDragManager.acceptDragDrop(view.datasetList); 
 					if(view.currentState == "dataset") {
 
 					}
@@ -177,6 +177,13 @@ package com.pentagram.instance.view.mediators.editor
 			file.browse([new FileFilter("Spreadsheet", "*.csv")]);
 		}
 		private function onFileLoad(event:Event):void {
+			var fileName:String = event.target.name.replace(/.csv/gi,'');
+			for each(var ds:Dataset in model.client.datasets.source) {
+				if(ds.name == fileName) {
+					eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ERROR,"This name is already taken. Please choose another one."));
+					return;
+				}
+			}
 			processFile(event.target as File);
 		}
 		private function processFile(file:File):void {

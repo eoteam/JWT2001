@@ -4,6 +4,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.BottomBar;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Client;
 	
 	import flash.events.EventDispatcher;
@@ -46,7 +47,7 @@ package com.pentagram.instance.view.mediators.shell
 		{
 			if(model.client != event.data as Client) {
 				model.client = event.data as Client;
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_SELECTED));
+				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
 			}
 			view.searchInput.text = '';
 		}
