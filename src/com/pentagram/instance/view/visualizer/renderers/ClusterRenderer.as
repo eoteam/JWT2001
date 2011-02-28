@@ -12,6 +12,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
+	import fxgparser.parser.model.Data;
+	
 	import mx.events.CloseEvent;
 	import mx.graphics.IStroke;
 	import mx.graphics.Stroke;
@@ -24,7 +26,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	public class ClusterRenderer extends BaseRenderer
 	{
 		public var radiusBeforeRendering:Number;
-		public var data2:DataRow;
+	
 		
 		 
 		private var info:RendererInfo;
@@ -39,7 +41,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var directParent:SpriteVisualElement;
 		protected var stateFlag:Boolean = false;
 		protected var dirtyFlag:Boolean = false;
-		protected var dirtyCoordFlag:Boolean = false;
+		protected var dirtyTooltipFlag:Boolean = false;
 		protected var _content:String;
 			
 		public function ClusterRenderer(parent:Group,parent2:SpriteVisualElement) {
@@ -68,7 +70,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
 			this.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+			this.addEventListener(Event.REMOVED, removedFromStageHandler);
 			
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(tooltip);
@@ -76,7 +78,17 @@ package com.pentagram.instance.view.visualizer.renderers
 		}		
 		override public function set data(d:Object):void { 
 			super.data = d;
-			fillColor = textColor = DataRow(d).country.region.color;
+			if(d)
+				fillColor = textColor = DataRow(d).country.region.color;
+		}
+		private var _data2:DataRow;
+		public function set data2(d:DataRow):void {
+			_data2 = d;
+			if(!data)
+				fillColor = textColor = _data2.country.region.color
+		}
+		public function get data2():DataRow {
+			return _data2;
 		}
 		public function set state(value:Boolean):void {
 			if(value && !stateFlag)
@@ -91,16 +103,23 @@ package com.pentagram.instance.view.visualizer.renderers
 		override public function dirty():void {
 			dirtyFlag = true;
 			this.invalidateDisplayList();
-		}
-		public function dirtyCoordinates():void {
-			dirtyCoordFlag = true;
-			this.invalidateProperties();
-		}
-		
+		}		
 		override protected function commitProperties():void {
 			super.commitProperties();
-			if(dirtyCoordFlag)
-				updateCoordinates();
+			if(dirtyTooltipFlag) {
+				dirtyTooltipFlag = false;
+				if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
+					tooltip.leftTip.visible = false;
+					tooltip.rightTp.visible = true;
+					tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
+				}
+				else { 
+					tooltip.leftTip.visible = true;
+					tooltip.rightTp.visible = false;
+					tooltip.x = this.directParent.x + this.x + radius + offset;
+				}
+				tooltip.y = this.y - tooltip.height/2;
+			}
 		}
 		protected function updateCoordinates():void {
 			
@@ -133,7 +152,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
-			labelTF.text = DataRow(_data).country.shortname;
+			labelTF.text = _data?DataRow(_data).country.shortname:DataRow(_data2).country.shortname;
 			labelTF.width = labelTF.textWidth;
 			
 			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
@@ -166,28 +185,13 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					if(data) {
-					if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-						tooltip.leftTip.visible = false;
-						tooltip.rightTp.visible = true;
-						tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
-					}
-					else { 
-						tooltip.leftTip.visible = true;
-						tooltip.rightTp.visible = false;
-						tooltip.x = this.directParent.x + this.x + radius + offset;
-					}
-					tooltip.y = this.y - tooltip.height/2;
-					tooltip.visible = true;	
-					tooltip.content = _content;
-					tooltip.country = data.country;
-					}
+					showTooltip();
 					break;
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-					tooltip.visible = false;
+					hideTooltip();
 					break;
 				}		
 				case MouseEvent.MOUSE_DOWN:
@@ -200,10 +204,10 @@ package com.pentagram.instance.view.visualizer.renderers
 				}
 				case MouseEvent.CLICK:
 				{
-					if(!infoVisible && data) {
+					if(!infoVisible && (_data || _data2)) {
 						tooltip.visible = false;
 						info = new RendererInfo();
-						info.country = _data.country;
+						info.country = _data?_data.country:_data2.country;
 						info.content = _content;
 						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 
@@ -225,11 +229,33 @@ package com.pentagram.instance.view.visualizer.renderers
 				}
 			}
 		}
+		public function showTooltip():void {
+			if(_data || _data2) {
+				if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
+					tooltip.leftTip.visible = false;
+					tooltip.rightTp.visible = true;
+					tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
+				}
+				else { 
+					tooltip.leftTip.visible = true;
+					tooltip.rightTp.visible = false;
+					tooltip.x = this.directParent.x + this.x + radius + offset;
+				}
+				tooltip.y = this.y - tooltip.height/2;
+				tooltip.visible = true;	
+				tooltip.content = _content;
+				tooltip.country = _data?_data.country:_data2.country;
+			}
+		}
+		public function hideTooltip():void {
+			tooltip.visible = false;
+		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}
-		private function addedToStageHandler(event:Event):void {
-			
+		private function removedFromStageHandler(event:Event):void {
+			if(tooltipContainer.contains(tooltip))
+				tooltipContainer.removeElement(tooltip);
 		}
 		public function set content(v:String):void {
 			_content = v;
@@ -243,6 +269,21 @@ package com.pentagram.instance.view.visualizer.renderers
 				this.info.close();
 			}
 		}
+		override public function set x(value:Number):void {
+			super.x = value;
+			if(tooltip.visible) {
+				dirtyTooltipFlag = true;
+				this.invalidateProperties();
+			}
+		}
+		override public function set y(value:Number):void {
+			super.y = value;
+			if(tooltip.visible) {
+				dirtyTooltipFlag = true;
+				this.invalidateProperties();
+			}
+		}
+
 	}
 	
 }

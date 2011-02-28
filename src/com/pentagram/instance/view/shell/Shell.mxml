@@ -66,6 +66,26 @@
 		<s:State name="fullScreen" />
 	</s:states>
 
+	<s:transitions>
+		<s:Transition fromState="*" toState="fullScreen">
+			<s:Sequence>
+				<s:Sequence>
+					<s:Resize heightTo="0" targets="{[hgroup1,tools,bottomPanelContainer,clientBar,tabBar]}" />
+					<s:RemoveAction targets="{[hgroup1,tools,bottomPanelContainer,clientBar,tabBar]}" />
+				</s:Sequence>
+				<s:Resize targets="{[visualizerArea,mainStack]}" />
+			</s:Sequence>
+		</s:Transition>
+		<s:Transition fromState="fullScreen" toState="*">
+			<s:Sequence>
+				<s:Sequence>
+					<s:Resize targets="{[hgroup1,tools,bottomPanelContainer,clientBar,tabBar]}" />
+					<s:AddAction targets="{[hgroup1,tools,bottomPanelContainer,clientBar,tabBar]}" />
+				</s:Sequence>
+				<s:Resize targets="{[visualizerArea,mainStack]}" />
+			</s:Sequence>
+		</s:Transition>
+	</s:transitions>
 	
 	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" top.fullScreen="0" bottom.fullScreen="0" selectedIndex.fullScreen="0" 
 		id="mainStack" backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
@@ -83,11 +103,11 @@
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(twitterView)twitterView.clearTooltips()"	/>
 			</mx:ViewStack>
 			
-			<s:HGroup verticalAlign="middle" height="40" left="7" right="5" excludeFrom="fullScreen">
+			<s:HGroup verticalAlign="middle" height="40" left="7" right="5" excludeFrom="fullScreen" id="hgroup1">
 				<s:Label fontSize="24" fontFamily="FlamaBold" id="vizTitle" />
 				<s:Button  skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton"  id="setInfoBtn"  click="setInfoBtn_clickHandler(event)" />
 			</s:HGroup>
-			<s:Line width="100%" height="1" y="40" excludeFrom="fullScreen">
+			<s:Line width="100%" height="1" y="40" excludeFrom="fullScreen" id="line1">
 				<s:stroke>
 					<s:SolidColorStroke weight="1" color="0xB3B1AC"/>
 				</s:stroke>
@@ -129,7 +149,7 @@
 		<shell:BottomBar width="100%" height="40" bottom="10" id="bottomBarView"  />
 	</s:SkinnableContainer> 
 	
-	<s:TabBar right="150" height="22" bottom="29" dataProvider="{mainStack}"  includeIn="loggedIn">
+	<s:TabBar right="150" height="22" bottom="29" dataProvider="{mainStack}"  includeIn="loggedIn" id="tabBar">
 		<s:itemRenderer>
 			<fx:Component>
 				<s:ButtonBarButton skinClass="com.pentagram.view.skins.buttons.BottomTabButton" />

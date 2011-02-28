@@ -170,33 +170,14 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					var xPos:Number; var yPos:Number;
-					if(data && sprite.alpha == 1) {
-						if(sprite.parent.x + this.px + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-							tooltip.leftTip.visible = false;
-							tooltip.rightTp.visible = true;
-							xPos = sprite.parent.x + this.px - radius - tooltip.width - offset;
-						}
-						else { 
-							tooltip.leftTip.visible = true;
-							tooltip.rightTp.visible = false;
-							xPos = sprite.parent.x + this.px + radius + offset;
-						}
-						yPos = this.py - tooltip.height/2;
-						tooltip.visible = true;
-						tooltip.content = _content;
-						tooltip.country = data.country;
-						tooltip.updatePosition(xPos,yPos);
-						break;
-					}
+					showTooltip();
+					break;
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-						if(sprite.alpha == 1) {
-							tooltip.visible = false;
-							break;
-						}
+					hideTooltip();
+					break;
 				}
 					
 				case MouseEvent.MOUSE_DOWN:
@@ -231,6 +212,31 @@ package com.pentagram.instance.view.visualizer.renderers
 						infoVisible = true;
 					}
 				}
+			}
+		}
+		public function showTooltip():void {
+			var xPos:Number; var yPos:Number;
+			if(data && sprite.alpha == 1) {
+				if(sprite.parent.x + this.px + radius + tooltip.width + 10 > this.tooltipContainer.width) {
+					tooltip.leftTip.visible = false;
+					tooltip.rightTp.visible = true;
+					xPos = sprite.parent.x + this.px - radius - tooltip.width - offset;
+				}
+				else { 
+					tooltip.leftTip.visible = true;
+					tooltip.rightTp.visible = false;
+					xPos = sprite.parent.x + this.px + radius + offset;
+				}
+				yPos = this.py - tooltip.height/2;
+				tooltip.visible = true;
+				tooltip.content = _content;
+				tooltip.country = data.country;
+				tooltip.updatePosition(xPos,yPos);	
+			}
+		}
+		public function hideTooltip():void {
+			if(sprite.alpha == 1) {
+				tooltip.visible = false;;
 			}
 		}
 		private function handleInfoClose(event:CloseEvent):void {

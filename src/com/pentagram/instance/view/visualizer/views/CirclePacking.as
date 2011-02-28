@@ -25,11 +25,13 @@ package com.pentagram.instance.view.visualizer.views
 		public var scaler:Number = 1;
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
-		public function CirclePacking(arr:Array,parent:Group)
+		private var opacity:Boolean;
+		public function CirclePacking(arr:Array,parent:Group,opacity:Boolean)
 		{
 			super();			
 			this.numberList = arr;
 			this.tooltipContainer = parent;
+			this.opacity = opacity;
 		}
 		public function build():void {
 			var counter:uint = 0;
@@ -38,9 +40,9 @@ package com.pentagram.instance.view.visualizer.views
 				sprite.data = numberList[counter].data;
 				sprite.data2 = numberList[counter].data2; 
 				sprite.fillColor = numberList[counter].color;
-				sprite.fillAlpha = 0.2;
+				sprite.fillAlpha = opacity?0.2:1;
 				sprite.content = numberList[counter].content;
-				sprite.textColor = numberList[counter].color;
+				sprite.textColor = opacity?numberList[counter].color:0xffffff;
 				sprite.radiusBeforeRendering = numberList[counter].radius;
 				sprite.scaleX= -1;
 				renderers.push(sprite);

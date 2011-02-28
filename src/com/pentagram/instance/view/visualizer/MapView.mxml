@@ -114,12 +114,18 @@
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
 				for each(var renderer:MapRenderer in renderers) {
-					if(countries.indexOf(renderer.data.country) != -1)
-						renderer.fillAlpha = 1;
-					else 
-						renderer.fillAlpha = 0.2;	
-					
-					renderer.draw();
+					if(countries.indexOf(renderer.data.country) != -1) {
+						if(renderer.fillAlpha != 1) {
+							TweenNano.to(renderer,0.5,{fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+							renderer.showTooltip();
+						}
+					}
+					else {
+						if(renderer.fillAlpha != 0.2) {
+							TweenNano.to(renderer,0.5,{fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+							renderer.hideTooltip();
+						}
+					}
 				}
 			}
 			public function updateMaxRadius(value:Number):void {
@@ -135,23 +141,26 @@
 					var r:Number;
 					if(c.data) {
 						var content:String;
-						if(dataset.time == 1) {
-							if(!isNaN(c.data[currentYear])) {
-								r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-								content = generateContent(c.data[currentYear],currentYear);
-							}
-							else
-								r = 0;
-						}
-						else {
-							if(!isNaN(c.data.value)) {
-								r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-								content = generateContent(c.data.value);
+						if(dataset.id != -1) {
+							if(dataset.time == 1) {
+								if(!isNaN(c.data[currentYear])) {
+									r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+									content = generateContent(c.data[currentYear],currentYear);
+								}
+								else
+									r = 0;
 							}
 							else {
-								r = 0;
+								if(!isNaN(c.data.value)) {
+									r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+									content = generateContent(c.data.value);
+								}
+								else {
+									r = 0;
+								}
 							}
 						}
+						else r = maxRadius;
 						TweenNano.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
 						c.content = content;
 						c.draw();
@@ -262,16 +271,19 @@
 				if(dataset) {
 					for each(row in dataset.rows) {
 						if(dataset.type == 1) {
-							var content:String;
-							if(dataset.time == 1) {
-								r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
-								currentYear = dataset.years[0];
-								content =  generateContent(row[dataset.years[0]],dataset.years[0]);
+							var content:String = '';
+							if(dataset.id != -1) {
+								if(dataset.time == 1) {
+									r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+									currentYear = dataset.years[0];
+									content =  generateContent(row[dataset.years[0]],dataset.years[0]);
+								}
+								else {
+									r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+									content = generateContent(row.value);
+								}
 							}
-							else {
-								r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
-								content = generateContent(row.value);
-							}
+							else r = maxRadius;
 						}
 						c = renderersDictionary[row.country.shortname];
 						if(c) {

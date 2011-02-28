@@ -189,8 +189,16 @@ package com.pentagram.instance.view.mediators.shell
 						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[0]).optionsArray));
 					else
 						view.filterTools.categoriesPanel.continentList.dataProvider = null;
+					
+					if(event.args[0].name != "None") {
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[0].optionsArray));					
+						view.vizTitle.text = event.args[0].name + " by " + event.args[1].name;
+					}
+					else {
+						view.filterTools.categoriesPanel.continentList.dataProvider = null;		
+						view.vizTitle.text = "Color by Region, sized by " + event.args[1].name;						
+					}	
 					view.clusterView.visualize(event.args[0],event.args[1]);
-					view.vizTitle.text = event.args[0].name + " by " + event.args[1].name;
 					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
 					checkNotes();
 				break;
@@ -378,10 +386,10 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
-				if(model.client.datasets.length > 2) {
-					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(0) as Dataset;
-					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(0) as Dataset;
+				if(model.client.datasets.length > 3) {
+					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(1) as Dataset;
+					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(2) as Dataset;
+					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(3) as Dataset;
 					var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
 					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
 					view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
@@ -410,8 +418,8 @@ package com.pentagram.instance.view.mediators.shell
 			view.mapView.categories = model.regions;
 			view.mapView.isCompare = model.isCompare;
 			
-			if(model.client.datasets.length > 0) {
-				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(0) as Dataset;
+			if(model.client.datasets.length > 1) {
+				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(1) as Dataset;
 				view.vizTitle.text = dataset.name + " by Region";
 				if(model.isCompare) {
 					for each(var r:Region in model.regions.source) {
@@ -422,7 +430,7 @@ package com.pentagram.instance.view.mediators.shell
 							r.selected = false;
 					}
 				}	
-				if(model.client.quantityDatasets.length > 0) {
+				if(model.client.quantityDatasets.length > 1) {
 					view.mapView.visualize(dataset);
 					view.tools.thirdSet.selectedItem = dataset;
 				
@@ -446,15 +454,22 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
-				if(model.client.datasets.length > 0 && model.client.qualityDatasets.length > 0 && model.client.quantityDatasets.length > 0) {
-					var dataset1:Dataset = model.client.qualityDatasets.getItemAt(0) as Dataset;
-					var dataset2:Dataset = model.client.quantityDatasets.getItemAt(0) as Dataset;
+				if(model.client.quantityDatasets.length > 1) {
+					var dataset1:Dataset = model.client.qualityDatasets.length > 1?
+							model.client.qualityDatasets.getItemAt(1) as Dataset:model.client.qualityDatasets.getItemAt(0) as Dataset;
+					var dataset2:Dataset = model.client.quantityDatasets.getItemAt(1) as Dataset;
 					view.tools.thirdSet.selectedItem = dataset1;
 					view.tools.fourthSet.selectedItem = dataset2;
 					view.clusterView.visualize(dataset1,dataset2);
-					view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
-					view.vizTitle.text = dataset1.name + " by " + dataset2.name;
-					datasetids = dataset1.id.toString()+','+dataset2.id.toString();
+					if(dataset1.name != "None") {
+						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
+						view.vizTitle.text = dataset1.name + " by " + dataset2.name;
+					}
+					else {
+						view.filterTools.categoriesPanel.continentList.dataProvider = null;		
+						view.vizTitle.text = "Color by Region, sized by " +dataset2.name;						
+					}
+					datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 					checkNotes();
 				}
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;

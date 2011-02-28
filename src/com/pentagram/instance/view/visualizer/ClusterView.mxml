@@ -71,9 +71,20 @@
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
-						if(countries.indexOf(circle.data2.country) != -1)
-							circle.fillAlpha =1;
-						else circle.fillAlpha = 0.2;
+						if(countries.indexOf(circle.data2.country) != -1) {
+							if(circle.fillAlpha != 1) {
+								TweenNano.to(circle,0.5,{fillAlpha:1});
+								circle.textColor = 0xffffffff;
+								circle.showTooltip()
+							}
+						}
+						else {
+							if(circle.fillAlpha != 0.2) {
+								TweenNano.to(circle,0.5,{fillAlpha:0.2});
+								circle.textColor = circle.fillColor;
+								circle.hideTooltip();
+							}
+						}
 					}
 				}
 			}
@@ -185,7 +196,7 @@
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();
-				if(ds1 && ds2) {
+				if(ds1.id!= -1 && ds1 && ds2.id != -1 && ds2) {
 					if(ds1.type == 0) { //quantitative
 						for each(var item:Category in ds1.optionsArray) {
 							item.selected = true;
@@ -211,7 +222,7 @@
 										arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
 								}	
 							}
-							var circle:CirclePacking = new CirclePacking(arr,this);
+							var circle:CirclePacking = new CirclePacking(arr,this,opacity);
 							circle.percentHeight = circle.percentWidth = 100;
 							circle.name = item.name;
 							holder.addElement(circle);
@@ -225,6 +236,33 @@
 					t.addEventListener(TimerEvent.TIMER,handleTimer);
 					t.start();
 				}
+				else if(ds2 &&ds2.id != -1) {
+					var arr:Array = [];
+					for each(row in ds2.rows) {
+						if(ds2.time == 1) {
+							r = (row[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+							content = generateContent(row[ds2.years[0]],ds2.years[0]);
+						}
+						else {
+							r = (row.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+							content = generateContent(row.value);
+						}
+						if(!isNaN(r))
+							arr.push({data:null,radius:r,color:row.country.region.color,data2:row,content:content});
+				
+					}
+					circle = new CirclePacking(arr,this,opacity);
+					circle.percentHeight = circle.percentWidth = 100;
+					circle.name = ds2.name;
+					holder.addElement(circle);
+					circle.build();
+					updateSize();
+				} 			
+				firstPass = false;
+				this.callLater(updateSize);
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();					
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);
@@ -233,7 +271,6 @@
 					handleResize();
 				}
 			}
-			
 			private function handleResize(event:Event=null):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;

@@ -4,6 +4,7 @@ package com.pentagram.instance.controller
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IClientService;
@@ -11,6 +12,8 @@ package com.pentagram.instance.controller
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
+	import mx.collections.Sort;
+	import mx.collections.SortField;
 	import mx.rpc.events.ResultEvent;
 	
 	import org.robotlegs.mvcs.Command;
@@ -49,9 +52,10 @@ package com.pentagram.instance.controller
 		private function handleClientDatasets(event:ResultEvent):void
 		{
 			var sets:Array = event.token.results as Array;
+			
 			model.client.datasets = new ArrayList(sets);
 			model.client.qualityDatasets = new ArrayList();
-			model.client.quantityDatasets = new ArrayList();
+			model.client.quantityDatasets = new ArrayList();			
 			if(sets.length > 0) {
 				for each(var dataset:Dataset in model.client.datasets.source) {
 					if(dataset.time == 1)
@@ -110,12 +114,44 @@ package com.pentagram.instance.controller
 			dataset.data = event.result.toString();
 			dataset.loaded = true;
 			model.parseData(event.token.results as Array,dataset,model.client);
+
+			var sortField:SortField = new SortField();
+			sortField.name = "id";
+			sortField.numeric = true;
+			var countrySort:Sort = new Sort();
+			countrySort.fields = [sortField];
+			countrySort.compareFunction = orderCountriesById;
+			dataset.rows.sort = countrySort;
+			dataset.rows.refresh();
+			
 			if(counter == model.client.datasets.length) {
 				model.client.loaded = true;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 				trace("CLIENT LOADED");
+				
+				var none:Dataset = new Dataset();
+				none.name = "None";
+				none.id = -1;
+				
+				model.client.datasets.addItemAt(none,0);
+				model.client.qualityDatasets.addItemAt(none,0);
+				model.client.quantityDatasets.addItemAt(none,0);
 			}
 		}
-		
+		private  function orderCountriesById(a:DataRow, b:DataRow,fields:Array = null):int 
+		{ 
+			if (a.id < b.id) 
+			{ 
+				return -1; 
+			} 
+			else if (a.id > b.id) 
+			{ 
+				return 1; 
+			} 
+			else 
+			{ 
+				return 0; 
+			} 
+		} 
 	}
 }
