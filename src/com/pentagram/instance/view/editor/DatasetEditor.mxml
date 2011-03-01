@@ -46,7 +46,15 @@
 				countryCol.editable = false;
 				columns.addItem(countryCol);
 				
-	
+				unitsInput.selectedIndex = units.getItemIndex(dataset.unit) == -1?3:units.getItemIndex(dataset.unit);
+				this.scaleInput.selectedIndex = 4;
+				for each(var item:Object in scaleFactors.source) {
+					if(dataset.multiplier == item.value) {
+						this.scaleInput.selectedItem = item;
+						break;
+					}
+				}
+				
 				if(dataset.time == 1) {
 					for(var i:int=0;i<dataset.years.length;i++) {
 						var year:String = dataset.years[i];
@@ -106,11 +114,7 @@
 				dataset.multiplier = scaleInput.selectedItem.value as Number;
 				dataset.modified = true;
 			}
-			[Bindable] private var scaleFactors:ArrayList = new ArrayList( [{label:'None',value:1},{label:'Thousands',value:1000},
-				{label:'Millions',value:1000000},{label:'Billions',value:1000000000},	 
-				{label:'Trillions',value:1000000000*100}]);
-
-			protected function grid_keyDownHandler(event:KeyboardEvent):void
+			private function grid_keyDownHandler(event:KeyboardEvent):void
 			{
 				if(event.keyCode ==  Keyboard.ENTER && grid.selectedCell && event.target == grid) {
 					trace(event.target);
@@ -128,10 +132,10 @@
 		<fx:Number id="hscrollValue" />
 		<fx:Number id="vscrollValue" />
 		<vo:Dataset id="dataset" />
-	<!--	<vo:Client id="client" />-->
-<!--		<spark:LinkedScrollers id="linkedScrolling" component1="{grid}" component2="{countryList}"/>-->
+		
 		<s:Fade alphaFrom="0" alphaTo="1" duration="250" id="fadeIn" />
 		<s:Fade alphaFrom="1" alphaTo="0" duration="250" id="fadeOut" />
+		
 		<s:ArrayList id="units">
 			<fx:Array>
 				<fx:String>US Dollars ($)</fx:String>
@@ -139,6 +143,16 @@
 				<fx:String>Percent (%)</fx:String>
 				<fx:String>None</fx:String>
 			</fx:Array>				
+		</s:ArrayList>
+		
+		<s:ArrayList id="scaleFactors">
+			<fx:Array>
+				<fx:Object label="Thousands" value="1000" />
+				<fx:Object label="Millions" value="1000000" />
+				<fx:Object label="Billions" value="1000000000" />
+				<fx:Object label="Trillions" value="100000000000" />
+				<fx:Object label="None" value="1" />
+			</fx:Array>
 		</s:ArrayList>
 	</fx:Declarations>
 
@@ -156,7 +170,7 @@
 		<s:Label text="Units" width="100" />
 		<s:DropDownList id="scaleInput" dataProvider="{scaleFactors}" labelField="label" change="handleScaleChange(event)" />
 		<s:Label text="of " />
-		<s:DropDownList selectedIndex="{units.getItemIndex(dataset.unit)}" dataProvider="{units}" labelField="label" change="handlePropChange(event,'unit','selectedItem')" />
+		<s:DropDownList id="unitsInput" selectedIndex="{units.getItemIndex(dataset.unit)}" dataProvider="{units}" labelField="label" change="handlePropChange(event,'unit','selectedItem')" />
 	</s:HGroup>	
 
 	<s:HGroup verticalAlign="top" width="100%" height="100%" gap="0">

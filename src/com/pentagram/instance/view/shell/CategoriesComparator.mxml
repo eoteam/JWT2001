@@ -38,7 +38,7 @@
 	
 	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
 		<s:Label verticalCenter="0" text="Compare Regions" click="button1_clickHandler(event)"  mouseChildren="false"
-		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold"/>	
+		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold" width="100%" right="18"/>	
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" right="2" top="2" bottom="2" click="button1_clickHandler(event)"/>
 	</s:Group>
 	
@@ -56,6 +56,6 @@
 			<s:VerticalLayout  clipAndEnableScrolling="false"  gap="0" paddingLeft="4"  horizontalAlign="center"/>
 		</s:layout>
 	</s:List>
-	<s:Button label="Create Comparaisons"  width="100%" includeIn="open" bottom="8" left="8" right="8" 
+	<s:Button label="Create Comparison"  width="100%" includeIn="open" bottom="8" left="8" right="8" 
 	id="compareBtn" click="compareBtn_clickHandler(event)" styleName="darkButton"/>
 </s:Group>

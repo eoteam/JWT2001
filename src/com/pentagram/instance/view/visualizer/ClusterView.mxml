@@ -12,13 +12,11 @@
 	<fx:Script>
 		<![CDATA[
 			import com.greensock.TweenNano;
-			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
 			import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
-			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
 			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.DataRow;
 			import com.pentagram.model.vo.Dataset;
@@ -67,22 +65,27 @@
 				
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
+				
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					for (var j:int=0;j<c.numChildren;j++) {
-						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
-						if(countries.indexOf(circle.data2.country) != -1) {
-							if(circle.fillAlpha != 1) {
-								TweenNano.to(circle,0.5,{fillAlpha:1});
-								circle.textColor = 0xffffffff;
-								circle.showTooltip()
+					if(c.visible) {
+						for (var j:int=0;j<c.numChildren;j++) {
+							var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
+							if(countries.indexOf(circle.data2.country) != -1) {
+								if(circle.fillAlpha != 1) {
+									TweenNano.killTweensOf(circle,false);
+									TweenNano.to(circle,0.5,{fillAlpha:1});
+									circle.textColor = 0xffffffff;
+									circle.showTooltip()
+								}
 							}
-						}
-						else {
-							if(circle.fillAlpha != 0.2) {
-								TweenNano.to(circle,0.5,{fillAlpha:0.2});
-								circle.textColor = circle.fillColor;
-								circle.hideTooltip();
+							else {
+								if(circle.fillAlpha != 0.2) {
+									TweenNano.killTweensOf(circle,false);
+									TweenNano.to(circle,0.5,{fillAlpha:0.2});
+									circle.textColor = circle.fillColor;
+									circle.hideTooltip();
+								}
 							}
 						}
 					}
@@ -113,6 +116,7 @@
 					for (var j:int=0;j<c.numChildren;j++) {
 						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
 						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
+						TweenNano.killTweensOf(renderer,true);
 						TweenNano.to(renderer, .5, {fillAlpha: value});
 					}
 				}
@@ -196,33 +200,51 @@
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();
-				if(ds1.id!= -1 && ds1 && ds2.id != -1 && ds2) {
+				var t:Timer;
+				var arr:Array;
+				var r:Number
+				var row:DataRow
+				var row2:DataRow;
+				var circle:CirclePacking;
+				var content:String = '';
+				
+				if(ds1.id!= -1 && ds1) {
 					if(ds1.type == 0) { //quantitative
 						for each(var item:Category in ds1.optionsArray) {
 							item.selected = true;
-							var arr:Array = [];
-							var r:Number = 1;
-							for each(var row:DataRow in ds1.rows) {
+							arr = [];
+							r = 1;
+							for each(row in ds1.rows) {
 								var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
 								if(value == item.name) {
-									if(ds2 && ds2.type == 1) {
-										var row2:DataRow = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
-										var content:String;
-										if(ds2.time == 1) {
-											r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-											content = generateContent(row2[ds2.years[0]],ds2.years[0]);
-										}
-										else {
-											r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-											content = generateContent(row2.value);
+									if(ds2) {
+										for each(row2 in ds2.rows) {
+											if(row2.country == row.country)
+												break;
 										}
 										
+										// = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
+										//trace(ds1.rows.getItemIndex(row),ds2.rows.getItemIndex(row2));
+										if(ds2.type == 1) {
+											if(ds2.time == 1) {
+												r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+												content = generateContent(row2[ds2.years[0]],ds2.years[0]);
+											}
+											else {
+												r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+												content = generateContent(row2.value);
+											}	
+										}
+										else if(ds2.id == -1) {
+											r = maxRadius;
+											content = generateContent2(row2);
+										}
 									}
 									if(!isNaN(r))
 										arr.push({data:row,radius:r,color:item.color,data2:row2,content:content});
 								}	
 							}
-							var circle:CirclePacking = new CirclePacking(arr,this,opacity);
+							circle = new CirclePacking(arr,this,opacity);
 							circle.percentHeight = circle.percentWidth = 100;
 							circle.name = item.name;
 							holder.addElement(circle);
@@ -230,14 +252,9 @@
 							updateSize();
 						} 
 					}
-					firstPass = false;
-					this.callLater(updateSize);
-					var t:Timer = new Timer(100,1);
-					t.addEventListener(TimerEvent.TIMER,handleTimer);
-					t.start();
 				}
 				else if(ds2 &&ds2.id != -1) {
-					var arr:Array = [];
+					arr = [];
 					for each(row in ds2.rows) {
 						if(ds2.time == 1) {
 							r = (row[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
@@ -258,11 +275,26 @@
 					circle.build();
 					updateSize();
 				} 			
+				else {
+					arr = [];
+					for each(row in ds1.rows) {
+						content = generateContent2(row);
+						arr.push({data:row,radius:maxRadius,color:row.country.region.color,data2:row,content:content});
+					}
+					circle = new CirclePacking(arr,this,opacity);
+					circle.percentHeight = circle.percentWidth = 100;
+					circle.name = ds2.name;
+					holder.addElement(circle);
+					circle.build();
+					updateSize();
+				}
+				
+				
 				firstPass = false;
 				this.callLater(updateSize);
-				var t:Timer = new Timer(100,1);
+				t = new Timer(100,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
-				t.start();					
+				t.start();	
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);
@@ -286,6 +318,13 @@
 				if(year != null)
 					result += '('+year+')';
 				result += ': </span><span color="#ffffff">'+value+'</span>';
+				result += "</p></TextFlow>";
+				return result;
+			}
+			private function generateContent2(value:DataRow):String {
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result += '<span color="#cccccc">Region';
+				result += ': </span><span color="#ffffff">'+value.country.name+'</span>';
 				result += "</p></TextFlow>";
 				return result;
 			}

@@ -1,4 +1,4 @@
-package com.pentagram.instance.controller
+	package com.pentagram.instance.controller
 {
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
@@ -109,7 +109,7 @@ package com.pentagram.instance.controller
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void {
 			counter++;
-			trace("Dataset counter",counter,model.client.datasets.length);
+			//trace("Dataset counter",counter,model.client.datasets.length);
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.data = event.result.toString();
 			dataset.loaded = true;
@@ -132,6 +132,14 @@ package com.pentagram.instance.controller
 				var none:Dataset = new Dataset();
 				none.name = "None";
 				none.id = -1;
+				for each(var country:Country in model.client.countries.source) {
+					var row:DataRow = new DataRow();
+					row.country = country;
+					row.dataset = none;
+					row.id = -1;
+					row.name = country.name;
+					none.rows.addItem(row);
+				}
 				
 				model.client.datasets.addItemAt(none,0);
 				model.client.qualityDatasets.addItemAt(none,0);
@@ -139,19 +147,16 @@ package com.pentagram.instance.controller
 			}
 		}
 		private  function orderCountriesById(a:DataRow, b:DataRow,fields:Array = null):int 
-		{ 
-			if (a.id < b.id) 
-			{ 
+		{ 	
+			if (a.id < b.id)  
 				return -1; 
-			} 
-			else if (a.id > b.id) 
-			{ 
+	
+			else if (a.id > b.id)  
 				return 1; 
-			} 
+			
 			else 
-			{ 
 				return 0; 
-			} 
+		
 		} 
 	}
 }

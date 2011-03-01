@@ -14,18 +14,19 @@ package com.pentagram.instance.view.visualizer.views
 	import spark.components.Group;
 	import spark.core.SpriteVisualElement;
 
-	//[SWF(frameRate = '60', backgroundColor='0x000000',width='1024',height='768')]
 	public class CirclePacking extends SpriteVisualElement
-	{
-		 
+	{	 
 		public var renderers:Vector.<ClusterRenderer> = new Vector.<ClusterRenderer>;
-		private var circlePositions:Vector.<Point3D>;
-		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var numberList:Array = [];
 		public var scaler:Number = 1;
+		
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
+		
+		private var circlePositions:Vector.<Point3D>;
+		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		private var opacity:Boolean;
+				
 		public function CirclePacking(arr:Array,parent:Group,opacity:Boolean)
 		{
 			super();			
@@ -142,10 +143,14 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		public function hide():void {
 			this.includeInLayout = this.visible = animateCoord =false;
+			for each(var c:ClusterRenderer in this.renderers) {
+				c.hideTooltip();
+			}
 		}
 		public function show():void {
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
+
 		}
 	}
 }		

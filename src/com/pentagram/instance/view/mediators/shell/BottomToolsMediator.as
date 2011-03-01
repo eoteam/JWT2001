@@ -65,7 +65,7 @@ package com.pentagram.instance.view.mediators.shell
 			yearTimer = new Timer(1000);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
-			//eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
 			//eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
 			
 		}
@@ -77,7 +77,7 @@ package com.pentagram.instance.view.mediators.shell
 //				year.alpha = a;
 //			}
 //		}
-		private function saveImage(event:MouseEvent):void {	
+		private function saveImage(event:Event):void {	
 			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
 				year.alpha = 0;
 			}
@@ -89,7 +89,11 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function doSaveImage():void {
 			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
-			var pt:Point = view.parent.localToGlobal(new Point(view.x,view.y));
+			var pt:Point;
+			if(view.parent)
+				pt = view.parent.localToGlobal(new Point(view.x,view.y));
+			else
+				pt = view.parentApplication.localToGlobal(new Point(view.x,view.y));
 			
 			var bmd:BitmapData = new BitmapData(imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
 			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
@@ -123,6 +127,11 @@ package com.pentagram.instance.view.mediators.shell
 		} 			
 					
 		private function handleIndexChanged(event:IndexChangedEvent):void {
+			if(yearTimer.running) {
+				yearTimer.stop();
+				view.yearSlider.selectedIndex=0;
+				view.playBtn.selected = view.loopBtn.selected = false;
+			}
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					view.currentState = 'cluster';

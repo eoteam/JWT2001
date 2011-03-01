@@ -27,6 +27,7 @@ package com.pentagram.controller
 			var exp:NativeMenuItem = windowModel.exportMenuItem;
 			var imp:NativeMenuItem = windowModel.importMenuItem;
 			var tool:NativeMenuItem = windowModel.toolBarMenuItem;
+			var image:NativeMenuItem = windowModel.exportImageMenuItem;
 			if(NativeWindow.supportsMenu) {
 			 	var temp:Array = windowModel.buildMenu(windowModel.getWindowFromUID(event.uid));
 				exp = temp[0]; imp = temp[1]; tool = temp[2];
@@ -34,7 +35,7 @@ package com.pentagram.controller
 			//var arr:Array = appModel.cloneRegions();
 			callback.call(null,
 				appModel.clients,appModel.cloneRegions(),appModel.countries,appModel.countryNames,appModel.user,appModel.colors,
-				exp,imp,tool,
+				exp,imp,tool,image,
 				!NativeWindow.supportsMenu);
 			
 			

@@ -24,6 +24,7 @@
 			{
 				datasetList.selectedIndex = -1
 				this.currentState = "overview";	
+				overviewButton.selected = true;
 			}
 		]]>
 	</fx:Script>
@@ -38,10 +39,12 @@
 	</mx:states>
 	
 	<s:Group width="200" height="100%" id="holder">
-		<s:Button width="100%" label="Overview" fontFamily="FlamaBold"  textAlignLast="left" click="button1_clickHandler(event)" />
+		<s:ToggleButton width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)"
+		 skinClass="com.pentagram.view.skins.buttons.OverviewButton" id="overviewButton" 
+		 selected.dataset="false" selected.create="false" selected.overview="true"/>
 		
 		<controls:MiGList width="100%"  maxHeight="{holder.height}"  labelField="name" top="30"  itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
-		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets"  
+		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets"   keyboardLookUp="true"
 		addButtonClick="this.currentState='create'" addLabel="+ Add Set" removeLabel="- Delete"
 		id="datasetList">
 			<controls:layout>

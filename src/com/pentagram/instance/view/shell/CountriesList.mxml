@@ -59,7 +59,7 @@
 	
 	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
 		<s:Label verticalCenter="0" text="Countries" click="button1_clickHandler(event)"  mouseChildren="false"
-		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" fontFamily="FlamaBold"/>		
+		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" width="100%" fontFamily="FlamaBold" right="18"/>		
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" right="2" top="2" bottom="2" click="button1_clickHandler(event)"/>
 	</s:Group>
 	

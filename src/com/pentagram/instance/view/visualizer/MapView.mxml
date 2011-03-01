@@ -266,12 +266,12 @@
 				var r:Number;
 				var c:MapRenderer;
 				var row:DataRow;
-				
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
+				var content:String = '';
+				
 				if(dataset) {
 					for each(row in dataset.rows) {
 						if(dataset.type == 1) {
-							var content:String = '';
 							if(dataset.id != -1) {
 								if(dataset.time == 1) {
 									r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
@@ -283,7 +283,10 @@
 									content = generateContent(row.value);
 								}
 							}
-							else r = maxRadius;
+						}
+						else {
+							r = maxRadius;
+							content = generateContent2(row);
 						}
 						c = renderersDictionary[row.country.shortname];
 						if(c) {
@@ -444,6 +447,13 @@
 					result += '('+year+')';
 				result += ': </span><span color="#ffffff">'+value+'</span>';
 				result += "</p></TextFlow>"	;
+				return result;
+			}
+			private function generateContent2(value:DataRow):String {
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result += '<span color="#cccccc">Region';
+				result += ': </span><span color="#ffffff">'+value.country.name+'</span>';
+				result += "</p></TextFlow>";
 				return result;
 			}
 		]]>

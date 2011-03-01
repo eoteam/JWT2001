@@ -42,6 +42,7 @@ package com.pentagram.instance.model
 		public var exportMenuItem:NativeMenuItem;
 		public var importMenuItem:NativeMenuItem;
 		public var toolBarMenuItem:NativeMenuItem;
+		public var exportImageMenuItem:NativeMenuItem;
 		
 		public var maxRadius:Number = 25;
 		

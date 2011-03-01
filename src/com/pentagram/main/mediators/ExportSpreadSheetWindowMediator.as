@@ -31,6 +31,7 @@ package com.pentagram.main.mediators
 		{
 			eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event,false,0,true);
 			eventMap.mapListener(view, ViewEvent.DATASET_CREATOR_COMPLETE, handleSaveFile,ViewEvent,false,0,true);
+			view.mainTitle.text += " for "+instanceWindows.currentWindow.client.name;
 		}
 		protected function handleWindowClose(event:Event):void
 		{

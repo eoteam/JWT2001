@@ -32,6 +32,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		private var info:RendererInfo;
 		private var infoVisible:Boolean = false;
 		private var tooltip:RendererToolTip;
+		private var offset:int = 15;
 		
 		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
 		public const FILL_ALPHAS:Array = [0.8,0.8];
@@ -67,10 +68,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
 			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
-			this.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
 			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			this.addEventListener(Event.REMOVED, removedFromStageHandler);
+			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
 			
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(tooltip);
@@ -178,7 +177,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 			}
 		}	
-		private var offset:int = 15;
+		
 		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
@@ -187,21 +186,12 @@ package com.pentagram.instance.view.visualizer.renderers
 				{
 					showTooltip();
 					break;
-				}
-					
+				}	
 				case MouseEvent.ROLL_OUT:
 				{	
 					hideTooltip();
 					break;
 				}		
-				case MouseEvent.MOUSE_DOWN:
-				{
-					break;
-				}			
-				case MouseEvent.MOUSE_UP:
-				{
-					break;
-				}
 				case MouseEvent.CLICK:
 				{
 					if(!infoVisible && (_data || _data2)) {

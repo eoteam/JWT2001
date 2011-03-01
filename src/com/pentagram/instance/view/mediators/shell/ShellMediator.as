@@ -2,7 +2,6 @@ package com.pentagram.instance.view.mediators.shell
 {
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
@@ -16,13 +15,10 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
-	import com.pentagram.model.vo.Note;
 	import com.pentagram.model.vo.Region;
-	import com.pentagram.model.vo.User;
 	import com.pentagram.utils.ModuleUtil;
 	import com.pentagram.utils.ViewUtils;
 	
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.FullScreenEvent;
@@ -36,10 +32,11 @@ package com.pentagram.instance.view.mediators.shell
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.components.Group;
-	import spark.events.TextOperationEvent;
 	
 	public class ShellMediator extends Mediator
 	{
+		include "ShellMediatorFunctions.as";
+		
 		[Inject]
 		public var view:Shell;
 		
@@ -54,6 +51,9 @@ package com.pentagram.instance.view.mediators.shell
 		private var datasetids:String;
 		override public function onRegister():void
 		{
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);		
+			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);		
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
@@ -74,8 +74,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
 			eventMap.mapListener(eventDispatcher,EditorEvent.START_IMPORT,handleStartImport);
 			
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
+	
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 			eventMap.mapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
 			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
@@ -102,18 +101,10 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));	
 		}
-		private function handleIncludeTools(event:Event):void {
-			model.includeTools = view.exportPanel.includeTools.selected;
-		}
-		private function selectedNewDirectory(event:MouseEvent):void {
-			model.exportDirectory = new File();
-			model.exportDirectory.addEventListener(Event.SELECT, file_select);
-			model.exportDirectory.browseForDirectory("Please select a directory...")
-		}
-		private function file_select(evt:Event):void {
-			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
-		}
+
+
 		private function handleStackChange(event:IndexChangedEvent):void {
+			
 			var util:ModuleUtil;
 			if(event.newIndex == model.MAP_INDEX && view.mapView.didVisualize){
 				restoreDatasets(view.mapView);
@@ -366,21 +357,9 @@ package com.pentagram.instance.view.mediators.shell
 			});
 			model.client.notes.filterFunction = findNoteByDatasets;
 		}
-		private function handleLoadSearchView(event:VisualizerEvent):void {
-			view.client = null;
-			view.clientBar.infoBtn.selected = false;
-			view.clientBar.currentState = view.clientBar.closedState.name;
-		}
-		private function handleLogin(event:AppEvent):void {
-			model.user = event.args[0] as User;
-			model.exportMenuItem.enabled = true;
-			model.importMenuItem.enabled = true;
-			view.currentState = view.loggedInState.name;
-		}
-		private function handleLogout(event:AppEvent):void {
-			model.user = null;
-			view.currentState = view.loggedOutState.name;
-		}	
+
+
+			
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			if(util.view is IGraphView) {
@@ -472,6 +451,7 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 					checkNotes();
 				}
+				
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}			
@@ -496,38 +476,6 @@ package com.pentagram.instance.view.mediators.shell
 					view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
 			}
 		}
-		private function handleFullScreen(event:Event):void{
-			view.currentVisualizer.updateSize();
-		}
-		private function handleExportSettingsSave(event:MouseEvent):void {
-			view.exportPanel.visible = false;
-		}
-		private function findNoteByDatasets(note:Note):Boolean {
-			return note.datasets == datasetids;
-		}
-		private function handleInfoChanged(event:MouseEvent):void {
-			var note:Note
-			if(model.client.notes.length == 1) {
-				note = model.client.notes.getItemAt(0) as Note;
-				note.description = view.infoText.text;
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_NOTE,note));
-			}
-			else {
-				note = new Note();
-				note.description = view.infoText.text;
-				note.clientid = model.client.id;
-				note.datasets = datasetids;
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_NOTE,note));
-			}
-		}
-		private function checkNotes():void {
-			model.client.notes.refresh();
-			if(model.client.notes.length  == 1) {
-				view.infoText.text = Note(model.client.notes.getItemAt(0)).description;	
-			}
-			else
-				view.infoText.text = '';		
-		}
 		private function restoreViewOptions(viz:IVisualizer):void {
 			var arr:Array = viz.viewOptions;
 			view.filterTools.optionsPanel.maxRadiusSlider.value = arr[0];
@@ -535,27 +483,9 @@ package com.pentagram.instance.view.mediators.shell
 			//view.tools.yearSlider.selectedItem
 		}
 		
-		private function handleImportFailed(event:EditorEvent):void {
-			view.errorPanel.includeCancel = false;
-			view.errorPanel.errorMessage = event.args[0];
-		}
+
 		private var currentEvent:Event;
-		private function handleNotification(event:EditorEvent):void {
-			view.errorPanel.includeCancel = true;
-			currentEvent = event.args[1];
-			view.errorPanel.errorMessage = event.args[0];
-		}
-		private function handleOkError(event:Event):void {
-			if(currentEvent && view.errorPanel.includeCancel) {
-				this.eventDispatcher.dispatchEvent(currentEvent);
-				currentEvent = null;
-			}
-		}
-		private function handleImport(event:Event):void {
-			this.eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.RESUME_IMPORT,event.type));
-		}
-		private function handleStartImport(event:Event):void {
-			view.importPanel.errorMessage ="Is this dataset over time?";
-		}
+
+
 	}
 }

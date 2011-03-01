@@ -47,6 +47,7 @@ package com.pentagram.model
 		public var userMenuItem:NativeMenuItem;
 		public var countriesMenuItem:NativeMenuItem;
 		public var toolBarMenuItem:NativeMenuItem;
+		public var exportImageMenuItem:NativeMenuItem;
 		
 		public const LOGIN_WINDOW:String = "loginWindow";
 		public const SPREADSHEET_WINDOW:String = "spreadsheetWindow";
@@ -328,10 +329,15 @@ package com.pentagram.model
 	
 			var toolBar:NativeMenuItem = new NativeMenuItem("Hide Tool Bars");
 			toolBar.keyEquivalent = "b";
-			toolBar.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			toolBar.keyEquivalentModifiers = [Keyboard.COMMAND];	
+			
+			
+			var exportImage:NativeMenuItem = new NativeMenuItem("Screen Capture");
+			exportImage.keyEquivalent = "i";
+			exportImage.keyEquivalentModifiers = [Keyboard.COMMAND];	
 			
 			//Items within File Menu
-			var exp:NativeMenuItem = new NativeMenuItem("Export SpreadSheet File...");
+			var exp:NativeMenuItem = new NativeMenuItem("Create Spreadsheet Template File...");
 			exp.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,SPREADSHEET_WINDOW];
 			exp.enabled = false;
 			
@@ -358,7 +364,7 @@ package com.pentagram.model
 				exportMenuItem = exp;
 				importMenuItem  = imp;
 				toolBarMenuItem = toolBar;
-				
+				exportImageMenuItem = exportImage;
 //				exp.addEventListener(Event.SELECT,handleMenuItem);
 //				imp.addEventListener(Event.SELECT,handleMenuItem);
 //				toolBar.addEventListener(Event.SELECT,handleToggle);
@@ -391,6 +397,7 @@ package com.pentagram.model
 			windowMenu.submenu.addItem(fullScreen);
 			windowMenu.submenu.addItem(newWindow);		
 			windowMenu.submenu.addItem(toolBar);
+			windowMenu.submenu.addItem(exportImage);
 			
 			fileMenu.submenu.addItemAt(exp,0);	
 			fileMenu.submenu.addItemAt(imp,0);
@@ -402,7 +409,7 @@ package com.pentagram.model
 			
 			help.addItem(helpItem);
 
-			return [exp,imp,toolBar];
+			return [exp,imp,toolBar,exportImage];
 		}
 		private function handleArrange(event:Event):void {
 			if(event.target.label == "Tile")

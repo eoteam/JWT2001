@@ -83,7 +83,8 @@ package com.pentagram.instance.view.mediators
 			model.exportMenuItem = args[6];	
 			model.importMenuItem = args[7];	
 			model.toolBarMenuItem = args[8];
-			model.singletonWindowModel = args[9];
+			model.exportImageMenuItem = args[9];
+			model.singletonWindowModel = args[10];
 			
 			view.createDeferredContent();
 			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
@@ -133,6 +134,7 @@ package com.pentagram.instance.view.mediators
 			model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem,false,0,true);
 			model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem,false,0,true);
 			model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
+			model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
 			
 		}
 		private function handleToggle(event:Event):void {
@@ -146,6 +148,9 @@ package com.pentagram.instance.view.mediators
 				view.shellView.currentState = model.user ? "loggedIn":"loggedOut";
 				view.showStatusBar = true;
 			}
+		}
+		private function handleImageExport(event:Event):void {
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.MENU_IMAGE_SAVE));
 		}
 		private function handleMenuItem(event:Event):void {
 			var args:Array = event.target.data as Array;
