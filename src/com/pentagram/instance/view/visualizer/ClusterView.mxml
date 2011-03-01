@@ -25,7 +25,7 @@
 			
 			import spark.core.SpriteVisualElement;
 			
-			private var maxRadius:Number = 25;
+			private var maxRadius:Number = 100;
 			private var currentYear:String;
 			private var opacity:Boolean = true;
 

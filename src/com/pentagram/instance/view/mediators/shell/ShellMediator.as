@@ -81,6 +81,8 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
+			eventMap.mapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);
+
 			
 			view.errorPanel.addEventListener("okEvent",handleOkError,false,0,true);
 			view.importPanel.addEventListener("okEvent",handleImport,false,0,true);
@@ -377,7 +379,7 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
 					checkNotes();
 				}
-				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
+				view.filterTools.optionsPanel.maxRadiusSlider.value = 25;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}
 		}
@@ -452,7 +454,7 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 				}
 				
-				view.filterTools.optionsPanel.maxRadiusSlider.value = 75/2;
+				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}			
 		}
@@ -464,6 +466,8 @@ package com.pentagram.instance.view.mediators.shell
 				view.twitterView = util.view as ITwitterView;
 				view.twitterView.searchTerm = model.client.shortname;
 				view.twitterHolder.addElement(util.view as Group);	
+				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
+				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}			
 		}
 

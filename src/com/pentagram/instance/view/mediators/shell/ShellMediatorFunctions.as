@@ -1,3 +1,4 @@
+import com.pentagram.events.InstanceWindowEvent;
 import com.pentagram.model.vo.Note;
 import com.pentagram.model.vo.User;
 
@@ -79,4 +80,10 @@ private function checkNotes():void {
 	}
 	else
 		view.infoText.text = '';		
+}
+private function handleCompareBtn(event:ViewEvent):void {
+	for each(var item:Category in  ArrayList(view.filterTools.comparator.categoryHolder.dataProvider).source) {
+		if(item.selected)
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,view.tools.thirdSet.selectedItem,item));
+	}
 }

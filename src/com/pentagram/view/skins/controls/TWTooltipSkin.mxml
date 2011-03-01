@@ -132,7 +132,7 @@
     
     <s:Group left="0" right="0" top="0" bottom="0">
 
-		<s:Path verticalCenter="0"
+		<s:Path verticalCenter="0" visible="{hostComponent.tipVisible &amp;&amp; hostComponent.leftTipVisible}"
 				id="leftTip"  winding="nonZero"
 				data="M 0 0 L -16 10 L 0 20 L 0 0 Z">
 			<s:fill>

@@ -146,7 +146,7 @@
 	
 	<s:SkinnableContainer width="100%"  backgroundColor="0x333333" minHeight="50" bottom="0" excludeFrom="fullScreen"
 	skinClass="com.pentagram.view.skins.components.BottomBarBackground" id="bottomPanelContainer">	
-		<shell:BottomBar width="100%" height="40" bottom="10" id="bottomBarView"  />
+		<shell:BottomBar width="100%" height="50" id="bottomBarView"  />
 	</s:SkinnableContainer> 
 	
 	<s:TabBar right="150" height="22" bottom="29" dataProvider="{mainStack}"  includeIn="loggedIn" id="tabBar">

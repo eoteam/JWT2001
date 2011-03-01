@@ -30,7 +30,7 @@
 			
 			private var baseURL:String = "http://search.twitter.com/search.json?q=";
 
-			private var maxRadius:Number = 25;
+			private var maxRadius:Number = 100;
 			private var opacity:Boolean = true;
 
 			private var counter:int = 1;

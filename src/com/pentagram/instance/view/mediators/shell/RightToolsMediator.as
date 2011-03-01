@@ -47,7 +47,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.categoriesPanel.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			view.comparator.addEventListener(ViewEvent.START_COMPARE,handleCompareBtn,false,0,true);
+			
 			
 			view.countriesPanel.countryList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,false,0,true);
 			
@@ -209,12 +209,6 @@ package com.pentagram.instance.view.mediators.shell
 			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));
 			view.comparator.enabled = false;
 			view.comparator.currentState = "closed";
-		}
-		private function handleCompareBtn(event:ViewEvent):void {
-			for each(var item:Category in  ArrayList(view.comparator.categoryHolder.dataProvider).source) {
-				if(item.selected)
-					appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,model.selectedSet,item));
-			}
 		}
 	}
 }
