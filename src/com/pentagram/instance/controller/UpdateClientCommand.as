@@ -40,10 +40,12 @@ package com.pentagram.instance.controller
 				total++;
 				if(editorEvent.args[0] == true) {
 					for each(dataset in model.client.datasets.source) {
-						service.addDatasetCountries(dataset,model.client.newCountries);
-						service.addProperties('dataset',dataset);
-						service.addHandlers(handleAddDatasetCountry);
-						total++;
+						if(dataset.id != -1) {
+							service.addDatasetCountries(dataset,model.client.newCountries);
+							service.addProperties('dataset',dataset);
+							service.addHandlers(handleAddDatasetCountry);
+							total++;
+						}
 					}
 				}
 			}

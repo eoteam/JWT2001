@@ -58,7 +58,7 @@
 		 selectionColor="0xffffff" rollOverColor="0xffffff" skinClass="com.pentagram.view.skins.controls.DarkDataGrid" sortableColumns="true"  selectionMode="multipleRows">
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="value" sortable="true" id="labels" headerText="Topic">
+					<s:GridColumn dataField="value" sortable="true" resizable="false" maxWidth="{topicsList.width-50}" id="labels" headerText="Topic">
 						<s:headerRenderer>
 							<fx:Component>
 								<s:GridItemRenderer contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C" height="21">
@@ -74,7 +74,7 @@
 							</fx:Component>
 						</s:itemRenderer>
 					</s:GridColumn>
-					<s:GridColumn dataField="count" sortable="false" width="50" id="counts" headerText="Count">
+					<s:GridColumn dataField="count" sortable="true" width="50" id="counts" headerText="Count">
 						<s:headerRenderer>
 							<fx:Component>
 								<s:GridItemRenderer contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C" height="21">

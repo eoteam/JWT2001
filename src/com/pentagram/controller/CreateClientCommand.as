@@ -5,6 +5,7 @@ package com.pentagram.controller
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.Country;
+	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.StatusResult;
 	import com.pentagram.services.interfaces.IAppService;
 	import com.pentagram.services.interfaces.IClientService;
@@ -13,6 +14,7 @@ package com.pentagram.controller
 	import flash.events.DataEvent;
 	import flash.filesystem.File;
 	
+	import mx.collections.ArrayList;
 	import mx.rpc.events.ResultEvent;
 	
 	import org.robotlegs.mvcs.Command;
@@ -79,6 +81,14 @@ package com.pentagram.controller
 			if(result.success) {
 				count++;
 				client.id = Number(result.message);
+				for each(var region:Region in model.regions.source) {
+					var cRegion:Region = new Region();
+					cRegion.color = region.color;
+					cRegion.id = region.id;
+					cRegion.name = region.name;
+					cRegion.countries = new ArrayList();
+					client.regions.addItem(cRegion);
+				}
 				if(fileToUpload) {
 					uploader.upload(fileToUpload,"/clients/");
 					total++;

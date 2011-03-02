@@ -45,7 +45,7 @@
 				for(var i:int=0;i<fxgSprite.countrySprite.numChildren;i++) {
 					countries[fxgSprite.countrySprite.getChildAt(i).name] = fxgSprite.countrySprite.getChildAt(i);
 				}
-				trace(fxgSprite.getChildAt(0).width,fxgSprite.getChildAt(0).height);
+				//trace(fxgSprite.getChildAt(0).width,fxgSprite.getChildAt(0).height);
 				this.dispatchEvent(new Event("complete"));
 			}
 

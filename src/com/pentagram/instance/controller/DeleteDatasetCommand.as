@@ -21,21 +21,35 @@ package com.pentagram.instance.controller
 		[Inject]
 		public var event:EditorEvent;
 		
+		private var sets:Vector.<Object>;
+		private var counter:int;
+		private var total:int;	
 		override public function execute():void {
-			var dataset:Dataset = event.args[0] as Dataset;
-			service.deleteDataset(dataset);
-			service.addHandlers(handleDatasetDeleted);
+			sets = event.args[0] as Vector.<Object>;
+			for each(var dataset:Dataset in sets) {
+				if(dataset.id != -1) {
+					service.deleteDataset(dataset);
+					service.addHandlers(handleDatasetDeleted);
+					service.addProperties("dataset",dataset);
+					total++;
+				}
+			}
 		}
 		private function handleDatasetDeleted(event:ResultEvent):void {
 			var result:StatusResult = event.token.results as StatusResult;
 			if(result.success) {
-				var dataset:Dataset = this.event.args[0] as Dataset;
+				counter++;
+				
+				var dataset:Dataset = event.token.dataset;
 				model.client.datasets.removeItem(dataset);
 				if(dataset.type == 1) 
 					model.client.quantityDatasets.removeItem(dataset);
 				else
 					model.client.qualityDatasets.removeItem(dataset);
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_DELETED));
+				if(counter == total) {
+					sets = null;
+					eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_DELETED));
+				}
 			}
 		}
 	}

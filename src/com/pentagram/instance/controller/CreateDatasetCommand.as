@@ -25,6 +25,7 @@ package com.pentagram.instance.controller
 		public var event:EditorEvent;
 		
 		override public function execute():void {
+			trace("Dataset command",event.args[1]);
 			var dataset:Dataset = event.args[0] as Dataset;
 			service.createDataset(dataset);
 			service.addHandlers(handleDatasetCreated);

@@ -42,9 +42,11 @@
 
 			public function get selectedCategories():Array {
 				var results:Array = [];
-				for each(var item:Category in ArrayList(categoriesPanel.continentList.dataProvider).source) {
-					if(item.selected)
-						results.push(item.name);
+				if(categoriesPanel.continentList.dataProvider){
+					for each(var item:Category in ArrayList(categoriesPanel.continentList.dataProvider).source) {
+						if(item.selected)
+							results.push(item.name);
+					}
 				}
 				return results;
 			}

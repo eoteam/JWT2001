@@ -153,7 +153,7 @@ package com.pentagram.view.controls {
 				// Anonymous functions are especially useful as simple event handlers
 				fadeTimer.addEventListener(TimerEvent.TIMER, function (e:TimerEvent):void {
 					var tickNum:int = int(fadeTimer.currentCount % _numTicks);
-					trace("Spinner ticking!");
+					//trace("Spinner ticking!");
 					if (numChildren > tickNum) {
 						var tick:Tick = getChildAt(tickNum) as Tick;
 							tick.fade(fadeSpeed != 1 ? fadeSpeed : speed * 6 / 10);

@@ -95,7 +95,7 @@ package com.pentagram.controller.startup
 				appModel.countryNames[country.name.toLowerCase()] = country;
 				appModel.countryNames[country.shortname.toLowerCase()] = country;
 				for each(var altname:String in country.alternateNames.source)
-					appModel.countryNames[altname] = country;
+					appModel.countryNames[altname.toLowerCase()] = country;
 				appModel.countries.addItem(country);
 			}
 			checkCount();

@@ -107,53 +107,86 @@ package com.pentagram.instance.model
 			return res;
 		}
 		public function normalizeData(categories:Array,ds1:Dataset,ds2:Dataset,ds3:Dataset=null,ds4:Dataset=null):ArrayCollection {
-			var data:ArrayCollection = new ArrayCollection();;
+			var data:ArrayCollection = new ArrayCollection();
+			
 			for (var i:int=0;i<ds1.rows.length;i++) {
+				
+				//getting rows
 				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
+				if(ds2.id != -1) {
+					for each(var row2:DataRow in ds2.rows) {
+						if(row2.country == row.country)
+							break;
+					}
+				}
+				if(ds3 && ds3.id != -1) {
+					for each(var row3:DataRow in ds3.rows) {
+						if(row3.country == row.country)
+							break;
+					}
+				}
+				if(ds4 && ds4.id != -1) {
+					for each(var row4:DataRow in ds4.rows) {
+						if(row4.country == row.country)
+							break;
+					}
+				}
+				
 				var obj:NormalizedVO = new NormalizedVO(); 
 				obj.name = row.name;
 				obj.shortname = row.country.shortname;
 				obj.country = row.country;
 				obj.index = i;
-				
+				obj.rows = [row,row2,row3,row4];
+				//ds1
 				if(ds1.time == 1) 
 					obj.x = ds1.rows.getItemAt(i)[ds1.years[0]];
-				else
+				else if(ds1.id != -1)
 					obj.x = ds1.rows.getItemAt(i).value;
-				
-				if(ds2.time == 1) 
-					obj.y = ds2.rows.getItemAt(i)[ds2.years[0]];
 				else
-					obj.y = ds2.rows.getItemAt(i).value;
+					obj.x = 1;
+
+				//ds2
+				if(ds2.time == 1) 
+					obj.y = row2[ds2.years[0]];
+				else  if(ds2.id != -1)
+					obj.y = row2.value;
+				else
+					obj.y = 1;
 				
-				
-				if(ds3) {
-					var row2:DataRow = ds3.rows.getItemAt(i) as DataRow;
+				//ds3
+				if(ds3 && ds3.id != -1) {
 					if(ds3.time == 1)
-						obj.radius = obj.prevRadius = (row2[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
+						obj.radius = obj.prevRadius = (row3[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
 					else
-						obj.radius = obj.prevRadius = (row2.value - ds3.min) / (ds3.max - ds3.min);
+						obj.radius = obj.prevRadius = (row3.value - ds3.min) / (ds3.max - ds3.min);
 				}
 				else
-					obj.radius = obj.prevRadius = obj.prevRadius = 10;
+					obj.radius = obj.prevRadius = obj.prevRadius = maxRadius;
 				
-				if(ds4) {
+				//ds4
+				if(ds4 && ds4.id != -1 && ds4.id != -2) {
 					var value:String;
 					if(ds4.time == 1) 
-						value = ds4.rows.getItemAt(i)[ds4.years[0]];
+						value = row4[ds4.years[0]];
 					else
-						value = ds4.rows.getItemAt(i).value;
+						value = row4.value;
 					obj.color = ds4.colorArray[value];	
 					obj.category = value;
 				}
-				else {
-					obj.color = ds1.rows.getItemAt(i).color;
+				else if(ds4.id == -2) {
+					obj.color = row.country.region.color;
 					obj.category = row.country.region.name;
 				}
-				if(categories.indexOf(obj.category) != -1)
-					obj.radius = obj.prevRadius;
-				else
-					obj.radius = 0;
+				else {
+					obj.color = 0;
+				}
+				if(categories.length > 0) {
+					if(categories.indexOf(obj.category) != -1)
+						obj.radius = obj.prevRadius;
+					else
+						obj.radius = 0;
+				}
 				data.addItem(obj);
 			}
 			return data;
@@ -162,36 +195,45 @@ package com.pentagram.instance.model
 			var dataset:Dataset;
 			var row:DataRow;
 			for each(var item:NormalizedVO in data) {
+				
 				if(Dataset(datasets[0]).time == 1)
-					item.x =  Dataset(datasets[0]).rows.getItemAt(item.index)[year];
-				else
-					item.x = item.x =  Dataset(datasets[0]).rows.getItemAt(item.index).value;
+					item.x =  item.rows[0][year];
+				else if(Dataset(datasets[0]).id != -1)
+					item.x = item.x =  item.rows[0].value;
 				
 				if(Dataset(datasets[1]).time == 1)	
-					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index)[year];
-				else
-					item.y =  Dataset(datasets[1]).rows.getItemAt(item.index).value;
-				
-				if(datasets[2]) {
+					item.y =  item.rows[1][year];
+				else  if(Dataset(datasets[1]).id != -1)
+					item.y =  item.rows[1].value;
+			
+
+				if(datasets[2] && Dataset(datasets[2]).id != -1) {
 					dataset = datasets[2] as Dataset;
-					row = dataset.rows.getItemAt(item.index) as DataRow;
+					row = item.rows[2] as DataRow;
 					if(Dataset(datasets[2]).time == 1)
 						item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
 					else
 						item.radius = item.prevRadius = (row.value - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
-						
 				}	
-				if(datasets[3] &&  Dataset(datasets[3]).time == 1) {
+				else
+					item.radius = item.prevRadius = maxRadius;
+				
+				
+				
+ 				if(datasets[3] &&  Dataset(datasets[3]).time == 1 && Dataset(datasets[3]).id != -1) {
 					dataset = datasets[3] as Dataset;
-					row = dataset.rows.getItemAt(item.index) as DataRow;
+					row = item.rows[3] as DataRow;
 					var value:String = row[year];
 					item.color = dataset.colorArray[value];
 					item.category = value;
 				}
-				if(categories.indexOf(item.category) != -1)
-					item.radius = item.prevRadius;
-				else
-					item.radius = 0;
+				
+				if(categories.length > 0) {
+					if(categories.indexOf(item.category) != -1)
+						item.radius = item.prevRadius;
+					else
+						item.radius = 0;
+				}
 			}
 		}
 		

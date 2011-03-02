@@ -193,7 +193,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleCloseTooltips(event:MouseEvent):void {
 			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
-				trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
+				//trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
 				var child:DisplayObject = view.systemManager.getChildAt(i);
 				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
 				   getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
@@ -203,12 +203,14 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function check_changeHandler(event:Event):void {
 			view.categoriesPanel.check.selected = true;
-			for each(var item:Category in view.categoriesPanel.continentList.dataProvider.toArray()) {
-				item.selected = true;
+			if(view.categoriesPanel.continentList.dataProvider){
+				for each(var item:Category in view.categoriesPanel.continentList.dataProvider.toArray()) {
+					item.selected = true;
+				}
+				dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));
+				view.comparator.enabled = false;
+				view.comparator.currentState = "closed";
 			}
-			dispatch(new VisualizerEvent(VisualizerEvent.CATEGORY_CHANGE,"selectAll"));
-			view.comparator.enabled = false;
-			view.comparator.currentState = "closed";
 		}
 	}
 }

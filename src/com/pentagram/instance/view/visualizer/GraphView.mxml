@@ -80,13 +80,19 @@
 					linearAxis.minimum = dataset.min - Math.abs(dataset.min*.1);
 					return linearAxis;
 				}
-				else {
+				else if(dataset.id != -1) {
 					var categoryAxis:CategoryAxis = new CategoryAxis();
 					categoryAxis.title = dataset.name;
 					categoryAxis.categoryField = "name";
 					categoryAxis.dataProvider = ViewUtils.vectorToArray(dataset.optionsArray);
 					//categoryAxis.dataProvider = new ArrayCollection(ViewUtils.vectorToArray(dataset.optionsArray));
 					return categoryAxis;
+				}
+				else {
+					linearAxis = new LinearAxis();
+					linearAxis.title = dataset.name;
+					linearAxis.maximum = linearAxis.minimum = 1;
+					return linearAxis;
 				}
 			}
 			private function createRadiusAxis(dataset:Dataset):IAxis {

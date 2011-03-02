@@ -45,7 +45,7 @@
 					c.name = v;
 					d.dataset.optionsArray.push(c);		
 					d.dataset.options += ","+value;
-					trace(d.dataset.options);	
+					//trace(d.dataset.options);	
 					if(d.dataset.modifiedProps.indexOf("options") == -1)	
 						d.dataset.modifiedProps.push("options");	
 					d.modified = true;

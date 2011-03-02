@@ -54,10 +54,13 @@ package com.pentagram.instance.view.mediators.shell
 		override public function onRegister():void
 		{
 			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);	
-			view.firstSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-			view.secondSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-			view.thirdSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-			view.fourthSet.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);	
+			
+
+			view.firstSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
+			view.secondSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
+			view.thirdSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
+			view.fourthSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);	
+			
 			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true); 
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			view.pdfBtn.addEventListener(MouseEvent.CLICK,saveImage,false,0,true);
@@ -66,7 +69,7 @@ package com.pentagram.instance.view.mediators.shell
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
-			//eventMap.mapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
 			
 		}
 		
@@ -77,6 +80,15 @@ package com.pentagram.instance.view.mediators.shell
 //				year.alpha = a;
 //			}
 //		}
+		private function handleCategoryChange(event:VisualizerEvent):void {
+			if(view.visualizerArea.selectedIndex == 0) {
+				if(yearTimer.running) {
+					yearTimer.stop();
+					view.yearSlider.selectedIndex=0;
+					view.playBtn.selected = view.loopBtn.selected = false;
+				}
+			}
+		}
 		private function saveImage(event:Event):void {	
 			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
 				year.alpha = 0;

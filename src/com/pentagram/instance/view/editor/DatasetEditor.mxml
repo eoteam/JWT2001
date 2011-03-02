@@ -117,7 +117,6 @@
 			private function grid_keyDownHandler(event:KeyboardEvent):void
 			{
 				if(event.keyCode ==  Keyboard.ENTER && grid.selectedCell && event.target == grid) {
-					trace(event.target);
 					grid.startItemEditorSession(grid.selectedCell.rowIndex,grid.selectedCell.columnIndex);
 				}
 			}

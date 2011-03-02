@@ -79,13 +79,19 @@ package com.pentagram.instance.view.mediators.editor
 			var continent:Region = view.continentList.selectedItem as Region;
 			if(continent) {
 				for each(var country:Country in continent.countries.source) {
-					if(model.client.countries.getItemIndex(country) == -1) 
+					if(model.client.countries.getItemIndex(country) == -1)
 						model.client.countries.addItem(country);
 					if(model.client.newCountries.getItemIndex(country) == -1) 
 						model.client.newCountries.addItem(country);
 					for each(var region:Region in model.client.regions.source) {
 						if(region.id == country.region.id) {
 							region.countries.addItem(country);
+							if(region.countries.length == 1) {
+								var drawer:RegionDrawer = new RegionDrawer();
+								drawer.region = region;
+								drawer.addEventListener(IndexChangeEvent.CHANGE,handleListSelection,false,0,true);
+								view.regionHolder.addElement(drawer);
+							}
 							break;
 						}
 					}
@@ -117,7 +123,7 @@ package com.pentagram.instance.view.mediators.editor
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				trace("file:///" + File(files[0]).nativePath); 
+				//trace("file:///" + File(files[0]).nativePath); 
 				if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
 					view.logo.source = "file:///" + File(files[0]).nativePath;
 					

@@ -71,7 +71,7 @@
 			<s:Rect height="6"/>
 			<controls:MiGList labelField="name" sortField="name" headerText="Clients" id="clientList" width="100%"
 			 keyboardLookUp="true" selectedIndex.add="-1" itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
-			 addLabel="+ Add Client" removeLabel="+ Add Client"/>			
+			 addLabel="+ Add Client" removeLabel="- Delete Client"/>			
 <!--			<s:HGroup width="100%" gap="0" paddingLeft="1"  >
 				<s:Button width="100%"  id="addButton"  styleName="grayButton" />
 				<s:Button width="100%"  id="deleteListBtn"  styleName="grayButton" />

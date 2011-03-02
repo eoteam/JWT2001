@@ -38,7 +38,7 @@ package com.pentagram.instance.controller
 				service.addProperties("row",row);
 				total++;
 			}
-						
+			trace(dataset.name,total);			
 		}
 		private function handleRowUpdated(event:ResultEvent):void {
 			var row:DataRow = event.token.row;

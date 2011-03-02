@@ -110,8 +110,8 @@ package com.pentagram.services
 		}
 		public function removeClient(client:Client):void {
 			var params:Object = new  Object();
-			params.action = "deleteRecord";
-			params.tablename = 'content';
+			params.action = "deleteClient";
+			//params.tablename = 'content';
 			params.id = client.id;
 			this.createService(params,ResponseType.STATUS);
 		}

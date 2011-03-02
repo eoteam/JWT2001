@@ -14,6 +14,7 @@ package com.pentagram.model.vo
 		public var prevRadius:Number;
 		public var category:String;
 		public var country:Country;
+		public var rows:Array;
 
 	}
 }

@@ -78,26 +78,30 @@ package com.pentagram.instance.view.mediators.editor
 			view.datasetList.addEventListener("removeButtonClick",handleDelete,false,0,true);
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,true));
 			if(view.currentState == "overview") {
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,true));
 			}
 			else if(view.currentState == "dataset") {
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_DATASET));
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_DATASET));	
 			}
 		}
 		private function handleCancelChange(event:MouseEvent):void {
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CANCEL));
 		}
 		private function handleDelete(event:Event):void {
-			var eventLoad:EditorEvent = new EditorEvent(EditorEvent.DELETE_DATASET,view.datasetList.selectedItem);
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.NOTIFY,"Are you sure you want to delete this dataset?\nThis change cannot be undone",eventLoad));
-			//eventDispatcher.dispatchEvent();
+			if(view.datasetList.selectedItems.length > 1 || (view.datasetList.selectedItems.length == 1 && view.datasetList.selectedItem.id != -1) ) {
+				var eventLoad:EditorEvent = new EditorEvent(EditorEvent.DELETE_DATASET,view.datasetList.selectedItems);
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.NOTIFY,"Are you sure you want to delete these datasets?\nThis change cannot be undone",eventLoad));
+				//eventDispatcher.dispatchEvent();
+			}
 		}
 		private function handleDatasetState(event:Event):void {
 			view.deleteBtn.addEventListener(MouseEvent.CLICK,handleDelete,false,0,true);
 		}
 		private function handleClientDataUpdated(event:EditorEvent):void {
 			view.statusModule.updateStatus("Client Data Updated");
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 		}
 		private function handleClientLoaded(event:VisualizerEvent):void {
 			view.datasetList.dataProvider = new ArrayCollection(model.client.datasets.source);
@@ -124,7 +128,8 @@ package com.pentagram.instance.view.mediators.editor
 				view.datasetEditor.generateDataset();
 			}
 			counter++;
-			if(counter == totalSets) //in casenew countries are added
+			trace("Dataset import",counter,totalSets);
+			if(counter == totalSets)  //in casenew countries are added
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,false));
 			
 		}
@@ -208,6 +213,7 @@ package com.pentagram.instance.view.mediators.editor
 			
 		}
 		private function readFile(file:File,rows:Array,time:int):void {
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,true));
 			totalSets = 1;counter = 0;
 			var fileName:String = file.name.replace(/.csv/gi,'');
 			var header:Array = rows[0];
@@ -251,6 +257,7 @@ package com.pentagram.instance.view.mediators.editor
 						}
 						trace("rotation finished");
 						totalSets = datasets.length;
+						disp = 0;
 						for (i=0;i<datasets.length;i++) {
 							set = datasets[i];
 							parseDataset(header[i+1],set);
@@ -263,6 +270,7 @@ package com.pentagram.instance.view.mediators.editor
 			else 
 				showError("Spreadsheet doesnt have enough rows");
 		}
+		private var disp:int;
 		private function parseDataset(fileName:String,rows:Array):void {
 			var i:int;
 			var j:int;
@@ -350,7 +358,8 @@ package com.pentagram.instance.view.mediators.editor
 					dataset.options += cat.name+',';
 				dataset.options = dataset.options.substr(0,dataset.options.length-1);	
 			}
-			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset));
+			trace("Dataset import dispatch",disp++);
+			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.CREATE_DATASET,dataset,disp));
 		}
 		
 		private function parseCell(cell:String,dataset:Dataset,row:DataRow,field:String):void {

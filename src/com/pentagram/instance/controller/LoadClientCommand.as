@@ -82,7 +82,9 @@
 			}
 			else {
 				model.client.loaded = true;
+				addNoneSets();
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				trace("CLIENT LOADED");
 			}
 		}
 		private function handleClientCountries(event:ResultEvent):void
@@ -126,25 +128,28 @@
 			
 			if(counter == model.client.datasets.length) {
 				model.client.loaded = true;
+				addNoneSets();
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 				trace("CLIENT LOADED");
-				
-				var none:Dataset = new Dataset();
-				none.name = "None";
-				none.id = -1;
-				for each(var country:Country in model.client.countries.source) {
-					var row:DataRow = new DataRow();
-					row.country = country;
-					row.dataset = none;
-					row.id = -1;
-					row.name = country.name;
-					none.rows.addItem(row);
-				}
-				
-				model.client.datasets.addItemAt(none,0);
-				model.client.qualityDatasets.addItemAt(none,0);
-				model.client.quantityDatasets.addItemAt(none,0);
 			}
+		}
+		private function addNoneSets():void {
+			var none:Dataset = new Dataset();
+			none.name = "None";
+			none.id = -1;
+			for each(var country:Country in model.client.countries.source) {
+				var row:DataRow = new DataRow();
+				row.country = country;
+				row.dataset = none;
+				row.id = -1;
+				row.color = country.region.color;
+				row.name = country.name;
+				none.rows.addItem(row);
+			}
+			
+			model.client.datasets.addItemAt(none,0);
+			model.client.qualityDatasets.addItemAt(none,0);
+			model.client.quantityDatasets.addItemAt(none,0);
 		}
 		private  function orderCountriesById(a:DataRow, b:DataRow,fields:Array = null):int 
 		{ 	

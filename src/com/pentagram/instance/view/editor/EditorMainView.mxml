@@ -44,7 +44,7 @@
 		 selected.dataset="false" selected.create="false" selected.overview="true"/>
 		
 		<controls:MiGList width="100%"  maxHeight="{holder.height}"  labelField="name" top="30"  itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
-		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets"   keyboardLookUp="true"
+		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets"   keyboardLookUp="true" allowMultipleSelection="true"
 		addButtonClick="this.currentState='create'" addLabel="+ Add Set" removeLabel="- Delete"
 		id="datasetList">
 			<controls:layout>

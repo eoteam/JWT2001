@@ -48,6 +48,6 @@
 			verticalAlign="middle" />
 
 	<!-- clear button -->
-	<s:Button id="clearButton" right="4" verticalCenter="0" excludeFrom="normalWithPrompt"
-			skinClass="com.pentagram.view.skins.controls.SuperTextInputClearButtonSkin" />
+	<s:Button id="clearButton" right="4" verticalCenter="0" excludeFrom="normalWithPrompt" chromeColor="0x1a1a1a"
+			skinClass="com.pentagram.view.skins.controls.DarkSuperTextInputClearButtonSkin" />
 </s:SparkSkin>

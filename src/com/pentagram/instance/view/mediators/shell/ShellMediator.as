@@ -49,6 +49,8 @@ package com.pentagram.instance.view.mediators.shell
 		
 		private var loaders:Array = [];
 		private var datasetids:String;
+		private var regionOption:Dataset;
+		
 		override public function onRegister():void
 		{
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
@@ -101,7 +103,18 @@ package com.pentagram.instance.view.mediators.shell
 			model.exportDirectory = File.desktopDirectory;
 			view.exportPanel.dirPath.text = model.exportDirectory.nativePath;
 			
-			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));	
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
+			
+			regionOption = new Dataset();
+			regionOption.name = "Region";
+			regionOption.id = -2;
+			for each(var r:Region in model.regions) {
+				var c:Category = new Category();
+				c.name = r.name;
+				c.color = r.color;
+				c.selected = r.selected;
+				regionOption.optionsArray.push(c);
+			}
 		}
 
 
@@ -183,36 +196,63 @@ package com.pentagram.instance.view.mediators.shell
 					else
 						view.filterTools.categoriesPanel.continentList.dataProvider = null;
 					
-					if(event.args[0].name != "None") {
+					if(event.args[0].id != -1 && event.args[1].id != -1) {
 						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(event.args[0].optionsArray));					
 						view.vizTitle.text = event.args[0].name + " by " + event.args[1].name;
 					}
-					else {
-						view.filterTools.categoriesPanel.continentList.dataProvider = null;		
-						view.vizTitle.text = "Color by Region, sized by " + event.args[1].name;						
+					else  {
+						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
+						if(event.args[1].id != -1)
+							view.vizTitle.text = "Color by Region, sized by " + event.args[1].name;
+						else
+							view.vizTitle.text = "All Countries for " + model.client.name;
 					}	
+					
 					view.clusterView.visualize(event.args[0],event.args[1]);
 					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
 					checkNotes();
+					
+					
 				break;
+				
 				case model.MAP_INDEX:
 					view.mapView.visualize(event.args[0]);
 					view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
-					view.vizTitle.text = event.args[0].name + " by Region";
+					if(event.args[0].id != -1)
+						view.vizTitle.text = event.args[0].name + " by Region";
+					else
+						view.vizTitle.text = "All Countries for " + model.client.name;
 					datasetids = event.args[0].id.toString();
 					checkNotes();
 				break;
 				case model.GRAPH_INDEX:
 					
-					if(event.args[3] && Dataset(event.args[3]).type == 0)
+					if(event.args[3].id > 0  && Dataset(event.args[3]).type == 0)
 						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
-					else
+					else if(event.args[3].id == -2)
 						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
+					else
+						view.filterTools.categoriesPanel.continentList.dataProvider = null;
 					
 					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3]);	
 					view.graphView.visualize(model.maxRadius,d,event.args[0],event.args[1],event.args[2],event.args[3]);
-					view.vizTitle.text = event.args[0].name + " vs " + event.args[1].name + ", sized by " + event.args[2].name;
+					
+					var t:String = '';
+					if(event.args[0].id != -1)
+						t = event.args[0].name; 
+					if(event.args[1].id != -1) {
+						if(event.args[0].id != -1)
+							t += " vs ";
+						t +=  event.args[1].name + ",";
+					}
+					else t+= ",";
+			
+					if(event.args[2].id != -1)
+						t += " sized by " + event.args[2].name;
+					
 					datasetids = event.args[0].id.toString() + "," + event.args[1].id.toString()  + "," + event.args[2].id.toString();
+					
+					view.vizTitle.text = t;
 					if(event.args[3]) {
 						view.vizTitle.text += ", grouped by " + event.args[3].name;
 						datasetids += ","+event.args[3].id.toString()
@@ -371,8 +411,11 @@ package com.pentagram.instance.view.mediators.shell
 					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(1) as Dataset;
 					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(2) as Dataset;
 					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(3) as Dataset;
-					var ds4:Dataset = view.tools.firstSet.dataProvider.getItemAt(0) as Dataset;
-					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,null);		
+					var ds4:Dataset = regionOption;
+					view.tools.fourthSet.dataProvider.addItemAt(regionOption,0);
+					view.tools.fourthSet.selectedItem = regionOption;
+					
+					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4);		
 					view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,null);
 					view.vizTitle.text = ds1.name + " vs " + ds2.name + ", sized by " + ds3.name;
 					view.vizTitle.text += ", grouped by region";
@@ -428,6 +471,10 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 				}
 			}
+			else {
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
+				view.mapView.updateSize();
+			}
 			
 		}
 		private function handleClusterLoaded(event:Event):void {
@@ -477,7 +524,7 @@ package com.pentagram.instance.view.mediators.shell
 				if(event.type == 'vizStarted')
 					view.tools.twitterOptionsBtn.selected = false;
 				else
-					view.filterTools.topics.topicsList.dataProvider = new ArrayList(view.twitterView.topics);
+					view.filterTools.topics.topicsList.dataProvider = new ArrayCollection(view.twitterView.topics);
 			}
 		}
 		private function restoreViewOptions(viz:IVisualizer):void {
