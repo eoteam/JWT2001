@@ -5,16 +5,19 @@ package com.pentagram.model.vo
 	{
 		public var x:*;
 		public var y:*;
+		public var xCoord:Number;
+		public var yCoord:Number;
 		public var radius:Number;
 		public var color:uint;
 		public var name:String;
 		public var index:int;
-		public var alpha:Number=.7;
+		public var alpha:Number=.2;
 		public var shortname:String;
 		public var prevRadius:Number;
 		public var category:String;
 		public var country:Country;
 		public var rows:Array;
+		public var content:String;
 
 	}
 }

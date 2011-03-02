@@ -37,7 +37,7 @@ package com.pentagram.instance.view.visualizer.views
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);		
 			timer = new Timer(5000,1);
 			timer.addEventListener(TimerEvent.TIMER,stop);
-			timer.start();
+			//timer.start();
 		}
 		public function reset():void
 		{
@@ -53,7 +53,7 @@ package com.pentagram.instance.view.visualizer.views
 		}
 		public function start():void
 		{
-			timer.start();
+			//timer.start();
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		public function stop(event:Event=null):void

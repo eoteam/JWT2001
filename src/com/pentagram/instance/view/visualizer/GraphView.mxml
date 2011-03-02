@@ -11,6 +11,8 @@
 				 contentBackgroundAlpha="0" xmlns:views="com.pentagram.instance.view.visualizer.views.*"  >
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenNano;
+			import com.pentagram.instance.view.visualizer.renderers.BubbleRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			
 			import mx.charts.HitData;
@@ -179,35 +181,23 @@
 			private function creationCompleteHandler(event:FlexEvent):void {
 				this.doVisualize();
 			}
-			public function dtFunc(hd:HitData):String {
-//				var item:NormalizedVO = hd.item as NormalizedVO;
-//				var result:String = '';
-//				result +=  ds1.name + ": " + item.x + "\n";
-//				result +=  ds2.name + ": " + item.y + "\n";
-//				if(ds3) result +=  ds3.name + ": " + Math.round(item.radius*ds3.max) + "\n";
-//				if(ds4) result +=  ds4.name + ": " + item.category;
-//				return result;
-				
+			public function dtFunc(hd:HitData):String {	
 				var item:NormalizedVO = hd.item as NormalizedVO;
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
 				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
 				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
-				result += "</p></TextFlow>";					
+				result += "</p></TextFlow>";	
+				item.content = result;
 				return result;
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
-//				for (var i:int=0;i<holder.numElements;i++) {
-//					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-//					for (var j:int=0;j<c.numChildren;j++) {
-//						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
-//						if(countries.indexOf(circle.data2.country) != -1)
-//							circle.fillAlpha =1;
-//						else circle.fillAlpha = 0.2;
-//					}
-//				}
+				for each(var item:NormalizedVO in _visdata) {
+					if(countries.indexOf(item.country) != -1)
+							TweenNano.to(item,0.5,{alpha:1});
+					else TweenNano.to(item,0.5,{alpha:0.2});
+				}
 			}
-
 		]]>
 	</fx:Script>
 	<fx:Style>
@@ -250,11 +240,12 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
-	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18">
+	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18"
+	id="chart" showDataTips="true" dataTipFunction="{dtFunc}" 
+	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" >
 		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
-			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer"/>
+			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer" selectable="true" />
 		</views:series>
 		<views:backgroundElements />
 	</views:ViewBubbleChart>

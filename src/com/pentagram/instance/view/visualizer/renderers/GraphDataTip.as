@@ -217,5 +217,10 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			return str;
 		}
+		override public function move(x:Number, y:Number):void {
+			super.move(x,y);
+			this._hitData.item.xCoord = x;
+			this._hitData.item.yCoord = y;
+		}
 	}
 }

@@ -16,6 +16,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	
 	import flash.display.Graphics;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -47,6 +48,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		
 		private var offset:int = 15;
 		
+		public var content:String;
 		public function BubbleRenderer() 
 		{
 			super();
@@ -107,7 +109,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			
 			var color:uint = _data.item.color;
-			var alpha:Number = 0.2;//data.item.alpha;
+			var alpha:Number = _data.item.alpha;
 			var adjustedRadius:Number = 0;
 			
 			switch (state)
@@ -162,7 +164,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				fill.end(g);
 	
 			
-				textFormat.color = color;
+				textFormat.color = alpha>0.4?0xffffff:color;
 				label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 				label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
 				label.defaultTextFormat = textFormat;
@@ -180,19 +182,21 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(!infoVisible) {
 				info = new RendererInfo();
 				info.country = item.country;
-				//info.content = _content;
+				info.content = item.content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-				if(actualX  + radius + info.width + 10 > this.parentDocument.width) {
-					info.leftTipVisible = false;
-					info.rightTipVisible = true;
-					info.x = x + actualX - radius*2 - info.width - offset;
-				}
-				else { 
-					info.leftTipVisible = true;
-					info.rightTipVisible = false;
-					info.x = x + actualX + radius + offset;
-				}
-				info.y = y+actualX+radius+info.height/2;
+				//var pt:Point = UIComponent(this.parentDocument).localToGlobal(new Point(item.xCoord,item.yCoord));
+				//info.x = pt.x; item.y = pt.y;
+//				if(actualX  + radius + info.width + 10 > this.parentDocument.width) {
+//					info.leftTipVisible = false;
+//					info.rightTipVisible = true;
+//					info.x = x + actualX - radius*2 - info.width - offset;
+//				}
+//				else { 
+//					info.leftTipVisible = true;
+//					info.rightTipVisible = false;
+//					info.x = x + actualX + radius + offset;
+//				}
+//				info.y = y+actualX+radius+info.height/2;
 				PopUpManager.addPopUp(info, this.parentDocument as UIComponent, false);
 				infoVisible = true;
 			}
