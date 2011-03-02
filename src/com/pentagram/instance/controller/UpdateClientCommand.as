@@ -1,6 +1,7 @@
 package com.pentagram.instance.controller
 {
 	import com.pentagram.events.EditorEvent;
+	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.DataRow;
@@ -38,7 +39,9 @@ package com.pentagram.instance.controller
 				service.addClientCountries(model.client,model.client.newCountries);
 				service.addHandlers(handleAddClientCountry);
 				total++;
-				if(editorEvent.args[0] == true) {
+				if(editorEvent.args[0] == true) { 
+					//true if new countries are added to overview first and need to be pushed to datasets
+					//false if new countries are added as a result of importing datasets
 					for each(dataset in model.client.datasets.source) {
 						if(dataset.id != -1) {
 							service.addDatasetCountries(dataset,model.client.newCountries);
@@ -60,6 +63,8 @@ package com.pentagram.instance.controller
 					total++;
 				}
 			}
+			if(total == 0)
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 		}
 		
 		private function handleClientSaved(event:ResultEvent):void {

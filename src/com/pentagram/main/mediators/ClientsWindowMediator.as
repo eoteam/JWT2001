@@ -8,6 +8,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.main.windows.ClientsWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;
+	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.Downloader;
 	import com.pentagram.utils.Uploader;
@@ -16,10 +17,13 @@ package com.pentagram.main.mediators
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.net.FileFilter;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
+	import mx.events.CollectionEvent;
 	import mx.events.FlexEvent;
 	
 	import org.flashcommander.event.CustomEvent;
@@ -77,8 +81,9 @@ package com.pentagram.main.mediators
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_CREATED,handleClientUpdated,EditorEvent);
 			eventMap.mapListener(eventDispatcher,EditorEvent.CLIENT_DELETED,handleClientDeleted,EditorEvent);
 			
-			view.countryInput.dataProvider = model.countries.source;
-			view.countryInput.addEventListener(CustomEvent.SELECT,countryList_selectHandler,false,0,true);
+//			view.countryInput.dataProvider = model.countries.source;
+//			view.countryInput.addEventListener(CustomEvent.SELECT,countryInputSelectHandler,false,0,true);
+//			view.deleteBtn3.addEventListener(MouseEvent.CLICK,handleDeleteCountries,false,0,true);
 			
 		}
 		private function handleWindowClose(event:Event):void {
@@ -161,34 +166,53 @@ package com.pentagram.main.mediators
 			view.currentState = isNaN(currentClient.id) ? "add":"edit";
 			this.fileToUpload = null;
 			
-			view.regionHolder.removeAllElements();
-			for each(var region:Region in currentClient.regions.source) {
-				if(region.countries.length > 0) {
-					var drawer:RegionDrawer = new RegionDrawer();
-					drawer.region = region;
-					drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
-					view.regionHolder.addElement(drawer);
-				}
-			}
+//			view.regionHolder.removeAllElements();
+//			for each(var region:Region in currentClient.regions.source) {
+//				if(region.countries.length > 0) {
+//					var drawer:RegionDrawer = new RegionDrawer();
+//					drawer.region = region;
+//					drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
+//					view.regionHolder.addElement(drawer);
+//				}
+//			}
 		}
-		private function countryList_selectHandler(event:CustomEvent):void {
-			if(currentClient.countries.getItemIndex(event.data) == -1) {
-				currentClient.countries.addItem(event.data);
-				currentClient.newCountries.addItem(event.data);
-				for each(var region:Region in currentClient.regions.source) {
-					if(region.id == event.data.region.id) {
-						region.countries.addItem(event.data);
-						if(region.countries.length == 1) {
-							var drawer:RegionDrawer = new RegionDrawer();
-							drawer.region = region;
-							drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
-							view.regionHolder.addElement(drawer);
-						}
-						break;
-					}
-				}
-			}
-		}
+//		private function countryInputSelectHandler(event:CustomEvent):void {
+//			if(currentClient.countries.getItemIndex(event.data) == -1) {
+//				currentClient.countries.addItem(event.data);
+//				currentClient.newCountries.addItem(event.data);
+//				for each(var region:Region in currentClient.regions.source) {
+//					if(region.id == event.data.region.id) {
+//						region.countries.addItem(event.data);
+//						if(region.countries.length == 1) {
+//							var drawer:RegionDrawer = new RegionDrawer();
+//							drawer.region = region;
+//							drawer.addEventListener(IndexChangeEvent.CHANGE,handleCountryListSelection,false,0,true);
+//							view.regionHolder.addElement(drawer);
+//						}
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		private function handleDeleteCountries(event:MouseEvent):void {
+//			for(var i:int=0;i<view.regionHolder.numElements;i++) {
+//				var drawer:RegionDrawer = view.regionHolder.getElementAt(i) as RegionDrawer;
+//				for each(var country:Country in drawer.countryList.selectedItems) {
+//					currentClient.countries.removeItem(country);
+//					for each(var region:Region in currentClient.regions.source) {
+//						if(region.id ==country.region.id) {
+//							region.countries.removeItem(country);
+//							break;
+//						}
+//					}
+//					if(currentClient.deletedCountries.getItemIndex(country) == -1) 
+//						currentClient.deletedCountries.addItem(country);
+//				}
+//				if(drawer.countryList.dataProvider.length == 0 ){
+//					view.regionHolder.removeElement(drawer);
+//				}
+//			}
+//		}
 		private function handleCountryListSelection(event:IndexChangeEvent):void {
 			
 		}
@@ -198,7 +222,16 @@ package com.pentagram.main.mediators
 			currentClient.name = "New Client";
 			view.client = currentClient;
 			model.clients.addItem(currentClient);
-			ArrayCollection(view.clientList.dataProvider).refresh();
+			ArrayCollection(view.clientList.dataProvider).addEventListener(CollectionEvent.COLLECTION_CHANGE,handleChangeComplete);
+			ArrayCollection(view.clientList.dataProvider).refresh();			
+		}
+		private function handleChangeComplete(event:CollectionEvent):void {
+			ArrayCollection(view.clientList.dataProvider).removeEventListener(CollectionEvent.COLLECTION_CHANGE,handleChangeComplete);
+			var t:Timer = new Timer(100,1);
+			t.addEventListener(TimerEvent.TIMER_COMPLETE,setIndex);
+			t.start();
+		}
+		private function setIndex(event:TimerEvent):void {
 			view.clientList.selectedIndex = view.clientList.dataProvider.length-1;
 		}
 		private function handleCancel(event:MouseEvent):void {

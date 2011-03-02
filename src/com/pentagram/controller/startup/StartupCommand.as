@@ -7,6 +7,7 @@ package com.pentagram.controller.startup
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.services.interfaces.IAppService;
+	import com.pentagram.services.interfaces.IClientService;
 	import com.pentagram.utils.CSVUtils;
 	import com.pentagram.utils.ViewUtils;
 	
@@ -21,6 +22,9 @@ package com.pentagram.controller.startup
 
 		[Inject]
 		public var appService:IAppService;
+		
+		[Inject]
+		public var clientService:IClientService;
 		
 		[Inject]
 		public var appModel:AppModel;
@@ -65,7 +69,6 @@ package com.pentagram.controller.startup
 			counter++;
 			for each(var client:Client in appModel.clients.source) {
 				client.thumb = Constants.FILES_URL+client.thumb;
-				////??????????????????
 				for each(var region:Region in appModel.regions.source) {
 					var cRegion:Region = new Region();
 					cRegion.color = region.color;

@@ -67,7 +67,7 @@
 	
 	
 	<s:HGroup width="100%" gap="0" paddingLeft="1" bottom="0">
-		<s:Button width="100%" id="addButton" label="{hostComponent.addLabel}"  styleName="grayButton" />
+		<s:Button width="100%" id="addButton" label="{hostComponent.addLabel}"  styleName="grayButton"  />
 		<s:Button width="100%" label="{hostComponent.removeLabel}"  id="removeButton" styleName="grayButton"/>
 	</s:HGroup>
 </s:SparkSkin>

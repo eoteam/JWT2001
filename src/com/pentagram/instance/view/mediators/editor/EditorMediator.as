@@ -74,7 +74,7 @@ package com.pentagram.instance.view.mediators.editor
 			view.datasetList.addEventListener(IndexChangeEvent.CHANGE,handleDatasetChange,false,0,true);
 			//view.datasetList.addEventListener(NativeDragEvent.NATIVE_DRAG_DROP,onDragDrop,false,0,true);
 			view.datasetList.dataProvider = new ArrayCollection(model.client.datasets.source);
-			
+			view.datasetList.selectedIndex = -1;
 			view.datasetList.addEventListener("removeButtonClick",handleDelete,false,0,true);
 		}	
 		private function handleSaveChanges(event:MouseEvent):void {
@@ -131,6 +131,7 @@ package com.pentagram.instance.view.mediators.editor
 			trace("Dataset import",counter,totalSets);
 			if(counter == totalSets)  //in casenew countries are added
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,false));
+				
 			
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
@@ -185,7 +186,7 @@ package com.pentagram.instance.view.mediators.editor
 			var fileName:String = event.target.name.replace(/.csv/gi,'');
 			for each(var ds:Dataset in model.client.datasets.source) {
 				if(ds.name == fileName) {
-					eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ERROR,"This name is already taken. Please choose another one."));
+					showError("This name is already taken. Please choose another one.");
 					return;
 				}
 			}
@@ -422,6 +423,7 @@ package com.pentagram.instance.view.mediators.editor
 		private function showError(msg:String):void {
 			view.statusModule.updateStatus(msg);
 			eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.ERROR,msg));
+			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 		}
 	}
 }

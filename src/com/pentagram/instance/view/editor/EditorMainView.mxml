@@ -38,12 +38,12 @@
 		<s:State name="create" id="createState" />
 	</mx:states>
 	
-	<s:Group width="200" height="100%" id="holder">
+	<s:VGroup width="200" height="100%" id="holder" gap="8" minWidth="120">
 		<s:ToggleButton width="100%" label="Overview" textAlignLast="left" click="button1_clickHandler(event)"
 		 skinClass="com.pentagram.view.skins.buttons.OverviewButton" id="overviewButton" 
 		 selected.dataset="false" selected.create="false" selected.overview="true"/>
 		
-		<controls:MiGList width="100%"  maxHeight="{holder.height}"  labelField="name" top="30"  itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
+		<controls:MiGList width="100%"  height="100%" labelField="name"  itemRenderer="com.pentagram.view.renderers.BasicListItemRenderer"
 		change="dataSetList_changeHandler(event)" sortField="name" headerText="Datasets"   keyboardLookUp="true" allowMultipleSelection="true"
 		addButtonClick="this.currentState='create'" addLabel="+ Add Set" removeLabel="- Delete"
 		id="datasetList">
@@ -51,11 +51,7 @@
 				<s:VerticalLayout clipAndEnableScrolling="true" gap="0" useVirtualLayout="true" />
 			</controls:layout>
 		</controls:MiGList>
-<!--		<s:HGroup width="100%" gap="0" paddingLeft="1" >
-			<s:Button width="100%" label="+ Add Set" click="this.currentState='create'" styleName="grayButton" />
-			<s:Button width="100%" label="- Delete" id="deleteListBtn" styleName="grayButton"/>
-		</s:HGroup>-->
-	</s:Group>
+	</s:VGroup>
 	
 	<s:Group width="100%" height="100%">
 		<s:Rect left="0" right="0" top="0" bottom="0">

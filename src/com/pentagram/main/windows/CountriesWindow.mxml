@@ -4,8 +4,11 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx"
 					xmlns:windows="com.pentagram.main.windows.*"
 					xmlns:editor="com.pentagram.instance.view.editor.*"
+					xmlns:vo="com.pentagram.model.vo.*"
+					xmlns:components="com.pentagram.view.skins.components.*"
+					xmlns:layouts="com.pentagram.view.layouts.*"
 					xmlns:controls="com.pentagram.view.controls.*" title="Countries"
-					minWidth="800" minHeight="600" xmlns:vo="com.pentagram.model.vo.*" xmlns:components="com.pentagram.view.skins.components.*" xmlns:layouts="com.pentagram.view.layouts.*">
+					minWidth="820" minHeight="600" >
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.main.event.ViewEvent;
@@ -64,7 +67,7 @@
 		<s:State name="add" />
 	</windows:states>
 	<mx:HDividedBox width="100%" height="100%" paddingRight="12"  paddingLeft="12" paddingTop="8" paddingBottom="8">
-		<s:VGroup width="30%" height="100%" gap="0">
+		<s:VGroup width="30%" height="100%" gap="0" minWidth="120">
 			<controls:SuperTextInput width="100%"  id="searchInput" prompt="Filter" 
 			change="textinput1_changeHandler(event)"  clear="searchInput_clearHandler(event)"
 			skinClass="com.pentagram.view.skins.controls.SuperTextInputSkin" />

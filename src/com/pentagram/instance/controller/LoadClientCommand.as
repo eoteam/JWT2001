@@ -1,4 +1,4 @@
-	package com.pentagram.instance.controller
+package com.pentagram.instance.controller
 {
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
@@ -116,7 +116,7 @@
 			dataset.data = event.result.toString();
 			dataset.loaded = true;
 			model.parseData(event.token.results as Array,dataset,model.client);
-
+			
 			var sortField:SortField = new SortField();
 			sortField.name = "id";
 			sortField.numeric = true;
@@ -155,13 +155,13 @@
 		{ 	
 			if (a.id < b.id)  
 				return -1; 
-	
+				
 			else if (a.id > b.id)  
 				return 1; 
-			
+				
 			else 
 				return 0; 
-		
+			
 		} 
 	}
 }

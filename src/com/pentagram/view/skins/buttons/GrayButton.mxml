@@ -42,5 +42,5 @@
 		</s:stroke>
 	</s:Line>
 
-	<s:Label color="#333333" fontFamily="FlamaMedium" verticalCenter="0" right="2"  left="7" id="labelDisplay"/>
+	<s:Label color="#333333" fontFamily="FlamaMedium" verticalCenter="0" right="2"  maxDisplayedLines="1" left="7" id="labelDisplay"/>
 </s:Skin>
