@@ -20,7 +20,11 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
 	
+	import flash.desktop.NativeApplication;
+	import flash.display.NativeMenu;
+	import flash.display.NativeMenuItem;
 	import flash.display.NativeWindow;
+	import flash.display.StageDisplayState;
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
@@ -58,13 +62,67 @@ package com.pentagram.instance.view.mediators
 			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize,false,0,true);
 			this.addViewListener(ViewEvent.WINDOW_FOCUS,handleWindowFocusChange,ViewEvent);
 
+			setupWindowsMenu();
+
 		} 
 		private function handleLogin(event:AppEvent):void {
 			model.user = event.args[0] as User; 
 			model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+			if(NativeWindow.supportsMenu)
+				enableWindowsMenuItems(true);
+		}
+		private function setupWindowsMenu():void {
+			if(NativeWindow.supportsMenu) {
+				var windowMenu:NativeMenu = view.stage.nativeWindow.menu.getItemAt(0).submenu;
+				var fileMenu:NativeMenu = view.stage.nativeWindow.menu.getItemAt(1).submenu;
+				if(model.user)
+					enableWindowsMenuItems(true);
+				
+				model.exportImageMenuItem = fileMenu.items[1];
+				model.importMenuItem = fileMenu.items[0]
+				model.toolBarMenuItem = windowMenu.items[3];
+				model.exportImageMenuItem = windowMenu.items[4];
+				
+				var fullScreenMenuItem:NativeMenuItem = windowMenu.items[1];
+				fullScreenMenuItem.addEventListener(Event.SELECT,handleFullScreen);
+				
+				if(view.currentState == view.visualizerState.name)  {
+					model.toolBarMenuItem.enabled = true;
+					model.toolBarMenuItem.label = view.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
+					if(model.user) {
+						model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+					}
+				}
+				else if(view.currentState == view.searchState.name) {
+					model.toolBarMenuItem.label = "Hide Tool Bars";
+					model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
+				}
+				model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem,false,0,true);
+				model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem,false,0,true);
+				model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
+				model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
+			}
+			
+		}
+		private function enableWindowsMenuItems(enabled:Boolean):void {
+			var managerMenu:NativeMenu = view.stage.nativeWindow.menu.getItemAt(2).submenu;
+			for each(var item:NativeMenuItem in managerMenu.items)
+				item.enabled = enabled;
+		}
+		private function handleFullScreen(e:Event):void {
+			if(view.stage.displayState == StageDisplayState.NORMAL ) {
+				view.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				view.showStatusBar = false;
+			} 
+			else {
+				view.stage.displayState = StageDisplayState.NORMAL;
+				view.showStatusBar = true;
+			}
 		}
 		private function handleLogout(event:AppEvent):void {
 			model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
+			if(NativeWindow.supportsMenu)
+				enableWindowsMenuItems(false);
 		}
 		private function handleClientDeleted(event:EditorEvent):void {
 			var c:Client = event.args[0];
@@ -118,23 +176,23 @@ package com.pentagram.instance.view.mediators
 				removeMenuListeners();
 		}
 		private function processMenuItems():void {
-			
-			if(view.currentState == view.visualizerState.name)  {
-				model.toolBarMenuItem.enabled = true;
-				
-				model.toolBarMenuItem.label = view.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
-				if(model.user) {
-					model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+			if(NativeApplication.supportsMenu) {
+				if(view.currentState == view.visualizerState.name)  {
+					model.toolBarMenuItem.enabled = true;
+					model.toolBarMenuItem.label = view.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
+					if(model.user) {
+						model.exportMenuItem.enabled = model.importMenuItem.enabled = true;
+					}
 				}
+				else if(view.currentState == view.searchState.name) {
+					model.toolBarMenuItem.label = "Hide Tool Bars";
+					model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
+				}
+				model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem,false,0,true);
+				model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem,false,0,true);
+				model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
+				model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
 			}
-			else if(view.currentState == view.searchState.name) {
-				model.toolBarMenuItem.label = "Hide Tool Bars";
-				model.toolBarMenuItem.enabled = model.exportMenuItem.enabled = model.importMenuItem.enabled = false;
-			}
-			model.exportMenuItem.addEventListener(Event.SELECT,handleMenuItem,false,0,true);
-			model.importMenuItem.addEventListener(Event.SELECT,handleImportMenuItem,false,0,true);
-			model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
-			model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
 			
 		}
 		private function handleToggle(event:Event):void {

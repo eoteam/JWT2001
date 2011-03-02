@@ -268,13 +268,16 @@ package com.pentagram.model
 			eff.play();
 		}			
 		public	function buildMenu(window:Window=null):Array {
+			
+			var cmdKey:int  = NativeApplication.supportsMenu?Keyboard.COMMAND:Keyboard.CONTROL;
+			
 			//Arrange memu
 			var arrange:NativeMenuItem = new NativeMenuItem("Arrange");
 			arrange.submenu = new NativeMenu();
 			
 			var tile:NativeMenuItem = new NativeMenuItem("Tile");
 			tile.keyEquivalent = "t";
-			tile.keyEquivalentModifiers = [Keyboard.COMMAND];			
+			tile.keyEquivalentModifiers = [cmdKey];			
 			tile.addEventListener(Event.SELECT,handleArrange);
 			arrange.submenu.addItem(tile);
 			
@@ -323,18 +326,15 @@ package com.pentagram.model
 			
 			var fullScreen:NativeMenuItem = new NativeMenuItem("Full Screen");
 			fullScreen.keyEquivalent 	= "f";
-			fullScreen.keyEquivalentModifiers = [Keyboard.COMMAND];			
-			fullScreen.addEventListener(Event.SELECT,onItemSelect);
+			fullScreen.keyEquivalentModifiers = [cmdKey];			
 			
-	
 			var toolBar:NativeMenuItem = new NativeMenuItem("Hide Tool Bars");
 			toolBar.keyEquivalent = "b";
-			toolBar.keyEquivalentModifiers = [Keyboard.COMMAND];	
-			
+			toolBar.keyEquivalentModifiers = [cmdKey];	
 			
 			var exportImage:NativeMenuItem = new NativeMenuItem("Screen Capture");
 			exportImage.keyEquivalent = "i";
-			exportImage.keyEquivalentModifiers = [Keyboard.COMMAND];	
+			exportImage.keyEquivalentModifiers = [cmdKey];	
 			
 			//Items within File Menu
 			var exp:NativeMenuItem = new NativeMenuItem("Create Spreadsheet Template File...");
@@ -354,6 +354,9 @@ package com.pentagram.model
 			var help:NativeMenu = new NativeMenu();
 			
 			if (NativeApplication.supportsMenu) {
+				
+				fullScreen.addEventListener(Event.SELECT,onItemSelect);
+				
 				var m:NativeMenu = NativeApplication.nativeApplication.menu;
 				windowMenu = m.items[3] as NativeMenuItem;
 				fileMenu = m.items[1] as NativeMenuItem;
@@ -364,11 +367,7 @@ package com.pentagram.model
 				exportMenuItem = exp;
 				importMenuItem  = imp;
 				toolBarMenuItem = toolBar;
-				exportImageMenuItem = exportImage;
-//				exp.addEventListener(Event.SELECT,handleMenuItem);
-//				imp.addEventListener(Event.SELECT,handleMenuItem);
-//				toolBar.addEventListener(Event.SELECT,handleToggle);
-				
+				exportImageMenuItem = exportImage;	
 			}	
 			else if(NativeWindow.supportsMenu) {
 				var menu:NativeMenu = new NativeMenu();

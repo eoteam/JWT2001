@@ -11,6 +11,8 @@ package com.pentagram.main.mediators
 	import com.pentagram.model.vo.User;
 	
 	import flash.desktop.NativeApplication;
+	import flash.display.NativeMenuItem;
+	import flash.display.NativeWindow;
 	import flash.events.Event;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
@@ -83,7 +85,8 @@ package com.pentagram.main.mediators
 		}
 		// Handle Menu item selection
 		private function handleLogin(event:AppEvent):void {
-			instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled = instanceWindowModel.countriesMenuItem.enabled = true;
+			if(NativeApplication.supportsMenu)
+				instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled = instanceWindowModel.countriesMenuItem.enabled = true;
 			if(!appModel.user.persisted) {
 				var userJson:String = event.args[1] as String;
 				var file:File = File.applicationStorageDirectory;
