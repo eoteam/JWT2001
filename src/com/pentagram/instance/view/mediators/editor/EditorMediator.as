@@ -220,8 +220,8 @@ package com.pentagram.instance.view.mediators.editor
 			var header:Array = rows[0];
 			if(rows.length > 2) {
 				header = rows[0];
-				if(header[0].toString().toLowerCase() != "country")
-					showError("First column is not named 'Country'");
+				//if(header[0].toString().toLowerCase() != "country")
+				//	showError("First column is not named 'Country'");
 				
 				if(header.length > 2) {
 					if(time == 1)

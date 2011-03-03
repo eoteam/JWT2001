@@ -110,11 +110,11 @@
 				
 			}
 			public function pause():void {
-				
+				this.holder.stop();
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
 				for each(var renderer:MapRenderer in renderers) {
-					if(countries.indexOf(renderer.data.country) != -1) {
+					if(renderer.data && countries.indexOf(renderer.data.country) != -1) {
 						if(renderer.fillAlpha != 1) {
 							TweenNano.to(renderer,0.5,{fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 							renderer.showTooltip();

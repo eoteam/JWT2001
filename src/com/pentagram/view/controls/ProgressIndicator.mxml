@@ -8,7 +8,7 @@
 		<fx:Number id="radius">125</fx:Number>
 		<fx:Number id="iniX">0</fx:Number>
 		<fx:Number id="iniY">0</fx:Number>
-		<fx:Number id="increment">10</fx:Number>
+		<fx:Number id="increment">1</fx:Number>
 		<fx:Number id="totalDegrees">-90</fx:Number>
 		<fx:Number id="degInRad">{-Math.PI/2}</fx:Number>
 		<fx:Number id="degInRad1">{-Math.PI/2}</fx:Number>

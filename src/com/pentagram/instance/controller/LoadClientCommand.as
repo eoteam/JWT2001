@@ -33,6 +33,8 @@ package com.pentagram.instance.controller
 		public var model:InstanceModel;
 		
 		private var counter:int;
+		private var total:int;
+		
 		override public function execute():void
 		{
 			counter = 0;
@@ -43,7 +45,7 @@ package com.pentagram.instance.controller
 				service.addHandlers(handleClientCountries);	
 				service.loadClientNotes(model.client);
 				service.addHandlers(handleClientNotes);	
-				
+				total = 3;
 			}
 			else {
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
@@ -52,11 +54,11 @@ package com.pentagram.instance.controller
 		private function handleClientDatasets(event:ResultEvent):void
 		{
 			var sets:Array = event.token.results as Array;
-			
 			model.client.datasets = new ArrayList(sets);
 			model.client.qualityDatasets = new ArrayList();
 			model.client.quantityDatasets = new ArrayList();			
 			if(sets.length > 0) {
+				total+= sets.length;
 				for each(var dataset:Dataset in model.client.datasets.source) {
 					if(dataset.time == 1)
 						dataset.years = dataset.range.split(',');
@@ -80,12 +82,9 @@ package com.pentagram.instance.controller
 					datasetService.addProperties("dataset",dataset);
 				}
 			}
-			else {
-				model.client.loaded = true;
-				addNoneSets();
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
-				trace("CLIENT LOADED");
-			}
+
+
+			checkCount();
 		}
 		private function handleClientCountries(event:ResultEvent):void
 		{	
@@ -104,13 +103,16 @@ package com.pentagram.instance.controller
 					}
 				}
 			}
+
+			checkCount();
 		}
 		private function handleClientNotes (event:ResultEvent):void {
 			var notes:Array = event.token.results as Array;
 			model.client.notes.source = notes;
+
+			checkCount();
 		}
 		private function handleDatasetLoaded(event:ResultEvent):void {
-			counter++;
 			//trace("Dataset counter",counter,model.client.datasets.length);
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.data = event.result.toString();
@@ -126,12 +128,7 @@ package com.pentagram.instance.controller
 			dataset.rows.sort = countrySort;
 			dataset.rows.refresh();
 			
-			if(counter == model.client.datasets.length) {
-				model.client.loaded = true;
-				addNoneSets();
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
-				trace("CLIENT LOADED");
-			}
+			checkCount();
 		}
 		private function addNoneSets():void {
 			var none:Dataset = new Dataset();
@@ -163,5 +160,14 @@ package com.pentagram.instance.controller
 				return 0; 
 			
 		} 
+		private function checkCount():void {
+			counter++;
+			if(counter == total) {
+				model.client.loaded = true;
+				addNoneSets();
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				trace("CLIENT LOADED");
+			}
+		}
 	}
 }

@@ -26,9 +26,9 @@ package com.pentagram.services
 			params.contentid = model.client.id;
 			var n:String;
 			if(model.client.shortname)
-				n = String(model.client.shortname+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();
+				n = String(model.client.shortname.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();
 			else
-				n = String(model.client.name+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();;
+				n = String(model.client.name.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();;
 			params.tablename = n;
 			params.name = dataset.name;
 			var countryids:String = '';
@@ -44,6 +44,7 @@ package com.pentagram.services
 			params.createdby = model.user.id;				
 			params.options = (dataset.options == '' || dataset.options == null) ? 'NULL':dataset.options;
 			params.modifiedby = model.user.id;
+			params.datasetname = dataset.name.split(' ').join('_').split('_').join('').toLowerCase();
 			if(dataset.time == 1)
 				params.years = dataset.years.join(',');
 			this.createService(params,ResponseType.STATUS);			

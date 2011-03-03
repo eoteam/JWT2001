@@ -78,8 +78,6 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
 			eventMap.mapListener(eventDispatcher,EditorEvent.START_IMPORT,handleStartImport);
 			
-	
-			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 			eventMap.mapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
 			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
 			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
@@ -366,7 +364,12 @@ package com.pentagram.instance.view.mediators.shell
 			setupFourthSetList();
 			view.client = model.client;
 			var util:ModuleUtil;
+			view.visualizerArea.selectedIndex = model.MAP_INDEX;
+			
+			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
+
 			if(view.mapView) {
+				
 				for each(util in loaders) {
 					util.unloadModule();
 				}
@@ -397,7 +400,7 @@ package com.pentagram.instance.view.mediators.shell
 					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(1) as Dataset;
 					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(2) as Dataset;
 					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(3) as Dataset;
-					
+
 					view.tools.fourthSet.dataProvider = fourthSetList;
 					var ds4:Dataset = view.tools.fourthSet.selectedItem = regionOption;
 					
@@ -405,11 +408,10 @@ package com.pentagram.instance.view.mediators.shell
 					view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
 					datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
 					checkNotes();
+					this.formatVizTitle(view.graphView.datasets);
 				}
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 25;
-				view.filterTools.optionsPanel.xrayToggle.selected = true;
-				this.formatVizTitle(view.graphView.datasets);
-				
+				view.filterTools.optionsPanel.xrayToggle.selected = true;	
 			}
 		}
 		private function handleMapLoaded(event:Event):void {
@@ -418,9 +420,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.mapHolder.addElement(util.view as Group);
 				this.view.mapView = util.view as IMapView;
 				util.view.addEventListener('vizComplete',handleVizComplete,false,0,true);
-				this.setupMapView();
-				view.visualizerArea.selectedIndex = model.MAP_INDEX;
-				
+				this.setupMapView();		
 			}
 		}
 		private function setupMapView():void {
@@ -464,6 +464,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.mapView.visualize(dataset);
 			}
 			this.formatVizTitle(view.mapView.datasets);
+			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 		}
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
@@ -486,11 +487,15 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 					checkNotes();
 				}
-				
+				else {
+					dataset1 = model.client.datasets.getItemAt(0) as Dataset;
+					view.clusterView.visualize(dataset1,dataset1);
+				}
+				this.formatVizTitle(view.clusterView.datasets);
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
-				this.formatVizTitle(view.clusterView.datasets);
 			}			
+
 		}
 		private function handleTwitterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;

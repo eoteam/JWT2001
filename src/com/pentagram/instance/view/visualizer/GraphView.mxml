@@ -198,6 +198,14 @@
 					else TweenNano.to(item,0.5,{alpha:0.2});
 				}
 			}
+
+			protected function chart_itemClickHandler(event:ChartItemEvent):void
+			{
+				var renderer:BubbleRenderer = event.hitData.chartItem.itemRenderer as BubbleRenderer;
+				if(renderer)
+					renderer.showInfo();
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Style>
@@ -241,7 +249,7 @@
 		</mx:AxisRenderer>
 	</fx:Declarations>
 	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18"
-	id="chart" showDataTips="true" dataTipFunction="{dtFunc}" 
+	id="chart" showDataTips="true" dataTipFunction="{dtFunc}"  itemClick="chart_itemClickHandler(event)" 
 	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" >
 		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 

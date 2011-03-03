@@ -99,7 +99,7 @@
 			id="visualizerArea" selectedIndex="2" updateComplete="visualizerArea_updateCompleteHandler(event)" >
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="clusterHolder" label="Cluster" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(clusterView)clusterView.clearTooltips()"/>
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="graphHolder" label="Graph" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(graphView)graphView.clearTooltips()"/>
-				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(mapView)mapView.clearTooltips()"/>
+				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="mapHolder" label="Map" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(mapView)mapView.clearTooltips();mapView.pause()"/>
 				<s:NavigatorContent contentBackgroundAlpha="0" width="100%" height="100%" id="twitterHolder" label="Twitter" hideEffect="{fadeOut}" showEffect="{fadeIn}" hide="if(twitterView)twitterView.clearTooltips()"	/>
 			</mx:ViewStack>
 			

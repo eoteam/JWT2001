@@ -18,5 +18,6 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function set categories(value:ArrayList):void;
 		
 		function set isCompare(value:Boolean):void;
+		
 	}
 }

@@ -198,6 +198,7 @@ package com.pentagram.instance.view.mediators.shell
 				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
 				   getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
 					view.systemManager.removeChildAt(i);
+					Object(child).close();
 				}
 			}
 		}

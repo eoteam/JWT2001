@@ -47,8 +47,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		private var actualY:Number;
 		
 		private var offset:int = 15;
-		
-		public var content:String;
+
 		public function BubbleRenderer() 
 		{
 			super();
@@ -64,7 +63,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			label.mouseEnabled = false;
 			label.defaultTextFormat = textFormat;
 			this.addChild(label);
-			this.addEventListener(MouseEvent.CLICK,mouseEventHandler);
+			//this.addEventListener(MouseEvent.CLICK,mouseEventHandler);
 
 		}
 
@@ -89,6 +88,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			_data = value;
 			item = value.item as NormalizedVO;
+			if(infoVisible)
+				info.content = item.content;
 		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
 		{
@@ -175,28 +176,31 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			else
 				this.visible = false;
-		}
-		protected function mouseEventHandler(event:MouseEvent):void {
-			var mouseEvent:MouseEvent = event as MouseEvent;
 			
+			//g.beginFill(0xff0000,0.2);
+			//g.drawRect(0,0,width,height);
+		}
+		public function showInfo():void {
 			if(!infoVisible) {
 				info = new RendererInfo();
 				info.country = item.country;
 				info.content = item.content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-				//var pt:Point = UIComponent(this.parentDocument).localToGlobal(new Point(item.xCoord,item.yCoord));
-				//info.x = pt.x; item.y = pt.y;
-//				if(actualX  + radius + info.width + 10 > this.parentDocument.width) {
-//					info.leftTipVisible = false;
-//					info.rightTipVisible = true;
-//					info.x = x + actualX - radius*2 - info.width - offset;
-//				}
-//				else { 
-//					info.leftTipVisible = true;
-//					info.rightTipVisible = false;
-//					info.x = x + actualX + radius + offset;
-//				}
-//				info.y = y+actualX+radius+info.height/2;
+				var pt:Point = UIComponent(this.parentDocument).localToGlobal(new Point(item.xCoord,item.yCoord));
+				//info.x = pt.x;
+				//trace(this.x - pt.x);
+				if( this.x + info.width + radius > this.parentDocument.width) {
+					info.leftTipVisible = false;
+					info.rightTipVisible = true;
+					info.x =  this.x - info.width - offset;
+				}
+				else { 
+					info.leftTipVisible = true;
+					info.rightTipVisible = false;
+					info.x = this.x + radius*2+offset;
+				}
+				//info.y = y+actualX+radius+info.height/2;
+				info.y = pt.y+radius/2-info.height/2;
 				PopUpManager.addPopUp(info, this.parentDocument as UIComponent, false);
 				infoVisible = true;
 			}
