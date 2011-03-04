@@ -43,11 +43,15 @@ package com.pentagram.instance.view.visualizer.renderers
 		private var info:RendererInfo;
 		private var infoVisible:Boolean = false;
 		private var radius:Number = 0;
-		private var actualX:Number;
-		private var actualY:Number;
+		private var _data:Object;
 		
 		private var offset:int = 15;
 
+		protected var label:TextField;
+		protected var textFormat:TextFormat;
+		protected var item:NormalizedVO;
+		protected var dirtyTooltipFlag:Boolean = false;
+		
 		public function BubbleRenderer() 
 		{
 			super();
@@ -67,9 +71,7 @@ package com.pentagram.instance.view.visualizer.renderers
 
 		}
 
-
-		private var _data:Object;
-		
+	
 		[Inspectable(environment="none")]
 		
 
@@ -77,9 +79,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		{
 			return _data;
 		}
-		protected var label:TextField;
-		protected var textFormat:TextFormat;
-		protected var item:NormalizedVO;
+
 		
 		public function set data(value:Object):void
 		{
@@ -89,6 +89,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			_data = value;
 			item = value.item as NormalizedVO;
 			if(infoVisible)
+				trace("OK");
+			if(infoVisible && item.content != null && info.content != item.content)
 				info.content = item.content;
 		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
@@ -155,7 +157,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			if (fill)
 				fill.begin(g, rcFill, null);
 			radius = unscaledWidth - 2 * w + adjustedRadius * 2;
-			actualX = w - adjustedRadius;
+
 			g.drawEllipse(w - adjustedRadius,
 						  w - adjustedRadius,
 						  unscaledWidth - 2 * w + adjustedRadius * 2,
@@ -177,8 +179,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			else
 				this.visible = false;
 			
-			//g.beginFill(0xff0000,0.2);
-			//g.drawRect(0,0,width,height);
+
 		}
 		public function showInfo():void {
 			if(!infoVisible) {
@@ -186,20 +187,17 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.country = item.country;
 				info.content = item.content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-				var pt:Point = UIComponent(this.parentDocument).localToGlobal(new Point(item.xCoord,item.yCoord));
-				//info.x = pt.x;
-				//trace(this.x - pt.x);
-				if( this.x + info.width + radius > this.parentDocument.width) {
+				var pt:Point = this.parent.localToGlobal(new Point(x,y));
+				if( pt.x + info.width + width + offset > this.parentDocument.width) {
 					info.leftTipVisible = false;
 					info.rightTipVisible = true;
-					info.x =  this.x - info.width - offset;
+					info.x =  pt.x - info.width - offset;
 				}
 				else { 
 					info.leftTipVisible = true;
 					info.rightTipVisible = false;
-					info.x = this.x + radius*2+offset;
+					info.x = pt.x+width+offset;
 				}
-				//info.y = y+actualX+radius+info.height/2;
 				info.y = pt.y+radius/2-info.height/2;
 				PopUpManager.addPopUp(info, this.parentDocument as UIComponent, false);
 				infoVisible = true;
@@ -208,5 +206,37 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}
+		override public function move(x:Number, y:Number):void {
+			super.move(x,y);
+			if(infoVisible) {
+				dirtyTooltipFlag = true;
+				this.invalidateProperties();
+			}
+		}
+		override protected function commitProperties():void {
+			super.commitProperties();
+			if(dirtyTooltipFlag) {
+				dirtyTooltipFlag = false;
+				var pt:Point = this.parent.localToGlobal(new Point(x,y));
+				if( pt.x + info.width + width + offset > this.parentDocument.width) {
+					info.leftTipVisible = false;
+					info.rightTipVisible = true;
+					info.x =  pt.x - info.width - offset;
+				}
+				else { 
+					info.leftTipVisible = true;
+					info.rightTipVisible = false;
+					info.x = pt.x+width+offset;
+				}
+				info.y = pt.y+radius/2-info.height/2;
+			}
+		}
+		public function closeInfo():void {
+			if(infoVisible) {
+				infoVisible = false;
+				this.info.close();
+			}
+		}
+
 	}
 }

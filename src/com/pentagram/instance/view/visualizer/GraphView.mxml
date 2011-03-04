@@ -17,6 +17,7 @@
 			
 			import mx.charts.HitData;
 			import mx.charts.events.ChartItemEvent;
+			import mx.charts.series.items.BubbleSeriesItem;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -62,9 +63,19 @@
 			protected function doVisualize():void {	
 				chart.newXAxis = hAxisRenderer;
 				chart.newYAxis = vAxisRenderer;
+
 				if(ds1&&ds2) {
+					for each(var item:NormalizedVO in _visdata) {
+						generateContent(item);
+					}
 					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");	
 					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
+					hLabel.text = ds1.name;
+					vLabel.text = ds2.name;
+					
+					hAxisRenderer.visible = ds1.id == -1?false:true;
+					vAxisRenderer.visible = ds2.id == -1?false:true;
+					
 					//if(ds3)
 					//	chart.radiusAxis = createRadiusAxis(ds3);
 					chart.verticalAxisRenderers = [vAxisRenderer]; 
@@ -77,14 +88,14 @@
 				
 				if(dataset.type == 1) {
 					var linearAxis:LinearAxis = new LinearAxis();
-					linearAxis.title = dataset.name;
+					linearAxis.title = '';
 					linearAxis.maximum = dataset.max + Math.abs(dataset.max*.1);
 					linearAxis.minimum = dataset.min - Math.abs(dataset.min*.1);
 					return linearAxis;
 				}
 				else if(dataset.id != -1) {
 					var categoryAxis:CategoryAxis = new CategoryAxis();
-					categoryAxis.title = dataset.name;
+					categoryAxis.title = '';
 					categoryAxis.categoryField = "name";
 					categoryAxis.dataProvider = ViewUtils.vectorToArray(dataset.optionsArray);
 					//categoryAxis.dataProvider = new ArrayCollection(ViewUtils.vectorToArray(dataset.optionsArray));
@@ -92,7 +103,7 @@
 				}
 				else {
 					linearAxis = new LinearAxis();
-					linearAxis.title = dataset.name;
+					linearAxis.title = '';
 					linearAxis.maximum = linearAxis.minimum = 1;
 					return linearAxis;
 				}
@@ -151,6 +162,9 @@
 			}
 			public function updateYear(year:String):void {
 				currentYear = year;
+				for each(var item:NormalizedVO in _visdata) {
+					generateContent(item);
+				}
 			}
 			public function toggleOpacity(value:Number):void {
 				opacity = value==1?false:true;
@@ -165,7 +179,9 @@
 				return [maxRadius,opacity,currentYear];
 			}
 			public function clearTooltips():void {
-	
+				for each(var item:BubbleSeriesItem in this.mainSeries.items) {
+					BubbleRenderer(item.itemRenderer).closeInfo();
+				}
 			}
 			public function selectAllCategories():void {
 				for each(var item:NormalizedVO in _visdata) {
@@ -183,13 +199,22 @@
 			}
 			public function dtFunc(hd:HitData):String {	
 				var item:NormalizedVO = hd.item as NormalizedVO;
+//				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+//				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
+//				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
+//				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
+//				result += "</p></TextFlow>";	
+//				item.content = result;
+//				return result;
+				return item.content;
+			}
+			private function generateContent(item:NormalizedVO):void {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
 				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
 				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
 				result += "</p></TextFlow>";	
 				item.content = result;
-				return result;
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
 				for each(var item:NormalizedVO in _visdata) {
@@ -205,6 +230,7 @@
 				if(renderer)
 					renderer.showInfo();
 			}
+			
 
 		]]>
 	</fx:Script>
@@ -217,18 +243,24 @@
 			fontSize:12;
 			color:#000000;
 		}
-		.axisTitle {
-			fontFamily: FlamaBold;
+		.axis {
+			fontFamily: FlamaBook;
 			embedFonts:true;
 			fontSize:14;
+			tickPlacement:none;
+			tickLength:0;
+			canDropLabels:true;
+			labelAlign:left;
+			labelRotation:0;
+			showLabel:true;
+			canStagger:false;
 		}
 	</fx:Style>
 	<fx:Declarations>
 		
 		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0" />
 		
-		<mx:AxisRenderer  id="vAxisRenderer" axisTitleStyleName="axisTitle" tickPlacement="none" placement="left"
-		tickLength="0" canDropLabels="true"  showLabels="true" labelAlign="left" labelRotation="0"	>
+		<mx:AxisRenderer  id="vAxisRenderer" styleName="axis">
 			<mx:axisStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
 			</mx:axisStroke>
@@ -237,9 +269,7 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 		
-		<mx:AxisRenderer id="hAxisRenderer"   labelAlign="left"
-		 axisTitleStyleName="axisTitle" tickPlacement="none" placement="bottom"
-		 tickLength="0" canDropLabels="true" labelRotation="0" showLabels="true"> 
+		<mx:AxisRenderer id="hAxisRenderer" styleName="axis">
 			<mx:axisStroke>
 				<s:SolidColorStroke color="0" weight="0.5" />
 			</mx:axisStroke> 
@@ -248,14 +278,30 @@
 			</mx:tickStroke>
 		</mx:AxisRenderer>
 	</fx:Declarations>
-	<views:ViewBubbleChart dataProvider="{_visdata}" width="100%" height="100%" gutterTop="-15" paddingTop="20" gutterRight="-15" paddingRight="18"
-	id="chart" showDataTips="true" dataTipFunction="{dtFunc}"  itemClick="chart_itemClickHandler(event)" 
-	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip" >
+	<views:ViewBubbleChart dataProvider="{_visdata}" top="0" bottom="0" left="0" right="0"
+						   gutterLeft="50" 
+						   gutterRight="50" 
+						   gutterBottom="50" 
+						   gutterTop="50"					   
+	id="chart" showDataTips="true" dataTipFunction="{dtFunc}"
+	itemClick="chart_itemClickHandler(event)" 
+	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
 		<views:series>
 			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
-			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer" selectable="true" />
+			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer" selectable="true"  horizontalCenter="0" verticalCenter="0"  />
 		</views:series>
-		<views:backgroundElements />
+		<views:backgroundElements>
+		<!--	<s:Group>
+				<s:Rect width="100%" height="100%">
+					<s:stroke>
+						<s:SolidColorStroke weight="1" />
+					</s:stroke>
+				</s:Rect>				
+			</s:Group>-->
+		</views:backgroundElements>
 	</views:ViewBubbleChart>
+	
+	<s:Label fontFamily="FlamaBold" id="hLabel" horizontalCenter="0" bottom="2" />
+	<s:Label fontFamily="FlamaBold" id="vLabel"  verticalCenter="0" left="2" />
 
 </modules:Module>

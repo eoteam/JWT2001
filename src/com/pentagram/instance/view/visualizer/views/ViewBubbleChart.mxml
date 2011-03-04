@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:BubbleChart xmlns:fx="http://ns.adobe.com/mxml/2009" 
-				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:s="library://ns.adobe.com/flex/spark"  
 				xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
@@ -32,12 +32,11 @@
 			override protected function updateAxisLayout(unscaledWidth:Number, unscaledHeight:Number):void {
 				super.updateAxisLayout(unscaledWidth,unscaledHeight);
 				var vAxis:AxisRenderer = AxisRenderer(verticalAxisRenderers[0]);
-				var hAxis:AxisRenderer = AxisRenderer(horizontalAxisRenderers[0]);
-								
+				var hAxis:AxisRenderer = AxisRenderer(horizontalAxisRenderers[0]);		
 				if(vAxis && hAxis) {
 					if(hAxis.axis is LinearAxis) {
 						if(LinearAxis(hAxis.axis).minimum < 0 && LinearAxis(hAxis.axis).maximum > 0)
-							vAxis.move(vAxis.x - unscaledWidth / 2-120, vAxis.y);
+							vAxis.move(vAxis.x - unscaledWidth / 2, vAxis.y);
 					}
 					if(vAxis.axis is LinearAxis) {
 						if(LinearAxis(vAxis.axis).minimum < 0 && LinearAxis(vAxis.axis).maximum > 0)

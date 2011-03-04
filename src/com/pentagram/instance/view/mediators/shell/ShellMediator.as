@@ -292,7 +292,7 @@ package com.pentagram.instance.view.mediators.shell
 				case model.GRAPH_INDEX:	
 					model.updateData(view.filterTools.selectedCategories,
 									 view.graphView.visdata,event.args[0],event.args[1],event.args[2],event.args[3],event.args[4]);
-					view.graphView.update();
+					view.graphView.updateYear(event.args[0]);
 					break;
 			}
 		}
@@ -429,7 +429,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.mapView.categories = model.regions;
 			view.mapView.isCompare = model.isCompare;
 			
-			if(model.client.datasets.length > 1) {
+			if(model.client.quantityDatasets.length > 1) {
 				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(1) as Dataset;
 				
 				if(model.isCompare) {
@@ -441,27 +441,26 @@ package com.pentagram.instance.view.mediators.shell
 							r.selected = false;
 					}
 				}	
-				if(model.client.quantityDatasets.length > 1) {
-					view.mapView.visualize(dataset);
-					view.tools.thirdSet.selectedItem = dataset;
-				
-					var years:ArrayList = new ArrayList();
-					if(dataset.time == 1) {
-						view.tools.timelineContainer.visible = true;
-						
-						for (var i:int=0;i<dataset.years.length;i++) {
-							years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
-						}
-						view.tools.yearSlider.dataProvider = years;
+				view.mapView.visualize(dataset);
+				view.tools.thirdSet.selectedItem = dataset;
+			
+				var years:ArrayList = new ArrayList();
+				if(dataset.time == 1) {
+					view.tools.timelineContainer.visible = true;
+					
+					for (var i:int=0;i<dataset.years.length;i++) {
+						years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
 					}
-					datasetids = dataset.id.toString();
-					checkNotes();
+					view.tools.yearSlider.dataProvider = years;
 				}
+				datasetids = dataset.id.toString();
+				checkNotes();	
 			}
 			else {
 				dataset = model.client.datasets.getItemAt(0) as Dataset;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 				view.mapView.visualize(dataset);
+				view.tools.thirdSet.selectedItem = dataset;
 			}
 			this.formatVizTitle(view.mapView.datasets);
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
@@ -471,26 +470,21 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
-				if(model.client.quantityDatasets.length > 1) {
-					var dataset1:Dataset = model.client.qualityDatasets.length > 1?
-							model.client.qualityDatasets.getItemAt(1) as Dataset:model.client.qualityDatasets.getItemAt(0) as Dataset;
-					var dataset2:Dataset = model.client.quantityDatasets.getItemAt(1) as Dataset;
-					view.tools.thirdSet.selectedItem = dataset1;
-					view.tools.fourthSet.selectedItem = dataset2;
-					view.clusterView.visualize(dataset1,dataset2);
-					if(dataset1.name != "None") {
-						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
-					}
-					else {
-						view.filterTools.categoriesPanel.continentList.dataProvider = null;							
-					}
-					datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
-					checkNotes();
-				}
-				else {
-					dataset1 = model.client.datasets.getItemAt(0) as Dataset;
-					view.clusterView.visualize(dataset1,dataset1);
-				}
+
+				var dataset1:Dataset = model.client.qualityDatasets.length > 1? model.client.qualityDatasets.getItemAt(1) as Dataset:model.client.qualityDatasets.getItemAt(0) as Dataset;
+				var dataset2:Dataset = model.client.quantityDatasets.length > 1? model.client.quantityDatasets.getItemAt(1) as Dataset:model.client.quantityDatasets.getItemAt(0) as Dataset
+				view.tools.thirdSet.selectedItem = dataset1;
+				view.tools.fourthSet.selectedItem = dataset2;
+				view.clusterView.visualize(dataset1,dataset2);
+				if(dataset1.id != -1) 
+					view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
+				else 
+					view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;							
+				
+				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
+				checkNotes();
+			
+
 				this.formatVizTitle(view.clusterView.datasets);
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;

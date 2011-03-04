@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  width="240" height="120" height.open="180" alpha="0" 
-		xmlns:s="library://ns.adobe.com/flex/spark"  
+		xmlns:s="library://ns.adobe.com/flex/spark"   creationComplete="titlewindow1_creationCompleteHandler(event)"
 		close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
-		skinClass="com.pentagram.view.skins.controls.TooltipSkin" 
-		move="titlewindow1_moveHandler(event)"
+		skinClass="com.pentagram.view.skins.controls.TooltipSkin" 		
 		xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>
 		<![CDATA[
@@ -15,20 +14,20 @@
 			import mx.managers.PopUpManager;
 			
 			import spark.skins.spark.TitleWindowSkin;
-
-			protected function titlewindow1_closeHandler(event:CloseEvent):void {
+			private var _content:String;	
+			private function titlewindow1_closeHandler(event:CloseEvent):void {
 				tipVisible = true;
 				PopUpManager.removePopUp(this);
 			}
 
 
-			protected function titlewindow1_moveHandler(event:MoveEvent):void {
-				if(event.oldX != 0 && event.oldX != 0)
+			private function titlewindow1_moveHandler(event:Event):void {
+				//if(event.oldX != 0 && event.oldX != 0)
 					tipVisible = false;
 			}
 
 
-			protected function button1_clickHandler(event:MouseEvent):void
+			private function button1_clickHandler(event:MouseEvent):void
 			{
 				if(this.currentState == "closed")
 					this.currentState = "open";
@@ -36,11 +35,37 @@
 					this.currentState = "closed";
 			}
 			public function set content(value:String):void {
+				_content = value;
 				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
+			}
+			public function get content():String {
+				return _content;
 			}
 			public function close():void {
 				dispatchEvent(new CloseEvent(CloseEvent.CLOSE));
 			}
+			private var controlBarPressed:Boolean = false;
+			protected function titlewindow1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.moveArea.addEventListener(MouseEvent.MOUSE_DOWN,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_UP,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_MOVE,controlBarMouseHandler);
+			}
+			protected function controlBarMouseHandler(event:MouseEvent):void {
+				switch(event.type) {
+					case MouseEvent.MOUSE_DOWN:
+						controlBarPressed = true;
+					break;
+					case MouseEvent.MOUSE_UP:
+						controlBarPressed = false;
+					break;
+					case MouseEvent.MOUSE_MOVE:
+						if(controlBarPressed)
+							this.tipVisible = false;
+					break;
+				}	
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
