@@ -1,6 +1,7 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
+	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
@@ -26,9 +27,9 @@ package com.pentagram.instance.view.visualizer.renderers
 	public class ClusterRenderer extends BaseRenderer
 	{
 		public var radiusBeforeRendering:Number;
-	
+		public var radiusCopy:Number;
+		public var point:Point3D;
 		
-		 
 		private var info:RendererInfo;
 		private var infoVisible:Boolean = false;
 		private var tooltip:RendererToolTip;

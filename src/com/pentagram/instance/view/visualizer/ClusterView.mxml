@@ -95,15 +95,19 @@
 				currentYear = year;
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					for (var j:int=0;j<c.numChildren;j++) {
-						var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
+					
+					var dp:Vector.<ClusterRenderer> = c.filterMode?c.filteredRenderers:c.renderers;
+					for (var j:int=0;j<dp.length;j++) {
+						var circle:ClusterRenderer = dp[j];
 						if(ds2.time == 1 && ds2.years.indexOf(year) != -1) {
 							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
 							circle.content = this.generateContent(circle.data2[year],year);
 						}	
 							
 					}
-					c.doLayout(true);			
+					if(!c.filterMode)
+						c.doLayout(true);			
+					else c.filter();
 				}
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
@@ -128,9 +132,22 @@
 			public function addCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					if(c.name == value.name) {
-						c.show();
-						break;
+					if(ds1.id != -1) {
+						if(c.name == value.name) {
+							c.show();
+							break;
+						}
+					}
+					else {
+						for each(var renderer:ClusterRenderer in c.renderers) {
+							if(renderer.data2.country.region.name != value.name)
+								renderer.radius = 0;
+							else {
+								c.filteredRenderers.push(renderer);
+								trace(renderer.data2.country.region.name);
+							}
+						}
+						c.filter();
 					}
 				}
 				var t:Timer = new Timer(100,1);
@@ -139,11 +156,21 @@
 			}
 			public function removeCategory(value:Category,count:int):void {
 				for (var i:int=0;i<holder.numElements;i++) {
-					
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					if(c.name == value.name) {
-						c.hide();
-						break;
+					if(ds1.id != -1) {
+						if(c.name == value.name) {
+							c.hide();
+							break;
+						}
+					}
+					else {
+						for each(var renderer:ClusterRenderer in c.renderers) {
+							if(renderer.data2.country.region.name == value.name) {
+								renderer.radius = 0;
+								c.filteredRenderers.splice(c.filteredRenderers.indexOf(renderer),1);
+							}
+						}
+						c.filter();
 					}
 				}
 				var t:Timer = new Timer(1000,1);
@@ -152,27 +179,44 @@
 				this.updateSize();
 			}
 			public function selectCategory(value:Category):void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					
+				for (var i:int=0;i<holder.numElements;i++) {	
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					if(c.name != value.name) {
-						c.hide();
+					if(ds1.id != -1) {
+						if(c.name != value.name) {
+							c.hide();
+						}
+						else {
+							c.show();
+							c.percentHeight = c.percentWidth = 100;
+							c.height = holder.height;
+							c.width = holder.width/holder.numElements;
+						}
 					}
 					else {
-						c.show();
-						c.percentHeight = c.percentWidth = 100;
-						c.height = holder.height;
-						c.width = holder.width/holder.numElements;
+						c.filteredRenderers = new Vector.<ClusterRenderer>();;
+						for each(var renderer:ClusterRenderer in c.renderers) {
+							if(renderer.data2.country.region.name != value.name)
+								renderer.radius = 0;
+							else {
+								c.filteredRenderers.push(renderer);
+								trace(renderer.data2.country.region.name);
+							}
+						}
+						c.filter();
 					}
+					var t:Timer = new Timer(100,1);
+					t.addEventListener(TimerEvent.TIMER,handleTimer);
+					t.start();
 				}
-				var t:Timer = new Timer(100,1);
-				t.addEventListener(TimerEvent.TIMER,handleTimer);
-				t.start();
 			}
 			public function selectAllCategories():void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					c.show();
+					if(ds1.id != -1) {
+						c.show();
+					}
+					else
+						c.restore();
 				}
 				var t:Timer = new Timer(100,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);

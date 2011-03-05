@@ -137,6 +137,8 @@
 				update();	
 			}
 			public function update():void {
+				var logMin:Number = dataset.min==0?Math.log(dataset.min)/Math.LN10:1;	
+				var logMax:Number = Math.log(dataset.max)/Math.LN10;
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
 					if(c.data) {
@@ -144,7 +146,12 @@
 						if(dataset.id != -1) {
 							if(dataset.time == 1) {
 								if(!isNaN(c.data[currentYear])) {
-									r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+									//var v:Number = Math.log(c.data[currentYear])/Math.LN10;
+									//r = (v - logMin) / (logMax - logMin) * maxRadius as Number;
+									r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min)* maxRadius;
+
+									if(r < 0)
+										trace("Negative Radius",r);
 									content = generateContent(c.data[currentYear],currentYear);
 								}
 								else
@@ -268,15 +275,22 @@
 				var row:DataRow;
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				var content:String = '';
+				var logMin:Number = dataset.min==0?Math.log(dataset.min)/Math.LN10:1;
+				var logMax:Number = Math.log(dataset.max)/Math.LN10;
 				
 				if(dataset) {
 					for each(row in dataset.rows) {
 						if(dataset.type == 1) {
 							if(dataset.id != -1) {
 								if(dataset.time == 1) {
-									r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
+									//var v:Number = Math.log(row[dataset.years[0]])/Math.LN10;
+									//r = (v - logMin) / (logMax - logMin) * maxRadius as Number;
+									r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min)* maxRadius;
+									if(r < 0)
+										trace("Negative Radius",r);
 									currentYear = dataset.years[0];
 									content =  generateContent(row[dataset.years[0]],dataset.years[0]);
+									//r = Math.abs(r);
 								}
 								else {
 									r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
@@ -461,6 +475,6 @@
 	<fx:Metadata>
 		[Event(name="vizComplete",type="flash.events.Event")]
 	</fx:Metadata>
-	<s:HGroup width="100%" height="100%"  id="mapHolder" gap="2"    />
+	<s:Group width="100%" height="100%"  id="mapHolder"  />
 	<views:PhysicsScene id="holder" width="100" height="100%"   />
 </modules:Module>

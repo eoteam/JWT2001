@@ -29,7 +29,7 @@ package com.pentagram.instance
 			injector.unmap(EventDispatcher,"ApplicationEventDispatcher");
 			//mediatorMap.enabled = false;
 			//commandMap.unmapEvents();
-			super.shutdown();
+			super.shutdown(); 
 		}
 	}
 }
