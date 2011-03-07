@@ -174,7 +174,7 @@
 			<s:Rect width="10"/>		
 		</s:HGroup>
 
-		<s:HGroup  verticalAlign="middle" includeIn="twitter">
+		<s:HGroup verticalAlign="middle" includeIn="twitter">
 			<s:Label text="Search: {client.shortname} "/>
 			<s:TextInput maxWidth="180" minWidth="75" prompt="enter term ..." id="twitterSearch"/>
 			<s:Rect width="10"/>

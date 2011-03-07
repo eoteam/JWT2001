@@ -28,7 +28,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
 		protected var _data:Object;
-		
+	
 		//protected var _graphic:Sprite;
 		
 		public function get data():Object { return _data; }

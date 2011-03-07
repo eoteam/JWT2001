@@ -88,9 +88,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			_data = value;
 			item = value.item as NormalizedVO;
-			if(infoVisible)
-				trace("OK");
-			if(infoVisible && item.content != null && info.content != item.content)
+			if(infoVisible && item.country == info.country && item.content != null && info.content != item.content)
 				info.content = item.content;
 		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
@@ -208,7 +206,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function move(x:Number, y:Number):void {
 			super.move(x,y);
-			if(infoVisible) {
+			if(infoVisible && item.country == info.country) {
 				dirtyTooltipFlag = true;
 				this.invalidateProperties();
 			}

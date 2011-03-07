@@ -8,8 +8,6 @@ package com.pentagram.view.controls
 	import mx.core.UIComponent;
 	import mx.events.SandboxMouseEvent;
 	
-	import org.hamcrest.mxml.object.Null;
-	
 	import spark.components.TitleWindow;
 	
 	/**

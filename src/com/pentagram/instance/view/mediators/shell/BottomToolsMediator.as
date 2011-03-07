@@ -150,14 +150,21 @@ package com.pentagram.instance.view.mediators.shell
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					view.currentState = 'cluster';
-					break;
+					model.client.qualityDatasets.getItemAt(0).name = "Region";
+				break;
+				
 				case model.MAP_INDEX:
-					view.currentState = 'map';
-					break;					
+					view.currentState = 'map';	
+					model.client.qualityDatasets.getItemAt(0).name = "None";
+				break;					
+				
 				case model.GRAPH_INDEX:
 					view.currentState = 'graph';
+					model.client.qualityDatasets.getItemAt(0).name = "None";
 				break;	
+				
 				case model.TWITTER_INDEX:
+					model.client.qualityDatasets.getItemAt(0).name = "None";
 					view.currentState = 'twitter';
 					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
 					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);

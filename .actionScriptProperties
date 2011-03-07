@@ -9,11 +9,6 @@
         </excludedEntries>
       </libraryPathEntry>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/Common/"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LIB_LOCATION}/version4libs/FlexProject/"/>
-      <libraryPathEntry kind="1" linkType="1" path="${FLEXUNIT_LOCALE_LOCATION}/version4locale/"/>
-      <libraryPathEntry kind="1" linkType="1" path="${DCD_LIB_LOCATION}"/>
-      <libraryPathEntry kind="1" linkType="1" path="${DCD_LOCALE_LOCATION}"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>
@@ -25,11 +20,11 @@
         <airExclude path="com/pentagram/instance/view/.DS_Store"/>
         <airExclude path="assets/icons/cursor_resize.gif"/>
         <airExclude path="flex"/>
-        <airExclude path="com/pentagram/.DS_Store"/>
         <airExclude path="assets/icons/cursor_move.gif"/>
+        <airExclude path="com/pentagram/.DS_Store"/>
         <airExclude path="assets/fonts"/>
-        <airExclude path="ws"/>
         <airExclude path="assets/.DS_Store"/>
+        <airExclude path="ws"/>
         <airExclude path=".DS_Store"/>
       </airExcludes>
     </application>

@@ -146,15 +146,22 @@
 	
 	<s:VGroup width.closed="0" left="{toggleWidth}" id="toolContainer" gap="0" minWidth="160">		
 			
-		<shell:CategoriesList width="100%" id="categoriesPanel" label.map="Regions" label="Categories" />
+		<shell:CategoriesFilter width="100%" id="categoriesPanel" label.map="Regions" label="Categories" />
 		<s:Rect width="100%" height="2">
 			<s:fill>
 				<s:SolidColor color="0xB3B3B3"/>
 			</s:fill>
 		</s:Rect>
 		
-		<shell:CountriesList width="100%" id="countriesPanel" excludeFrom="twitter" />
+		<shell:CountriesFilter width="100%" id="countriesPanel" excludeFrom="twitter" />
 		<s:Rect width="100%" height="2" excludeFrom="twitter">
+			<s:fill>
+				<s:SolidColor color="0xB3B3B3"/>
+			</s:fill>
+		</s:Rect>
+		
+		<shell:NumericFilter width="100%" id="numericFilter" includeIn="map,cluster" />
+		<s:Rect width="100%" height="2" includeIn="map,cluster">
 			<s:fill>
 				<s:SolidColor color="0xB3B3B3"/>
 			</s:fill>

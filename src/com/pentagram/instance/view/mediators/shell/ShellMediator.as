@@ -137,6 +137,10 @@ package com.pentagram.instance.view.mediators.shell
 				checkNotes();
 				restoreViewOptions(view.mapView);
 				this.formatVizTitle(view.mapView.datasets);
+				if(view.mapView.datasets[2].id > 0) 
+					view.filterTools.numericFilter.dataset = view.mapView.datasets[2];
+				else
+					view.filterTools.numericFilter.dataset = null;
 			}
 			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
@@ -179,6 +183,10 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 					restoreViewOptions(view.clusterView);
 					this.formatVizTitle(view.clusterView.datasets);
+					if(view.clusterView.datasets[3].id > 0) 
+						view.filterTools.numericFilter.dataset = view.clusterView.datasets[3];
+					else
+						view.filterTools.numericFilter.dataset = null;
 				}
 			}
 			else if(event.newIndex == model.TWITTER_INDEX){ 
@@ -214,6 +222,10 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
 					checkNotes();
 					formatVizTitle(view.clusterView.datasets);
+					if(event.args[1].id > 0) 
+						view.filterTools.numericFilter.dataset = event.args[1];
+					else
+						view.filterTools.numericFilter.dataset = null;
 				break;
 				
 				case model.MAP_INDEX:
@@ -222,6 +234,10 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = event.args[0].id.toString();
 					checkNotes();
 					formatVizTitle(view.mapView.datasets);
+					if(event.args[0].id > 0) 
+						view.filterTools.numericFilter.dataset = event.args[0];
+					else
+						view.filterTools.numericFilter.dataset = null;
 				break;
 				case model.GRAPH_INDEX:
 					
@@ -453,6 +469,7 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					view.tools.yearSlider.dataProvider = years;
 				}
+				view.filterTools.numericFilter.dataset = dataset;
 				datasetids = dataset.id.toString();
 				checkNotes();	
 			}
@@ -461,6 +478,7 @@ package com.pentagram.instance.view.mediators.shell
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 				view.mapView.visualize(dataset);
 				view.tools.thirdSet.selectedItem = dataset;
+				view.filterTools.numericFilter.dataset = null;
 			}
 			this.formatVizTitle(view.mapView.datasets);
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
@@ -476,11 +494,16 @@ package com.pentagram.instance.view.mediators.shell
 				view.tools.thirdSet.selectedItem = dataset1;
 				view.tools.fourthSet.selectedItem = dataset2;
 				view.clusterView.visualize(dataset1,dataset2);
+				
 				if(dataset1.id != -1) 
 					view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
 				else 
 					view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;							
 				
+				if(dataset2.id > 0) 
+					view.filterTools.numericFilter.dataset = dataset2;
+				else
+					view.filterTools.numericFilter.dataset = null;
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 				checkNotes();
 			

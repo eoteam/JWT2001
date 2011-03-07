@@ -15,7 +15,6 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.desktop.ClipboardFormats;
 	import flash.desktop.NativeDragManager;
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
 	import flash.filesystem.File;
@@ -26,11 +25,9 @@ package com.pentagram.instance.view.mediators.editor
 	import mx.collections.ArrayCollection;
 	import mx.utils.StringUtil;
 	
-	import org.hamcrest.mxml.collection.Array;
 	import org.robotlegs.mvcs.Mediator;
 	
 	import spark.events.IndexChangeEvent;
-	import spark.validators.NumberValidator;
 	
 	public class EditorMediator extends Mediator
 	{
