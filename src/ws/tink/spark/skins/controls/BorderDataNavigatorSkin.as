@@ -91,8 +91,8 @@ package ws.tink.spark.skins.controls
 			addElementAt(bgRect, 0);
 			bgRect.left = bgRect.top = bgRect.right = bgRect.bottom = 0;
 			
-			dataNavigator = new DataNavigator();
-			addElement(dataNavigator);  
+			contentGroup = new DataNavigatorGroup();
+			addElement(contentGroup);  
 			
 			insetPath = new Path();
 			addElement(insetPath);
@@ -104,10 +104,10 @@ package ws.tink.spark.skins.controls
 		 */ 
 		override protected function measure():void
 		{	    
-			measuredWidth = dataNavigator.measuredWidth;
-			measuredHeight = dataNavigator.measuredHeight;
-			measuredMinWidth = dataNavigator.measuredMinWidth;
-			measuredMinHeight = dataNavigator.measuredMinHeight;
+			measuredWidth = contentGroup.measuredWidth;
+			measuredHeight = contentGroup.measuredHeight;
+			measuredMinWidth = contentGroup.measuredMinWidth;
+			measuredMinHeight = contentGroup.measuredMinHeight;
 			
 			var borderWeight:Number = getStyle("borderWeight");
 			
@@ -147,10 +147,10 @@ package ws.tink.spark.skins.controls
 			if (isNaN(borderWeight))
 				borderWeight = 1;
 			
-			dataNavigator.setStyle("left", borderWeight);
-			dataNavigator.setStyle("right", borderWeight);
-			dataNavigator.setStyle("top", borderWeight);
-			dataNavigator.setStyle("bottom", borderWeight);
+			contentGroup.setStyle("left", borderWeight);
+			contentGroup.setStyle("right", borderWeight);
+			contentGroup.setStyle("top", borderWeight);
+			contentGroup.setStyle("bottom", borderWeight);
 			
 			// update the bgRect stroke/fill
 			if (hostComponent.borderStroke)

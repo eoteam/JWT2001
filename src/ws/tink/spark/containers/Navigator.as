@@ -37,6 +37,7 @@ package ws.tink.spark.containers
 	import spark.layouts.supportClasses.LayoutBase;
 	
 	import ws.tink.spark.layouts.supportClasses.INavigatorLayout;
+	import ws.tink.spark.supportClasses.INavigator;
 	
 	use namespace mx_internal;
 	
@@ -79,6 +80,40 @@ package ws.tink.spark.containers
 	 *  @productversion Flex 4
 	 */
 	[Event(name="elementRemove", type="spark.events.ElementExistenceEvent")]
+	
+	//--------------------------------------
+	//  Events
+	//--------------------------------------
+	
+	/**
+	 *  Dispatched when the ISelectableList has been updated in some way.
+	 *
+	 *  @eventType mx.events.CollectionEvent.COLLECTION_CHANGE
+	 *  
+	 *  @langversion 3.0
+	 *  @playerversion Flash 9
+	 *  @playerversion AIR 1.1
+	 *  @productversion Flex 3
+	 */
+	[Event(name="collectionChange", type="mx.events.CollectionEvent")]
+	
+	/**
+	 *  Dispatched after the selection has changed. 
+	 *  This event is dispatched when the user interacts with the control.
+	 * 
+	 *  <p>When you change the value of the <code>selectedIndex</code> 
+	 *  or <code>selectedItem</code> properties programmatically, 
+	 *  the control does not dispatch the <code>change</code> event. 
+	 *  It dispatches the <code>valueCommit</code> event instead.</p>
+	 *
+	 *  @eventType spark.events.IndexChangeEvent.CHANGE
+	 *  
+	 *  @langversion 3.0
+	 *  @playerversion Flash 10
+	 *  @playerversion AIR 1.5
+	 *  @productversion Flex 4
+	 */
+	[Event(name="change", type="spark.events.IndexChangeEvent")]
 	
 //	include "../styles/metadata/BasicInheritingTextStyles.as"
 //	include "../styles/metadata/AdvancedInheritingTextStyles.as"
@@ -298,9 +333,10 @@ package ws.tink.spark.containers
 	 *  @productversion Flex 4
 	 */
 	public class Navigator extends SkinnableContainerBase 
-		implements IDeferredContentOwner, IVisualElementContainer, ISelectableList
+		implements IDeferredContentOwner, IVisualElementContainer, INavigator
 	{
-//		include "../core/Version.as";
+
+		
 		
 		//--------------------------------------------------------------------------
 		//
@@ -318,13 +354,14 @@ package ws.tink.spark.containers
 		 */
 		private static const LAYOUT_PROPERTY_FLAG:uint = 1 << 1;
 		
+		
+		
+		
 		//--------------------------------------------------------------------------
 		//
 		//  Constructor
 		//
 		//--------------------------------------------------------------------------
-		
-		
 		
 		/**
 		 *  Constructor. 
@@ -338,6 +375,8 @@ package ws.tink.spark.containers
 		{
 			super();
 		}
+		
+		
 		
 		//--------------------------------------------------------------------------
 		//
@@ -377,32 +416,104 @@ package ws.tink.spark.containers
 		 */
 		private var contentGroupProperties:Object = {};
 		
-		//--------------------------------------------------------------------------
-		//
-		//  Overridden Properties 
-		//
-		//--------------------------------------------------------------------------
 		
-		//----------------------------------
-		//  moduleFactory
-		//----------------------------------
-		/**
-		 *  @private
-		 */
-		override public function set moduleFactory(moduleFactory:IFlexModuleFactory):void
-		{
-			super.moduleFactory = moduleFactory;
-			
-			// Register the _creationPolicy style as inheriting. See the creationPolicy
-			// getter for details on usage of this style.
-			styleManager.registerInheritingStyle("_creationPolicy");
-		}
+		
+		
 		
 		//--------------------------------------------------------------------------
 		//
 		//  Properties 
 		//
 		//--------------------------------------------------------------------------
+		
+		
+		//----------------------------------
+		//  selectedIndex
+		//---------------------------------- 
+		
+		/**
+		 *  @private
+		 *  Storage property for selectedIndex.
+		 */
+		private var _selectedIndex		: int = -1;
+		
+		[Bindable("change")]
+		[Bindable("valueCommit")]
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#selectedIndex
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function set selectedIndex( value:int ):void
+		{
+			_selectedIndex = value;
+			
+			if( contentGroup ) contentGroup.selectedIndex = value;
+		}
+		/**
+		 *  @private
+		 */
+		public function get selectedIndex():int
+		{
+			return ( contentGroup ) ? contentGroup.selectedIndex : _selectedIndex;
+		}
+		
+		
+		//----------------------------------
+		//  selectedItem
+		//---------------------------------- 
+		
+		[Bindable("change")]
+		[Bindable("valueCommit")]
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#selectedItem
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function get selectedItem():IVisualElement
+		{
+			var index:int = selectedIndex;
+			return index != -1 ? getElementAt( index ) : null;
+		}
+		/**
+		 *  @private
+		 */
+		public function set selectedItem( value:IVisualElement ):void
+		{
+			var index:int = getElementIndex( value );
+			if( index != -1 ) selectedIndex = index;
+		}
+		
+		
+		//----------------------------------
+		//  length
+		//---------------------------------- 
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#length
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function get length():int
+		{
+			return currentContentGroup.length;
+		}
+		
+		
+		//----------------------------------
+		//  currentContentGroup
+		//----------------------------------
 		
 		// Used to hold the content until the contentGroup is created. 
 		private var _placeHolderGroup:NavigatorGroup;
@@ -423,12 +534,8 @@ package ws.tink.spark.containers
 //						_mxmlContent = null;
 //					}
 					
-					_placeHolderGroup.addEventListener(
-						ElementExistenceEvent.ELEMENT_ADD, contentGroup_elementAddedHandler);
-					_placeHolderGroup.addEventListener(
-						ElementExistenceEvent.ELEMENT_REMOVE, contentGroup_elementRemovedHandler);
-					_placeHolderGroup.addEventListener(
-						CollectionEvent.COLLECTION_CHANGE, onNavigatorGroupCollectionChange );
+					_placeHolderGroup.addEventListener( ElementExistenceEvent.ELEMENT_ADD, onContentGroupElementAdded );
+					_placeHolderGroup.addEventListener( ElementExistenceEvent.ELEMENT_REMOVE, onContentGroupElementRemoved );
 				}
 				return _placeHolderGroup;
 			}
@@ -438,17 +545,17 @@ package ws.tink.spark.containers
 			}
 		}
 		
+		
 		//----------------------------------
 		//  creationPolicy
 		//----------------------------------
-		
-		[Inspectable(enumeration="auto,all,none", defaultValue="auto")]
 		
 		// Internal flag used when creationPolicy="none".
 		// When set, the value of the backing store _creationPolicy
 		// style is "auto" so descendants inherit the correct value.
 		private var creationPolicyNone:Boolean = false;
 		
+		[Inspectable(enumeration="auto,all,none", defaultValue="auto")]
 		/**
 		 *  @inheritDoc
 		 *
@@ -477,7 +584,6 @@ package ws.tink.spark.containers
 			
 			return result;
 		}
-		
 		/**
 		 *  @private
 		 */
@@ -498,6 +604,30 @@ package ws.tink.spark.containers
 			
 			setStyle("_creationPolicy", value);
 		}
+		
+		
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Overridden Properties 
+		//
+		//--------------------------------------------------------------------------
+		
+		//----------------------------------
+		//  moduleFactory
+		//----------------------------------
+		/**
+		 *  @private
+		 */
+		override public function set moduleFactory(moduleFactory:IFlexModuleFactory):void
+		{
+			super.moduleFactory = moduleFactory;
+			
+			// Register the _creationPolicy style as inheriting. See the creationPolicy
+			// getter for details on usage of this style.
+			styleManager.registerInheritingStyle("_creationPolicy");
+		}
+		
 		
 		//--------------------------------------------------------------------------
 		//
@@ -550,54 +680,6 @@ package ws.tink.spark.containers
 		
 		
 		//----------------------------------
-		//  useVirtualLayout
-		//----------------------------------
-		
-		/**
-		 *  @private
-		 */
-		private var _useVirtualLayout:Boolean = false;
-		
-		/**
-		 *  Sets the value of the <code>useVirtualLayout</code> property
-		 *  of the layout associated with this control.  
-		 *  If the layout is subsequently replaced and the value of this 
-		 *  property is <code>true</code>, then the new layout's 
-		 *  <code>useVirtualLayout</code> property is set to <code>true</code>.
-		 *
-		 *  @default false
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 10
-		 *  @playerversion AIR 1.5
-		 *  @productversion Flex 4
-		 */
-		public function get useVirtualLayout():Boolean
-		{
-			return (layout) ? layout.useVirtualLayout : _useVirtualLayout;
-		}
-		
-		/**
-		 *  @private
-		 *  Note: this property deviates a little from the conventional delegation pattern.
-		 *  If the user explicitly sets ListBase.useVirtualLayout=false and then sets
-		 *  the layout property to a layout with useVirtualLayout=true, the layout's value
-		 *  for this property trumps the ListBase.  The convention dictates opposite
-		 *  however in this case, always honoring the layout's useVirtalLayout property seems 
-		 *  less likely to cause confusion.
-		 */
-		public function set useVirtualLayout(value:Boolean):void
-		{
-			if (value == useVirtualLayout)
-				return;
-			
-			_useVirtualLayout = value;
-			if (layout)
-				layout.useVirtualLayout = value;
-		}
-		
-		
-		//----------------------------------
 		//  layout
 		//----------------------------------
 		
@@ -611,36 +693,28 @@ package ws.tink.spark.containers
 		 *  @playerversion AIR 1.5
 		 *  @productversion Flex 4
 		 */
-		public function get layout():LayoutBase
+		public function get layout():INavigatorLayout
 		{
-			return (contentGroup) 
-			? contentGroup.layout 
-				: contentGroupProperties.layout;
+			return ( contentGroup ) ? INavigatorLayout( contentGroup.layout ) 
+				: INavigatorLayout( contentGroupProperties.layout );
 		}
-		
 		/**
 		 *  @private
 		 */
-		public function set layout(value:LayoutBase):void
+		public function set layout( value:INavigatorLayout ):void
 		{
-			if( value is INavigatorLayout )
+			if ( contentGroup )
 			{
-				value.useVirtualLayout = useVirtualLayout;
-				
-				if (contentGroup)
-				{
-					contentGroup.layout = value;
-					contentGroupProperties = BitFlagUtil.update(contentGroupProperties as uint, 
-						LAYOUT_PROPERTY_FLAG, true);
-				}
-				else
-					contentGroupProperties.layout = value;
+				contentGroup.layout = value as LayoutBase;
+				contentGroupProperties = BitFlagUtil.update(contentGroupProperties as uint, 
+					LAYOUT_PROPERTY_FLAG, true);
 			}
 			else
 			{
-				throw new Error( "Layout must implement INavigatorLayout" );
+				contentGroupProperties.layout = value;
 			}
 		}
+		
 		
 		//----------------------------------
 		//  mxmlContent
@@ -731,6 +805,123 @@ package ws.tink.spark.containers
 		//  Methods proxied to contentGroup
 		//
 		//--------------------------------------------------------------------------
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#addItem
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function addItem( item:Object ):void
+		{
+			addItemAt( item, length );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#addItemAt
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function addItemAt( item:Object, index:int ):void
+		{
+			currentContentGroup.addItemAt( item, index );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#getItemAt
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function getItemAt( index:int, prefetch:int = 0 ):Object
+		{
+			return currentContentGroup.getItemAt( index );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#getItemIndex
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function getItemIndex( item:Object ):int
+		{
+			return currentContentGroup.getItemIndex( item );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#itemUpdated
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function itemUpdated( item:Object, property:Object=null, oldValue:Object=null, newValue:Object=null ):void
+		{
+			currentContentGroup.itemUpdated( item, property, oldValue, newValue );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#removeAll
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function removeAll():void
+		{
+			currentContentGroup.removeAll();
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#removeItemAt
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function removeItemAt( index:int ):Object
+		{
+			return currentContentGroup.removeItemAt( index );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#setItemAt
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function setItemAt( item:Object, index:int ):Object
+		{
+			return currentContentGroup.setItemAt( item, index );
+		}
+		
+		/**
+		 *  @copy ws.tink.spark.containers.NavigatorGroup#toArray
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function toArray():Array
+		{
+			return currentContentGroup.toArray();
+		}
 		
 		/**
 		 *  @inheritDoc
@@ -844,8 +1035,13 @@ package ws.tink.spark.containers
 		
 		/**
 		 *  @inheritDoc
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
 		 */
-		public function setElementIndex(element:IVisualElement, index:int):void
+		public function setElementIndex (element:IVisualElement, index:int ):void
 		{
 			_contentModified = true;
 			currentContentGroup.setElementIndex(element, index);
@@ -883,11 +1079,113 @@ package ws.tink.spark.containers
 			currentContentGroup.swapElementsAt(index1, index2);
 		}
 		
+		
+		
 		//--------------------------------------------------------------------------
 		//
-		//  Overridden methods
+		//  IDeferredContentOwner methods
 		//
 		//--------------------------------------------------------------------------
+		
+		/**
+		 *  Create the content for this component. 
+		 *  When the <code>creationPolicy</code> property is <code>auto</code> or
+		 *  <code>all</code>, this function is called automatically by the Flex framework.
+		 *  When <code>creationPolicy</code> is <code>none</code>, you call this method to initialize
+		 *  the content.
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function createDeferredContent():void
+		{
+			if (!mxmlContentCreated)
+			{
+				mxmlContentCreated = true;
+				
+				if (_mxmlContentFactory)
+				{
+					var deferredContent:Object = _mxmlContentFactory.getInstance();
+					mxmlContent = deferredContent as Array;
+					_deferredContentCreated = true;
+					dispatchEvent(new FlexEvent(FlexEvent.CONTENT_CREATION_COMPLETE));
+				}
+			}
+		}
+		
+		private var _deferredContentCreated:Boolean;
+		
+		/**
+		 *  Contains <code>true</code> if deferred content has been created.
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		public function get deferredContentCreated():Boolean
+		{
+			return _deferredContentCreated;
+		}
+		
+		/**
+		 *  @private
+		 */
+		private function createContentIfNeeded():void
+		{
+			if (!mxmlContentCreated && creationPolicy != ContainerCreationPolicy.NONE)
+				createDeferredContent();
+		}
+		
+		
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Overridden Methods
+		//
+		//--------------------------------------------------------------------------
+		
+		/**
+		 *  @inheritDoc
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		override public function addEventListener( type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false ):void
+		{
+			var hl:Boolean = hasEventListener( CollectionEvent.COLLECTION_CHANGE );
+			
+			super.addEventListener( type, listener, useCapture, priority, useWeakReference );
+			
+			if( hasEventListener( CollectionEvent.COLLECTION_CHANGE ) && !hl )
+			{
+				currentContentGroup.addEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupCollectionChange, false, 0, true );
+			}
+		}
+		
+		/**
+		 *  @inheritDoc
+		 *  
+		 *  @langversion 3.0
+		 *  @playerversion Flash 10
+		 *  @playerversion AIR 1.5
+		 *  @productversion Flex 4
+		 */
+		override public function removeEventListener( type:String, listener:Function, useCapture:Boolean = false ):void
+		{
+			var hl:Boolean = hasEventListener( CollectionEvent.COLLECTION_CHANGE );
+			
+			super.removeEventListener( type, listener, useCapture );
+			
+			if( !hasEventListener( CollectionEvent.COLLECTION_CHANGE ) && hl )
+			{
+				currentContentGroup.removeEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupCollectionChange, false );
+			}
+		}
 		
 		/**
 		 *  Create content children, if the <code>creationPolicy</code> property 
@@ -952,8 +1250,8 @@ package ws.tink.spark.containers
 				}
 				
 				// Not your typical delegation, see 'set useVirtualLayout'
-				if( _useVirtualLayout && contentGroup.layout )
-					contentGroup.layout.useVirtualLayout = true;
+//				if( _useVirtualLayout && contentGroup.layout )
+//					contentGroup.layout.useVirtualLayout = true;
 				
 				// copy proxied values from contentGroupProperties (if set) to contentGroup
 				
@@ -973,23 +1271,19 @@ package ws.tink.spark.containers
 						LAYOUT_PROPERTY_FLAG, true);
 				}
 				
+				contentGroup.selectedIndex = _selectedIndex;
+				
 				contentGroupProperties = newContentGroupProperties;
 				
-				contentGroup.addEventListener(
-					ElementExistenceEvent.ELEMENT_ADD, contentGroup_elementAddedHandler);
-				contentGroup.addEventListener(
-					ElementExistenceEvent.ELEMENT_REMOVE, contentGroup_elementRemovedHandler);
-				contentGroup.addEventListener(
-					CollectionEvent.COLLECTION_CHANGE, onNavigatorGroupCollectionChange );
+				contentGroup.addEventListener( ElementExistenceEvent.ELEMENT_ADD, onContentGroupElementAdded );
+				contentGroup.addEventListener( ElementExistenceEvent.ELEMENT_REMOVE, onContentGroupElementRemoved );
+				if( hasEventListener( CollectionEvent.COLLECTION_CHANGE ) ) contentGroup.addEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupElementAdded );
 				
 				if (_placeHolderGroup)
 				{
-					_placeHolderGroup.removeEventListener(
-						ElementExistenceEvent.ELEMENT_ADD, contentGroup_elementAddedHandler);
-					_placeHolderGroup.removeEventListener(
-						ElementExistenceEvent.ELEMENT_REMOVE, contentGroup_elementRemovedHandler);
-					_placeHolderGroup.removeEventListener(
-						CollectionEvent.COLLECTION_CHANGE, onNavigatorGroupCollectionChange );
+					_placeHolderGroup.removeEventListener( ElementExistenceEvent.ELEMENT_ADD, onContentGroupElementAdded );
+					_placeHolderGroup.removeEventListener( ElementExistenceEvent.ELEMENT_REMOVE, onContentGroupElementRemoved );
+					if( hasEventListener( CollectionEvent.COLLECTION_CHANGE ) ) _placeHolderGroup.removeEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupElementAdded );
 					_placeHolderGroup = null;
 				}
 			}
@@ -1009,12 +1303,9 @@ package ws.tink.spark.containers
 			
 			if (instance == contentGroup)
 			{
-				contentGroup.removeEventListener(
-					ElementExistenceEvent.ELEMENT_ADD, contentGroup_elementAddedHandler);
-				contentGroup.removeEventListener(
-					ElementExistenceEvent.ELEMENT_REMOVE, contentGroup_elementRemovedHandler);
-				contentGroup.removeEventListener(
-					CollectionEvent.COLLECTION_CHANGE, onNavigatorGroupCollectionChange );
+				contentGroup.removeEventListener( ElementExistenceEvent.ELEMENT_ADD, onContentGroupElementAdded );
+				contentGroup.removeEventListener( ElementExistenceEvent.ELEMENT_REMOVE, onContentGroupElementRemoved );
+				if( hasEventListener( CollectionEvent.COLLECTION_CHANGE ) ) contentGroup.removeEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupCollectionChange );
 				
 				// copy proxied values from contentGroup (if explicitely set) to contentGroupProperties
 				
@@ -1036,12 +1327,9 @@ package ws.tink.spark.containers
 					
 					_placeHolderGroup.mxmlContent = myMxmlContent;
 					
-					_placeHolderGroup.addEventListener(
-						ElementExistenceEvent.ELEMENT_ADD, contentGroup_elementAddedHandler);
-					_placeHolderGroup.addEventListener(
-						ElementExistenceEvent.ELEMENT_REMOVE, contentGroup_elementRemovedHandler);
-					_placeHolderGroup.addEventListener(
-						CollectionEvent.COLLECTION_CHANGE, onNavigatorGroupCollectionChange );
+					_placeHolderGroup.addEventListener( ElementExistenceEvent.ELEMENT_ADD, onContentGroupElementAdded );
+					_placeHolderGroup.addEventListener( ElementExistenceEvent.ELEMENT_REMOVE, onContentGroupElementRemoved );
+					if( hasEventListener( CollectionEvent.COLLECTION_CHANGE ) ) _placeHolderGroup.addEventListener( CollectionEvent.COLLECTION_CHANGE, onContentGroupCollectionChange );
 				}
 				
 				contentGroup.mxmlContent = null;
@@ -1049,207 +1337,39 @@ package ws.tink.spark.containers
 			}
 		}
 		
+		
+		
 		//--------------------------------------------------------------------------
 		//
-		//  IDeferredContentOwner methods
+		//  Event Listeners
 		//
 		//--------------------------------------------------------------------------
-		
-		/**
-		 *  Create the content for this component. 
-		 *  When the <code>creationPolicy</code> property is <code>auto</code> or
-		 *  <code>all</code>, this function is called automatically by the Flex framework.
-		 *  When <code>creationPolicy</code> is <code>none</code>, you call this method to initialize
-		 *  the content.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 10
-		 *  @playerversion AIR 1.5
-		 *  @productversion Flex 4
-		 */
-		public function createDeferredContent():void
-		{
-			if (!mxmlContentCreated)
-			{
-				mxmlContentCreated = true;
-				
-				if (_mxmlContentFactory)
-				{
-					var deferredContent:Object = _mxmlContentFactory.getInstance();
-					mxmlContent = deferredContent as Array;
-					_deferredContentCreated = true;
-					dispatchEvent(new FlexEvent(FlexEvent.CONTENT_CREATION_COMPLETE));
-				}
-			}
-		}
-		
-		private var _deferredContentCreated:Boolean;
-		
-		/**
-		 *  Contains <code>true</code> if deferred content has been created.
-		 *  
-		 *  @langversion 3.0
-		 *  @playerversion Flash 10
-		 *  @playerversion AIR 1.5
-		 *  @productversion Flex 4
-		 */
-		public function get deferredContentCreated():Boolean
-		{
-			return _deferredContentCreated;
-		}
 		
 		/**
 		 *  @private
 		 */
-		private function createContentIfNeeded():void
-		{
-			if (!mxmlContentCreated && creationPolicy != ContainerCreationPolicy.NONE)
-				createDeferredContent();
-		}
-		
-		//--------------------------------------------------------------------------
-		//
-		//  Event Handlers
-		//
-		//--------------------------------------------------------------------------
-		
-		private function contentGroup_elementAddedHandler(event:ElementExistenceEvent):void
+		private function onContentGroupElementAdded( event:ElementExistenceEvent ):void
 		{
 			event.element.owner = this
-			
-			// Re-dispatch the event
-			dispatchEvent(event);
-		}
-		
-		private function contentGroup_elementRemovedHandler(event:ElementExistenceEvent):void
-		{
-			event.element.owner = null;
-			
-			// Re-dispatch the event
-			dispatchEvent(event);
-		}
-		
-		
-		
-		/**
-		 *  @private
-		 *  IList implementation of selectedIndex sets
-		 *  StackLayout( layout ).focusedIndex
-		 */
-		private var _selectedIndex		: int;
-		public function set selectedIndex( value:int ):void
-		{
-			_selectedIndex = value;
-			if( layout ) INavigatorLayout( layout ).selectedIndex = _selectedIndex;
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of selectedIndex returns
-		 *  StackLayout( layout ).focusedIndex
-		 */
-		public function get selectedIndex():int
-		{
-			return ( layout ) ? INavigatorLayout( layout ).selectedIndex : _selectedIndex;
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of length returns numChildren
-		 */
-		public function get length():int
-		{
-			return currentContentGroup.length;
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of addItem calls addChild
-		 */
-		public function addItem( item:Object ):void
-		{
-			addItemAt( item, length );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of addItemAt calls addChildAt
-		 */
-		public function addItemAt( item:Object, index:int ):void
-		{
-			currentContentGroup.addItemAt( item, index );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of getItemAt calls getVirtualElementAt
-		 */
-		public function getItemAt( index:int, prefetch:int = 0 ):Object
-		{
-			return currentContentGroup.getItemAt( index );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of getItemIndex calls getElementIndex
-		 */
-		public function getItemIndex( item:Object ):int
-		{
-			return currentContentGroup.getItemIndex( item );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of itemUpdated doesn't do anything
-		 */
-		public function itemUpdated( item:Object, property:Object=null, oldValue:Object=null, newValue:Object=null ):void
-		{
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of removeAll calls removeAllElements
-		 */
-		public function removeAll():void
-		{
-			currentContentGroup.removeAll();
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of removeItemAt calls removeElementAt
-		 */
-		public function removeItemAt( index:int ):Object
-		{
-			return currentContentGroup.removeItemAt( index );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of setItemAt calls removeElementAt
-		 *  to remove the old child and removeElementAt to add the
-		 *  new one.
-		 */
-		public function setItemAt( item:Object, index:int ):Object
-		{
-			return currentContentGroup.setItemAt( item, index );
-		}
-		
-		/**
-		 *  @private
-		 *  IList implementation of toArray returns array of children
-		 */
-		public function toArray():Array
-		{
-			return currentContentGroup.toArray();
-		}
-		
-		
-		private function onNavigatorGroupCollectionChange( event:CollectionEvent ):void
-		{
 			dispatchEvent( event );
 		}
 		
+		/**
+		 *  @private
+		 */
+		private function onContentGroupElementRemoved( event:ElementExistenceEvent ):void
+		{
+			event.element.owner = null;
+			dispatchEvent( event );
+		}
+		
+		/**
+		 *  @private
+		 */
+		private function onContentGroupCollectionChange( event:CollectionEvent ):void
+		{
+			dispatchEvent( event );
+		}
 		
 	}
 	

@@ -51,6 +51,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		override public function set radius(r:Number):void {
 			if(isNaN(r)) this.collidable = false;
 			else this.collidable = true;
+			if(r < 0)
+				visible = false;
 			super.radius = r;
 		}
 		

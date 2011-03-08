@@ -14,9 +14,10 @@ package com.pentagram.instance.view.visualizer.views
 		public var balls:APEGroup;
 		private var walls:Walls;
 		
-		private var timer:Timer;
+		public var timer:Timer;
 		public var engine:APEngine;
 		
+		public var running:Boolean = false;
 		public function PhysicsScene()
 		{
 			engine = new APEngine();
@@ -54,11 +55,13 @@ package com.pentagram.instance.view.visualizer.views
 		public function start():void
 		{
 			//timer.start();
+			running = true;
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		public function stop(event:Event=null):void
 		{
 			//timer.stop();
+			running = false;
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		private function enterFrameHandler(event:Event):void

@@ -453,9 +453,11 @@
 				super.updateDisplayList(w,h);
 				if(resizeFlag) {
 					resizeFlag = false;
-					doResize();
-					if(holder.balls.collideInternal)
+					
+					if(holder.balls.collideInternal && !holder.running)
 						holder.start();
+					else if(!holder.balls.collideInternal)
+						doResize();
 					//holder.visible = true;
 				}
 			}
