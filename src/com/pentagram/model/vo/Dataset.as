@@ -21,7 +21,8 @@ package com.pentagram.model.vo
 		public var range:String;
 		public var options:String; //for qualitative type
 		
-				
+		public var minCopy:Number;
+		public var maxCopy:Number;
 		//state
 		public var loaded:Boolean = false;
 		

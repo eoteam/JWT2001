@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"  
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:controls="com.pentagram.view.controls.*" xmlns:vo="com.pentagram.model.vo.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:controls="com.pentagram.view.controls.*" 
+		 xmlns:vo="com.pentagram.model.vo.*">
 	
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.main.event.ViewEvent;
 			import com.pentagram.model.vo.Country;
+			import com.pentagram.model.vo.Dataset;
 			
 			import mx.collections.ArrayCollection;
 			import mx.events.FlexEvent;
@@ -16,12 +19,14 @@
 			{
 				currentState = currentState == "open"?"closed":"open";
 			}
+			[Bindable] private var dataset:Dataset;
 		]]>
 	</fx:Script>
 	
 	
 	<fx:Declarations>
-		<vo:Dataset id="dataset" />
+<!--		<vo:Dataset id="dataset" />-->
+		<s:ArrayList id="datasets" />
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closed" />
@@ -35,20 +40,22 @@
 	
 	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
 		<s:Label verticalCenter="0" text="Select Range" click="button1_clickHandler(event)"  mouseChildren="false"
-				 color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" width="100%" fontFamily="FlamaBold" right="18"/>		
-		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" right="2" top="2" bottom="2" click="button1_clickHandler(event)"/>
+		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" width="100%" fontFamily="FlamaBold" right="18"/>		
+		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" right="2" top="2" bottom="2"
+		click="button1_clickHandler(event)"/>
 	</s:Group>
 	
 	<s:Rect width="100%" height="0.25" top="24">
 		<s:stroke>
 			<s:SolidColorStroke color="0x666666" weight="0.25" />
 		</s:stroke>
-	</s:Rect>	
+	</s:Rect>
+	
 	<s:VGroup width="100%" height.closed="0" height.open="55" gap="8" paddingTop="4" top="24" paddingBottom="4" 
 	 id="contentHolder" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="true">
-		<s:Label text="{dataset.name}" color="0xffffff" />
-		<mx:HSlider thumbCount="2" minimum="{dataset?dataset.min:0}" maximum="{dataset?dataset.max:0}" chromeColor="0x1a1a1a" showDataTip="true"  accentColor="0xcccccc"  
-		allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.min,dataset.max]:[0,0]}" 
-		tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.max - dataset.min))/10:1}"   />
+		<s:DropDownList width="100%" labelField="name" dataProvider="{datasets}" id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
+		<mx:HSlider thumbCount="2" minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}" chromeColor="0x1a1a1a" showDataTip="true" accentColor="0xcccccc"  
+		allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.minCopy,dataset.maxCopy]:[0,0]}" 
+		tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" id="range"   />
 	</s:VGroup>
 </s:Group>

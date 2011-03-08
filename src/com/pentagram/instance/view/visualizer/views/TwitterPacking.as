@@ -4,12 +4,12 @@ package com.pentagram.instance.view.visualizer.views
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 	import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
-	import com.somerandomdude.coordy.constants.LayoutUpdateMethod;
-	import com.somerandomdude.coordy.layouts.twodee.Flow;
-	import com.somerandomdude.coordy.layouts.twodee.Grid;
-	import com.somerandomdude.coordy.layouts.twodee.ILayout2d;
-	import com.somerandomdude.coordy.nodes.twodee.INode2d;
-	import com.somerandomdude.coordy.utils.LayoutTransitioner;
+//	import com.somerandomdude.coordy.constants.LayoutUpdateMethod;
+//	import com.somerandomdude.coordy.layouts.twodee.Flow;
+//	import com.somerandomdude.coordy.layouts.twodee.Grid;
+//	import com.somerandomdude.coordy.layouts.twodee.ILayout2d;
+//	import com.somerandomdude.coordy.nodes.twodee.INode2d;
+//	import com.somerandomdude.coordy.utils.LayoutTransitioner;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
@@ -32,7 +32,7 @@ package com.pentagram.instance.view.visualizer.views
 		public var scaler:Number = 1;
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
-		
+		//private var _layout:ILayout2d;
 		public function TwitterPacking(arr:Array,parent:Group) {
 			super();			
 			this.dataProvider = arr;
@@ -60,10 +60,10 @@ package com.pentagram.instance.view.visualizer.views
 				
 				renderers.push(sprite);
 			}
-			_layout = new Flow(width-40,height-40);
-			_layout.x=20; _layout.y=20; 
-			_layout.updateMethod = 	LayoutUpdateMethod.UPDATE_AND_RENDER;
-			LayoutTransitioner.tweenFunction=tweenItem;
+//			_layout = new Flow(width-40,height-40);
+//			_layout.x=20; _layout.y=20; 
+//			_layout.updateMethod = 	LayoutUpdateMethod.UPDATE_AND_RENDER;
+//			LayoutTransitioner.tweenFunction=tweenItem;
 			if(this.dataProvider.length > 2 )
 				doLayout();
 		}
@@ -181,15 +181,15 @@ package com.pentagram.instance.view.visualizer.views
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
 		}
-		private var _layout:ILayout2d;
+		
 		public function sort():void {
 			quickSort(0,renderers.length-1);
-			for(var i:int=0; i<renderers.length; i++) 
-			{
-				_layout.addNode(renderers[i],true);
-			}
+//			for(var i:int=0; i<renderers.length; i++) 
+//			{
+//				_layout.addNode(renderers[i],true);
+//			}
 
-			_layout.updateAndRender();
+			//_layout.updateAndRender();
 			//_layout.
 			//(LAYOUT_WIDTH-40, LAYOUT_HEIGHT-40);
 		}
@@ -223,15 +223,15 @@ package com.pentagram.instance.view.visualizer.views
 				quickSort(i, right);
 			}
 		}
-		private function tweenItem(node:INode2d):void
-		{ 
-			var link:DisplayObject = node.link as DisplayObject;
-			/*
-			* Please, do not ever use Adobe's internal Tween class. This class was used only for increased
-			* compatibility.
-			*/
-			TweenNano.to(link,1+Math.random()*2, {x:node.x,y:node.y});
-			//_tweens.push(new Tween(link, 'rotation', Cubic.easeInOut, link.rotation, node.rotation, 1+Math.random()*2, true));
-		}
+//		private function tweenItem(node:INode2d):void
+//		{ 
+//			var link:DisplayObject = node.link as DisplayObject;
+//			/*
+//			* Please, do not ever use Adobe's internal Tween class. This class was used only for increased
+//			* compatibility.
+//			*/
+//			TweenNano.to(link,1+Math.random()*2, {x:node.x,y:node.y});
+//			//_tweens.push(new Tween(link, 'rotation', Cubic.easeInOut, link.rotation, node.rotation, 1+Math.random()*2, true));
+//		}
 	}
 }

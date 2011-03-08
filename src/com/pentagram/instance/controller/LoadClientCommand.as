@@ -60,6 +60,8 @@ package com.pentagram.instance.controller
 			if(sets.length > 0) {
 				total+= sets.length;
 				for each(var dataset:Dataset in model.client.datasets.source) {
+					dataset.maxCopy = dataset.max;
+					dataset.minCopy = dataset.min;
 					if(dataset.time == 1)
 						dataset.years = dataset.range.split(',');
 					if(dataset.options && dataset.options != '') {

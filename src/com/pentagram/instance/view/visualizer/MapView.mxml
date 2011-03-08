@@ -137,30 +137,28 @@
 				update();	
 			}
 			public function update():void {
-				var logMin:Number = dataset.min==0?Math.log(dataset.min)/Math.LN10:1;	
-				var logMax:Number = Math.log(dataset.max)/Math.LN10;
 				for each(var c:MapRenderer in renderers) {
 					var r:Number;
+					var value:Number;
+					
 					if(c.data) {
 						var content:String;
 						if(dataset.id != -1) {
 							if(dataset.time == 1) {
-								if(!isNaN(c.data[currentYear])) {
-									//var v:Number = Math.log(c.data[currentYear])/Math.LN10;
-									//r = (v - logMin) / (logMax - logMin) * maxRadius as Number;
-									r = (c.data[currentYear] - dataset.min) / (dataset.max - dataset.min)* maxRadius;
-
-									if(r < 0)
-										trace("Negative Radius",r);
-									content = generateContent(c.data[currentYear],currentYear);
+								value = c.data[currentYear];
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
+									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;
+									if(r < 0) trace("Negative Radius",r);
+									content = generateContent(value,currentYear);
 								}
 								else
 									r = 0;
 							}
 							else {
-								if(!isNaN(c.data.value)) {
-									r = (c.data.value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-									content = generateContent(c.data.value);
+								value = c.data.value;
+								if(!isNaN(value) && value >= dataset.min && c.data.value <= dataset.max) {
+									r = (value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+									content = generateContent(value);
 								}
 								else {
 									r = 0;
@@ -168,6 +166,7 @@
 							}
 						}
 						else r = maxRadius;
+						
 						TweenNano.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
 						c.content = content;
 						c.draw();
@@ -275,28 +274,34 @@
 				var row:DataRow;
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				var content:String = '';
-				var logMin:Number = dataset.min==0?Math.log(dataset.min)/Math.LN10:1;
-				var logMax:Number = Math.log(dataset.max)/Math.LN10;
+				var value:Number;
 				
 				if(dataset) {
 					for each(row in dataset.rows) {
-						if(dataset.type == 1) {
-							if(dataset.id != -1) {
-								if(dataset.time == 1) {
-									//var v:Number = Math.log(row[dataset.years[0]])/Math.LN10;
-									//r = (v - logMin) / (logMax - logMin) * maxRadius as Number;
-									r = (row[dataset.years[0]] - dataset.min) / (dataset.max - dataset.min)* maxRadius;
-									if(r < 0)
-										trace("Negative Radius",r);
-									currentYear = dataset.years[0];
-									content =  generateContent(row[dataset.years[0]],dataset.years[0]);
-									//r = Math.abs(r);
+						if(dataset.type == 1 && dataset.id != -1) {
+							
+							if(dataset.time == 1) {
+								currentYear = dataset.years[0];
+								value = row[dataset.years[0]];
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
+									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;
+									content =  generateContent(value,dataset.years[0]);
+									if(r < 0) trace("Negative Radius",r);
+								}
+								else 
+									r = 0;
+							}
+							else {
+								value = row.value;
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
+									r = (value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
+									content = generateContent(value);
 								}
 								else {
-									r = (row.value - dataset.min) / (dataset.max - dataset.min) * maxRadius as Number;
-									content = generateContent(row.value);
-								}
+									r = 0;
+								}	
 							}
+							
 						}
 						else {
 							r = maxRadius;
@@ -454,12 +459,12 @@
 					//holder.visible = true;
 				}
 			}
-			private function generateContent(value:String,year:String=null):String {
+			private function generateContent(value:Number,year:String=null):String {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result += '<span color="#cccccc">'+dataset.name;
 				if(year != null)
 					result += '('+year+')';
-				result += ': </span><span color="#ffffff">'+value+'</span>';
+				result += ': </span><span color="#ffffff">'+value.toString()+'</span>';
 				result += "</p></TextFlow>"	;
 				return result;
 			}

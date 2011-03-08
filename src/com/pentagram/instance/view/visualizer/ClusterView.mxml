@@ -44,7 +44,39 @@
 				}
 			}
 			public function update():void {
-				
+				for (var i:int=0;i<holder.numElements;i++) {
+					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
+					var j:int=0;
+					var circle:ClusterRenderer;
+					var dp:Vector.<ClusterRenderer> = c.filterMode?c.filteredRenderers:c.renderers;
+					var value:Number;
+					
+					if(ds2.time == 1 && ds2.years.indexOf(currentYear) != -1) {
+						for (j=0;j<dp.length;j++) {
+							circle = dp[j];
+							value = circle.data2[currentYear];
+							if(value >= ds2.min && value <= ds2.max) {
+								circle.radiusBeforeRendering =  (value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+								circle.content = this.generateContent(value,currentYear);
+							}
+							else circle.radiusBeforeRendering = 0;
+						}
+					}
+					else {
+						for (j=0;j<dp.length;j++) {
+							circle = dp[j];
+							value = circle.data2.value;
+							if(value >= ds2.min && value <= ds2.max) {
+								circle.radiusBeforeRendering =  (value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+								circle.content = this.generateContent(value);
+							}
+							else circle.radiusBeforeRendering = 0;
+						}
+					}
+					if(!c.filterMode)
+						c.doLayout(true);			
+					else c.filter();
+				}				
 			}
 			public function updateMaxRadius(value:Number):void {
 				maxRadius = value;
@@ -93,22 +125,7 @@
 			}
 			public function updateYear(year:String):void {
 				currentYear = year;
-				for (var i:int=0;i<holder.numElements;i++) {
-					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					
-					var dp:Vector.<ClusterRenderer> = c.filterMode?c.filteredRenderers:c.renderers;
-					for (var j:int=0;j<dp.length;j++) {
-						var circle:ClusterRenderer = dp[j];
-						if(ds2.time == 1 && ds2.years.indexOf(year) != -1) {
-							circle.radiusBeforeRendering =  (circle.data2[year.toString()] - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-							circle.content = this.generateContent(circle.data2[year],year);
-						}	
-							
-					}
-					if(!c.filterMode)
-						c.doLayout(true);			
-					else c.filter();
-				}
+				update();
 			}
 			public function toggleCategory(visible:Boolean,prop:String):void {
 				
@@ -251,6 +268,7 @@
 				var row2:DataRow;
 				var circle:CirclePacking;
 				var content:String = '';
+				var value2:Number;
 				
 				if(ds1.id!= -1 && ds1) {
 					if(ds1.type == 0) { //quantitative
@@ -266,17 +284,23 @@
 											if(row2.country == row.country)
 												break;
 										}
-										
-										// = ds2.rows.getItemAt(ds1.rows.getItemIndex(row)) as DataRow;
-										//trace(ds1.rows.getItemIndex(row),ds2.rows.getItemIndex(row2));
 										if(ds2.type == 1) {
 											if(ds2.time == 1) {
-												r = (row2[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-												content = generateContent(row2[ds2.years[0]],ds2.years[0]);
+												currentYear = ds2.years[0];	
+												value2 = row2[ds2.years[0]];
+												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+													content = generateContent(value2,ds2.years[0]);
+												}
+												else r = 0;
 											}
 											else {
-												r = (row2.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-												content = generateContent(row2.value);
+												value2 = row2.value;
+												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+													content = generateContent(value2);
+												}
+												else r = 0;
 											}	
 										}
 										else if(ds2.id == -1) {
@@ -297,16 +321,24 @@
 						} 
 					}
 				}
-				else if(ds2 &&ds2.id != -1) {
+				else if(ds2 && ds2.id != -1) {
 					arr = [];
 					for each(row in ds2.rows) {
 						if(ds2.time == 1) {
-							r = (row[ds2.years[0]] - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-							content = generateContent(row[ds2.years[0]],ds2.years[0]);
+							value2 = row[ds2.years[0]];
+							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+								r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
+								content = generateContent(value2,ds2.years[0]);
+							}
+							else r = 0;
 						}
 						else {
-							r = (row.value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-							content = generateContent(row.value);
+							value2 = row.value;
+							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+								r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
+								content = generateContent(value2);
+							}
+							else r = 0;
 						}
 						if(!isNaN(r))
 							arr.push({data:null,radius:r,color:row.country.region.color,data2:row,content:content});
@@ -356,12 +388,12 @@
 					}
 				}
 			}
-			private function generateContent(value:String,year:String=null):String {
+			private function generateContent(value:Number,year:String=null):String {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
 				result += '<span color="#cccccc">'+ds2.name;
 				if(year != null)
 					result += '('+year+')';
-				result += ': </span><span color="#ffffff">'+value+'</span>';
+				result += ': </span><span color="#ffffff">'+value.toString()+'</span>';
 				result += "</p></TextFlow>";
 				return result;
 			}

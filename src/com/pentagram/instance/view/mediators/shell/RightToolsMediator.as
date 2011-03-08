@@ -18,6 +18,7 @@ package com.pentagram.instance.view.mediators.shell
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.events.IndexChangedEvent;
+	import mx.events.SliderEvent;
 	import mx.events.StateChangeEvent;
 	
 	import org.flashcommander.event.CustomEvent;
@@ -47,8 +48,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
 			view.categoriesPanel.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
 			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			
-			
+			view.numericFilter.range.addEventListener(SliderEvent.CHANGE,handleRangeChange,false,0,true);
 			view.countriesPanel.countryList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,false,0,true);
 			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
@@ -105,6 +105,9 @@ package com.pentagram.instance.view.mediators.shell
 		}
 	    private function handleCountrySelection(event:GridSelectionEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",view.countriesPanel.countryList.selectedItems));
+		}
+		private function handleRangeChange(event:SliderEvent):void {
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.numericFilter.range.values));
 		}
 		private function handleRegionSelect(event:Event):void {
 			if(view.state != "twitter") {

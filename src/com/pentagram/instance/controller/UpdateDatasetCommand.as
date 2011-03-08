@@ -82,6 +82,8 @@
 					}
 				}
 			}
+			model.selectedSet.maxCopy = model.selectedSet.max;
+			model.selectedSet.minCopy = model.selectedSet.min;
 		}
 		private function setPropChanged(prop:String,value:Number):void {
 			model.selectedSet[prop] = value;
