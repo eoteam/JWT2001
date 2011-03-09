@@ -38,18 +38,18 @@ package com.pentagram.instance.controller.configuration
 		{
 			mediatorMap.mapView(InstanceWindow, ViewInstanceMediator);
 
-			mediatorMap.mapView(Search,	SearchViewMediator,null,true,true);
-			mediatorMap.mapView(BottomBar,BottomBarMediator,null,true,true);
-			mediatorMap.mapView(Shell,ShellMediator,null,true,true);
-			mediatorMap.mapView(RightTools, RightToolsMediator,null,true,true);
-			mediatorMap.mapView(BottomTools, BottomToolsMediator,null,true,true);
-			mediatorMap.mapView(LoginPanel, LoginPanelMediator,null,true,true);
+			mediatorMap.mapView(Search,	SearchViewMediator);
+			mediatorMap.mapView(BottomBar,BottomBarMediator);
+			mediatorMap.mapView(Shell,ShellMediator);
+			mediatorMap.mapView(RightTools, RightToolsMediator);
+			mediatorMap.mapView(BottomTools, BottomToolsMediator);
+			mediatorMap.mapView(LoginPanel, LoginPanelMediator);
 			
 			
-			mediatorMap.mapView(EditorMainView,EditorMediator,null,true,true); 
-			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator,null,true,true);
-			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator,null,true,true); 
-			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator,null,true,true); 		
+			mediatorMap.mapView(EditorMainView,EditorMediator); 
+			mediatorMap.mapView(OverviewEditor,OverviewEditorMediator);
+			mediatorMap.mapView(DatasetCreator,DatasetCreatorMediator); 
+			mediatorMap.mapView(DatasetEditor,DatasetEditorMediator); 		
 						
 			trace("Configure Instance: Views Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_VIEWS_COMPLETE));

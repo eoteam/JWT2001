@@ -34,7 +34,6 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function MapParticle(engine:APEngine,parent:Group,radius:Number=1, fixed:Boolean=false, mass:Number=1, elasticity:Number=0.3, friction:Number=0)
 		{
 			_sprite = new MapRenderer(this,parent,parent);
-			MapRenderer(_sprite).state = true;
 			super(engine,0, 0, radius, fixed, mass, elasticity, friction);
 			this.collidable = true;
 			this.alwaysRepaint = true;
@@ -75,10 +74,10 @@ package com.pentagram.instance.view.visualizer.renderers
 					pt = _sprite.parent.globalToLocal(pt);
 					px = pt.x; py = pt.y;
 					if(_sprite) 
-						_sprite.x = pt.x; _sprite.y = pt.y;
+						MapRenderer(_sprite).move(pt.x,pt.y);
 				}
 				if(_visible) {
-					MapRenderer(_sprite).dirty()
+					MapRenderer(_sprite).draw();
 				}
 				if(_sprite.visible != _visible) {
 					if(_visible) {

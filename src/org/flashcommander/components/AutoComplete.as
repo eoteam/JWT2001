@@ -98,16 +98,20 @@ package org.flashcommander.components
 		private var collection:ListCollectionView = new ArrayCollection();
 		
 		public function set dataProvider(value:Object):void{
-			if (value is Array)
-				collection = new ArrayCollection(value as Array);
-			else if (value is ListCollectionView){
-				collection = value as ListCollectionView;
-				collection.addEventListener(CollectionEvent.COLLECTION_CHANGE, collectionChange)
+			if(value) {
+				if (value is Array)
+					collection = new ArrayCollection(value as Array);
+				else if (value is ListCollectionView){
+					collection = value as ListCollectionView;
+					collection.addEventListener(CollectionEvent.COLLECTION_CHANGE, collectionChange);
+				}
+				
+				if (list) list.dataProvider = collection;
+				
+				filterData();
 			}
-
-			if (list) list.dataProvider = collection;
-			
-			filterData();
+			else if(collection)
+				collection.removeEventListener(CollectionEvent.COLLECTION_CHANGE,collectionChange);
 		}
 		public function get dataProvider():Object { return collection; }
 		

@@ -31,12 +31,11 @@ package com.pentagram.instance.view.mediators.shell
 		{
 			//eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
-			
-			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect,false,0,true);
-			view.searchInput.addEventListener(FlexEvent.ENTER,searchInput_enterHandler,false,0,true);
-			
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);			
+			eventMap.mapListener(view.searchInput,CustomEvent.SELECT,handleSelect,CustomEvent);
+			eventMap.mapListener(view.searchInput,FlexEvent.ENTER,searchInput_enterHandler,FlexEvent);			
 			eventMap.mapListener(view,'notfoundState',handleNotfoundState,Event,false,0,true);
+			
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
 			view.searchInput.visible = true;	
@@ -54,19 +53,12 @@ package com.pentagram.instance.view.mediators.shell
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
 			view.searchInput.text = '';
 		}
-		protected function searchInput_enterHandler(event:FlexEvent):void
+		private function searchInput_enterHandler(event:FlexEvent):void
 		{
 			if(view.searchInput.list.dataProvider.length == 0)
 				view.currentState = "notfound";
-			else {
+			else 
 				view.searchInput.list.selectedIndex = 0;
-//				var client:Client = view.searchInput.list.dataProvider.getItemAt(0) as Client;
-//				if(model.client != client) {
-//					model.client = client;
-//				}
-//				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
-//				view.searchInput.text = '';
-			}
 		} 
 		private function handleLogin(event:AppEvent):void
 		{
@@ -83,6 +75,7 @@ package com.pentagram.instance.view.mediators.shell
 			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"clientWindow"));
 		}
 		private function handleCleanup(event:ViewEvent):void {
+			view.searchInput.dataProvider = null;
 			this.mediatorMap.removeMediator(this);
 		}
 	}

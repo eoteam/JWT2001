@@ -1,6 +1,7 @@
 package com.pentagram.instance
 {
 	import com.pentagram.instance.controller.configuration.BootstrapInstanceCommand;
+	import com.pentagram.instance.model.InstanceModel;
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
@@ -20,15 +21,13 @@ package com.pentagram.instance
 		override public function startup():void
 		{  
 			injector.mapValue(EventDispatcher, appEventDispatcher, "ApplicationEventDispatcher"); 
-			
 			commandMap.mapEvent( ContextEvent.STARTUP, BootstrapInstanceCommand, ContextEvent, true );
 			dispatchEvent(new ContextEvent(ContextEvent.STARTUP)); 
-
 		}
 		override public function shutdown():void {
 			injector.unmap(EventDispatcher,"ApplicationEventDispatcher");
-			//mediatorMap.enabled = false;
-			//commandMap.unmapEvents();
+			commandMap.unmapEvents();
+			injector.unmap(InstanceModel);
 			super.shutdown(); 
 		}
 	}

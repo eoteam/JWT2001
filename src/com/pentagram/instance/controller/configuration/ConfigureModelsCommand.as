@@ -10,7 +10,6 @@ package com.pentagram.instance.controller.configuration
 	{
 		override public function execute():void
 		{
-
 			injector.mapSingleton(InstanceModel);
 			trace("Configure Instance: Models Complete");
 			eventDispatcher.dispatchEvent( new StateEvent(StateEvent.ACTION, AppConfigStateConstants.CONFIGURE_MODELS_COMPLETE));

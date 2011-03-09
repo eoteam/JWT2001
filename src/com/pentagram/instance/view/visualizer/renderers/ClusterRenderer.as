@@ -47,14 +47,14 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(value && !stateFlag)
 				dirtyFlag = true;
 			stateFlag = value;
-			this.invalidateDisplayList();
+			this.updateDisplayList();
 		}
 		public function get state():Boolean {
 			return stateFlag;
 		}
-		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+		override protected function updateDisplayList():void
 		{
-			super.updateDisplayList(unscaledWidth,unscaledHeight);
+			//super.updateDisplayList(unscaledWidth,unscaledHeight);
 			if(dirtyFlag && stateFlag)
 				draw();
 			else if(!stateFlag) {
@@ -134,7 +134,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 			textFormat.color = _textColor;			
 			
-			labelTF.x = -labelTF.textWidth/2;
+			labelTF.x = labelTF.textWidth/2;
 			labelTF.y = -labelTF.textHeight/2;
 			labelTF.width = labelTF.textWidth+4;
 			labelTF.height = labelTF.textHeight+4;	
@@ -160,7 +160,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.content = _content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 				moveInfo();
-				PopUpManager.addPopUp(info, this.parent, false);
+				PopUpManager.addPopUp(info, this.tooltipContainer, false);
 			}	
 			infoVisible = visible;
 		}
@@ -175,7 +175,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y - this.height/2 + 34;
+			info.y = this.y+40;// - this.height/2 + 34;
 		}
 	}
 }

@@ -263,8 +263,6 @@ package com.pentagram.instance.view.mediators
 			trace("WTFFFF");
 		}
 		override public function onRemove():void {
-//			mediatorMap.removeMediatorByView(view.searchView);
-//			mediatorMap.removeMediatorByView(view.shellView);
 			model.clients = null;
 			model.regions = null;
 			model.countries = null;
@@ -287,7 +285,7 @@ package com.pentagram.instance.view.mediators
 			mediatorMap.unmapView(DatasetEditor);
 			
 			view.cleanup();
-			
+
 			super.onRemove();
 		}
 		private function handleCloseWindow(event:Event):void {
@@ -295,7 +293,6 @@ package com.pentagram.instance.view.mediators
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.WINDOW_CLEANUP));
 			appEventDispatcher = null;
 			this.mediatorMap.removeMediator(this);
-			
 		}
 		private function handleWindowResize(event:NativeWindowBoundsEvent):void {
 			this.dispatch(new VisualizerEvent(VisualizerEvent.WINDOW_RESIZE));

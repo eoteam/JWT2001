@@ -94,6 +94,7 @@ package com.pentagram.model
 		public function removeWindowByUID(uid:String):void
 		{
 			var w:InstanceWindow = windowMap.getValue(uid) as InstanceWindow;
+			w.parent.removeChild(w);
 			this.windowMap.remove(uid);
 			w = null;
 			dispatch(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_REMOVED));

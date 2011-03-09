@@ -36,7 +36,7 @@ package org.cove.ape {
 	 */
 	public class AbstractItem extends EventDispatcher {
 		
-		protected var _sprite:UIComponent;
+		protected var _sprite:Sprite;
 		
 		private var _solid:Boolean;
 		protected var _visible:Boolean = true;
@@ -200,7 +200,7 @@ package org.cove.ape {
 		 * sprite is requested for the first time it is automatically added to the global
 		 * container in the APEngine class.
 		 */	
-		public function get sprite():UIComponent {
+		public function get sprite():Sprite {
 			
 			if (_sprite != null) return _sprite;
 			
@@ -208,7 +208,7 @@ package org.cove.ape {
 				throw new Error("The container property of the APEngine class has not been set");
 			}
 			
-			_sprite = new UIComponent();
+			_sprite = new Sprite();
 			engine.container.addChild(_sprite);
 			return _sprite;
 		}	

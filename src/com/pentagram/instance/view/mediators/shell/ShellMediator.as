@@ -125,11 +125,8 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			
 		}
-
-		private function handleStackChange(event:IndexChangedEvent):void {
-			
+		private function handleStackChange(event:IndexChangedEvent):void {	
 			var util:ModuleUtil;
-			
 			if(event.newIndex == model.MAP_INDEX && view.mapView.didVisualize){
 				restoreDatasets(view.mapView);
 				view.mapView.updateSize();
@@ -224,7 +221,7 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 					formatVizTitle(view.clusterView.datasets);
 					if(event.args[1].id > 0) 
-						view.filterTools.numericFilter.datasets = event.args[1];
+						view.filterTools.numericFilter.datasets = new ArrayList([event.args[1]]);
 					else
 						view.filterTools.numericFilter.datasets = null;
 				break;

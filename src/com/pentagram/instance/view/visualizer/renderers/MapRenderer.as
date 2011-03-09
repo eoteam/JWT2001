@@ -6,11 +6,15 @@ package com.pentagram.instance.view.visualizer.renderers
 	import com.pentagram.utils.Colors;
 	
 	import flash.display.DisplayObject;
+	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.display.Shape;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
 	import mx.events.CloseEvent;
 	import mx.graphics.IStroke;
@@ -18,48 +22,111 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.managers.PopUpManager;
 	
 	import spark.components.Group;
-	import spark.core.SpriteVisualElement;
 
 
-	internal class MapRenderer extends BaseRenderer implements IRenderer
+	internal class MapRenderer extends Sprite implements IRenderer
 	{
 		
 		private var info:RendererInfo;
 		protected var particle:MapParticle;
 		public var countrySprite:Shape;
 		
+		protected var infoVisible:Boolean = false;
+		protected var offset:int = 15;
+		
+		protected var tooltipContainer:Group;
+		protected var directParent:DisplayObject;
+		protected var tooltip:Group;
+		
+		protected var _fillColor:uint = 0xffcccccc;
+		protected var _textColor:uint = 0xffcccccc;
+		protected var _fillAlpha:Number = 0.2;
+		
+		protected var _content:String;
+		protected var _data:DataRow;
+		
+		protected var labelTF:TextField;
+		protected var textFormat:TextFormat;
+		
+		[Bindable] protected var _radius:Number = 1;
+		
+		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
+		public const FILL_ALPHAS:Array = [0.8,0.8];
+		public const FILL_RATIO:Array = [0,255];
+		
+		public var id:String;
+		
 		public function MapRenderer(particle:MapParticle,parent:Group,parent2:DisplayObject) {
-			super(parent,parent2);			
+			
+			this.mouseChildren = false;
+			this.textColor = 0xffffffff;
+			this.tooltipContainer = parent;
+			this.directParent = parent2;
+			
+			textFormat = new TextFormat();
+			textFormat.font = "FlamaBookMx2";
+			textFormat.size = 12;
+			textFormat.color = _textColor;
+			textFormat.align="left";
+			
+			labelTF = new TextField();
+			labelTF.selectable = false;
+			labelTF.embedFonts = true;
+			labelTF.mouseEnabled = false;
+			labelTF.defaultTextFormat = textFormat;
+			labelTF.width = 30; labelTF.height = 20;
+			this.addChild(labelTF);
+			
+			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
+			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
+			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(RendererToolTip(tooltip));
 			RendererToolTip(tooltip).visible = false;
-		}		
-		override public function set data(d:Object):void { 
-			super.data = d;
+		}	
+		
+		public function get data():Object {
+			return _data; 
+		}
+		public function set data(d:Object):void { 
+			_data = d as DataRow;
 			if(d)
 				fillColor = textColor = DataRow(d).country.region.color;
 		}
-		public function set state(value:Boolean):void {
-			if(value && !stateFlag)
-				dirtyFlag = true;
-			stateFlag = value;
-			this.invalidateDisplayList();
-		}
-		public function get state():Boolean {
-			return stateFlag;
-		}
-		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
-		{
-			super.updateDisplayList(unscaledWidth,unscaledHeight);
-			if(dirtyFlag && stateFlag)
-				draw();
-			else if(!stateFlag) {
-				graphics.clear();
-				if(labelTF)
-					labelTF.visible = false;
-			}
-		}
-		override protected function mouseEventHandler(event:Event):void {
+
+//		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+//			super.updateDisplayList(unscaledWidth,unscaledHeight);
+//			if(dirtyFlag && stateFlag)
+//				draw();
+//			else if(!stateFlag) {
+//				graphics.clear();
+//				if(labelTF)
+//					labelTF.visible = false;
+//			}
+//		}
+		
+		
+		[Bindable] public function get radius():Number { return _radius; }		
+		public function set radius(r:Number):void {
+			_radius = r;
+			if(isNaN(_radius))
+				_radius = 0;
+			draw();
+		}		
+		public function get fillColor():uint { return _fillColor; }
+		public function set fillColor(c:uint):void { _fillColor = c; draw();	}
+		
+		public function get textColor():uint { return _textColor; }
+		public function set textColor(c:uint):void { _textColor = c; draw();	}
+		
+		public function get fillAlpha():Number { return _fillAlpha; }
+		public function set fillAlpha(a:Number):void {
+			_fillAlpha = a;
+			draw();
+		}	
+		
+		protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
 			{
@@ -97,10 +164,9 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
-		}		
+		}	
 		public function draw():void {
-			var g:Graphics = this.graphics;//this.graphics;
-			dirtyFlag = false;
+			var g:Graphics = this.graphics;
 			g.clear();
 			if(_data) {
 				var stroke:IStroke = new Stroke(_fillColor,1,1);
@@ -117,7 +183,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					colors =  [_fillColor,_fillColor];
 					_textColor = _fillColor;
 				}
-				g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+				g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr);			
 				g.drawCircle(0, 0, _radius);
 				g.endFill();	
 				
@@ -163,11 +229,11 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.content = _content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 				moveInfo();
-				PopUpManager.addPopUp(info, this.parent, false);
+				PopUpManager.addPopUp(info, this.tooltipContainer, false);
 			}	
 			infoVisible = visible;
 		}
-		override public function moveInfo():void {
+		public function moveInfo():void {
 			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
 				info.leftTipVisible = false;
 				info.rightTipVisible = true;
@@ -178,7 +244,13 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y - this.height/2 + 34;
+			info.y = this.y+40;
+		}
+		public function move(x:Number,y:Number):void {
+			this.x = x;
+			this.y = y;
+			if(infoVisible)
+				moveInfo();
 		}
 	}
 }

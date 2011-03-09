@@ -82,14 +82,14 @@
 					for each(var country:Country in _client.countries.source) {
 						var found:Boolean = false;
 						for each(var c:MapParticle in this.renderers) {
-							if(c.sprite.id == country.shortname) {
+							if(Object(c.sprite).id == country.shortname) {
 								found = true;
 								//break;
 							}	
 						}
 						if(!found) {
 							c = new MapParticle(holder.engine,this);//tooltip
-							c.sprite.id = country.shortname;						
+							Object(c.sprite).id = country.shortname;						
 							renderers.push(c);
 							renderersDictionary[country.shortname] = c;
 							holder.addParticle(c);
@@ -400,7 +400,7 @@
 //				var i:int = 0;
 				for each(var country:Country in _client.countries.source) {
 					var c:MapParticle = new MapParticle(holder.engine,this);//tooltip
-					c.sprite.id = country.shortname;						
+					Object(c.sprite).id = country.shortname;						
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;
 					holder.addParticle(c);
