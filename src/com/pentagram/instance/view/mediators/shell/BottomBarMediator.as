@@ -34,6 +34,8 @@ package com.pentagram.instance.view.mediators.shell
 			view.searchInput.addEventListener(FlexEvent.ENTER,searchInput_enterHandler,false,0,true);
 			view.homeButton.addEventListener(MouseEvent.CLICK,handleHomeButton,false,0,true);
 			view.loginBtn.addEventListener(MouseEvent.CLICK,handleUserButton,false,0,true);
+			
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 		}
 		private function handleHomeButton(event:MouseEvent):void
 		{
@@ -51,7 +53,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			view.searchInput.text = '';
 		}
-		protected function searchInput_enterHandler(event:FlexEvent):void
+		private function searchInput_enterHandler(event:FlexEvent):void
 		{
 			if(view.searchInput.list.dataProvider.length == 0)
 				view.currentState = "notfound";
@@ -59,5 +61,8 @@ package com.pentagram.instance.view.mediators.shell
 				view.searchInput.list.selectedIndex = 0;
 			}
 		} 
+		private function handleCleanup(event:ViewEvent):void {
+			this.mediatorMap.removeMediator(this);
+		}
 	}
 }

@@ -11,7 +11,7 @@ package com.pentagram.instance.view.visualizer.views
 
 	public class PhysicsScene extends SpriteVisualElement
 	{
-		public var balls:APEGroup;
+		protected var balls:APEGroup;
 		private var walls:Walls;
 		
 		public var timer:Timer;
@@ -56,13 +56,21 @@ package com.pentagram.instance.view.visualizer.views
 		{
 			//timer.start();
 			running = true;
+			balls.collideInternal = true;
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 		}
 		public function stop(event:Event=null):void
 		{
 			//timer.stop();
-			running = false;
+			balls.collideInternal = running = false;
 			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+		}
+		public function pause():void {
+			this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+		}
+		
+		public function addParticle(c:CircleParticle):void {
+			balls.addParticle(c);
 		}
 		private function enterFrameHandler(event:Event):void
 		{

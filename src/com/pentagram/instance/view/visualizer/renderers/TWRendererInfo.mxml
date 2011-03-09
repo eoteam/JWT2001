@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<controls:ResizableTitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009"  x.open="5" y.open="100" 
-							   width="200" maxWidth="{wVar}" minWidth="200" 
-							   height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80" 
-							   xmlns:s="library://ns.adobe.com/flex/spark"  
-							   close="titlewindow1_closeHandler(event)" creationCompleteEffect="{fadeIn}"
-							   skinClass="com.pentagram.view.skins.controls.TWTooltipSkin" 
-							   move="titlewindow1_moveHandler(event)"
-							   xmlns:mx="library://ns.adobe.com/flex/mx"
-							   xmlns:vo="com.pentagram.model.vo.*" 
-							   xmlns:controls="com.pentagram.view.controls.*">
+<controls:ResizableTitleWindow 
+	   xmlns:fx="http://ns.adobe.com/mxml/2009" 
+	   xmlns:mx="library://ns.adobe.com/flex/mx"
+	   xmlns:vo="com.pentagram.model.vo.*" 
+	   xmlns:controls="com.pentagram.view.controls.*"
+	   xmlns:s="library://ns.adobe.com/flex/spark"
+	   x.open="5" y.open="100" 
+	   width="200" maxWidth="{wVar}" minWidth="200" 
+	   height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80"	   
+	   close="titlewindow1_closeHandler(event)"
+	   creationComplete="titlewindow1_creationCompleteHandler(event)"
+	   creationCompleteEffect="{fadeIn}"
+	   skinClass="com.pentagram.view.skins.controls.TWTooltipSkin">
 	
 	<fx:Script>
 		<![CDATA[
@@ -23,21 +26,18 @@
 			
 			import spark.skins.spark.TitleWindowSkin;
 			
-			protected function titlewindow1_closeHandler(event:CloseEvent):void {
+			private var controlBarPressed:Boolean = false;
+			[Bindable] private var wVar:Number = 350;
+			[Bindable] private var hVar:Number = 400;
+			
+			private function titlewindow1_closeHandler(event:CloseEvent):void {
 				tipVisible = true;
 				PopUpManager.removePopUp(this); 
-			}
-			
-			
-			protected function titlewindow1_moveHandler(event:MoveEvent):void {
-				if(event.oldX != 0 && event.oldX != 0)
-					tipVisible = false;
 			}
 			public function set content(value:String):void {
 				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_FIELD_HTML_FORMAT);
 			}
-			[Bindable] private var wVar:Number = 350;
-			[Bindable] private var hVar:Number = 400;
+
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				if(this.currentState == "closed") {
@@ -51,6 +51,25 @@
 			}
 			public function close():void {
 				dispatchEvent(new CloseEvent(CloseEvent.CLOSE)); 
+			}
+			private function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
+				this.moveArea.addEventListener(MouseEvent.MOUSE_DOWN,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_UP,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_MOVE,controlBarMouseHandler);
+			}
+			private function controlBarMouseHandler(event:MouseEvent):void {
+				switch(event.type) {
+					case MouseEvent.MOUSE_DOWN:
+						controlBarPressed = true;
+						break;
+					case MouseEvent.MOUSE_UP:
+						controlBarPressed = false;
+						break;
+					case MouseEvent.MOUSE_MOVE:
+						if(controlBarPressed)
+							this.tipVisible = false;
+						break;
+				}	
 			}
 		]]>
 	</fx:Script>

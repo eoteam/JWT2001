@@ -85,6 +85,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			eventMap.mapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);
 
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
 			view.errorPanel.addEventListener("okEvent",handleOkError,false,0,true);
 			view.importPanel.addEventListener("okEvent",handleImport,false,0,true);
@@ -403,6 +404,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.clusterView = null;
 				view.graphView = null;
 				view.twitterView = null;
+				loaders = [];
 				
 			}
 			view.callLater(function resume():void {
@@ -602,6 +604,19 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 			}
 			view.vizTitle.text = t;
+		}
+		private function handleCleanup(event:ViewEvent):void {
+			for each(var util:ModuleUtil in loaders) {
+				util.unloadModule();
+			}
+			loaders = [];
+			eventMap.unmapListeners();
+			this.mediatorMap.removeMediator(this);
+		}
+		override public function onRemove():void {
+			trace("shell removed");
+			eventMap.unmapListeners();
+			super.onRemove();
 		}
 	}
 }

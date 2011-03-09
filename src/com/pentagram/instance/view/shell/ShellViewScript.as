@@ -40,12 +40,6 @@ private function mainStack_changeHandler(event:IndexChangedEvent):void {
 		this.clientBar.infoBtn.selected = false;
 	}
 }
-public function unload():void {
-	if(graphView)
-		graphView.unload();
-	if(mapView)
-		mapView.unload();
-}
 public function get currentVisualizer():IVisualizer {
 	
 	return NavigatorContent(visualizerArea.selectedChild).getElementAt(0) as IVisualizer;

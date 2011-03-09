@@ -16,7 +16,9 @@ package com.pentagram.instance.model
 	import mx.collections.ArrayList;
 	
 	import org.robotlegs.mvcs.Actor;
-
+	import mx.collections.Sort;
+	import mx.collections.SortField;
+	
 	public class InstanceModel extends Actor
 	{
 		[Bindable]
@@ -93,6 +95,28 @@ package com.pentagram.instance.model
 				}
 			}
 		}
+		public function orderCountries(dataset:Dataset):void {
+			var sortField:SortField = new SortField();
+			sortField.name = "id";
+			sortField.numeric = true;
+			var countrySort:Sort = new Sort();
+			countrySort.fields = [sortField];
+			countrySort.compareFunction = orderCountriesById;
+			dataset.rows.sort = countrySort;
+			dataset.rows.refresh();
+		}
+		private  function orderCountriesById(a:DataRow, b:DataRow,fields:Array = null):int 
+		{ 	
+			if (a.id < b.id)  
+				return -1; 
+				
+			else if (a.id > b.id)  
+				return 1; 
+				
+			else 
+				return 0; 
+			
+		} 
 		public function addRowToDataset(dataset:Dataset,item:Object,countries:ArrayList):void {
 			
 		}

@@ -20,11 +20,9 @@
         <airExclude path="com/pentagram/instance/view/.DS_Store"/>
         <airExclude path="assets/icons/cursor_resize.gif"/>
         <airExclude path="flex"/>
-        <airExclude path="com/pentagram/.DS_Store"/>
         <airExclude path="assets/icons/cursor_move.gif"/>
+        <airExclude path="com/pentagram/.DS_Store"/>
         <airExclude path="assets/fonts"/>
-        <airExclude path="ws"/>
-        <airExclude path="assets/.DS_Store"/>
         <airExclude path=".DS_Store"/>
       </airExcludes>
     </application>

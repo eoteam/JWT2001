@@ -1,19 +1,25 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
+	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
+	import flash.display.DisplayObject;
+	import flash.display.GradientType;
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	import mx.containers.Canvas;
+	import mx.core.IVisualElement;
 	import mx.core.UIComponent;
 	
+	import spark.components.Group;
 	import spark.components.supportClasses.SkinnableComponent;
+	import spark.core.SpriteVisualElement;
 	
-
 
 	internal class BaseRenderer extends UIComponent
 	{
@@ -24,12 +30,32 @@ package com.pentagram.instance.view.visualizer.renderers
 		protected var _fixed:int = 0;
 		protected var _fillColor:uint = 0xffcccccc;
 		protected var _textColor:uint = 0xffcccccc;
-		protected var _fillAlpha:Number = 0.25;
+		protected var _fillAlpha:Number = 0.2;
 		protected var _lineColor:uint = 0xff000000;
 		protected var _lineWidth:Number = 0;
-		protected var _data:Object;
+		
 	
-		//protected var _graphic:Sprite;
+		protected var dirtyFlag:Boolean = false;
+		protected var dirtyTooltipFlag:Boolean = false;
+		protected var stateFlag:Boolean = false;
+		protected var infoVisible:Boolean = false;
+		protected var offset:int = 15;
+		
+		protected var tooltipContainer:Group;
+		protected var directParent:DisplayObject;
+		protected var tooltip:Group;
+
+		
+		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
+		public const FILL_ALPHAS:Array = [0.8,0.8];
+		public const FILL_RATIO:Array = [0,255];
+		
+		public var point:Point3D;
+		
+		protected var _content:String;
+		protected var _data:Object;
+		
+		public var radiusBeforeRendering:Number;
 		
 		public function get data():Object { return _data; }
 		public function set data(d:Object):void { 
@@ -37,10 +63,31 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		[Bindable] protected var _radius:Number = 1;
 		
-		public function BaseRenderer():void {
+		public function BaseRenderer(parent:Group,parent2:DisplayObject):void {
 			this.mouseChildren = false;
-			//_graphic = new Sprite();
-			//this.addChild(_graphic);
+			this.fillAlpha = 1;
+			this.textColor = 0xffffffff;
+			this.tooltipContainer = parent;
+			this.directParent = parent2;
+			
+			textFormat = new TextFormat();
+			textFormat.font = "FlamaBookMx2";
+			textFormat.size = 12;
+			textFormat.color = _textColor;
+			textFormat.align="left";
+			
+			labelTF = new TextField();
+			labelTF.selectable = false;
+			labelTF.embedFonts = true;
+			labelTF.mouseEnabled = false;
+			labelTF.defaultTextFormat = textFormat;
+			labelTF.width = 30; labelTF.height = 20;	
+			this.addChild(labelTF);
+			
+			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
+			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
+			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
+			
 		}
 		public function get fixed():Boolean { return _fixed > 0; }
 		public function fix(num:uint=1):void { _fixed += num; } 
@@ -126,9 +173,43 @@ package com.pentagram.instance.view.visualizer.renderers
 				var distance:Number = dx*dx + dy*dy;
 				
 				return distance;
-			}  
-			public function dirty():void { 
+			}
+			
+			
+			public function dirty():void {
+				dirtyFlag = true;
+				this.invalidateDisplayList();
+			}
+			override public function set x(value:Number):void {
+				super.x = value;
+				if(infoVisible) {
+					dirtyTooltipFlag = true;
+					this.invalidateProperties();
+				}
+			}
+			override public function set y(value:Number):void {
+				super.y = value;
+				if(infoVisible) {
+					dirtyTooltipFlag = true;
+					this.invalidateProperties();
+				}
+			}
+			override protected function commitProperties():void {
+				super.commitProperties();
+				if(dirtyTooltipFlag) {
+					dirtyTooltipFlag = false;
+					moveInfo();
+				}
+			}
+			public function moveInfo():void {
 				
+			}
+			protected function mouseEventHandler(event:Event):void {
+				
+			}
+			private function handleRemoved(event:Event):void {
+				if(tooltipContainer.contains(tooltip))
+					tooltipContainer.removeElement(tooltip);
 			}
 	}
 }

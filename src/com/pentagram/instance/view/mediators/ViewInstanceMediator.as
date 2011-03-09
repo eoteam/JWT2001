@@ -13,6 +13,7 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.view.editor.OverviewEditor;
 	import com.pentagram.instance.view.shell.BottomBar;
 	import com.pentagram.instance.view.shell.BottomTools;
+	import com.pentagram.instance.view.shell.LoginPanel;
 	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.instance.view.shell.Search;
 	import com.pentagram.instance.view.shell.Shell;
@@ -277,16 +278,24 @@ package com.pentagram.instance.view.mediators
 			mediatorMap.unmapView(Shell);  
 			mediatorMap.unmapView(RightTools);
 			mediatorMap.unmapView(BottomTools);
+			mediatorMap.unmapView(BottomTools); 
+			mediatorMap.unmapView(LoginPanel);
 			
 			mediatorMap.unmapView(EditorMainView);
 			mediatorMap.unmapView(OverviewEditor);
 			mediatorMap.unmapView(DatasetCreator);
 			mediatorMap.unmapView(DatasetEditor);
+			
+			view.cleanup();
+			
 			super.onRemove();
 		}
 		private function handleCloseWindow(event:Event):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_CLOSED, view.id));
-			view.cleanup();
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.WINDOW_CLEANUP));
+			appEventDispatcher = null;
+			this.mediatorMap.removeMediator(this);
+			
 		}
 		private function handleWindowResize(event:NativeWindowBoundsEvent):void {
 			this.dispatch(new VisualizerEvent(VisualizerEvent.WINDOW_RESIZE));

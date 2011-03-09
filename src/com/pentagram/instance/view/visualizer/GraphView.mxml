@@ -151,9 +151,6 @@
 						item.radius = item.prevRadius;
 				}
 			}			
-			public function unload():void {
-
-			}
 			public function resume():void {
 
 			}

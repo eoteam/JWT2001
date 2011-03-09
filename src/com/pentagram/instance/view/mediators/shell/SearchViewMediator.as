@@ -32,10 +32,13 @@ package com.pentagram.instance.view.mediators.shell
 			//eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);
+			
 			view.searchInput.addEventListener(CustomEvent.SELECT,handleSelect,false,0,true);
 			view.searchInput.addEventListener(FlexEvent.ENTER,searchInput_enterHandler,false,0,true);
+			
 			eventMap.mapListener(view,'notfoundState',handleNotfoundState,Event,false,0,true);
-
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
 			view.searchInput.visible = true;	
 			view.searchInput.dataProvider = model.clients.source;
 			if(model.user) {
@@ -78,6 +81,9 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleNewClientBtn(event:MouseEvent):void {
 			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"clientWindow"));
+		}
+		private function handleCleanup(event:ViewEvent):void {
+			this.mediatorMap.removeMediator(this);
 		}
 	}
 }

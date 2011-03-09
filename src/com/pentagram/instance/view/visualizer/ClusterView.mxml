@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modules:Module xmlns:fx="http://ns.adobe.com/mxml/2009" 
-				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:s="library://ns.adobe.com/flex/spark"  
 				xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%"
 				xmlns:modules="ws.tink.spark.modules.*"  clipAndEnableScrolling="true"
 				implements="com.pentagram.instance.view.visualizer.interfaces.IClusterView" 
@@ -86,9 +86,6 @@
 					c.draw();
 				}
 			}
-			public function unload():void {
-				
-			}
 			public function pause():void  {
 				
 			}
@@ -108,7 +105,7 @@
 									TweenNano.killTweensOf(circle,false);
 									TweenNano.to(circle,0.5,{fillAlpha:1});
 									circle.textColor = 0xffffffff;
-									circle.showTooltip()
+									circle.toggleInfo(true);
 								}
 							}
 							else {
@@ -116,7 +113,7 @@
 									TweenNano.killTweensOf(circle,false);
 									TweenNano.to(circle,0.5,{fillAlpha:0.2});
 									circle.textColor = circle.fillColor;
-									circle.hideTooltip();
+									circle.toggleInfo(false);
 								}
 							}
 						}
@@ -243,7 +240,7 @@
 				for (var i:int=0;i<holder.numElements;i++) {
 					var pack:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for each(var r:ClusterRenderer in pack.renderers) {
-						r.closeInfo()
+						r.toggleInfo(false);
 					}
 				}
 			}
@@ -407,7 +404,11 @@
 
 		]]>
 	</fx:Script>
-
+<!--	<s:Rect  width="100%" height="100%">
+		<s:fill>
+			<s:SolidColor color="0xff0000" alpha=".2" />
+		</s:fill>
+	</s:Rect>-->
 	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
 
 </modules:Module>

@@ -95,12 +95,12 @@
 						if(tweets.indexOf(renderer.data) != -1) {
 							renderer.textColor = 0xffffffff;
 							TweenNano.to(renderer, .5, {fillAlpha: 1});
-							renderer.showTooltip();
+							renderer.toggleInfo(true);
 						}
 						else {
 							renderer.textColor = renderer.fillColor;
 							TweenNano.to(renderer, .5, {fillAlpha: 0.2});
-							renderer.hideTooltip();
+							renderer.toggleInfo(false);
 						}
 					}
 				}
@@ -145,7 +145,7 @@
 				for (var i:int=0;i<holder.numElements;i++) {
 					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
 					for each(var r:TwitterRenderer in pack.renderers) {
-						r.closeInfo()
+						r.toggleInfo(false);
 					}
 				}
 			}

@@ -4,9 +4,7 @@ package com.pentagram.instance.view.visualizer.interfaces
 	
 	public interface IDataVisualizer extends IVisualizer
 	{
-	
-		function unload():void;
-		
+
 		function pause():void;
 		
 		function resume():void;

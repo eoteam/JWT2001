@@ -1,18 +1,13 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
-	import com.pentagram.instance.model.vo.Point3D;
-	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.model.vo.TwitterTopic;
 	import com.pentagram.utils.Colors;
 	
-	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
 	
 	import mx.events.CloseEvent;
 	import mx.graphics.IStroke;
@@ -20,91 +15,27 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.managers.PopUpManager;
 	
 	import spark.components.Group;
-	import spark.components.HGroup;
 	import spark.core.SpriteVisualElement;
 
 	public class TwitterRenderer extends BaseRenderer
-	{
-		public var radiusBeforeRendering:Number;
-		public var finalPosition:Point3D;
-		
+	{	
 		private var info:TWRendererInfo;
-		private var infoVisible:Boolean = false;
-		private var tooltip:TWRendererToolTip;
-		
-		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		public const FILL_ALPHAS:Array = [0.8,0.8];
-		public const FILL_RATIO:Array = [0,255];
-		
-		protected var tooltipContainer:Group;
-		protected var directParent:SpriteVisualElement;
-		protected var stateFlag:Boolean = false;
-		protected var dirtyFlag:Boolean = false;
-		protected var dirtyCoordFlag:Boolean = false;
-		
+
 		public function TwitterRenderer(parent:Group,parent2:SpriteVisualElement) {
-			super();
-			this.fillAlpha = 1;
-			this.textColor = 0xffffffff;
-			this.tooltipContainer = parent;
-			this.directParent = parent2;
-			
-			textFormat = new TextFormat();
-			textFormat.font = "FlamaBookMx2";
-			textFormat.size = 12;
-			textFormat.color = _textColor;
-			textFormat.align="left";
-			
-			labelTF = new TextField();
-			labelTF.selectable = false;
-			labelTF.embedFonts = true;
-			labelTF.mouseEnabled = false;
-			labelTF.defaultTextFormat = textFormat;
-			labelTF.width = 30; labelTF.height = 20;	
-			this.addChild(labelTF);
-			
-			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			this.addEventListener(MouseEvent.MOUSE_DOWN, mouseEventHandler);
-			this.addEventListener(MouseEvent.MOUSE_UP, mouseEventHandler);
-			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			this.addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE,handleRemoved);
+			super(parent,parent2);	
 			tooltip = new TWRendererToolTip();
-			tooltipContainer.addElement(tooltip);
-			tooltip.visible = false;
+			tooltipContainer.addElement(TWRendererToolTip(tooltip));
+			TWRendererToolTip(tooltip).visible = false;
 		}		
-		private function handleRemoved(event:Event):void {
-			if(tooltipContainer.contains(tooltip))
-				tooltipContainer.removeElement(tooltip);
-		}
 		public function set state(value:Boolean):void {
 			if(value && !stateFlag)
 				dirtyFlag = true;
 			stateFlag = value;
-			//this.invalidateDisplayList();
 		}
 		public function get state():Boolean {
 			return stateFlag;
 		}
-		
-		override public function dirty():void {
-			dirtyFlag = true;
-			this.invalidateDisplayList();
-		}
-		public function dirtyCoordinates():void {
-			dirtyCoordFlag = true;
-			this.invalidateProperties();
-		}
-		
-		override protected function commitProperties():void {
-			super.commitProperties();
-			if(dirtyCoordFlag)
-				updateCoordinates();
-		}
-		protected function updateCoordinates():void {
-			
-		}
+
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth,unscaledHeight);
@@ -116,10 +47,14 @@ package com.pentagram.instance.view.visualizer.renderers
 					labelTF.visible = false;
 			}
 		}
-		public function force():void {
-			draw();
+
+		override public function set data(d:Object):void {
+			super.data = d;
+			content =  '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
+						'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
 		}
-		protected function draw():void {
+		
+		public function draw():void {
 			var g:Graphics = this.graphics;//this.graphics;
 			dirtyFlag = false;
 			g.clear();
@@ -162,90 +97,77 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 			}
 		}	
-		private var offset:int = 15;
-		protected function mouseEventHandler(event:Event):void {
+		override protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					showTooltip();
+					if(this.directParent.x + this.x + radius + TWRendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
+						TWRendererToolTip(tooltip).leftTip.visible = false;
+						TWRendererToolTip(tooltip).rightTp.visible = true;
+						TWRendererToolTip(tooltip).x = this.directParent.x +this.x - radius - TWRendererToolTip(tooltip).width - offset;
+					}
+					else { 
+						TWRendererToolTip(tooltip).leftTip.visible = true;
+						TWRendererToolTip(tooltip).rightTp.visible = false;
+						TWRendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
+					}
+					TWRendererToolTip(tooltip).y = this.y - TWRendererToolTip(tooltip).height/2;
+					TWRendererToolTip(tooltip).topic = this._data as TwitterTopic;
+					TWRendererToolTip(tooltip).visible = true;	
+					TWRendererToolTip(tooltip).content = _content;
 					break;
 				}
 					
 				case MouseEvent.ROLL_OUT:
 				{	
-					tooltip.visible = false;
+					TWRendererToolTip(tooltip).visible = false;
 					break;
 				}		
-				case MouseEvent.MOUSE_DOWN:
-				{
-					break;
-				}			
-				case MouseEvent.MOUSE_UP:
-				{
-					break;
-				}
 				case MouseEvent.CLICK:
 				{
-					if(!infoVisible) {
-						tooltip.visible = false;
-						info = new TWRendererInfo();
-						info.content = '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
-										'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
-						info.topic = _data as TwitterTopic;
-						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-
-						if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
-							info.leftTipVisible = false;
-							info.rightTipVisible = true;
-							info.x = this.directParent.x +this.x - radius - info.width - offset;
-						}
-						else { 
-							info.leftTipVisible = true;
-							info.rightTipVisible = false;
-							info.x = this.directParent.x + this.x + radius + offset;
-						}
-						
-						info.y = this.y+60;
-						PopUpManager.addPopUp(info, this.parent, false);
-						infoVisible = true;
-					}
+					toggleInfo(true);
+					break;
 				}
 			}
 		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}
-		private function addedToStageHandler(event:Event):void {
-			
-		}
-		public function hideTooltip():void {
-			tooltip.visible = false;
-		}
-		public function showTooltip():void {
-			if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-				tooltip.leftTip.visible = false;
-				tooltip.rightTp.visible = true;
-				tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
+		public function set content(v:String):void {
+			_content = v;
+			if(this.infoVisible) {
+				info.content = v;
 			}
-			else { 
-				tooltip.leftTip.visible = true;
-				tooltip.rightTp.visible = false;
-				tooltip.x = this.directParent.x + this.x + radius + offset;
-			}
-			tooltip.y = this.y - tooltip.height/2;
-			tooltip.topic = this._data as TwitterTopic;
-			tooltip.visible = true;	
-			tooltip.content = '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
-				'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
 		}
-		public function closeInfo():void {
-			if(infoVisible) {
-				infoVisible = false;
+		public function toggleInfo(visible:Boolean):void {
+			if(!visible && infoVisible) {
 				this.info.close();
 			}
+			else if(visible && !infoVisible && _data) {
+				tooltip.visible = false;
+				info = new TWRendererInfo();
+				info.content = _content;
+				info.topic = _data as TwitterTopic;
+				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
+				moveInfo();
+				PopUpManager.addPopUp(info, this.parent, false);
+			}	
+			infoVisible = visible;
+		}
+		override public function moveInfo():void {
+			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
+				info.leftTipVisible = false;
+				info.rightTipVisible = true;
+				info.x = this.directParent.x +this.x - radius - info.width - offset;
+			}
+			else { 
+				info.leftTipVisible = true;
+				info.rightTipVisible = false;
+				info.x = this.directParent.x + this.x + radius + offset;
+			}
+			info.y = this.y - this.height/2 + 34;
 		}
 	}
-	
 }

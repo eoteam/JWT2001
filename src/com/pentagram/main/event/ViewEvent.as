@@ -22,6 +22,8 @@ package com.pentagram.main.event
 		
 		public static const WINDOW_FOCUS:String = "windowFocus";
 		
+		public static const WINDOW_CLEANUP:String = "cleanupWindow";
+		
 		public var args:Array;
 		public function ViewEvent(type:String,...args)
 		{

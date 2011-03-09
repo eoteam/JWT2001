@@ -145,7 +145,7 @@ package com.pentagram.instance.view.visualizer.views
 			for (i=0; i < this.circlePositions.length;i++){
 				c = this.renderers[i];
 				c.state = true;
-				c.finalPosition = this.circlePositions[i];
+				c.point = this.circlePositions[i];
 				if(animateCoord) {
 					c.alpha = 0;
 					if(!fast)
@@ -158,7 +158,7 @@ package com.pentagram.instance.view.visualizer.views
 						c.x = this.circlePositions[i].x * _loc_2 + width/2;
 						c.y = this.circlePositions[i].y * _loc_2+ height/2;
 						c.alpha = 1;
-						c.force();
+						c.draw();
 					}
 				}
 				else {
@@ -168,7 +168,7 @@ package com.pentagram.instance.view.visualizer.views
 						TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
 					else {
 						c.radius = this.circlePositions[i].z * _loc_2 * scaler;
-						c.force();
+						c.draw();
 					}
 				}
 			}

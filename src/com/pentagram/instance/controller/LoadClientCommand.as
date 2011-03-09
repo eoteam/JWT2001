@@ -84,8 +84,6 @@ package com.pentagram.instance.controller
 					datasetService.addProperties("dataset",dataset);
 				}
 			}
-
-
 			checkCount();
 		}
 		private function handleClientCountries(event:ResultEvent):void
@@ -119,17 +117,9 @@ package com.pentagram.instance.controller
 			var dataset:Dataset = event.token.dataset as Dataset;
 			dataset.data = event.result.toString();
 			dataset.loaded = true;
+			model.orderCountries(dataset);
 			model.parseData(event.token.results as Array,dataset,model.client);
-			
-			var sortField:SortField = new SortField();
-			sortField.name = "id";
-			sortField.numeric = true;
-			var countrySort:Sort = new Sort();
-			countrySort.fields = [sortField];
-			countrySort.compareFunction = orderCountriesById;
-			dataset.rows.sort = countrySort;
-			dataset.rows.refresh();
-			
+			dataset.rows.sort = null;
 			checkCount();
 		}
 		private function addNoneSets():void {
@@ -150,25 +140,14 @@ package com.pentagram.instance.controller
 			model.client.qualityDatasets.addItemAt(none,0);
 			model.client.quantityDatasets.addItemAt(none,0);
 		}
-		private  function orderCountriesById(a:DataRow, b:DataRow,fields:Array = null):int 
-		{ 	
-			if (a.id < b.id)  
-				return -1; 
-				
-			else if (a.id > b.id)  
-				return 1; 
-				
-			else 
-				return 0; 
-			
-		} 
 		private function checkCount():void {
 			counter++;
 			if(counter == total) {
 				model.client.loaded = true;
 				addNoneSets();
-				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 				trace("CLIENT LOADED");
+				this.commandMap.release(this);
 			}
 		}
 	}

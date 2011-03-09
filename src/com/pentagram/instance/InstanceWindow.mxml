@@ -52,9 +52,6 @@
 			public function cleanup():void
 			{
 				context.shutdown();
-				if(shellView) {
-					shellView.unload();
-				}
 				appEventDispatcher = null;
 			}
 
@@ -117,5 +114,5 @@
 	</s:HGroup>	
 	<shell:LoginPanel  id="loginPanel" bottom="48" left="10" tipPadding="-95" visible="{loginBtn.selected}" />
 	
-	<debugger:FlexFPSMonitor />
+	<!--<debugger:FlexFPSMonitor />-->
 </s:Window>

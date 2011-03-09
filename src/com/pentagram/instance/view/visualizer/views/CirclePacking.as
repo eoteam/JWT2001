@@ -207,7 +207,7 @@ package com.pentagram.instance.view.visualizer.views
 		public function hide():void {
 			this.includeInLayout = this.visible = animateCoord =false;
 			for each(var c:ClusterRenderer in this.renderers) {
-				c.hideTooltip();
+				c.toggleInfo(false);
 			}
 		}
 		public function show():void {

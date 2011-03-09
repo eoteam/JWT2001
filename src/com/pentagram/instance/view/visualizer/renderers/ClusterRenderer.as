@@ -1,19 +1,14 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.greensock.TweenNano;
-	import com.pentagram.instance.model.vo.Point3D;
+	import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
-	import flash.display.GradientType;
 	import flash.display.Graphics;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
-	import flash.text.TextField;
-	import flash.text.TextFormat;
-	
-	import fxgparser.parser.model.Data;
 	
 	import mx.events.CloseEvent;
 	import mx.graphics.IStroke;
@@ -21,60 +16,18 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.managers.PopUpManager;
 	
 	import spark.components.Group;
-	import spark.components.HGroup;
 	import spark.core.SpriteVisualElement;
 
-	public class ClusterRenderer extends BaseRenderer
+	public class ClusterRenderer extends BaseRenderer implements IRenderer
 	{
-		public var radiusBeforeRendering:Number;
 		public var radiusCopy:Number;
-		public var point:Point3D;
-		
 		private var info:RendererInfo;
-		private var infoVisible:Boolean = false;
-		private var tooltip:RendererToolTip;
-		private var offset:int = 15;
 		
-		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		public const FILL_ALPHAS:Array = [0.8,0.8];
-		public const FILL_RATIO:Array = [0,255];
-		
-		protected var tooltipContainer:Group;
-		protected var directParent:SpriteVisualElement;
-		protected var stateFlag:Boolean = false;
-		protected var dirtyFlag:Boolean = false;
-		protected var dirtyTooltipFlag:Boolean = false;
-		protected var _content:String;
-			
 		public function ClusterRenderer(parent:Group,parent2:SpriteVisualElement) {
-			super();
-			this.fillAlpha = 1;
-			this.textColor = 0xffffffff;
-			this.tooltipContainer = parent;
-			this.directParent = parent2;
-			
-			textFormat = new TextFormat();
-			textFormat.font = "FlamaBookMx2";
-			textFormat.size = 12;
-			textFormat.color = _textColor;
-			textFormat.align="left";
-			
-			labelTF = new TextField();
-			labelTF.selectable = false;
-			labelTF.embedFonts = true;
-			labelTF.mouseEnabled = false;
-			labelTF.defaultTextFormat = textFormat;
-			labelTF.width = 30; labelTF.height = 20;	
-			this.addChild(labelTF);
-			
-			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			this.addEventListener(Event.REMOVED_FROM_STAGE, removedFromStageHandler);
-			
+			super(parent,parent2);			
 			tooltip = new RendererToolTip();
-			tooltipContainer.addElement(tooltip);
-			tooltip.visible = false;
+			tooltipContainer.addElement(RendererToolTip(tooltip));
+			RendererToolTip(tooltip).visible = false;
 		}		
 		override public function set data(d:Object):void { 
 			super.data = d;
@@ -99,31 +52,6 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function get state():Boolean {
 			return stateFlag;
 		}
-		
-		override public function dirty():void {
-			dirtyFlag = true;
-			this.invalidateDisplayList();
-		}		
-		override protected function commitProperties():void {
-			super.commitProperties();
-			if(dirtyTooltipFlag) {
-				dirtyTooltipFlag = false;
-				if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-					tooltip.leftTip.visible = false;
-					tooltip.rightTp.visible = true;
-					tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
-				}
-				else { 
-					tooltip.leftTip.visible = true;
-					tooltip.rightTp.visible = false;
-					tooltip.x = this.directParent.x + this.x + radius + offset;
-				}
-				tooltip.y = this.y - tooltip.height/2;
-			}
-		}
-		protected function updateCoordinates():void {
-			
-		}
 		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth,unscaledHeight);
@@ -135,7 +63,46 @@ package com.pentagram.instance.view.visualizer.renderers
 					labelTF.visible = false;
 			}
 		}
-		protected function draw():void {
+		override protected function mouseEventHandler(event:Event):void {
+			var mouseEvent:MouseEvent = event as MouseEvent;
+			switch (event.type)
+			{
+				case MouseEvent.ROLL_OVER:
+				{
+					if(_data || _data2) {
+						if(this.directParent.x + this.x + radius + RendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
+							RendererToolTip(tooltip).leftTip.visible = false;
+							RendererToolTip(tooltip).rightTp.visible = true;
+							RendererToolTip(tooltip).x = this.directParent.x +this.x - radius - RendererToolTip(tooltip).width - offset;
+						}
+						else { 
+							RendererToolTip(tooltip).leftTip.visible = true;
+							RendererToolTip(tooltip).rightTp.visible = false;
+							RendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
+						}
+						RendererToolTip(tooltip).y = this.y - RendererToolTip(tooltip).height/2;
+						RendererToolTip(tooltip).visible = true;	
+						RendererToolTip(tooltip).content = _content;
+						RendererToolTip(tooltip).country = _data?_data.country:_data2.country;
+					}
+					break;
+				}
+				case MouseEvent.ROLL_OUT: 
+				{	
+					RendererToolTip(tooltip).visible = false;
+					break;
+				}		
+				case MouseEvent.CLICK:
+				{
+					toggleInfo(true);
+					break;
+				}
+			}
+		}
+		private function handleInfoClose(event:CloseEvent):void {
+			infoVisible = false;
+		}		
+		public function draw():void {
 			var g:Graphics = this.graphics;//this.graphics;
 			dirtyFlag = false;
 			g.clear();
@@ -173,108 +140,42 @@ package com.pentagram.instance.view.visualizer.renderers
 			labelTF.height = labelTF.textHeight+4;	
 			labelTF.defaultTextFormat = textFormat;
 			
-			if(this.alpha == 0) {
+			if(this.alpha == 0) 
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
-				
-			}
 		}	
-		
-		protected function mouseEventHandler(event:Event):void {
-			var mouseEvent:MouseEvent = event as MouseEvent;
-			switch (event.type)
-			{
-				case MouseEvent.ROLL_OVER:
-				{
-					showTooltip();
-					break;
-				}	
-				case MouseEvent.ROLL_OUT:
-				{	
-					hideTooltip();
-					break;
-				}		
-				case MouseEvent.CLICK:
-				{
-					if(!infoVisible && (_data || _data2)) {
-						tooltip.visible = false;
-						info = new RendererInfo();
-						info.country = _data?_data.country:_data2.country;
-						info.content = _content;
-						info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
-
-						if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
-							info.leftTipVisible = false;
-							info.rightTipVisible = true;
-							info.x = this.directParent.x +this.x - radius - info.width - offset;
-						}
-						else { 
-							info.leftTipVisible = true;
-							info.rightTipVisible = false;
-							info.x = this.directParent.x + this.x + radius + offset;
-						}
-						
-						info.y = this.y+60;
-						PopUpManager.addPopUp(info, this.parent, false);
-						infoVisible = true;
-					}
-				}
-			}
-		}
-		public function showTooltip():void {
-			if(_data || _data2) {
-				if(this.directParent.x + this.x + radius + tooltip.width + 10 > this.tooltipContainer.width) {
-					tooltip.leftTip.visible = false;
-					tooltip.rightTp.visible = true;
-					tooltip.x = this.directParent.x +this.x - radius - tooltip.width - offset;
-				}
-				else { 
-					tooltip.leftTip.visible = true;
-					tooltip.rightTp.visible = false;
-					tooltip.x = this.directParent.x + this.x + radius + offset;
-				}
-				tooltip.y = this.y - tooltip.height/2;
-				tooltip.visible = true;	
-				tooltip.content = _content;
-				tooltip.country = _data?_data.country:_data2.country;
-			}
-		}
-		public function hideTooltip():void {
-			tooltip.visible = false;
-		}
-		private function handleInfoClose(event:CloseEvent):void {
-			infoVisible = false;
-		}
-		private function removedFromStageHandler(event:Event):void {
-			if(tooltipContainer.contains(tooltip))
-				tooltipContainer.removeElement(tooltip);
-		}
 		public function set content(v:String):void {
 			_content = v;
 			if(this.infoVisible) {
 				info.content = v;
 			}
 		}
-		public function closeInfo():void {
-			if(infoVisible) {
-				infoVisible = false;
+		public function toggleInfo(visible:Boolean):void {
+			if(!visible && infoVisible) {
 				this.info.close();
 			}
+			else if(visible && !infoVisible && (_data || _data2)) {
+				RendererToolTip(tooltip).visible = false;
+				info = new RendererInfo();
+				info.country = _data?_data.country:_data2.country;
+				info.content = _content;
+				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
+				moveInfo();
+				PopUpManager.addPopUp(info, this.parent, false);
+			}	
+			infoVisible = visible;
 		}
-		override public function set x(value:Number):void {
-			super.x = value;
-			if(tooltip.visible) {
-				dirtyTooltipFlag = true;
-				this.invalidateProperties();
+		override public function moveInfo():void {
+			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
+				info.leftTipVisible = false;
+				info.rightTipVisible = true;
+				info.x = this.directParent.x +this.x - radius - info.width - offset;
 			}
-		}
-		override public function set y(value:Number):void {
-			super.y = value;
-			if(tooltip.visible) {
-				dirtyTooltipFlag = true;
-				this.invalidateProperties();
+			else { 
+				info.leftTipVisible = true;
+				info.rightTipVisible = false;
+				info.x = this.directParent.x + this.x + radius + offset;
 			}
+			info.y = this.y - this.height/2 + 34;
 		}
-
 	}
-	
 }

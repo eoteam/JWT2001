@@ -14,6 +14,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			import com.pentagram.instance.view.visualizer.renderers.RendererToolTip;
 			
@@ -25,7 +26,7 @@
 			private var _flamaBook:Class;
 			
 			import com.greensock.TweenNano;
-			import com.pentagram.instance.view.visualizer.renderers.MapRenderer;
+			import com.pentagram.instance.view.visualizer.renderers.MapParticle;
 			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.Client;
 			import com.pentagram.model.vo.Country;
@@ -39,7 +40,7 @@
 			
 			private const PATH:String = "assets/maps/";
 			
-			private var renderers:Vector.<MapRenderer>;
+			private var renderers:Vector.<MapParticle>;
 			private var renderersDictionary:Dictionary;
 			
 			private var maxRadius:Number = 25;
@@ -80,18 +81,18 @@
 				if(this.renderers && _client.countries.length != this.renderers.length) {
 					for each(var country:Country in _client.countries.source) {
 						var found:Boolean = false;
-						for each(var c:MapRenderer in this.renderers) {
-							if(c.id == country.shortname) {
+						for each(var c:MapParticle in this.renderers) {
+							if(c.sprite.id == country.shortname) {
 								found = true;
 								//break;
 							}	
 						}
 						if(!found) {
-							c = new MapRenderer(holder.engine,this);//tooltip
-							c.id = country.shortname;						
+							c = new MapParticle(holder.engine,this);//tooltip
+							c.sprite.id = country.shortname;						
 							renderers.push(c);
 							renderersDictionary[country.shortname] = c;
-							holder.balls.addParticle(c);
+							holder.addParticle(c);
 							c.visible = false;
 						}
 					}
@@ -102,9 +103,6 @@
 			}
 			public function set isCompare(value:Boolean):void {
 				_isCompare = value;
-			}
-			public function unload():void {
-				
 			}			
 			public function resume():void {
 				
@@ -113,17 +111,17 @@
 				this.holder.stop();
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
-				for each(var renderer:MapRenderer in renderers) {
+				for each(var renderer:MapParticle in renderers) {
 					if(renderer.data && countries.indexOf(renderer.data.country) != -1) {
 						if(renderer.fillAlpha != 1) {
 							TweenNano.to(renderer,0.5,{fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-							renderer.showTooltip();
+							IRenderer(renderer.sprite).toggleInfo(true);
 						}
 					}
 					else {
 						if(renderer.fillAlpha != 0.2) {
 							TweenNano.to(renderer,0.5,{fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-							renderer.hideTooltip();
+							 IRenderer(renderer.sprite).toggleInfo(false);
 						}
 					}
 				}
@@ -137,7 +135,7 @@
 				update();	
 			}
 			public function update():void {
-				for each(var c:MapRenderer in renderers) {
+				for each(var c:MapParticle in renderers) {
 					var r:Number;
 					var value:Number;
 					
@@ -168,19 +166,16 @@
 						else r = maxRadius;
 						
 						TweenNano.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
-						c.content = content;
-						c.draw();
+						IRenderer(c.sprite).content = content;
+						c.draw(holder.running);
 					}
-				}
-				if(holder.balls.collideInternal) {
-					holder.start();
 				}
 			}
 			public function selectAllCategories():void {
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				if(map.region.fxgmap != "JWT2001_view_map_world.xml")
 					loadWorldMap();
-				for each(var c:MapRenderer in renderers) {
+				for each(var c:MapParticle in renderers) {
 					if(c && c.data) {
 						c.visible = true;
 					}
@@ -191,10 +186,10 @@
 			public function addCategory(value:Category,count:int):void {
 				var region:Region = value as Region;
 				var map:FXGLoader =  mapHolder.getElementAt(0) as FXGLoader
-				for each(var c:MapRenderer in renderers) {					
+				for each(var c:MapParticle in renderers) {					
 					if(c && c.data && c.data.country.region.name == region.name) {
 						c.visible = true;	
-						c.draw();
+						c.draw(holder.running);
 					}
 				}
 				if(count > 1 && map.region.fxgmap != "JWT2001_view_map_world.xml")  {
@@ -204,10 +199,10 @@
 			public function removeCategory(value:Category,count:int):void {
 				var region:Region = value as Region;
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
-				for each(var c:MapRenderer in renderers) {			
+				for each(var c:MapParticle in renderers) {			
 					if(c && c.data && c.data.country.region.name == region.name) {
 						c.visible = false;
-						c.draw();
+						c.draw(holder.running);
 					}
 				}
 			}
@@ -225,7 +220,7 @@
 				map.percentHeight = 100;
 				map.percentWidth = 100;
 				
-				for each(var c:MapRenderer in renderers) {
+				for each(var c:MapParticle in renderers) {
 					if(c && c.data && c.data.country.region.name != region.name) {
 						c .visible = false;
 					}
@@ -240,23 +235,19 @@
 					opacity = value==1?false:true;
 					TweenNano.to(mapHolder,.5,{alpha:a});
 				}
-				for each(var renderer:MapRenderer in renderers) {
+				for each(var renderer:MapParticle in renderers)
 					TweenNano.to(renderer, .5, {fillAlpha:value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-				}
-				if(value != 1) {
-					holder.balls.collideInternal = false;
-				
-				}else {
-					holder.balls.collideInternal = true;
+				if(value != 1) 
+					holder.stop();
+				else 
 					holder.start();
-				}
 			}
 			public function get viewOptions():Array {
 				return [maxRadius,opacity,currentYear];
 			}
 			public function clearTooltips():void {
-				for each(var r:MapRenderer in this.renderers) {
-					r.closeInfo()
+				for each(var r:MapParticle in this.renderers) {
+					IRenderer(r.sprite).toggleInfo(false);
 				}
 			}
 			public function get didVisualize():Boolean {
@@ -270,7 +261,7 @@
 			}
 			protected function doVisualize():void {
 				var r:Number;
-				var c:MapRenderer;
+				var c:MapParticle;
 				var row:DataRow;
 				var world:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				var content:String = '';
@@ -310,7 +301,7 @@
 						c = renderersDictionary[row.country.shortname];
 						if(c) {
 							c.data = row;
-							c.content = content;
+							IRenderer(c.sprite).content = content;
 							var region:Region;
 							for each(var reg:Region in _categories.source) {
 								if(c.data.country.region.name == reg.name) {
@@ -334,13 +325,13 @@
 			}			
 			private function adjustRenderers():void {
 				var visibleItems:Array = [];
-				var c:MapRenderer;
+				var c:MapParticle;
 				var map:FXGLoader = mapHolder.getElementAt(0) as FXGLoader;
 				for each(var countrySprite:Shape in map.countries) {
 					c = renderersDictionary[countrySprite.name];						
 					if(c)  {
 						c.countrySprite = countrySprite;
-						c.draw();
+						c.draw(holder.running);
 						visibleItems.push(c);
 					}
 				}
@@ -351,8 +342,8 @@
 				}
 				updateSize();
 			}
-			private function updateRenderer(renderer:MapRenderer):void {
-				renderer.draw();
+			private function updateRenderer(renderer:MapParticle):void {
+				renderer.draw(holder.running);
 			}
 			private function doResize():void {
 				var maxW:Number = 0;
@@ -368,13 +359,13 @@
 				var matr:Matrix;
 				var nw:Number; var nh:Number;  
 
-				for each(var c:MapRenderer in renderers) {
-					c.draw();
+				for each(var c:MapParticle in renderers) {
+					c.draw(false);
 				}
 				
 				if(mapHolder.numElements == 1) {
 					child = FXGLoader(mapHolder.getElementAt(0)) as FXGLoader;
-					if(!holder.balls.collideInternal)
+					if(!holder.running)
 						TweenNano.to(child,0.5,{alpha:1});
 					fxgSprite = child.fxgSprite;
 					widestSprite = fxgSprite.getChildAt(0) as Sprite;
@@ -397,20 +388,22 @@
 					fxgSprite.x = (child.width / 2) - (fxgSprite.width / 2 );
 					fxgSprite.y = (child.height / 2) - (fxgSprite.height / 2);
 				}
+				if(holder.running)
+					holder.start();
 			}
 			private function creationCompleteHandler(event:FlexEvent):void {	
-				renderers = new Vector.<MapRenderer>;
+				renderers = new Vector.<MapParticle>;
 				renderersDictionary = new Dictionary();
 //				var tooltip:RendererToolTip = new RendererToolTip();
 //				this.addElement(tooltip);
 //				tooltip.visible = false;		
 //				var i:int = 0;
 				for each(var country:Country in _client.countries.source) {
-					var c:MapRenderer = new MapRenderer(holder.engine,this);//tooltip
-					c.id = country.shortname;						
+					var c:MapParticle = new MapParticle(holder.engine,this);//tooltip
+					c.sprite.id = country.shortname;						
 					renderers.push(c);
 					renderersDictionary[country.shortname] = c;
-					holder.balls.addParticle(c);
+					holder.addParticle(c);
 					c.visible = false;
 				}
 				if(!_isCompare)
@@ -453,12 +446,9 @@
 				super.updateDisplayList(w,h);
 				if(resizeFlag) {
 					resizeFlag = false;
-					
-					if(holder.balls.collideInternal && !holder.running)
-						holder.start();
-					else if(!holder.balls.collideInternal)
-						doResize();
-					//holder.visible = true;
+					if(holder.running)
+						holder.pause();
+					doResize();
 				}
 			}
 			private function generateContent(value:Number,year:String=null):String {

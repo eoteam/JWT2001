@@ -29,12 +29,14 @@ package org.cove.ape {
 	import flash.display.Sprite;
 	import flash.events.EventDispatcher;
 	
+	import mx.core.UIComponent;
+	
 	/** 
 	 * The base class for all constraints and particles
 	 */
 	public class AbstractItem extends EventDispatcher {
 		
-		private var _sprite:Sprite;
+		protected var _sprite:UIComponent;
 		
 		private var _solid:Boolean;
 		protected var _visible:Boolean = true;
@@ -198,7 +200,7 @@ package org.cove.ape {
 		 * sprite is requested for the first time it is automatically added to the global
 		 * container in the APEngine class.
 		 */	
-		public function get sprite():Sprite {
+		public function get sprite():UIComponent {
 			
 			if (_sprite != null) return _sprite;
 			
@@ -206,7 +208,7 @@ package org.cove.ape {
 				throw new Error("The container property of the APEngine class has not been set");
 			}
 			
-			_sprite = new Sprite();
+			_sprite = new UIComponent();
 			engine.container.addChild(_sprite);
 			return _sprite;
 		}	

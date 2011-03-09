@@ -65,12 +65,13 @@ package com.pentagram.instance.view.mediators.shell
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			view.pdfBtn.addEventListener(MouseEvent.CLICK,saveImage,false,0,true);
 			view.addEventListener(MouseEvent.CLICK,closeSettingsPanel,false,0,true);
-			yearTimer = new Timer(1000);
+			yearTimer = new Timer(250);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
 			
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 		}
 		
 		
@@ -318,6 +319,9 @@ package com.pentagram.instance.view.mediators.shell
 				yearTimer.stop();
 				view.playBtn.label = "Play";
 			}					
+		}
+		private function handleCleanup(event:ViewEvent):void {
+			this.mediatorMap.removeMediator(this);
 		}
 	}
 }

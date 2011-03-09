@@ -51,6 +51,8 @@ package com.pentagram.instance.view.mediators.shell
 			view.numericFilter.range.addEventListener(SliderEvent.CHANGE,handleRangeChange,false,0,true);
 			view.countriesPanel.countryList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,false,0,true);
 			
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
@@ -215,6 +217,9 @@ package com.pentagram.instance.view.mediators.shell
 				view.comparator.enabled = false;
 				view.comparator.currentState = "closed";
 			}
+		}
+		private function handleCleanup(event:ViewEvent):void {
+			this.mediatorMap.removeMediator(this);
 		}
 	}
 }
