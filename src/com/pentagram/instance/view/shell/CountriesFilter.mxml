@@ -31,14 +31,12 @@
 			private function filterCountries(item:Country):Boolean {
 				return item.name.toLowerCase().indexOf(searchInput.text.toLowerCase()) > -1;
 			}
-			
-			
 			private function searchInput_clearHandler(event:Event):void
 			{
 				ArrayCollection(countryList.dataProvider).filterFunction = null; 
 				ArrayCollection(countryList.dataProvider).refresh();
 			}
-
+			
 			
 		]]>
 	</fx:Script>
@@ -70,12 +68,12 @@
 	</s:Rect>	
 	<s:Group width="100%" height.closed="0" height.open="{this.parent.parent.height}" top="24" clipAndEnableScrolling="true" id="gridHolder">
 		<s:DataGrid width="100%" id="countryList" contentBackgroundAlpha="1" contentBackgroundColor="0x242424" borderVisible="false" 
-			height="100%" left="4" right="4"  bottom="4" top="4" 
+			height="100%" left="4" right="4"  bottom="34" top="4" 
 			selectionColor="0xffffff" rollOverColor="0xffffff" skinClass="com.pentagram.view.skins.controls.DarkDataGrid" sortableColumns="true" 
 			selectionMode="multipleRows">
 			<s:columns>
 				<s:ArrayList>
-					<s:GridColumn dataField="value" sortable="true" id="labels" headerText="Country" >
+					<s:GridColumn dataField="value" sortable="false" id="labels" headerText="Country" >
 						<s:headerRenderer>
 							<fx:Component>
 								<s:GridItemRenderer contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C" height="24">
@@ -98,5 +96,9 @@
 		<controls:SuperTextInput  id="searchInput" prompt="Filter" left="3" right="3"  top="4"
 		 change="textinput1_changeHandler(event)"  clear="searchInput_clearHandler(event)"
 		 skinClass="com.pentagram.view.skins.controls.DarkSuperTextInputSkin" />
+		
+		
+		<s:Button label="Clear Selection" id="clearSelection" styleName="darkButton" width="100%"  left="8" right="8" bottom="4" />		
+	
 	</s:Group>
 </s:Group>

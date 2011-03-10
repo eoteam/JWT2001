@@ -182,13 +182,19 @@ package com.pentagram.instance.model
 				
 				//ds3
 				if(ds3 && ds3.id != -1) {
-					if(ds3.time == 1)
+					if(ds3.time == 1) {
 						obj.radius = obj.prevRadius = (row3[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
-					else
+						obj.radiusValue = row3[ds3.years[0]];
+					}
+					else {
 						obj.radius = obj.prevRadius = (row3.value - ds3.min) / (ds3.max - ds3.min);
+						obj.radiusValue = row3.value;
+					}
 				}
-				else
+				else {
 					obj.radius = obj.prevRadius = obj.prevRadius = maxRadius;
+					obj.radiusValue = '';
+				}
 				
 				//ds4
 				if(ds4 && ds4.id != -1 && ds4.id != -2) {
@@ -236,16 +242,19 @@ package com.pentagram.instance.model
 				if(datasets[2] && Dataset(datasets[2]).id != -1) {
 					dataset = datasets[2] as Dataset;
 					row = item.rows[2] as DataRow;
-					if(Dataset(datasets[2]).time == 1)
+					if(Dataset(datasets[2]).time == 1) {
 						item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
-					else
+						item.radiusValue = row[year];
+					}
+					else {
 						item.radius = item.prevRadius = (row.value - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
-				}	
-				else
+						item.radiusValue = row.value;
+					}
+				}
+				else {
 					item.radius = item.prevRadius = maxRadius;
-				
-				
-				
+					item.radiusValue = '';
+				}
  				if(datasets[3] &&  Dataset(datasets[3]).time == 1 && Dataset(datasets[3]).id != -1) {
 					dataset = datasets[3] as Dataset;
 					row = item.rows[3] as DataRow;

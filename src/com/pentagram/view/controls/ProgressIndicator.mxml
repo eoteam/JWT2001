@@ -31,6 +31,10 @@
 						maskTimer.stop();
 				}
 			}
+			public function stop():void {
+				maskTimer.stop();
+				maskTimer.removeEventListener(TimerEvent.TIMER, drawSegment);
+			}
 			private function startProgress():void {
 				totalDegrees = -90;
 				degInRad = degInRad1 = -Math.PI/2;

@@ -7,7 +7,10 @@ package com.pentagram.model.vo
 		public var y:*;
 		public var xCoord:Number;
 		public var yCoord:Number;
+		
 		public var radius:Number;
+		public var radiusValue:*;
+		
 		public var color:uint;
 		public var name:String;
 		public var index:int;

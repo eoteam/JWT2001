@@ -25,7 +25,6 @@ package com.pentagram.instance.view.visualizer.views
 			engine.container = this;
 			engine.addForce(new VectorForce(false,0, 0));//Massless
 			this.addEventListener(Event.ADDED_TO_STAGE,handleAddedStage);
-			
 			//timer.addEventListener(TimerEvent.TIMER,enterFrameHandler);
 		}
 		public function handleAddedStage(event:Event):void {
@@ -35,7 +34,7 @@ package com.pentagram.instance.view.visualizer.views
 			engine.addGroup(walls); 
 			balls.addCollidable ( walls );
 			//balls.collideInternal=true;
-			addEventListener(Event.ENTER_FRAME, enterFrameHandler);		
+			//addEventListener(Event.ENTER_FRAME, enterFrameHandler);		
 			timer = new Timer(5000,1);
 			timer.addEventListener(TimerEvent.TIMER,stop);
 			//timer.start();

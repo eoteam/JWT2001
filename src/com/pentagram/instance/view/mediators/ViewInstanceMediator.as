@@ -31,6 +31,7 @@ package com.pentagram.instance.view.mediators
 	import flash.events.MouseEvent;
 	import flash.events.NativeWindowBoundsEvent;
 	
+	
 	import mx.events.AIREvent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -49,22 +50,19 @@ package com.pentagram.instance.view.mediators
 		private var shellLoaded:Boolean = false;
 		public override function onRegister():void
 		{
-			eventMap.mapListener( eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
-			eventMap.mapListener( eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
-			eventMap.mapListener( eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
-			eventMap.mapListener( eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
+			eventMap.mapListener(eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
+			eventMap.mapListener(eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
+			eventMap.mapListener(eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
+			eventMap.mapListener(eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent);
 			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
+			eventMap.mapListener(view.nativeWindow, NativeWindowBoundsEvent.RESIZE, handleWindowResize, NativeWindowBoundsEvent);
+			eventMap.mapListener(view, ViewEvent.WINDOW_FOCUS,handleWindowFocusChange, ViewEvent);
 			
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
-					
-			view.nativeWindow.addEventListener(NativeWindowBoundsEvent.RESIZE,handleWindowResize,false,0,true);
-			this.addViewListener(ViewEvent.WINDOW_FOCUS,handleWindowFocusChange,ViewEvent);
-
 			setupWindowsMenu();
-
 		} 
 		private function handleLogin(event:AppEvent):void {
 			model.user = event.args[0] as User; 
@@ -103,7 +101,6 @@ package com.pentagram.instance.view.mediators
 				model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
 				model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
 			}
-			
 		}
 		private function enableWindowsMenuItems(enabled:Boolean):void {
 			var managerMenu:NativeMenu = view.stage.nativeWindow.menu.getItemAt(2).submenu;
@@ -146,15 +143,15 @@ package com.pentagram.instance.view.mediators
 			model.singletonWindowModel = args[10];
 			
 			view.createDeferredContent();
-			this.addViewListener(AIREvent.WINDOW_ACTIVATE,handleWindowFocus,AIREvent);
-			this.addViewListener(Event.CLOSE,handleCloseWindow,Event);
-			if(NativeWindow.supportsMenu) {
-				
+
+			eventMap.mapListener(view, AIREvent.WINDOW_ACTIVATE,handleWindowFocus, AIREvent);
+			eventMap.mapListener(view, Event.CLOSE,handleCloseWindow,Event);
+			
+			if(NativeWindow.supportsMenu)
 				view.showStatusBar = false;
-			}
-			else {
+			else
 				view.showStatusBar = true;
-			}
+			
 			if(view.compareArgs.length > 0) {
 				model.client = view.compareArgs[0];
 				model.selectedSet = view.compareArgs[1];
@@ -168,7 +165,6 @@ package com.pentagram.instance.view.mediators
 		private function handleWindowFocus(event:AIREvent):void {
 			if(model.singletonWindowModel)
 				appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_FOCUS,view.id));
-		
 		}
 		private function handleWindowFocusChange(event:ViewEvent):void {
 			if(event.args[0] == true) 
@@ -194,7 +190,6 @@ package com.pentagram.instance.view.mediators
 				model.toolBarMenuItem.addEventListener(Event.SELECT,handleToggle,false,0,true);
 				model.exportImageMenuItem.addEventListener(Event.SELECT,handleImageExport,false,0,true);
 			}
-			
 		}
 		private function handleToggle(event:Event):void {
 			if(event.target.label == "Hide Tool Bars") {
@@ -224,8 +219,6 @@ package com.pentagram.instance.view.mediators
 			model.exportMenuItem.removeEventListener(Event.SELECT,handleMenuItem);
 			model.importMenuItem.removeEventListener(Event.SELECT,handleImportMenuItem);	
 		}
-		
-		
 		private function handleClientSelected(event:ViewEvent):void {
 			model.toolBarMenuItem.enabled = true;
 			view.progressIndicator.visible = true;
@@ -249,7 +242,7 @@ package com.pentagram.instance.view.mediators
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void {
 			view.title = model.client.name;
-			//view.progressIndicator.visible = false;
+			view.progressIndicator.visible = false;
 		}
 		private function loadSearchView(event:VisualizerEvent):void {
 			view.currentState = view.searchState.name;
@@ -263,6 +256,28 @@ package com.pentagram.instance.view.mediators
 			trace("WTFFFF");
 		}
 		override public function onRemove():void {
+			super.onRemove();
+							
+			eventMap.unmapListener(eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
+			eventMap.unmapListener(eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
+			eventMap.unmapListener(eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
+			eventMap.unmapListener(eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent);
+			eventMap.unmapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);	
+			eventMap.unmapListener(view.nativeWindow, NativeWindowBoundsEvent.RESIZE, handleWindowResize, NativeWindowBoundsEvent);
+			eventMap.unmapListener(view, ViewEvent.WINDOW_FOCUS, handleWindowFocusChange, ViewEvent);
+			eventMap.unmapListener(view, AIREvent.WINDOW_ACTIVATE,handleWindowFocus, AIREvent);
+			eventMap.unmapListener(view, Event.CLOSE,handleCloseWindow,Event);
+			
+			if(NativeApplication.supportsMenu) {
+				model.exportMenuItem.removeEventListener(Event.SELECT,handleMenuItem);
+				model.importMenuItem.removeEventListener(Event.SELECT,handleImportMenuItem);
+				model.toolBarMenuItem.removeEventListener(Event.SELECT,handleToggle);
+				model.exportImageMenuItem.removeEventListener(Event.SELECT,handleImageExport);
+			}
+			
 			model.clients = null;
 			model.regions = null;
 			model.countries = null;
@@ -271,27 +286,14 @@ package com.pentagram.instance.view.mediators
 			model.exportMenuItem = null;	
 			model.importMenuItem = null;
 			
-			mediatorMap.unmapView(Search);
-			mediatorMap.unmapView(BottomBar);
-			mediatorMap.unmapView(Shell);  
-			mediatorMap.unmapView(RightTools);
-			mediatorMap.unmapView(BottomTools);
-			mediatorMap.unmapView(BottomTools); 
-			mediatorMap.unmapView(LoginPanel);
-			
-			mediatorMap.unmapView(EditorMainView);
-			mediatorMap.unmapView(OverviewEditor);
-			mediatorMap.unmapView(DatasetCreator);
-			mediatorMap.unmapView(DatasetEditor);
+			model = null;
 			
 			view.cleanup();
-
-			super.onRemove();
 		}
 		private function handleCloseWindow(event:Event):void {
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.WINDOW_CLOSED, view.id));
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.WINDOW_CLEANUP));
-			appEventDispatcher = null;
+			view.progressIndicator.stop();
 			this.mediatorMap.removeMediator(this);
 		}
 		private function handleWindowResize(event:NativeWindowBoundsEvent):void {

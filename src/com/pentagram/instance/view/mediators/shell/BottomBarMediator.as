@@ -64,5 +64,9 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleCleanup(event:ViewEvent):void {
 			this.mediatorMap.removeMediator(this);
 		}
+		override public function onRemove():void {
+			view.searchInput.dataProvider = null;	
+			super.onRemove();
+		}
 	}
 }

@@ -47,11 +47,11 @@ package com.pentagram.instance.view.mediators.shell
 		[Inject(name="ApplicationEventDispatcher")]
 		public var appEventDispatcher:EventDispatcher;  
 		
-		
 		private var loaders:Array = [];
 		private var datasetids:String;
 		private var regionOption:Dataset;
 		private var fourthSetList:ArrayList;
+		private var currentEvent:Event;
 		
 		override public function onRegister():void
 		{
@@ -87,10 +87,10 @@ package com.pentagram.instance.view.mediators.shell
 
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
-			view.errorPanel.addEventListener("okEvent",handleOkError,false,0,true);
-			view.importPanel.addEventListener("okEvent",handleImport,false,0,true);
-			view.importPanel.addEventListener("cancelEvent",handleImport,false,0,true);
-			
+			eventMap.mapListener(view.errorPanel,"okEvent",handleOkError,Event);
+			eventMap.mapListener(view.importPanel,"okEvent",handleImport,Event);
+			eventMap.mapListener(view.importPanel,"cancelEvent",handleImport,Event);
+
 			if(model.user) {
 				view.currentState = view.loggedInState.name;
 				model.exportMenuItem.enabled = true;
@@ -123,7 +123,6 @@ package com.pentagram.instance.view.mediators.shell
 			for each(var ds:Dataset in model.client.datasets.source) {
 				fourthSetList.addItem(ds);
 			}
-			
 		}
 		private function handleStackChange(event:IndexChangedEvent):void {	
 			var util:ModuleUtil;
@@ -197,7 +196,6 @@ package com.pentagram.instance.view.mediators.shell
 					loaders.push(util);
 				}
 				else {
-					//client selected
 					restoreViewOptions(view.twitterView);
 				}
 			}
@@ -418,14 +416,25 @@ package com.pentagram.instance.view.mediators.shell
 			
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
+			util.removeEventListener("moduleLoaded",handleGraphLoaded);
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
-				if(model.client.datasets.length > 3) {
-					var ds1:Dataset = view.tools.firstSet.selectedItem =  view.tools.firstSet.dataProvider.getItemAt(1) as Dataset;
-					var ds2:Dataset = view.tools.secondSet.selectedItem =  view.tools.secondSet.dataProvider.getItemAt(2) as Dataset;
-					var ds3:Dataset = view.tools.thirdSet.selectedItem =  view.tools.thirdSet.dataProvider.getItemAt(3) as Dataset;
+				//if(model.client.datasets.length > 2) {
+					var ds1:Dataset = view.tools.firstSet.selectedItem =  model.client.datasets.length > 1 ?
+						model.client.datasets.getItemAt(1) : model.client.datasets.getItemAt(0);
+					
+					var ds2:Dataset = view.tools.secondSet.selectedItem =  model.client.datasets.length > 2 ?
+						model.client.datasets.getItemAt(2) : model.client.datasets.getItemAt(0);
+					
+					var ds3:Dataset = view.tools.thirdSet.selectedItem =  model.client.quantityDatasets.length > 2 ?
+						model.client.quantityDatasets.getItemAt(model.client.quantityDatasets.length-1) : model.client.datasets.getItemAt(0);
 
+					if(ds3 == ds1 || ds3 == ds2) {
+						ds3 = model.client.datasets.getItemAt(0) as Dataset;
+						view.tools.thirdSet.selectedIndex = 0;
+					}
+					
 					view.tools.fourthSet.dataProvider = fourthSetList;
 					var ds4:Dataset = view.tools.fourthSet.selectedItem = regionOption;
 					
@@ -434,7 +443,7 @@ package com.pentagram.instance.view.mediators.shell
 					datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
 					checkNotes();
 					this.formatVizTitle(view.graphView.datasets);
-				}
+				//}
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 25;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;	
 			}
@@ -444,7 +453,7 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IMapView) {
 				view.mapHolder.addElement(util.view as Group);
 				this.view.mapView = util.view as IMapView;
-				util.view.addEventListener('vizComplete',handleVizComplete,false,0,true);
+				util.view.addEventListener('vizComplete',handleVizComplete);
 				this.setupMapView();		
 			}
 		}
@@ -494,6 +503,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleClusterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
+			util.removeEventListener("moduleLoaded",handleClusterLoaded);
 			if(util.view is IClusterView) {
 				this.view.clusterView = util.view as IClusterView;
 				view.clusterHolder.addElement(util.view as Group);
@@ -521,13 +531,13 @@ package com.pentagram.instance.view.mediators.shell
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}			
-
 		}
 		private function handleTwitterLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
+			util.removeEventListener("moduleLoaded",handleTwitterLoaded);
 			if(util.view is ITwitterView) {
-				util.view.addEventListener('vizComplete',handleVizComplete,false,0,true);
-				util.view.addEventListener('vizStarted',handleVizComplete,false,0,true);
+				util.view.addEventListener('vizComplete',handleVizComplete);
+				util.view.addEventListener('vizStarted',handleVizComplete);
 				view.twitterView = util.view as ITwitterView;
 				view.twitterView.searchTerm = model.client.shortname != '' ?model.client.shortname:model.client.name;
 				view.twitterHolder.addElement(util.view as Group);	
@@ -535,7 +545,6 @@ package com.pentagram.instance.view.mediators.shell
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
 			}			
 		}
-
 		private function handleVizComplete(event:Event):void {
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,event.type=='vizComplete'?false:true));
 			if(event.target == view.twitterView) {
@@ -549,12 +558,7 @@ package com.pentagram.instance.view.mediators.shell
 			var arr:Array = viz.viewOptions;
 			view.filterTools.optionsPanel.maxRadiusSlider.value = arr[0];
 			view.filterTools.optionsPanel.xrayToggle.selected = arr[1];
-			//view.tools.yearSlider.selectedItem
 		}
-		
-
-		private var currentEvent:Event;
-
 		private function formatVizTitle(datasets:Array):void {
 			var t:String = ''
 			switch(view.visualizerArea.selectedIndex) {
@@ -578,8 +582,8 @@ package com.pentagram.instance.view.mediators.shell
 					if(datasets[0].id != -1)
 						t = datasets[0].name; 
 					
-					if(datasets[0].id != -1) {
-						if(datasets[1].id != -1) {	
+					if(datasets[1].id != -1) {
+						if(datasets[0].id != -1) {	
 							t += " vs ";
 							t +=  datasets[1].name + ",";
 						}
@@ -589,12 +593,14 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					
 					if(datasets[2].id != -1)
-						t += " sized by " + datasets[2].name;
+						t += " sized by " + datasets[2].name +", ";
 					
 					if(datasets[3].id > 0)
-						t += ", grouped by " + datasets[3].name;
+						t += " grouped by " + datasets[3].name;
 					else if(datasets[3].id == -2)
-						t += ", grouped by region";
+						t += " grouped by region";
+					else if(datasets[3].id == -1 && t.charAt(t.length-1) == ',')
+						t = t.substr(0,t.length-1);
 				break;
 				
 				case model.TWITTER_INDEX:
@@ -603,16 +609,56 @@ package com.pentagram.instance.view.mediators.shell
 			view.vizTitle.text = t;
 		}
 		private function handleCleanup(event:ViewEvent):void {
+			this.mediatorMap.removeMediator(this);
+		}
+		override public function onRemove():void {
+			view.mapView.pause();
 			for each(var util:ModuleUtil in loaders) {
 				util.unloadModule();
 			}
 			loaders = [];
-			eventMap.unmapListeners();
-			this.mediatorMap.removeMediator(this);
-		}
-		override public function onRemove():void {
-			trace("shell removed");
-			eventMap.unmapListeners();
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);		
+			
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.LOAD_SEARCH_VIEW,handleLoadSearchView,VisualizerEvent);		
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.TWITTER_SEARCH,handleTwitterSearch);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.TWITTER_RELOAD,handleTwitter);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.TWITTER_SORT,handleTwitter);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.TWITTER_OPTIONS,handleTwitter);
+			
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.STOP_TIMELINE,handleStopTimeline);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.PLAY_TIMELINE,handlePlayTimeline);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
+			
+			
+			eventMap.unmapListener(eventDispatcher,EditorEvent.ERROR,handleImportFailed);
+			eventMap.unmapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
+			eventMap.unmapListener(eventDispatcher,EditorEvent.START_IMPORT,handleStartImport);
+			
+			eventMap.unmapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
+			eventMap.unmapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
+			eventMap.unmapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
+			eventMap.unmapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
+			eventMap.unmapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
+			eventMap.unmapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);
+			
+			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
+			eventMap.unmapListener(view.errorPanel,"okEvent",handleOkError,Event);
+			eventMap.unmapListener(view.importPanel,"okEvent",handleImport,Event);
+			eventMap.unmapListener(view.importPanel,"cancelEvent",handleImport,Event);			
+
+			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
+			
+			model.exportDirectory.removeEventListener(Event.SELECT, file_select);
+			model.client.datasets.removeEventListener(CollectionEvent.COLLECTION_CHANGE,setupFourthSetList);
+			
+			trace("Shell Mediator Released");
 			super.onRemove();
 		}
 	}

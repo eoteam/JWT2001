@@ -18,7 +18,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import spark.components.Group;
 	import spark.core.SpriteVisualElement;
 
-	public class ClusterRenderer extends BaseRenderer implements IRenderer
+	public class ClusterRenderer extends BaseRenderer
 	{
 		public var radiusCopy:Number;
 		private var info:RendererInfo;
@@ -102,54 +102,19 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}		
-		public function draw():void {
-			var g:Graphics = this.graphics;//this.graphics;
-			dirtyFlag = false;
-			g.clear();
-			var stroke:IStroke = new Stroke(_fillColor,1,1);
-			stroke.apply(g,null,null);
-			var matr:Matrix = new Matrix();
-			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
-			var colors:Array;
-			if(_fillAlpha > 0.2)
-				colors = [_fillColor,Colors.darker(_fillColor)];
-			else
-				colors =  [_fillColor,_fillColor];
-			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
-			g.drawCircle(0, 0, _radius);
-			g.endFill();	
-			
+		override public function draw():void {
+			super.draw();
 			labelTF.text = _data?DataRow(_data).country.shortname:DataRow(_data2).country.shortname;
-			labelTF.width = labelTF.textWidth;
-			
-			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
-				textFormat.size = 10;
-				labelTF.visible = true;
-			}
-			else if(_radius <= labelTF.textWidth/2)
-				labelTF.visible = false;
-			else {
-				textFormat.size = 12;
-				labelTF.visible = true;	
-			}
-			textFormat.color = _textColor;			
-			
-			labelTF.x = labelTF.textWidth/2;
-			labelTF.y = -labelTF.textHeight/2;
-			labelTF.width = labelTF.textWidth+4;
-			labelTF.height = labelTF.textHeight+4;	
-			labelTF.defaultTextFormat = textFormat;
-			
 			if(this.alpha == 0) 
 				TweenNano.to(this,0.5,{delay:1,alpha:1});
 		}	
-		public function set content(v:String):void {
-			_content = v;
+		override public function set content(v:String):void {
+			super.content = v;
 			if(this.infoVisible) {
 				info.content = v;
 			}
 		}
-		public function toggleInfo(visible:Boolean):void {
+		override public function toggleInfo(visible:Boolean):void {
 			if(!visible && infoVisible) {
 				this.info.close();
 			}
@@ -175,7 +140,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y+40;// - this.height/2 + 34;
+			info.y = this.y+38-15;// - this.height/2 + 34;
 		}
 	}
 }

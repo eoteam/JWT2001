@@ -5,10 +5,13 @@ package com.pentagram.instance
 	
 	import flash.display.DisplayObjectContainer;
 	import flash.events.EventDispatcher;
+	import flash.sampler.getMemberNames;
+	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
 	
 	import org.robotlegs.base.ContextEvent;
 	import org.robotlegs.mvcs.Context;
-		
+	
 	public class InstanceContext extends Context
 	{
 		public var appEventDispatcher:EventDispatcher;
@@ -27,7 +30,7 @@ package com.pentagram.instance
 		override public function shutdown():void {
 			injector.unmap(EventDispatcher,"ApplicationEventDispatcher");
 			commandMap.unmapEvents();
-			injector.unmap(InstanceModel);
+			injector.unmap(InstanceModel);	
 			super.shutdown(); 
 		}
 	}

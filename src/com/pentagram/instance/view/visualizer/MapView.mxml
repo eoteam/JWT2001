@@ -108,7 +108,7 @@
 				
 			}
 			public function pause():void {
-				this.holder.stop();
+				//this.holder.stop();
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
 				for each(var renderer:MapParticle in renderers) {

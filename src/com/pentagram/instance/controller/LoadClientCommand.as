@@ -115,7 +115,7 @@ package com.pentagram.instance.controller
 		private function handleDatasetLoaded(event:ResultEvent):void {
 			//trace("Dataset counter",counter,model.client.datasets.length);
 			var dataset:Dataset = event.token.dataset as Dataset;
-			dataset.data = event.result.toString();
+			//dataset.data = event.result.toString();
 			dataset.loaded = true;
 			model.orderCountries(dataset);
 			model.parseData(event.token.results as Array,dataset,model.client);

@@ -133,7 +133,7 @@
     <s:Group left="0" right="0" top="0" bottom="0">
 
 		
-		<s:Path verticalCenter="0" id="leftTip"  winding="nonZero" data="M 0 0 L -16 10 L 0 20 L 0 0 Z"
+		<s:Path verticalCenter="7.5" id="leftTip"  winding="nonZero" data="M 0 0 L -16 10 L 0 20 L 0 0 Z"
 		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.leftTipVisible}">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
@@ -143,7 +143,7 @@
 			</s:filters>
 		</s:Path>
 		
-		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="0" winding="nonZero"
+		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="7.5" winding="nonZero"
 		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>

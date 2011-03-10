@@ -1,13 +1,16 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
 	import com.pentagram.instance.model.vo.Point3D;
+	import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
 	
 	import flash.display.DisplayObject;
 	import flash.display.GradientType;
+	import flash.display.Graphics;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -15,13 +18,15 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.containers.Canvas;
 	import mx.core.IVisualElement;
 	import mx.core.UIComponent;
+	import mx.graphics.IStroke;
+	import mx.graphics.Stroke;
 	
 	import spark.components.Group;
 	import spark.components.supportClasses.SkinnableComponent;
 	import spark.core.SpriteVisualElement;
 	
 
-	internal class BaseRenderer extends Sprite
+	internal class BaseRenderer extends Sprite implements IRenderer
 	{
 
 		protected var labelTF:TextField;
@@ -212,6 +217,52 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function handleRemoved(event:Event):void {
 			if(tooltipContainer.contains(tooltip))
 				tooltipContainer.removeElement(tooltip);
+		}
+		public function draw():void {
+			var g:Graphics = this.graphics;
+			dirtyFlag = false;
+			g.clear();
+			var stroke:IStroke = new Stroke(_fillColor,1,1);
+			stroke.apply(g,null,null);
+			var matr:Matrix = new Matrix();
+			matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
+			var colors:Array;
+			if(_fillAlpha > 0.2)
+				colors = [_fillColor,Colors.darker(_fillColor)];
+			else
+				colors =  [_fillColor,_fillColor];
+			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+			g.drawCircle(0, 0, _radius);
+			g.endFill();	
+			
+			
+			labelTF.width = labelTF.textWidth;
+			
+			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
+				textFormat.size = 10;
+				labelTF.visible = true;
+			}
+			else if(_radius <= labelTF.textWidth/2)
+				labelTF.visible = false;
+			else {
+				textFormat.size = 12;
+				labelTF.visible = true;	
+			}
+			textFormat.color = _textColor;			
+			if(labelTF.rotationY == 0)
+				labelTF.x = -labelTF.textWidth/2;
+			else
+				labelTF.x = labelTF.textWidth/2;
+			labelTF.y = -labelTF.textHeight/2;
+			labelTF.width = labelTF.textWidth+4;
+			labelTF.height = labelTF.textHeight+4;	
+			labelTF.defaultTextFormat = textFormat;
+		}
+		public function set content(value:String):void {
+			_content = value;
+		}
+		public function toggleInfo(visible:Boolean):void {
+			
 		}
 	}
 }

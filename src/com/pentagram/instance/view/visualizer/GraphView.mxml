@@ -177,7 +177,7 @@
 			}
 			public function clearTooltips():void {
 				for each(var item:BubbleSeriesItem in this.mainSeries.items) {
-					BubbleRenderer(item.itemRenderer).closeInfo();
+					BubbleRenderer(item.itemRenderer).toggleInfo(false);
 				}
 			}
 			public function selectAllCategories():void {
@@ -196,28 +196,29 @@
 			}
 			public function dtFunc(hd:HitData):String {	
 				var item:NormalizedVO = hd.item as NormalizedVO;
-//				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
-//				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
-//				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
-//				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
-//				result += "</p></TextFlow>";	
-//				item.content = result;
-//				return result;
 				return item.content;
 			}
 			private function generateContent(item:NormalizedVO):void {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
-				result +=  '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>';
-				result +=  '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>';
-				if(ds3) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + Math.round(item.radius*ds3.max) + '</span>';			
+				result += ds1.id > 0 ? '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>' : '';
+				result += ds2.id > 0 ? '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>' : '';
+				if(ds3 && ds3.id > 0) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + item.radiusValue + '</span>';			
 				result += "</p></TextFlow>";	
 				item.content = result;
 			}
 			public function selectCountries(countries:Vector.<Object>):void {
-				for each(var item:NormalizedVO in _visdata) {
-					if(countries.indexOf(item.country) != -1)
-							TweenNano.to(item,0.5,{alpha:1});
-					else TweenNano.to(item,0.5,{alpha:0.2});
+				for each(var r:BubbleSeriesItem in mainSeries.items) {
+					var item:NormalizedVO = r.item as NormalizedVO;
+					if(countries.indexOf(item.country) != -1 && item.alpha != 1) {
+						TweenNano.to(item,0.5,{alpha:1});
+						if(r.itemRenderer)
+							BubbleRenderer(r.itemRenderer).toggleInfo(true);
+					}
+					else if(item.alpha != 0.2) { 
+						TweenNano.to(item,0.5,{alpha:0.2});
+						if(r.itemRenderer)
+							BubbleRenderer(r.itemRenderer).toggleInfo(false);
+					}					
 				}
 			}
 
@@ -225,7 +226,7 @@
 			{
 				var renderer:BubbleRenderer = event.hitData.chartItem.itemRenderer as BubbleRenderer;
 				if(renderer)
-					renderer.showInfo();
+					renderer.toggleInfo(true);
 			}
 			
 

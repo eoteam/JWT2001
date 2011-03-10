@@ -24,109 +24,27 @@ package com.pentagram.instance.view.visualizer.renderers
 	import spark.components.Group;
 
 
-	internal class MapRenderer extends Sprite implements IRenderer
+	internal class MapRenderer extends BaseRenderer
 	{
 		
 		private var info:RendererInfo;
 		protected var particle:MapParticle;
 		public var countrySprite:Shape;
-		
-		protected var infoVisible:Boolean = false;
-		protected var offset:int = 15;
-		
-		protected var tooltipContainer:Group;
-		protected var directParent:DisplayObject;
-		protected var tooltip:Group;
-		
-		protected var _fillColor:uint = 0xffcccccc;
-		protected var _textColor:uint = 0xffcccccc;
-		protected var _fillAlpha:Number = 0.2;
-		
-		protected var _content:String;
-		protected var _data:DataRow;
-		
-		protected var labelTF:TextField;
-		protected var textFormat:TextFormat;
-		
-		[Bindable] protected var _radius:Number = 1;
-		
-		public const DEFAULT_GRADIENTTYPE:String = GradientType.LINEAR;
-		public const FILL_ALPHAS:Array = [0.8,0.8];
-		public const FILL_RATIO:Array = [0,255];
-		
 		public var id:String;
 		
 		public function MapRenderer(particle:MapParticle,parent:Group,parent2:DisplayObject) {
-			
-			this.mouseChildren = false;
-			this.textColor = 0xffffffff;
-			this.tooltipContainer = parent;
-			this.directParent = parent2;
-			
-			textFormat = new TextFormat();
-			textFormat.font = "FlamaBookMx2";
-			textFormat.size = 12;
-			textFormat.color = _textColor;
-			textFormat.align="left";
-			
-			labelTF = new TextField();
-			labelTF.selectable = false;
-			labelTF.embedFonts = true;
-			labelTF.mouseEnabled = false;
-			labelTF.defaultTextFormat = textFormat;
-			labelTF.width = 30; labelTF.height = 20;
-			this.addChild(labelTF);
-			
-			this.addEventListener(MouseEvent.ROLL_OVER, mouseEventHandler);
-			this.addEventListener(MouseEvent.ROLL_OUT, mouseEventHandler);
-			this.addEventListener(MouseEvent.CLICK, mouseEventHandler);
-			
+			super(parent,parent2);
+			labelTF.rotationY = 0;
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(RendererToolTip(tooltip));
 			RendererToolTip(tooltip).visible = false;
 		}	
-		
-		public function get data():Object {
-			return _data; 
-		}
-		public function set data(d:Object):void { 
-			_data = d as DataRow;
+		override public function set data(d:Object):void { 
+			_data = d;
 			if(d)
 				fillColor = textColor = DataRow(d).country.region.color;
 		}
-
-//		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
-//			super.updateDisplayList(unscaledWidth,unscaledHeight);
-//			if(dirtyFlag && stateFlag)
-//				draw();
-//			else if(!stateFlag) {
-//				graphics.clear();
-//				if(labelTF)
-//					labelTF.visible = false;
-//			}
-//		}
-		
-		
-		[Bindable] public function get radius():Number { return _radius; }		
-		public function set radius(r:Number):void {
-			_radius = r;
-			if(isNaN(_radius))
-				_radius = 0;
-			draw();
-		}		
-		public function get fillColor():uint { return _fillColor; }
-		public function set fillColor(c:uint):void { _fillColor = c; draw();	}
-		
-		public function get textColor():uint { return _textColor; }
-		public function set textColor(c:uint):void { _textColor = c; draw();	}
-		
-		public function get fillAlpha():Number { return _fillAlpha; }
-		public function set fillAlpha(a:Number):void {
-			_fillAlpha = a;
-			draw();
-		}	
-		
-		protected function mouseEventHandler(event:Event):void {
+		override protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
 			{
@@ -165,60 +83,23 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}	
-		public function draw():void {
-			var g:Graphics = this.graphics;
-			g.clear();
+		override public function draw():void {
 			if(_data) {
-				var stroke:IStroke = new Stroke(_fillColor,1,1);
-				stroke.apply(g,null,null);
-				var matr:Matrix = new Matrix();
-				matr.createGradientBox(_radius*2, _radius*2, Math.PI/1.7, 0, 0);
-				
-				var colors:Array;
-				if(_fillAlpha > 0.2) {
-					colors = [_fillColor,Colors.darker(_fillColor)];
-					_textColor = 0xffffff;
-				}
-				else {
-					colors =  [_fillColor,_fillColor];
-					_textColor = _fillColor;
-				}
-				g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr);			
-				g.drawCircle(0, 0, _radius);
-				g.endFill();	
-				
+				super.draw();
 				labelTF.text = DataRow(_data).country.shortname;
-				labelTF.width = labelTF.textWidth;
-				
-				if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
-					textFormat.size = 10;
-					labelTF.visible = true;
-				}
-				else if(_radius <= labelTF.textWidth/2)
-					labelTF.visible = false;
-				else {
-					textFormat.size = 12;
-					labelTF.visible = true;	
-				}
-				textFormat.color = _textColor;			
-				
-				labelTF.x = -labelTF.textWidth/2;
-				labelTF.y = -labelTF.textHeight/2;
-				labelTF.width = labelTF.textWidth+4;
-				labelTF.height = labelTF.textHeight+4;	
-				labelTF.defaultTextFormat = textFormat;
-				
 				if(this.alpha == 0) 
 					TweenNano.to(this,0.5,{delay:1,alpha:1});
 			}
+			else
+				this.graphics.clear();
 		}	
-		public function set content(v:String):void {
-			_content = v;
+		override public function set content(v:String):void {
+			super.content = v;
 			if(this.infoVisible) {
 				info.content = v;
 			}
 		}
-		public function toggleInfo(visible:Boolean):void {
+		override public function toggleInfo(visible:Boolean):void {
 			if(!visible && infoVisible) {
 				this.info.close();
 			}
@@ -233,7 +114,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			}	
 			infoVisible = visible;
 		}
-		public function moveInfo():void {
+		override public function moveInfo():void {
 			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
 				info.leftTipVisible = false;
 				info.rightTipVisible = true;
@@ -244,7 +125,17 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y+40;
+			info.y = this.y+38-15;
+		}
+		override public function set x(value:Number):void {
+			super.x = value;
+			if(infoVisible)
+				moveInfo();
+		}
+		override public function set y(value:Number):void {
+			super.y = value;
+			if(infoVisible)
+				moveInfo();
 		}
 		public function move(x:Number,y:Number):void {
 			this.x = x;

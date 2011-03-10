@@ -30,14 +30,15 @@ package com.pentagram.instance.view.mediators.shell
 		public override function onRegister():void
 		{
 			//eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent,false,0,true);
-			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent,false,0,true);			
-			eventMap.mapListener(view.searchInput,CustomEvent.SELECT,handleSelect,CustomEvent);
-			eventMap.mapListener(view.searchInput,FlexEvent.ENTER,searchInput_enterHandler,FlexEvent);			
-			eventMap.mapListener(view,'notfoundState',handleNotfoundState,Event,false,0,true);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
+			eventMap.mapListener(view.searchInput,CustomEvent.SELECT,handleSelect,CustomEvent);
+			eventMap.mapListener(view.searchInput,FlexEvent.ENTER,searchInput_enterHandler,FlexEvent);			
+			eventMap.mapListener(view,'notfoundState',handleNotfoundState,Event);
+				
 			view.searchInput.visible = true;	
 			view.searchInput.dataProvider = model.clients.source;
 			if(model.user) {
@@ -69,14 +70,30 @@ package com.pentagram.instance.view.mediators.shell
 			view.loggedIn = false;
 		}	
 		private function handleNotfoundState(event:Event):void {
-			view.newClientBtn.addEventListener(MouseEvent.CLICK,handleNewClientBtn,false,0,true);
+			eventMap.mapListener(view.newClientBtn,MouseEvent.CLICK,handleNewClientBtn,MouseEvent);
+
 		}
 		private function handleNewClientBtn(event:MouseEvent):void {
 			appEventDispatcher.dispatchEvent(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"clientWindow"));
 		}
 		private function handleCleanup(event:ViewEvent):void {
-			view.searchInput.dataProvider = null;
 			this.mediatorMap.removeMediator(this);
+		}
+		override public function onRemove():void {
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);			
+			
+			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
+			eventMap.unmapListener(view.searchInput,CustomEvent.SELECT,handleSelect,CustomEvent);
+			eventMap.unmapListener(view.searchInput,FlexEvent.ENTER,searchInput_enterHandler,FlexEvent);			
+			eventMap.unmapListener(view,'notfoundState',handleNotfoundState,Event);
+			
+			eventMap.unmapListener(view.newClientBtn,MouseEvent.CLICK,handleNewClientBtn,MouseEvent);
+	
+			view.searchInput.dataProvider = null;			
+			trace("Search Mediator Released");
+			super.onRemove();
 		}
 	}
 }

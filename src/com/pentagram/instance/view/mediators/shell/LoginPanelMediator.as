@@ -32,18 +32,18 @@ package com.pentagram.instance.view.mediators.shell
 		
 		override public function onRegister():void
 		{
-			//eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event,false,0,true);
+			//eventMap.mapListener(view, Event.CLOSE, handleWindowClose,Event);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, logout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGIN_ERROR, handleError, AppEvent);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
-			eventMap.mapListener(view.loginBtn, MouseEvent.CLICK,handleLoginClick,MouseEvent,false,0,true);
-			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChanged,StateChangeEvent,false,0,true);
+			eventMap.mapListener(view.loginBtn, MouseEvent.CLICK,handleLoginClick,MouseEvent);
+			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChanged,StateChangeEvent);
 
 			if(model.user != null)
-					view.didLogin(model.user);
+				view.didLogin(model.user);
 		}
 		private function handleLoginClick(event:MouseEvent):void
 		{
@@ -65,7 +65,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleStateChanged(event:StateChangeEvent):void {
 			if(view.currentState == "loggedin") {
-					eventMap.mapListener(view.logoutBtn,MouseEvent.CLICK,handleLogoutClick,MouseEvent,false,0,true);
+					eventMap.mapListener(view.logoutBtn,MouseEvent.CLICK,handleLogoutClick,MouseEvent);
 			}	
 		}
 		private function handleError(event:AppEvent):void {
@@ -73,6 +73,22 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleCleanup(event:ViewEvent):void {
 			this.mediatorMap.removeMediator(this);
+		}
+		override public function onRemove():void {
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGGEDOUT, logout, AppEvent);
+			eventMap.unmapListener(appEventDispatcher, AppEvent.LOGIN_ERROR, handleError, AppEvent);
+			
+			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
+			eventMap.unmapListener(view.loginBtn, MouseEvent.CLICK,handleLoginClick,MouseEvent);
+			eventMap.unmapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChanged,StateChangeEvent);
+			
+			eventMap.unmapListener(view.logoutBtn,MouseEvent.CLICK,handleLogoutClick,MouseEvent);
+			
+			view.user = null;
+			
+			super.onRemove();
 		}
 	}
 }

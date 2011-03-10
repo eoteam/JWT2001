@@ -3,12 +3,13 @@
 				xmlns:s="library://ns.adobe.com/flex/spark" 
 				xmlns:mx="library://ns.adobe.com/flex/mx" 
 				xmlns:assets="com.pentagram.view.assets.*" 
-				width="1024" height="768" showStatusBar="true" click="window1_clickHandler(event)"
-				preinitialize="preinit(event)"  title="View"
 				xmlns:shell="com.pentagram.instance.view.shell.*" 
-				xmlns:vo="com.pentagram.model.vo.*" creationPolicy="none" 
-				xmlns:events="flash.events.*" xmlns:controls="com.pentagram.view.controls.*" xmlns:debugger="it.flashfuck.debugger.*">
-				<!--    -->
+				xmlns:vo="com.pentagram.model.vo.*"  
+				xmlns:events="flash.events.*"
+				xmlns:controls="com.pentagram.view.controls.*"
+				xmlns:debugger="it.flashfuck.debugger.*"
+				width="1024" height="768" showStatusBar="true" click="window1_clickHandler(event)"
+				preinitialize="preinit(event)"  title="View" creationPolicy="none">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.main.event.ViewEvent;
@@ -53,10 +54,9 @@
 			{
 				context.shutdown();
 				appEventDispatcher = null;
+				this.removeAllElements();
 			}
-
-
-			protected function window1_clickHandler(event:MouseEvent):void
+			private function window1_clickHandler(event:MouseEvent):void
 			{
 				if(event.target != loginBtn) {
 					if(event.target is DisplayObject && loginPanel.contains(DisplayObject(event.target)))
@@ -68,7 +68,6 @@
 			
 			public function set windowFocused(value:Boolean):void {
 				this.dispatchEvent(new ViewEvent(ViewEvent.WINDOW_FOCUS,value));
-			 // ("focusEvent
 			}
 
 		]]>
@@ -76,25 +75,12 @@
 	<fx:Declarations>
 		<vo:Client id="client" />
 		<events:EventDispatcher id="appEventDispatcher" />
-<!--		<fx:Array id="visualizerStates">
-			<fx:String>visualizerAndLoading</fx:String>
-			<fx:String>visualizerAndLoaded</fx:String>
-		</fx:Array>
-		<fx:Array id="editorStates">
-			<fx:String>editorStateAndLoading</fx:String>
-			<fx:String>editorStateAndLoaded</fx:String>
-		</fx:Array>-->
 	</fx:Declarations>
 	<s:states>
 		<s:State name="search" id="searchState" />
 		<s:State name="visualizer" id="visualizerState" />
 		<s:State name="editor" id="editorState" />
-<!--		<s:State name="visualizerAndLoading" id="visualizerAndLoadingState" stateGroups="visualizer,loading" />
-		<s:State name="visualizerAndLoaded" id="visualizerAndLoadedState" stateGroups="visualizer"/>
-		<s:State name="editorStateAndLoading" id="editorStateAndLoadingState" stateGroups="editor,loading" />
-		<s:State name="editorStateAndLoaded" id="editorStateAndLoadedState" stateGroups="editor" />-->
 	</s:states>
-	
 	
 	<shell:Search id="searchView" width="100%" height="100%" includeIn="search" horizontalCenter="0" verticalCenter="0"/>
 	<shell:Shell id="shellView" width="100%" height="100%"  includeIn="visualizer" horizontalCenter="0" verticalCenter="0"/>

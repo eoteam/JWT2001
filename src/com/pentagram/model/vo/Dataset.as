@@ -35,7 +35,7 @@ package com.pentagram.model.vo
 		
 		
 		//data strucuture
-		public var data:String; //content of table in JSON format
+		//public var data:String; //content of table in JSON format
 		public var rows:ArrayCollection = new ArrayCollection();
 		public var optionsArray:Vector.<Category> = new Vector.<Category>();
 		public var colorArray:Dictionary = new Dictionary();

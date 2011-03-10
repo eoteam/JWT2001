@@ -33,26 +33,31 @@ package com.pentagram.instance.view.mediators.shell
 		
 		[Inject]
 		public var model:InstanceModel;
-		
-		[Inject(name="ApplicationEventDispatcher")]
-		public var appEventDispatcher:EventDispatcher; 
+
 		
 		override public function onRegister():void
 		{	
-			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);
-			view.categoriesPanel.continentList.addEventListener('addRegion',handleRegionSelect,false,0,true);
-			view.categoriesPanel.continentList.addEventListener('removeRegion',handleRegionSelect,false,0,true);
-			view.categoriesPanel.continentList.addEventListener('selectRegion',handleRegionSelect,false,0,true);
-			view.optionsPanel.maxRadiusSlider.addEventListener(Event.CHANGE ,handleMaxRadius,false,0,true);
-			view.optionsPanel.closeTooltipsBtn.addEventListener(MouseEvent.CLICK,handleCloseTooltips,false,0,true);
-			view.addEventListener(StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange);
-			view.categoriesPanel.check.addEventListener(MouseEvent.CLICK,check_changeHandler,false,0,true);
-			view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleXray,false,0,true);
-			view.numericFilter.range.addEventListener(SliderEvent.CHANGE,handleRangeChange,false,0,true);
-			view.countriesPanel.countryList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,false,0,true);
+			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);
+			
+			eventMap.mapListener(view.categoriesPanel.continentList,'addRegion',handleRegionSelect,Event);
+			eventMap.mapListener(view.categoriesPanel.continentList,'removeRegion',handleRegionSelect,Event);
+			eventMap.mapListener(view.categoriesPanel.continentList,'selectRegion',handleRegionSelect,Event);
+			
+			eventMap.mapListener(view.categoriesPanel.check,MouseEvent.CLICK,check_changeHandler,MouseEvent);
+			
+			eventMap.mapListener(view.countriesPanel.countryList,GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,GridSelectionEvent);
+			eventMap.mapListener(view.countriesPanel.clearSelection,MouseEvent.CLICK,handleClearSelection,MouseEvent);
+
+				
+			eventMap.mapListener(view.optionsPanel.maxRadiusSlider,Event.CHANGE,handleMaxRadius,Event);
+			
+			eventMap.mapListener(view.optionsPanel.closeTooltipsBtn,MouseEvent.CLICK,handleCloseTooltips,MouseEvent);
+			eventMap.mapListener(view.optionsPanel.xrayToggle,Event.CHANGE,handleXray,Event);
+			
+			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
+			eventMap.mapListener(view.numericFilter.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
-			
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
 			eventMap.mapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
@@ -107,6 +112,10 @@ package com.pentagram.instance.view.mediators.shell
 		}
 	    private function handleCountrySelection(event:GridSelectionEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",view.countriesPanel.countryList.selectedItems));
+		}
+		private function handleClearSelection(event:MouseEvent):void {
+			view.countriesPanel.countryList.selectedIndex=-1
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",new Vector.<Object>()));	
 		}
 		private function handleRangeChange(event:SliderEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.numericFilter.range.values));
@@ -222,7 +231,31 @@ package com.pentagram.instance.view.mediators.shell
 			this.mediatorMap.removeMediator(this);
 		}
 		override public function onRemove():void {
-			trace("right tool remove");
+			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);
+			
+			eventMap.unmapListener(view.categoriesPanel.continentList,'addRegion',handleRegionSelect,Event);
+			eventMap.unmapListener(view.categoriesPanel.continentList,'removeRegion',handleRegionSelect,Event);
+			eventMap.unmapListener(view.categoriesPanel.continentList,'selectRegion',handleRegionSelect,Event);
+			
+			eventMap.unmapListener(view.categoriesPanel.check,MouseEvent.CLICK,check_changeHandler,MouseEvent);
+			
+			eventMap.unmapListener(view.countriesPanel.countryList,GridSelectionEvent.SELECTION_CHANGE,handleCountrySelection,GridSelectionEvent);
+			
+			eventMap.unmapListener(view.optionsPanel.maxRadiusSlider,Event.CHANGE,handleMaxRadius,Event);
+			
+			eventMap.unmapListener(view.optionsPanel.closeTooltipsBtn,MouseEvent.CLICK,handleCloseTooltips,MouseEvent);
+			eventMap.unmapListener(view.optionsPanel.xrayToggle,Event.CHANGE,handleXray,Event);
+			
+			eventMap.unmapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
+			eventMap.unmapListener(view.numericFilter.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
+			
+			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
+			eventMap.unmapListener(eventDispatcher,ViewEvent.START_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			eventMap.unmapListener(eventDispatcher,ViewEvent.END_IMAGE_SAVE,handleImageSaveStart,ViewEvent);
+			
+			trace("RightTools Mediator Released");
 			super.onRemove();
 		}
 	}
