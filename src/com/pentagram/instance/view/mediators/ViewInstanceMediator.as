@@ -125,7 +125,6 @@ package com.pentagram.instance.view.mediators
 		private function handleClientDeleted(event:EditorEvent):void {
 			var c:Client = event.args[0];
 			if(c == model.client) {
-				model.client = null;
 				view.currentState = view.searchState.name;
 			}
 		}

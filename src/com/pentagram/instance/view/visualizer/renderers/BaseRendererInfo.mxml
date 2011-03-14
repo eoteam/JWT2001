@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<controls:ResizableTitleWindow 
+			   xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   creationCompleteEffect="{fadeIn}"
+			   close="titlewindow1_closeHandler(event)" 
+			   creationComplete="titlewindow1_creationCompleteHandler(event)"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" 
+			   implements="com.pentagram.instance.view.visualizer.interfaces.IRendererInfo"
+			   xmlns:controls="com.pentagram.view.controls.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import com.pentagram.instance.view.visualizer.interfaces.IRendererInfo;
+			
+			import flashx.textLayout.conversion.TextConverter;
+			
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			private var controlBarPressed:Boolean = false;
+			private var _content:String;
+			public function close():void {
+				dispatchEvent(new CloseEvent(CloseEvent.CLOSE)); 
+			}			
+			public function get pinned():Boolean {
+				return _pinned;
+			}
+			private function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
+				this.moveArea.addEventListener(MouseEvent.MOUSE_DOWN,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_UP,controlBarMouseHandler);
+				this.moveArea.addEventListener(MouseEvent.MOUSE_MOVE,controlBarMouseHandler);
+			}
+			private function controlBarMouseHandler(event:MouseEvent):void {
+				switch(event.type) {
+					case MouseEvent.MOUSE_DOWN:
+						controlBarPressed = true;
+						break;
+					case MouseEvent.MOUSE_UP:
+						controlBarPressed = false;
+						break;
+					case MouseEvent.MOUSE_MOVE:
+						if(controlBarPressed)
+							_pinned = false;
+						break;
+				}	
+			}
+			private function titlewindow1_closeHandler(event:CloseEvent):void {
+				_pinned = true;
+				PopUpManager.removePopUp(this); 
+			}
+			public function set content(value:String):void {
+				_content = value;
+				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_LAYOUT_FORMAT);
+			}
+			public function get content():String {
+				return _content;
+			}
+			public function get data():Object {
+				return null;
+			}
+			public function set data(value:Object):void {
+				
+			}
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<fx:Boolean id="_pinned">true</fx:Boolean>
+		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
+		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
+		<fx:Boolean id="previousTipVisible">true</fx:Boolean>
+		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
+		<s:TextFlow id="ctf" />
+	</fx:Declarations>
+</controls:ResizableTitleWindow>

@@ -14,6 +14,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.greensock.TweenLite;
 			import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			import com.pentagram.instance.view.visualizer.renderers.RendererToolTip;
@@ -25,7 +26,7 @@
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
-			import com.greensock.TweenNano;
+			import com.greensock.TweenLite;
 			import com.pentagram.instance.view.visualizer.renderers.MapParticle;
 			import com.pentagram.model.vo.Category;
 			import com.pentagram.model.vo.Client;
@@ -61,7 +62,7 @@
 			public function toggleMap(visible:Boolean):void {
 				if(mapHolder) {
 					var a:int = visible?1:0;
-					TweenNano.to(mapHolder,.5,{alpha:a});
+					TweenLite.to(mapHolder,.5,{alpha:a});
 				}
 			}
 			public function updateSize():void {
@@ -114,14 +115,16 @@
 				for each(var renderer:MapParticle in renderers) {
 					if(renderer.data && countries.indexOf(renderer.data.country) != -1) {
 						if(renderer.fillAlpha != 1) {
-							TweenNano.to(renderer,0.5,{fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+							TweenLite.killTweensOf(renderer);
+							TweenLite.to(renderer,0.5,{hexColors:{textColor:0xffffff},fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 							IRenderer(renderer.sprite).toggleInfo(true);
 						}
 					}
 					else {
 						if(renderer.fillAlpha != 0.2) {
-							TweenNano.to(renderer,0.5,{fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-							 IRenderer(renderer.sprite).toggleInfo(false);
+							TweenLite.killTweensOf(renderer);
+							TweenLite.to(renderer,0.5,{hexColors:{textColor:renderer.fillColor},fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+							IRenderer(renderer.sprite).toggleInfo(false);
 						}
 					}
 				}
@@ -165,7 +168,7 @@
 						}
 						else r = maxRadius;
 						
-						TweenNano.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
+						TweenLite.to(c, 1, {radius: r,onUpdate:updateRenderer,onUpdateParams:[c]});
 						IRenderer(c.sprite).content = content;
 						c.draw(holder.running);
 					}
@@ -222,7 +225,7 @@
 				
 				for each(var c:MapParticle in renderers) {
 					if(c && c.data && c.data.country.region.name != region.name) {
-						c .visible = false;
+						c.visible = false;
 					}
 					if(c && c.data && c.data.country.region.name == region.name) {
 						c.visible = true;
@@ -232,11 +235,15 @@
 			public function toggleOpacity(value:Number):void {
 				if(mapHolder) {
 					var a:int = value==1?0:1;
+					
 					opacity = value==1?false:true;
-					TweenNano.to(mapHolder,.5,{alpha:a});
+					TweenLite.to(mapHolder,.5,{alpha:a});
 				}
-				for each(var renderer:MapParticle in renderers)
-					TweenNano.to(renderer, .5, {fillAlpha:value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+				for each(var renderer:MapParticle in renderers) {
+					var c:uint = value==1?0xffffff:renderer.fillColor; 
+					TweenLite.to(renderer, .5, {hexColors:{textColor:c},fillAlpha:value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+				}
+					
 				if(value != 1) 
 					holder.stop();
 				else 
@@ -366,7 +373,7 @@
 				if(mapHolder.numElements == 1) {
 					child = FXGLoader(mapHolder.getElementAt(0)) as FXGLoader;
 					if(!holder.running)
-						TweenNano.to(child,0.5,{alpha:1});
+						TweenLite.to(child,0.5,{alpha:1});
 					fxgSprite = child.fxgSprite;
 					widestSprite = fxgSprite.getChildAt(0) as Sprite;
 					fxgRatio = fxgSprite.width / fxgSprite.height;

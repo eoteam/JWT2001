@@ -10,7 +10,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.adobe.serialization.json.JSON;
-			import com.greensock.TweenNano;
+			import com.greensock.TweenLite;
 			import com.pentagram.controller.Constants;
 			import com.pentagram.instance.view.visualizer.renderers.TWRendererInfo;
 			import com.pentagram.instance.view.visualizer.renderers.TWRendererToolTip;
@@ -93,13 +93,13 @@
 					for (var j:int=0;j<pack.numChildren;j++) {
 						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
 						if(tweets.indexOf(renderer.data) != -1) {
-							renderer.textColor = 0xffffffff;
-							TweenNano.to(renderer, .5, {fillAlpha: 1});
+							TweenLite.killTweensOf(renderer);
+							TweenLite.to(renderer, .5, {hexColors:{textColor:0xffffff},fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 							renderer.toggleInfo(true);
 						}
 						else {
-							renderer.textColor = renderer.fillColor;
-							TweenNano.to(renderer, .5, {fillAlpha: 0.2});
+							TweenLite.killTweensOf(renderer);
+							TweenLite.to(renderer, .5, {hexColors:{textColor:renderer.fillColor},fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 							renderer.toggleInfo(false);
 						}
 					}
@@ -114,8 +114,8 @@
 					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
 					for (var j:int=0;j<pack.numChildren;j++) {
 						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-						TweenNano.to(renderer, .5, {fillAlpha: value}); 
+						TweenLite.killTweensOf(renderer);
+						TweenLite.to(renderer, .5, {hexColors:{textColor:value==1?0xffffff 	:renderer.fillColor},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]}); 
 					}
 				}
 			}
@@ -126,6 +126,9 @@
 					pack.scaler = value/100;
 					pack.draw();
 				}
+			}
+			private function updateRenderer(renderer:TwitterRenderer):void {
+				renderer.draw();
 			}
 			public function showOptions(value:Boolean):void {
 				optionsPanel.visible = value;

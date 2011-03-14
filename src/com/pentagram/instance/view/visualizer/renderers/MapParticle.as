@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
@@ -64,6 +64,10 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function set fillAlpha(a:Number):void {
 			MapRenderer(_sprite).fillAlpha = _fillAlpha = a;
+			if(_fillAlpha == 1 && MapRenderer(_sprite).textColor != 0xffffff) {
+				MapRenderer(_sprite).textColor = _textColor = 0xffffff;
+				MapRenderer(_sprite).draw();
+			}
 		}
 
 		public function draw(coord:Boolean):void {
@@ -82,10 +86,10 @@ package com.pentagram.instance.view.visualizer.renderers
 				if(_sprite.visible != _visible) {
 					if(_visible) {
 						_sprite.visible = true;
-						TweenNano.to(_sprite,0.5,{alpha:1});
+						TweenLite.to(_sprite,0.5,{alpha:1});
 					}	
 					else
-						TweenNano.to(_sprite,0.1,{alpha:0,onComplete:hide});
+						TweenLite.to(_sprite,0.1,{alpha:0,onComplete:hide});
 				}
 			}
 			
@@ -100,6 +104,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		override public function set visible(v:Boolean):void {
 			_visible = v;
 			this.collidable = v;
+			this.sprite.visible = v;
 		}
 	}
 }	

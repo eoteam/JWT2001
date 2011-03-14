@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
@@ -21,7 +21,6 @@ package com.pentagram.instance.view.visualizer.renderers
 	public class ClusterRenderer extends BaseRenderer
 	{
 		public var radiusCopy:Number;
-		private var info:RendererInfo;
 		
 		public function ClusterRenderer(parent:Group,parent2:SpriteVisualElement) {
 			super(parent,parent2);			
@@ -43,26 +42,26 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function get data2():DataRow {
 			return _data2;
 		}
-		public function set state(value:Boolean):void {
-			if(value && !stateFlag)
-				dirtyFlag = true;
-			stateFlag = value;
-			this.updateDisplayList();
-		}
-		public function get state():Boolean {
-			return stateFlag;
-		}
-		override protected function updateDisplayList():void
-		{
-			//super.updateDisplayList(unscaledWidth,unscaledHeight);
-			if(dirtyFlag && stateFlag)
-				draw();
-			else if(!stateFlag) {
-				graphics.clear();
-				if(labelTF)
-					labelTF.visible = false;
-			}
-		}
+//		public function set state(value:Boolean):void {
+//			if(value && !stateFlag)
+//				dirtyFlag = true;
+//			stateFlag = value;
+//			this.updateDisplayList();
+//		}
+//		public function get state():Boolean {
+//			return stateFlag;
+//		}
+//		protected function updateDisplayList():void
+//		{
+//			//super.updateDisplayList(unscaledWidth,unscaledHeight);
+//			if(dirtyFlag && stateFlag)
+//				draw();
+//			else if(!stateFlag) {
+//				graphics.clear();
+//				if(labelTF)
+//					labelTF.visible = false;
+//			}
+//		}
 		override protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
 			switch (event.type)
@@ -103,10 +102,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			infoVisible = false;
 		}		
 		override public function draw():void {
-			super.draw();
 			labelTF.text = _data?DataRow(_data).country.shortname:DataRow(_data2).country.shortname;
-			if(this.alpha == 0) 
-				TweenNano.to(this,0.5,{delay:1,alpha:1});
+			super.draw();
 		}	
 		override public function set content(v:String):void {
 			super.content = v;
@@ -121,26 +118,26 @@ package com.pentagram.instance.view.visualizer.renderers
 			else if(visible && !infoVisible && (_data || _data2)) {
 				RendererToolTip(tooltip).visible = false;
 				info = new RendererInfo();
-				info.country = _data?_data.country:_data2.country;
+				info.data = _data?_data.country:_data2.country;
 				info.content = _content;
-				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
+				RendererInfo(info).addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 				moveInfo();
-				PopUpManager.addPopUp(info, this.tooltipContainer, false);
+				PopUpManager.addPopUp(info as RendererInfo, this.tooltipContainer, false);
 			}	
 			infoVisible = visible;
 		}
 		override public function moveInfo():void {
-			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
-				info.leftTipVisible = false;
-				info.rightTipVisible = true;
-				info.x = this.directParent.x +this.x - radius - info.width - offset;
+			if(this.directParent.x + this.x + radius + RendererInfo(info).width + 10 > this.tooltipContainer.width) {
+				RendererInfo(info).leftTipVisible = false;
+				RendererInfo(info).rightTipVisible = true;
+				RendererInfo(info).x = this.directParent.x +this.x - radius - RendererInfo(info).width - offset;
 			}
 			else { 
-				info.leftTipVisible = true;
-				info.rightTipVisible = false;
-				info.x = this.directParent.x + this.x + radius + offset;
+				RendererInfo(info).leftTipVisible = true;
+				RendererInfo(info).rightTipVisible = false;
+				RendererInfo(info).x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y+38-15;// - this.height/2 + 34;
+			RendererInfo(info).y = this.y+38-15;// - this.height/2 + 34;
 		}
 	}
 }

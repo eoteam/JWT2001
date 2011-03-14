@@ -11,7 +11,7 @@
 				 contentBackgroundAlpha="0" xmlns:views="com.pentagram.instance.view.visualizer.views.*"  >
 	<fx:Script>
 		<![CDATA[
-			import com.greensock.TweenNano;
+			import com.greensock.TweenLite;
 			import com.pentagram.instance.view.visualizer.renderers.BubbleRenderer;
 			import com.pentagram.instance.view.visualizer.renderers.RendererInfo;
 			
@@ -210,12 +210,14 @@
 				for each(var r:BubbleSeriesItem in mainSeries.items) {
 					var item:NormalizedVO = r.item as NormalizedVO;
 					if(countries.indexOf(item.country) != -1 && item.alpha != 1) {
-						TweenNano.to(item,0.5,{alpha:1});
+						TweenLite.killTweensOf(item,false);
+						TweenLite.to(item,0.5,{hexColors:{textColor:0xffffff},alpha:1});
 						if(r.itemRenderer)
 							BubbleRenderer(r.itemRenderer).toggleInfo(true);
 					}
 					else if(item.alpha != 0.2) { 
-						TweenNano.to(item,0.5,{alpha:0.2});
+						TweenLite.killTweensOf(item);
+						TweenLite.to(item,0.5,{hexColors:{textColor:item.color},alpha:0.2});
 						if(r.itemRenderer)
 							BubbleRenderer(r.itemRenderer).toggleInfo(false);
 					}					

@@ -134,7 +134,7 @@
 
 		
 		<s:Path verticalCenter="7.5" id="leftTip"  winding="nonZero" data="M 0 0 L -16 10 L 0 20 L 0 0 Z"
-		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.leftTipVisible}">
+		visible="{hostComponent._pinned &amp;&amp; hostComponent.leftTipVisible}">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 			</s:fill>
@@ -144,7 +144,7 @@
 		</s:Path>
 		
 		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="7.5" winding="nonZero"
-		visible="{hostComponent.tipVisible &amp;&amp; hostComponent.rightTipVisible}">
+		visible="{hostComponent._pinned &amp;&amp; hostComponent.rightTipVisible}">
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 			</s:fill>

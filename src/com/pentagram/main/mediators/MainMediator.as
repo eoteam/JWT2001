@@ -22,6 +22,7 @@ package com.pentagram.main.mediators
 	import flash.utils.Timer;
 	
 	import org.robotlegs.mvcs.Mediator;
+	import com.greensock.plugins.*;
 	
 	public class MainMediator extends Mediator
 	{
@@ -39,6 +40,10 @@ package com.pentagram.main.mediators
 		
 		public override function onRegister():void
 		{
+			
+			
+			TweenPlugin.activate([HexColorsPlugin]);
+			
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
 			eventMap.mapListener(eventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);

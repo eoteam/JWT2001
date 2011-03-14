@@ -105,17 +105,18 @@ package com.pentagram.instance.view.visualizer.renderers
 			var color:uint = _data.item.color;
 			var alpha:Number = _data.item.alpha;
 			var adjustedRadius:Number = 0;
-			var textColor:uint;
+
 			
 			var colors:Array;
 			if(alpha > 0.2) {
 				colors = [color,Colors.darker(color)];
-				textColor = 0xffffff;
+				
 			}
 			else {
 				colors =  [color,color];
-				textColor = color;
-			}			
+			}	
+			if(_data.item.textColor == 0)
+				_data.item.textColor = alpha > 0.2 ?0xffffff:color;
 			var stroke:IStroke = new Stroke(color,1,1);
 			stroke.apply(g,null,null);
 			var w:Number = stroke ? stroke.weight / 2 : 0;
@@ -132,9 +133,10 @@ package com.pentagram.instance.view.visualizer.renderers
 			stroke.apply(g,null,null);
 			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[alpha,alpha],FILL_RATIO,matr);
 			g.drawEllipse(w - adjustedRadius, w - adjustedRadius,rW,rH);
+			radius = rH;
 			g.endFill()
 			
-			textFormat.color = textColor;
+			textFormat.color = _data.item.textColor;
 			label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 			label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
 			label.defaultTextFormat = textFormat;

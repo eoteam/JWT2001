@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.instance.view.visualizer.interfaces.IRenderer;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.utils.Colors;
@@ -24,10 +24,8 @@ package com.pentagram.instance.view.visualizer.renderers
 	import spark.components.Group;
 
 
-	internal class MapRenderer extends BaseRenderer
+	public class MapRenderer extends BaseRenderer
 	{
-		
-		private var info:RendererInfo;
 		protected var particle:MapParticle;
 		public var countrySprite:Shape;
 		public var id:String;
@@ -85,10 +83,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		}	
 		override public function draw():void {
 			if(_data) {
-				super.draw();
 				labelTF.text = DataRow(_data).country.shortname;
-				if(this.alpha == 0) 
-					TweenNano.to(this,0.5,{delay:1,alpha:1});
+				super.draw();
 			}
 			else
 				this.graphics.clear();
@@ -106,23 +102,23 @@ package com.pentagram.instance.view.visualizer.renderers
 			else if(visible && !infoVisible && _data) {
 				RendererToolTip(tooltip).visible = false;
 				info = new RendererInfo();
-				info.country = _data.country;
+				info.data = _data.country;
 				info.content = _content;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 				moveInfo();
-				PopUpManager.addPopUp(info, this.tooltipContainer, false);
+				PopUpManager.addPopUp(info as RendererInfo, this.tooltipContainer, false);
 			}	
 			infoVisible = visible;
 		}
 		override public function moveInfo():void {
 			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
-				info.leftTipVisible = false;
-				info.rightTipVisible = true;
+				RendererInfo(info).leftTipVisible = false;
+				RendererInfo(info).rightTipVisible = true;
 				info.x = this.directParent.x +this.x - radius - info.width - offset;
 			}
 			else { 
-				info.leftTipVisible = true;
-				info.rightTipVisible = false;
+				RendererInfo(info).leftTipVisible = true;
+				RendererInfo(info).rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
 			info.y = this.y+38-15;

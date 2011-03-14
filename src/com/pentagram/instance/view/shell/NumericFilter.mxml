@@ -19,14 +19,21 @@
 			{
 				currentState = currentState == "open"?"closed":"open";
 			}
-			[Bindable] private var dataset:Dataset;
+			public function set datasets(value:ArrayList):void {
+				_datasets = value;
+				
+				if(_datasets && _datasets.length > 0) {
+					datasetList.selectedIndex = 0;
+					dataset = _datasets.getItemAt(0) as Dataset;
+				}
+			}
 		]]>
 	</fx:Script>
 	
 	
 	<fx:Declarations>
-<!--		<vo:Dataset id="dataset" />-->
-		<s:ArrayList id="datasets" />
+		<vo:Dataset id="dataset" />
+		<s:ArrayList id="_datasets"   />
 	</fx:Declarations>
 	<s:states>
 		<s:State name="closed" />
@@ -39,7 +46,7 @@
 	</s:transitions>
 	
 	<s:Group width="100%" contentBackgroundAlpha="1"  contentBackgroundColor="#595A5C">
-		<s:Label verticalCenter="0" text="Select Range" click="button1_clickHandler(event)"  mouseChildren="false"
+		<s:Label verticalCenter="0" text="Scale Filter" click="button1_clickHandler(event)"  mouseChildren="false"
 		color="#FFFFFF" paddingTop="2" paddingBottom="2" paddingLeft="4" width="100%" fontFamily="FlamaBold" right="18"/>		
 		<s:Button skinClass="com.pentagram.view.skins.buttons.DoubleArrowButton" chromeColor="0x1a1a1a" right="2" top="2" bottom="2"
 		click="button1_clickHandler(event)"/>
@@ -53,7 +60,7 @@
 	
 	<s:VGroup width="100%" height.closed="0" height.open="55" gap="8" paddingTop="4" top="24" paddingBottom="4" 
 	 id="contentHolder" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="true">
-		<s:DropDownList width="100%" labelField="name" dataProvider="{datasets}" id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
+		<s:DropDownList width="100%" labelField="name" dataProvider="{_datasets}" id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
 		<mx:HSlider thumbCount="2" minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}" chromeColor="0x1a1a1a" showDataTip="true" accentColor="0xcccccc"  
 		allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.minCopy,dataset.maxCopy]:[0,0]}" 
 		tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" id="range"   />

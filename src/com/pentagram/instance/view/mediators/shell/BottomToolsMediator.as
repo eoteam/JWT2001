@@ -65,7 +65,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
 			view.pdfBtn.addEventListener(MouseEvent.CLICK,saveImage,false,0,true);
 			view.addEventListener(MouseEvent.CLICK,closeSettingsPanel,false,0,true);
-			yearTimer = new Timer(250);
+			yearTimer = new Timer(700);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);

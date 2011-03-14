@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.views
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 	
@@ -22,7 +22,7 @@ package com.pentagram.instance.view.visualizer.views
 		public var scaler:Number = 1;
 		
 		protected var tooltipContainer:Group;
-		protected var animateCoord:Boolean = false;
+		protected var animateCoord:Boolean = true;
 		public var filterMode:Boolean = false;
 		
 		private var circlePositions:Vector.<Point3D>;
@@ -172,7 +172,8 @@ package com.pentagram.instance.view.visualizer.views
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
 			if (this.renderers.length < 2){
 					c = this.renderers[0];
-					TweenNano.to(c,.5,{radius:25 * scaler,
+					TweenLite.killTweensOf(c,false);
+					TweenLite.to(c,.5,{radius:25 * scaler,
 						alpha:1,
 						x:_loc_2 + width/2,
 						y:_loc_2+ height/2});		
@@ -186,19 +187,21 @@ package com.pentagram.instance.view.visualizer.views
 			
 			while (i < dp.length){
 				c = rends[i];
-				c.state = true;
+				//c.state = true;
 				c.point = dp[i];
 				if(animateCoord) {
+					TweenLite.killTweensOf(c,false);
 					c.alpha = 0;
-					TweenNano.to(c,.5,{radius:dp[i].z * _loc_2 * scaler,
-									   alpha:1,
+					TweenLite.to(c,.5,{radius:dp[i].z * _loc_2 * scaler,
+									   alpha:1,onUpdate:updateRenderer,onUpdateParams:[c],
 									   x:dp[i].x * _loc_2 + width/2,
 									   y:dp[i].y * _loc_2+ height/2});					
 				}
 				else {
 					c.x =  dp[i].x * _loc_2 + width/2;
 					c.y = dp[i].y * _loc_2+ height/2;
-					TweenNano.to(c,.5,{radius:dp[i].z * _loc_2 * scaler});
+					TweenLite.killTweensOf(c,false);
+					TweenLite.to(c,.5,{radius:dp[i].z * _loc_2 * scaler,onUpdate:updateRenderer,onUpdateParams:[c]});
 				}
 				i++;
 			}
@@ -214,6 +217,9 @@ package com.pentagram.instance.view.visualizer.views
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
 
+		}
+		private function updateRenderer(renderer:ClusterRenderer):void {
+			renderer.draw();
 		}
 	}
 }		

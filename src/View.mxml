@@ -21,6 +21,7 @@
 			import air.update.events.UpdateEvent;
 			
 			import com.pentagram.ViewContext;
+			import com.pentagram.controller.Constants;
 			
 			import flash.events.NativeWindowBoundsEvent;
 			import flash.events.UncaughtErrorEvent;
@@ -90,7 +91,7 @@
 				else firstRun();
 			}
 			private function onStatusChange(e:StatusEvent):void {
-				if (monitor.available) {
+				if (monitor.available || Constants.LOCAL) {
 					visible = false;
 					this.dispatchEvent(new Event("networkOn"));
 				} else {
@@ -98,7 +99,7 @@
 				}
 			}
 			private function checkUpdate():void {
-				appUpdater.updateURL = "http://208.99.179.45/update.xml";
+				appUpdater.updateURL = Constants.UPDATE_FILE;
 				
 				appUpdater.addEventListener(UpdateEvent.INITIALIZED, onUpdate);
 				appUpdater.addEventListener(ErrorEvent.ERROR, onUpdaterError);

@@ -377,9 +377,7 @@ package com.pentagram.instance.view.mediators.shell
 						view.currentVisualizer.update();
 				break;
 			}
-			
 		}
-		
 		private function handleClientLoaded(event:VisualizerEvent):void
 		{
 			model.client.datasets.addEventListener(CollectionEvent.COLLECTION_CHANGE,setupFourthSetList);
@@ -410,10 +408,7 @@ package com.pentagram.instance.view.mediators.shell
 				loaders.push(util);
 			});
 			model.client.notes.filterFunction = findNoteByDatasets;
-		}
-
-
-			
+		}		
 		private function handleGraphLoaded(event:Event):void {
 			var util:ModuleUtil  = event.target as ModuleUtil;
 			util.removeEventListener("moduleLoaded",handleGraphLoaded);
@@ -656,7 +651,11 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 			
 			model.exportDirectory.removeEventListener(Event.SELECT, file_select);
+			
+			
 			model.client.datasets.removeEventListener(CollectionEvent.COLLECTION_CHANGE,setupFourthSetList);
+			model.client = null;
+			model.selectedSet = null;
 			
 			trace("Shell Mediator Released");
 			super.onRemove();

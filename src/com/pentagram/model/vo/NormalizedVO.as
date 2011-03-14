@@ -12,9 +12,11 @@ package com.pentagram.model.vo
 		public var radiusValue:*;
 		
 		public var color:uint;
+		public var alpha:Number=.2;
+		public var textColor:uint;
+		
 		public var name:String;
 		public var index:int;
-		public var alpha:Number=.2;
 		public var shortname:String;
 		public var prevRadius:Number;
 		public var category:String;

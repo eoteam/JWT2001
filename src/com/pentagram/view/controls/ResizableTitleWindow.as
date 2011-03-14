@@ -136,7 +136,7 @@ package com.pentagram.view.controls
 			if( w >= this.minWidth)
 				width = w;
 			else 
-				width = this.minWidth;
+				width = w = this.minWidth;
 			if(w <= this.maxWidth)
 				width = w;
 			else

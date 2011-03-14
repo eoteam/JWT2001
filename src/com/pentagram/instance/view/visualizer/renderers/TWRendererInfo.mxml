@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<controls:ResizableTitleWindow 
+<renderers:BaseRendererInfo
 	   xmlns:fx="http://ns.adobe.com/mxml/2009" 
 	   xmlns:mx="library://ns.adobe.com/flex/mx"
 	   xmlns:vo="com.pentagram.model.vo.*" 
@@ -7,11 +7,11 @@
 	   xmlns:s="library://ns.adobe.com/flex/spark"
 	   x.open="5" y.open="100" 
 	   width="200" maxWidth="{wVar}" minWidth="200" 
-	   height="80" alpha="0"  width.open="{wVar}" height.open="{hVar}"  minHeight="80"	   
-	   close="titlewindow1_closeHandler(event)"
-	   creationComplete="titlewindow1_creationCompleteHandler(event)"
-	   creationCompleteEffect="{fadeIn}"
-	   skinClass="com.pentagram.view.skins.controls.TWTooltipSkin">
+	   height="80" alpha="0"  width.open="{wVar}" 
+	   height.open="{hVar}"  minHeight="80"	   
+	   stateChangeComplete="resizabletitlewindow1_stateChangeCompleteHandler(event)"	   
+	   skinClass="com.pentagram.view.skins.controls.TWTooltipSkin"
+	   xmlns:renderers="com.pentagram.instance.view.visualizer.renderers.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -19,24 +19,12 @@
 			
 			import flashx.textLayout.conversion.TextConverter;
 			
-			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
-			import mx.events.MoveEvent;
-			import mx.managers.PopUpManager;
 			
-			import spark.skins.spark.TitleWindowSkin;
-			
-			private var controlBarPressed:Boolean = false;
+
 			[Bindable] private var wVar:Number = 350;
 			[Bindable] private var hVar:Number = 400;
 			
-			private function titlewindow1_closeHandler(event:CloseEvent):void {
-				tipVisible = true;
-				PopUpManager.removePopUp(this); 
-			}
-			public function set content(value:String):void {
-				ctf =  TextConverter.importToFlow(value,TextConverter.TEXT_FIELD_HTML_FORMAT);
-			}
 
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
@@ -49,57 +37,46 @@
 				else
 					this.currentState = "closed";
 			}
-			public function close():void {
-				dispatchEvent(new CloseEvent(CloseEvent.CLOSE)); 
-			}
-			private function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
-				this.moveArea.addEventListener(MouseEvent.MOUSE_DOWN,controlBarMouseHandler);
-				this.moveArea.addEventListener(MouseEvent.MOUSE_UP,controlBarMouseHandler);
-				this.moveArea.addEventListener(MouseEvent.MOUSE_MOVE,controlBarMouseHandler);
-			}
-			private function controlBarMouseHandler(event:MouseEvent):void {
-				switch(event.type) {
-					case MouseEvent.MOUSE_DOWN:
-						controlBarPressed = true;
-						break;
-					case MouseEvent.MOUSE_UP:
-						controlBarPressed = false;
-						break;
-					case MouseEvent.MOUSE_MOVE:
-						if(controlBarPressed)
-							this.tipVisible = false;
-						break;
+
+			private function resizabletitlewindow1_stateChangeCompleteHandler(event:FlexEvent):void
+			{
+				if(currentState == "closed") {
+					_pinned = previousTipVisible;					
+				}
+				else {
+					previousTipVisible = pinned;
+					_pinned = false;
 				}	
 			}
+			override public function get data():Object {
+				return topic;
+			}
+			override public function set data(value:Object):void {
+				topic = value as TwitterTopic;
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<fx:Boolean id="tipVisible">true</fx:Boolean>
-		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
-		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
-		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
-		<s:TextFlow id="ctf" />
 		<vo:TwitterTopic id="topic" />
 	</fx:Declarations>	
-	<controls:states>
+	<renderers:states>
 		<s:State name="closed" />
 		<s:State name="open" />
-	</controls:states>
+	</renderers:states>
 	
-	
-	
-	<controls:transitions>
+	<renderers:transitions>
 		<s:Transition toState="*">
 			<s:Parallel>
 				<s:Move target="{this}" />
 				<s:Resize targets="{[infoContainer,this]}" duration="500" />
 			</s:Parallel>	
 		</s:Transition>
-	</controls:transitions>
+	</renderers:transitions>
 	
-	<controls:layout>
+	<renderers:layout>
 		<s:VerticalLayout paddingBottom="5" gap="3" />
-	</controls:layout>
+	</renderers:layout>
 	
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
 		<s:Label fontSize="14"  text="{topic.value}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="2"  width="100%"/>
@@ -111,7 +88,9 @@
 		</s:stroke>
 	</s:Line>
 	
-	<s:RichText  paddingLeft="6" paddingRight="6" fontSize="14" textFlow="{ctf}" verticalCenter="0" horizontalCenter="0" color="#ffffff" maxDisplayedLines="1"  width="100%"/>
+	<s:RichText fontLookup="embeddedCFF"  paddingLeft="6" paddingRight="6" fontSize="14" textFlow="{ctf}" verticalCenter="0" 
+	horizontalCenter="0" color="#ffffff" maxDisplayedLines="1"  width="100%"/>
+	
 	<s:Line  width="100%" height="1" includeIn="open">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
@@ -142,7 +121,7 @@
 						]]>
 					</fx:Script>
 					<s:RichEditableText  focusedTextSelectionColor="0x333333" unfocusedTextSelectionColor="0x333333" 
-										 editable="false" selectable="true"   width="100%" textFlow="{textFlow}"  />
+					editable="false" selectable="true"   width="100%" textFlow="{textFlow}"  />
 					<s:Rect width="100%" height="0.25">
 						<s:stroke>
 							<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
@@ -153,4 +132,4 @@
 			</fx:Component>
 		</s:itemRenderer>
 	</s:List>
-</controls:ResizableTitleWindow>
+</renderers:BaseRendererInfo>

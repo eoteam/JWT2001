@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.renderers
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.model.vo.TwitterTopic;
 	import com.pentagram.utils.Colors;
 	
@@ -19,34 +19,32 @@ package com.pentagram.instance.view.visualizer.renderers
 
 	public class TwitterRenderer extends BaseRenderer
 	{	
-		private var info:TWRendererInfo;
-
 		public function TwitterRenderer(parent:Group,parent2:SpriteVisualElement) {
 			super(parent,parent2);	
 			tooltip = new TWRendererToolTip();
 			tooltipContainer.addElement(TWRendererToolTip(tooltip));
 			TWRendererToolTip(tooltip).visible = false;
 		}		
-		public function set state(value:Boolean):void {
-			if(value && !stateFlag)
-				dirtyFlag = true;
-			stateFlag = value;
-		}
-		public function get state():Boolean {
-			return stateFlag;
-		}
+//		public function set state(value:Boolean):void {
+//			if(value && !stateFlag)
+//				dirtyFlag = true;
+//			stateFlag = value;
+//		}
+//		public function get state():Boolean {
+//			return stateFlag;
+//		}
 
-		override protected function updateDisplayList():void
-		{
-			//super.updateDisplayList(unscaledWidth,unscaledHeight);
-			if(dirtyFlag && stateFlag)
-				draw();
-			else if(!stateFlag) {
-				graphics.clear();
-				if(labelTF)
-					labelTF.visible = false;
-			}
-		}
+//		protected function updateDisplayList():void
+//		{
+//			//super.updateDisplayList(unscaledWidth,unscaledHeight);
+//			if(dirtyFlag && stateFlag)
+//				draw();
+//			else if(!stateFlag) {
+//				graphics.clear();
+//				if(labelTF)
+//					labelTF.visible = false;
+//			}
+//		}
 
 		override public function set data(d:Object):void {
 			super.data = d;
@@ -55,11 +53,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		
 		override public function draw():void {
-			super.draw();
 			labelTF.text = _data.value;
-			if(this.alpha == 0) {
-				TweenNano.to(this,0.5,{delay:1,alpha:1});
-			}
+			super.draw();			
 		}	
 		override protected function mouseEventHandler(event:Event):void {
 			var mouseEvent:MouseEvent = event as MouseEvent;
@@ -113,25 +108,25 @@ package com.pentagram.instance.view.visualizer.renderers
 				tooltip.visible = false;
 				info = new TWRendererInfo();
 				info.content = _content;
-				info.topic = _data as TwitterTopic;
+				info.data = _data as TwitterTopic;
 				info.addEventListener(CloseEvent.CLOSE,handleInfoClose,false,0,true);
 				moveInfo();
-				PopUpManager.addPopUp(info, this.tooltipContainer, false);
+				PopUpManager.addPopUp(info as TWRendererInfo, this.tooltipContainer, false);
 			}	
 			infoVisible = visible;
 		}
 		override public function moveInfo():void {
 			if(this.directParent.x + this.x + radius + info.width + 10 > this.tooltipContainer.width) {
-				info.leftTipVisible = false;
-				info.rightTipVisible = true;
-				info.x = this.directParent.x +this.x - radius - info.width - offset;
+				TWRendererInfo(info).leftTipVisible = false;
+				TWRendererInfo(info).rightTipVisible = true;
+				info.x = this.directParent.x + this.x - radius - info.width - offset;
 			}
 			else { 
-				info.leftTipVisible = true;
-				info.rightTipVisible = false;
+				TWRendererInfo(info).leftTipVisible = true;
+				TWRendererInfo(info).rightTipVisible = false;
 				info.x = this.directParent.x + this.x + radius + offset;
 			}
-			info.y = this.y+38-15
+			info.y = this.y+64.5-15;
 		}
 	}
 }

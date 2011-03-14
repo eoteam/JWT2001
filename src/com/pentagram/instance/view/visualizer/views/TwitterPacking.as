@@ -1,6 +1,6 @@
 package com.pentagram.instance.view.visualizer.views
 {
-	import com.greensock.TweenNano;
+	import com.greensock.TweenLite;
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
 	import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
@@ -50,7 +50,7 @@ package com.pentagram.instance.view.visualizer.views
 				  
 				  this.addChild(sprite);
 				}
-				sprite.state = false;
+				//sprite.state = false;
 				sprite.data = dataProvider[i];
 				sprite.fillColor = 0x5599BB;
 				sprite.fillAlpha = 0.2;
@@ -86,7 +86,7 @@ package com.pentagram.instance.view.visualizer.views
 			timer.start();
 
 		}
-		protected function onTimer(event:TimerEvent):void {
+		protected function onTimer(event:TimerEvent):void {	
 			if(disposeCounter < this.dataProvider.length){
 				timer.stop();
 				c = this.renderers[disposeCounter];
@@ -144,15 +144,17 @@ package com.pentagram.instance.view.visualizer.views
 			var i:uint = 0;
 			for (i=0; i < this.circlePositions.length;i++){
 				c = this.renderers[i];
-				c.state = true;
+				//c.state = true;
 				c.point = this.circlePositions[i];
 				if(animateCoord) {
 					c.alpha = 0;
-					if(!fast)
-					TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
-						alpha:1,
+					if(!fast) {
+					TweenLite.killTweensOf(c,false);
+					TweenLite.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,
+						alpha:1,onUpdate:updateRenderer,onUpdateParams:[c],
 						x:this.circlePositions[i].x * _loc_2 + width/2,
 						y:this.circlePositions[i].y * _loc_2+ height/2});
+					}
 					else {
 						c.radius = this.circlePositions[i].z * _loc_2 * scaler
 						c.x = this.circlePositions[i].x * _loc_2 + width/2;
@@ -164,8 +166,10 @@ package com.pentagram.instance.view.visualizer.views
 				else {
 					c.x =  this.circlePositions[i].x * _loc_2 + width/2;
 					c.y = this.circlePositions[i].y * _loc_2+ height/2;
-					if(!fast)
-						TweenNano.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler});
+					if(!fast) {
+						TweenLite.killTweensOf(c,false);
+						TweenLite.to(c,.5,{radius:this.circlePositions[i].z * _loc_2 * scaler,onUpdate:updateRenderer,onUpdateParams:[c]});
+					}
 					else {
 						c.radius = this.circlePositions[i].z * _loc_2 * scaler;
 						c.draw();
@@ -173,6 +177,9 @@ package com.pentagram.instance.view.visualizer.views
 				}
 			}
 			cacheAsBitmap = true;
+		}
+		private function updateRenderer(renderer:TwitterRenderer):void {
+			renderer.draw();
 		}
 		public function hide():void {
 			this.includeInLayout = this.visible = animateCoord =false;
@@ -230,7 +237,7 @@ package com.pentagram.instance.view.visualizer.views
 //			* Please, do not ever use Adobe's internal Tween class. This class was used only for increased
 //			* compatibility.
 //			*/
-//			TweenNano.to(link,1+Math.random()*2, {x:node.x,y:node.y});
+//			TweenLite.to(link,1+Math.random()*2, {x:node.x,y:node.y});
 //			//_tweens.push(new Tween(link, 'rotation', Cubic.easeInOut, link.rotation, node.rotation, 1+Math.random()*2, true));
 //		}
 	}

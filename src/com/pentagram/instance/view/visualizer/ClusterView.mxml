@@ -11,7 +11,7 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
-			import com.greensock.TweenNano;
+			import com.greensock.TweenLite;
 			import com.pentagram.instance.view.visualizer.views.CirclePacking;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
@@ -102,17 +102,15 @@
 							var circle:ClusterRenderer = c.getChildAt(j) as ClusterRenderer;
 							if(countries.indexOf(circle.data2.country) != -1) {
 								if(circle.fillAlpha != 1) {
-									TweenNano.killTweensOf(circle,false);
-									TweenNano.to(circle,0.5,{fillAlpha:1});
-									circle.textColor = 0xffffffff;
+									TweenLite.killTweensOf(circle,false);  
+									TweenLite.to(circle,0.5,{hexColors:{textColor:0xffffff},fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[circle]});
 									circle.toggleInfo(true);
 								}
 							}
 							else {
 								if(circle.fillAlpha != 0.2) {
-									TweenNano.killTweensOf(circle,false);
-									TweenNano.to(circle,0.5,{fillAlpha:0.2});
-									circle.textColor = circle.fillColor;
+									TweenLite.killTweensOf(circle,false);
+									TweenLite.to(circle,0.5,{hexColors:{textColor:circle.fillColor},fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[circle]});
 									circle.toggleInfo(false);
 								}
 							}
@@ -134,8 +132,8 @@
 					for (var j:int=0;j<c.numChildren;j++) {
 						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
 						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-						TweenNano.killTweensOf(renderer,true);
-						TweenNano.to(renderer, .5, {fillAlpha: value});
+						TweenLite.killTweensOf(renderer,true);
+						TweenLite.to(renderer, .5, {hexColors:{textColor:value==1?0xffffff:renderer.fillColor},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 					}
 				}
 			}	
@@ -207,7 +205,7 @@
 						}
 					}
 					else {
-						c.filteredRenderers = new Vector.<ClusterRenderer>();;
+						c.filteredRenderers = new Vector.<ClusterRenderer>();
 						for each(var renderer:ClusterRenderer in c.renderers) {
 							if(renderer.data2.country.region.name != value.name)
 								renderer.radius = 0;
@@ -255,6 +253,9 @@
 			}
 			private function handleTimer(event:TimerEvent):void {
 				updateSize();
+			}
+			private function updateRenderer(renderer:ClusterRenderer):void {
+				renderer.draw();
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();
