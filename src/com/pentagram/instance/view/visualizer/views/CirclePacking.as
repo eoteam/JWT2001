@@ -208,7 +208,7 @@ package com.pentagram.instance.view.visualizer.views
 			cacheAsBitmap = true;
 		}
 		public function hide():void {
-			this.includeInLayout = this.visible = animateCoord =false;
+			this.includeInLayout = this.visible = animateCoord = false;
 			for each(var c:ClusterRenderer in this.renderers) {
 				c.toggleInfo(false);
 			}

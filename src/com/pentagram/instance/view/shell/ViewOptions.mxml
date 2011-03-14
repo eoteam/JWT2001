@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="group1_creationCompleteHandler(event)"
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="org.flashcommander.components.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="org.flashcommander.components.*" xmlns:vo="com.pentagram.model.vo.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -11,15 +11,24 @@
 				currentState = currentState == "open"?"closed":"open";
 			}
 			
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			private function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				optionsHolder.setStyle("horizontalScrollPolicy","off");
 				optionsHolder.setStyle("verticalScrollPolicy","off");
 			}
+			public function set datasets(value:ArrayList):void {
+				_datasets = value;
+				
+				if(_datasets && _datasets.length > 0) {
+					datasetList.selectedIndex = 0;
+					dataset = _datasets.getItemAt(0) as Dataset;
+				}
+			}
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		
+		<vo:Dataset id="dataset" />
+		<s:ArrayList id="_datasets"   />
 	</fx:Declarations>
 	
 	<s:states>
@@ -47,7 +56,7 @@
 		</s:stroke>
 	</s:Rect>	
 	
-	<s:Scroller width="100%" height.closed="0" height.open="100"  top="25" id="optionsHolder">
+	<s:Scroller width="100%" height.closed="0" height.open="150"  top="25" id="optionsHolder">
 		<s:VGroup width="100%" clipAndEnableScrolling="false" gap="4" paddingTop="4">
 			<s:HGroup paddingLeft="8">
 				<s:CheckBox  label="X-Ray Mode" id="xrayToggle"  left="6"  height="25" selected="true" color="0xffffff"/>
@@ -70,10 +79,25 @@
 				</s:stroke>
 			</s:Rect>		
 			
-			<s:HGroup paddingLeft="8" verticalAlign="middle">
+			<s:HGroup width="100%" paddingLeft="8" paddingRight="8" verticalAlign="middle">
 				<s:Label text="Radius" color="0xffffff"/>
-				<s:HSlider showDataTip="true" minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>				
+				<s:HSlider width="100%" showDataTip="true" minimum="10" value="25" maximum="100" id="maxRadiusSlider" snapInterval="0.01" stepSize="0.01"/>				
 			</s:HGroup>
+			
+			<s:Rect width="100%" height="0.25">
+				<s:stroke>
+					<s:SolidColorStroke color="0x666666" weight="0.25" />
+				</s:stroke>
+			</s:Rect>
+			
+			<s:VGroup width="100%" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="false">
+				<s:DropDownList width="100%" labelField="name" dataProvider="{_datasets}"  id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
+				
+				<mx:HSlider thumbCount="2" minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}" chromeColor="0x1a1a1a" showDataTip="true" accentColor="0xcccccc"  
+							allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.minCopy,dataset.maxCopy]:[0,0]}" 
+							tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" id="range"   />				
+			</s:VGroup>
+
 		</s:VGroup>
 	</s:Scroller>
 </s:Group>

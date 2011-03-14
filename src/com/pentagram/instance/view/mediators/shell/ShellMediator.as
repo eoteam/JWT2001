@@ -135,9 +135,9 @@ package com.pentagram.instance.view.mediators.shell
 				restoreViewOptions(view.mapView);
 				this.formatVizTitle(view.mapView.datasets);
 				if(view.mapView.datasets[2].id > 0) 
-					view.filterTools.numericFilter.datasets = new ArrayList([view.mapView.datasets[2]]);
+					view.filterTools.optionsPanel.datasets = new ArrayList([view.mapView.datasets[2]]);
 				else
-					view.filterTools.numericFilter.datasets = null;
+					view.filterTools.optionsPanel.datasets = null;
 			}
 			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
@@ -181,9 +181,9 @@ package com.pentagram.instance.view.mediators.shell
 					restoreViewOptions(view.clusterView);
 					this.formatVizTitle(view.clusterView.datasets);
 					if(view.clusterView.datasets[3].id > 0) 
-						view.filterTools.numericFilter.datasets = new ArrayList([view.clusterView.datasets[3]]);
+						view.filterTools.optionsPanel.datasets = new ArrayList([view.clusterView.datasets[3]]);
 					else
-						view.filterTools.numericFilter.datasets = null;
+						view.filterTools.optionsPanel.datasets = null;
 				}
 			}
 			else if(event.newIndex == model.TWITTER_INDEX){ 
@@ -219,9 +219,9 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 					formatVizTitle(view.clusterView.datasets);
 					if(event.args[1].id > 0) 
-						view.filterTools.numericFilter.datasets = new ArrayList([event.args[1]]);
+						view.filterTools.optionsPanel.datasets = new ArrayList([event.args[1]]);
 					else
-						view.filterTools.numericFilter.datasets = null;
+						view.filterTools.optionsPanel.datasets = null;
 				break;
 				
 				case model.MAP_INDEX:
@@ -231,9 +231,9 @@ package com.pentagram.instance.view.mediators.shell
 					checkNotes();
 					formatVizTitle(view.mapView.datasets);
 					if(event.args[0].id > 0) 
-						view.filterTools.numericFilter.datasets = new ArrayList([event.args[0]]);
+						view.filterTools.optionsPanel.datasets = new ArrayList([event.args[0]]);
 					else
-						view.filterTools.numericFilter.datasets = null;
+						view.filterTools.optionsPanel.datasets = null;
 				break;
 				case model.GRAPH_INDEX:
 					
@@ -482,7 +482,7 @@ package com.pentagram.instance.view.mediators.shell
 					}
 					view.tools.yearSlider.dataProvider = years;
 				}
-				view.filterTools.numericFilter.datasets = new ArrayList([dataset]);
+				view.filterTools.optionsPanel.datasets = new ArrayList([dataset]);
 				datasetids = dataset.id.toString();
 				checkNotes();	
 			}
@@ -491,7 +491,7 @@ package com.pentagram.instance.view.mediators.shell
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 				view.mapView.visualize(dataset);
 				view.tools.thirdSet.selectedItem = dataset;
-				view.filterTools.numericFilter.datasets = null;
+				view.filterTools.optionsPanel.datasets = null;
 			}
 			this.formatVizTitle(view.mapView.datasets);
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
@@ -515,9 +515,9 @@ package com.pentagram.instance.view.mediators.shell
 					view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;							
 				
 				if(dataset2.id > 0) 
-					view.filterTools.numericFilter.datasets = new ArrayList([dataset2]);
+					view.filterTools.optionsPanel.datasets = new ArrayList([dataset2]);
 				else
-					view.filterTools.numericFilter.datasets = null;
+					view.filterTools.optionsPanel.datasets = null;
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 				checkNotes();
 			

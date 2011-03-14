@@ -139,5 +139,10 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(infoVisible)
 				moveInfo();
 		}
+		override public function set radius(r:Number):void {
+			_radius = r;
+			if(isNaN(_radius))
+				_radius = 0;			
+		}
 	}
 }

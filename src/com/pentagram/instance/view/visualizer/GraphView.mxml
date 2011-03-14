@@ -302,6 +302,6 @@
 	</views:ViewBubbleChart>
 	
 	<s:Label fontFamily="FlamaBold" id="hLabel" horizontalCenter="0" bottom="2" />
-	<s:Label fontFamily="FlamaBold" id="vLabel"  verticalCenter="0" left="2" />
+	<s:Label fontFamily="FlamaBold" id="vLabel"  verticalCenter="0" left="2" rotation="-90" />
 
 </modules:Module>

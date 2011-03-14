@@ -69,7 +69,6 @@ package com.pentagram.instance.view.visualizer.renderers
 				MapRenderer(_sprite).draw();
 			}
 		}
-
 		public function draw(coord:Boolean):void {
 			var countrySprite:Shape = MapRenderer(_sprite).countrySprite;
 			if(countrySprite) {
@@ -88,11 +87,12 @@ package com.pentagram.instance.view.visualizer.renderers
 						_sprite.visible = true;
 						TweenLite.to(_sprite,0.5,{alpha:1});
 					}	
-					else
-						TweenLite.to(_sprite,0.1,{alpha:0,onComplete:hide});
+					else {
+						TweenLite.to(_sprite,0.5,{alpha:0,onComplete:hide});
+						trace(MapRenderer(_sprite).data.country.region.name);
+					}
 				}
 			}
-			
 		}
 		public function set countrySprite(value:Shape):void {
 			MapRenderer(_sprite).countrySprite = value;
@@ -104,7 +104,9 @@ package com.pentagram.instance.view.visualizer.renderers
 		override public function set visible(v:Boolean):void {
 			_visible = v;
 			this.collidable = v;
-			this.sprite.visible = v;
+			_sprite.visible = v;
+			if(!v && _data)
+				trace(_data.country.region.name);
 		}
 	}
 }	

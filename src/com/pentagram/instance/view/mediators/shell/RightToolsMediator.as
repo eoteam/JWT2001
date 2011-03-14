@@ -55,7 +55,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.optionsPanel.xrayToggle,Event.CHANGE,handleXray,Event);
 			
 			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
-			eventMap.mapListener(view.numericFilter.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
+			eventMap.mapListener(view.optionsPanel.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
 			
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
@@ -118,7 +118,7 @@ package com.pentagram.instance.view.mediators.shell
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",new Vector.<Object>()));	
 		}
 		private function handleRangeChange(event:SliderEvent):void {
-			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.numericFilter.range.values));
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.optionsPanel.range.values));
 		}
 		private function handleRegionSelect(event:Event):void {
 			if(view.state != "twitter") {
@@ -247,7 +247,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.unmapListener(view.optionsPanel.xrayToggle,Event.CHANGE,handleXray,Event);
 			
 			eventMap.unmapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
-			eventMap.unmapListener(view.numericFilter.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
+			eventMap.unmapListener(view.optionsPanel.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
 			
 			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			eventMap.unmapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);

@@ -67,9 +67,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function get data():Object { return _data; }
 		public function set data(d:Object):void { 
 			_data = d; 
-		}
-		
-		
+		}	
 		public function BaseRenderer(parent:Group,parent2:DisplayObject):void {
 			this.mouseChildren = false;
 			this.textColor = 0xffffffff;
@@ -114,10 +112,10 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 		}		
 		public function get fillColor():uint { return _fillColor; }
-		public function set fillColor(c:uint):void { _fillColor = c; 	}
+		public function set fillColor(c:uint):void { _fillColor = c; }
 		
 		public function get textColor():uint { return _textColor; }
-		public function set textColor(c:uint):void { _textColor = c; trace(c.toString(16));	}
+		public function set textColor(c:uint):void { _textColor = c; }
 		
 		public function get fillAlpha():Number { return _fillAlpha; }//Colors.a(_fillColor) / 255; }
 		public function set fillAlpha(a:Number):void {

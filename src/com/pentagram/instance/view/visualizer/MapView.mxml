@@ -47,6 +47,7 @@
 			private var maxRadius:Number = 25;
 			private var currentYear:String;
 			private var opacity:Boolean = true;
+			private var currentCategory:Category;
 			
 			private var dataset:Dataset;
 			private var resizeFlag:Boolean = false;
@@ -141,7 +142,7 @@
 				for each(var c:MapParticle in renderers) {
 					var r:Number;
 					var value:Number;
-					
+					trace(c.visible);
 					if(c.data) {
 						var content:String;
 						if(dataset.id != -1) {
@@ -149,7 +150,7 @@
 								value = c.data[currentYear];
 								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
 									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;
-									if(r < 0) trace("Negative Radius",r);
+//									if(r < 0) trace("Negative Radius",r);
 									content = generateContent(value,currentYear);
 								}
 								else
@@ -210,26 +211,30 @@
 				}
 			}
 			public function selectCategory(value:Category):void {
-				var existingMap:FXGLoader;
-				var region:Region = value as Region;
-				var map:FXGLoader;
-				mapHolder.removeAllElements();
-				map = new FXGLoader();
-				map.addEventListener(Event.COMPLETE,handleMapLoaded);
-				mapHolder.addElement(map);
-				var file:File = File.applicationDirectory;
-				file = file.resolvePath(PATH+region.fxgmap);
-				map.load(file,region);
-				map.percentHeight = 100;
-				map.percentWidth = 100;
-				
-				for each(var c:MapParticle in renderers) {
-					if(c && c.data && c.data.country.region.name != region.name) {
-						c.visible = false;
+				if(currentCategory != value) {
+					currentCategory = value;
+					var existingMap:FXGLoader;
+					var region:Region = value as Region;
+					var map:FXGLoader;
+					mapHolder.removeAllElements();
+					map = new FXGLoader();
+					map.addEventListener(Event.COMPLETE,handleMapLoaded);
+					mapHolder.addElement(map);
+					var file:File = File.applicationDirectory;
+					file = file.resolvePath(PATH+region.fxgmap);
+					map.load(file,region);
+					map.percentHeight = 100;
+					map.percentWidth = 100;
+					
+					for each(var c:MapParticle in renderers) {
+						if(c && c.data && c.data.country.region.name != region.name) {
+							c.visible = false;
+						}
+						if(c && c.data && c.data.country.region.name == region.name) {
+							c.visible = true;
+						}
 					}
-					if(c && c.data && c.data.country.region.name == region.name) {
-						c.visible = true;
-					}
+					this.clearTooltips();
 				}
 			}
 			public function toggleOpacity(value:Number):void {
@@ -244,8 +249,10 @@
 					TweenLite.to(renderer, .5, {hexColors:{textColor:c},fillAlpha:value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
 				}
 					
-				if(value != 1) 
+				if(value != 1) {
 					holder.stop();
+					resizeMap();
+				}
 				else 
 					holder.start();
 			}
@@ -298,8 +305,7 @@
 								else {
 									r = 0;
 								}	
-							}
-							
+							}	
 						}
 						else {
 							r = maxRadius;
@@ -353,24 +359,27 @@
 				renderer.draw(holder.running);
 			}
 			private function doResize():void {
-				var maxW:Number = 0;
-				var widestSprite:Sprite;
-				var widestRegion:Region;
-				var i:int = 0;
-				var child:FXGLoader;
-				var fxgSprite:Sprite;
-				var fxgRatio:Number;
-				var ratio:Number;
-				var sx:Number;
-				var sy:Number;
-				var matr:Matrix;
-				var nw:Number; var nh:Number;  
-
 				for each(var c:MapParticle in renderers) {
 					c.draw(false);
-				}
-				
+				}		
+				resizeMap();
+				if(holder.running)
+					holder.start();
+			}
+			private function resizeMap():void {
 				if(mapHolder.numElements == 1) {
+					var maxW:Number = 0;
+					var widestSprite:Sprite;
+					var widestRegion:Region;
+					var i:int = 0;
+					var child:FXGLoader;
+					var fxgSprite:Sprite;
+					var fxgRatio:Number;
+					var ratio:Number;
+					var sx:Number;
+					var sy:Number;
+					var matr:Matrix;
+					var nw:Number; var nh:Number;  
 					child = FXGLoader(mapHolder.getElementAt(0)) as FXGLoader;
 					if(!holder.running)
 						TweenLite.to(child,0.5,{alpha:1});
@@ -395,8 +404,6 @@
 					fxgSprite.x = (child.width / 2) - (fxgSprite.width / 2 );
 					fxgSprite.y = (child.height / 2) - (fxgSprite.height / 2);
 				}
-				if(holder.running)
-					holder.start();
 			}
 			private function creationCompleteHandler(event:FlexEvent):void {	
 				renderers = new Vector.<MapParticle>;
@@ -425,6 +432,7 @@
 				}
 			}
 			private function handleMapLoaded(event:Event):void {
+				currentCategory = null;
 				created = true;
 				FXGLoader(event.target).removeEventListener(Event.COMPLETE,handleMapLoaded);
 				if(firstPass) {
