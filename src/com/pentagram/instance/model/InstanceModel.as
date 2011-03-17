@@ -237,7 +237,6 @@ package com.pentagram.instance.model
 					item.y =  item.rows[1][year];
 				else  if(Dataset(datasets[1]).id != -1)
 					item.y =  item.rows[1].value;
-			
 
 				if(datasets[2] && Dataset(datasets[2]).id != -1) {
 					dataset = datasets[2] as Dataset;
@@ -262,7 +261,6 @@ package com.pentagram.instance.model
 					item.color = dataset.colorArray[value];
 					item.category = value;
 				}
-				
 				if(categories.length > 0) {
 					if(categories.indexOf(item.category) != -1)
 						item.radius = item.prevRadius;

@@ -68,8 +68,15 @@
 					for each(var item:NormalizedVO in _visdata) {
 						generateContent(item);
 					}
-					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1,"x");	
-					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2,"y");
+					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1);	
+					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2);
+//					if(ds3.id > 0 && ds3.type == 1) {
+//						var linearAxis:LinearAxis = new LinearAxis();
+//						linearAxis.title = '';
+//						linearAxis.maximum = 1
+//						linearAxis.minimum = 0;
+//					}
+		
 					hLabel.text = ds1.name;
 					vLabel.text = ds2.name;
 					
@@ -84,7 +91,7 @@
 					firstPass = false;
 				}
 			}
-			private function createAxis(dataset:Dataset,axis:String):IAxis {
+			private function createAxis(dataset:Dataset):IAxis {
 				
 				if(dataset.type == 1) {
 					var linearAxis:LinearAxis = new LinearAxis();
@@ -125,6 +132,18 @@
 			}  
 			public function update():void {
 				chart.dataProvider = _visdata;
+				if(ds1.type == 1) {
+					LinearAxis(chart.horizontalAxis).minimum = ds1.min - Math.abs(ds1.min*.1);
+					LinearAxis(chart.horizontalAxis).maximum = ds1.max + Math.abs(ds1.max*.1);
+				}
+				if(ds2.type == 1) {
+					LinearAxis(chart.verticalAxis).minimum = ds2.min - Math.abs(ds2.min*.1);
+					LinearAxis(chart.verticalAxis).maximum = ds2.max + Math.abs(ds2.max*.1);;				
+				}
+//				if(ds2.type == 1) {
+//					LinearAxis(chart.radiusAxis).minimum = ds3.min - Math.abs(ds3.min*.1);
+//					LinearAxis(chart.radiusAxis).maximum = ds3.max + Math.abs(ds3.max*.1);;				
+//				}
 			}
 			public function updateMaxRadius(value:Number):void {
 				this.maxRadius = value;
@@ -258,7 +277,7 @@
 	</fx:Style>
 	<fx:Declarations>
 		
-		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0" />
+		<mx:SeriesInterpolate id="changeEffect" duration="1000" elementOffset="0"  minimumElementDuration="0"/>
 		
 		<mx:AxisRenderer  id="vAxisRenderer" styleName="axis">
 			<mx:axisStroke>
@@ -287,7 +306,7 @@
 	itemClick="chart_itemClickHandler(event)" 
 	dataTipRenderer="com.pentagram.instance.view.visualizer.renderers.GraphDataTip">
 		<views:series>
-			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius" xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
+			<mx:BubbleSeries maxRadius="{maxRadius}" radiusField="radius"   xField="x" yField="y" showDataEffect="{changeEffect}"  id="mainSeries" 
 			 itemRenderer="com.pentagram.instance.view.visualizer.renderers.BubbleRenderer" selectable="true"  horizontalCenter="0" verticalCenter="0"  />
 		</views:series>
 		<views:backgroundElements>

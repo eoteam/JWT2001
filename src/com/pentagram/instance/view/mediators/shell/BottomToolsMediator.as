@@ -313,7 +313,6 @@ package com.pentagram.instance.view.mediators.shell
 				handleYearSelection();
 				yearTimer.start();
 				view.playBtn.label = "Stop";
-				
 			}
 			else {
 				yearTimer.stop();

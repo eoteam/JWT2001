@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:ai="http://ns.adobe.com/ai/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:ATE="http://ns.adobe.com/ate/2009" xmlns:ai="http://ns.adobe.com/ai/2009" xmlns:lib="assets.graphics.*" xmlns:fc="http://ns.adobe.com/flashcatalyst/2009">
 	<fx:Metadata>[HostComponent("spark.components.Button")]</fx:Metadata>
 	<s:states>
 		<s:State name="up"/>
@@ -7,7 +7,7 @@
 		<s:State name="down"/>
 		<s:State name="disabled"/>
 	</s:states>
-	<s:Rect height="21" id="rect5" includeIn="up" radiusX="1.9919" radiusY="1.9919" width="150" x="1" y="0">
+	<s:Rect height="19" id="rect1" includeIn="disabled,down,over" radiusX="1.9919" radiusY="1.9919" right="1" left="1" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="14.665" x="74.889" y="1.051">
 				<s:GradientEntry alpha="1.0" color="#2E2E2E" ratio="0"/>
@@ -15,59 +15,16 @@
 			</s:LinearGradient>
 		</s:fill>
 		<s:filters>
+			<s:DropShadowFilter alpha="0.45" angle="45.0" blurX="2" blurY="2" color="#999999" distance="2" hideObject="false" includeIn="down" inner="true" knockout="false" quality="2" strength="1"/>
 		</s:filters>
 	</s:Rect>
-	<s:Rect height="20" id="rect6" includeIn="up" radiusX="1.9919" radiusY="1.9919" width="151" x="0.5" y="0.5">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Rect>
-	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path6" includeIn="up" winding="nonZero" x="140.297" y="12.033">
-		<s:fill>
-			<s:SolidColor color="#999999"/>
-		</s:fill>
-	</s:Path>
-	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path7" includeIn="up" winding="nonZero" x="140.297" y="5.433">
-		<s:fill>
-			<s:SolidColor color="#999999"/>
-		</s:fill>
-	</s:Path>
-	<s:Line id="line11" includeIn="up" x="134.5" y="4.5" yTo="12">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Line>
-	<s:Rect height="21" id="rect0" includeIn="over" radiusX="1.9919" radiusY="1.9919" width="150" x="1" y="0">
-		<s:fill>
-			<s:LinearGradient rotation="90" scaleX="14.665" x="74.889" y="1.051">
-				<s:GradientEntry alpha="1.0" color="#2E2E2E" ratio="0"/>
-				<s:GradientEntry alpha="1.0" color="#000000" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-		<s:filters>
-		</s:filters>
-	</s:Rect>
-	<s:Rect height="20" id="rect1" includeIn="over" radiusX="1.9919" radiusY="1.9919" width="151" x="0.5" y="0.5">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Rect>
-	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path0" includeIn="over" winding="nonZero" x="140.297" y="12.033">
-		<s:fill>
-			<s:SolidColor color="#CCCCCC"/>
-		</s:fill>
-	</s:Path>
-	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path1" includeIn="over" winding="nonZero" x="140.297" y="5.433">
-		<s:fill>
-			<s:SolidColor color="#CCCCCC"/>
-		</s:fill>
-	</s:Path>
-	<s:Line id="line0" includeIn="over" x="134.5" y="4.5" yTo="12">
+	<s:Rect height="18" id="rect2" includeIn="disabled,down,over" radiusX="1.9919" radiusY="1.9919" right="0" left="0.5" y="0.5">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
-	</s:Line>
-	<s:Rect height="21" id="rect2" includeIn="down" radiusX="1.9919" radiusY="1.9919" width="150" x="1" y="0">
+	</s:Rect>
+	
+	<s:Rect height="19" id="rect0" includeIn="up" radiusX="1.9919" radiusY="1.9919" right="1" left="1" y="0">
 		<s:fill>
 			<s:LinearGradient rotation="90" scaleX="14.665" x="74.889" y="1.051">
 				<s:GradientEntry alpha="1.0" color="#2E2E2E" ratio="0"/>
@@ -77,54 +34,29 @@
 		<s:filters>
 		</s:filters>
 	</s:Rect>
-	<s:Rect height="20" id="rect3" includeIn="down" radiusX="1.9919" radiusY="1.9919" width="151" x="0.5" y="0.5">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Rect>
-	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path2" includeIn="down" winding="nonZero" x="140.297" y="12.033">
-		<s:fill>
-			<s:SolidColor color="#CCCCCC"/>
-		</s:fill>
-	</s:Path>
-	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path3" includeIn="down" winding="nonZero" x="140.297" y="5.433">
-		<s:fill>
-			<s:SolidColor color="#CCCCCC"/>
-		</s:fill>
-	</s:Path>
-	<s:Line id="line1" includeIn="down" x="134.5" y="4.5" yTo="12">
+	<s:Rect height="18" id="rect3" includeIn="up" radiusX="1.9919" radiusY="1.9919" right="0" left="0.5" y="0.5">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#CCCCCC" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
-	</s:Line>
-	<s:Rect height="21" id="rect4" includeIn="disabled" radiusX="1.9919" radiusY="1.9919" width="150" x="1" y="0">
-		<s:fill>
-			<s:LinearGradient rotation="90" scaleX="14.665" x="74.889" y="1.051">
-				<s:GradientEntry alpha="1.0" color="#2E2E2E" ratio="0"/>
-				<s:GradientEntry alpha="1.0" color="#000000" ratio="1"/>
-			</s:LinearGradient>
-		</s:fill>
-		<s:filters>
-		</s:filters>
 	</s:Rect>
-	<s:Rect height="20" id="rect7" includeIn="disabled" radiusX="1.9919" radiusY="1.9919" width="151" x="0.5" y="0.5">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Rect>
-	<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path4" includeIn="disabled" winding="nonZero" x="140.297" y="12.033">
-		<s:fill>
-			<s:SolidColor color="#999999"/>
-		</s:fill>
-	</s:Path>
-	<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path5" includeIn="disabled" winding="nonZero" x="140.297" y="5.433">
-		<s:fill>
-			<s:SolidColor color="#999999"/>
-		</s:fill>
-	</s:Path>
-	<s:Line id="line2" includeIn="disabled" x="134.5" y="4.5" yTo="12">
-		<s:stroke>
-			<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
-		</s:stroke>
-	</s:Line>
+	
+	
+	<s:Group id="group1"  right="6" y="3">
+		<s:Path data="M 5.373 0 L 2.686 3.302 L 0 0 L 5.373 0 Z" id="path6" winding="nonZero" x="6.247" y="8.083">
+			<s:fill>
+				<s:SolidColor color="#999999"/>
+			</s:fill>
+		</s:Path>
+		<s:Path data="M 0 3.302 L 2.686 0 L 5.373 3.302 L 0 3.302 Z" id="path7"  winding="nonZero" x="6.247" y="2.483">
+			<s:fill>
+				<s:SolidColor color="#999999"/>
+			</s:fill>
+		</s:Path>
+		<s:Line id="line1" x="0.5" y="0.5" yTo="12">
+			<s:stroke>
+				<s:SolidColorStroke caps="none" color="#999999" joints="miter" miterLimit="4" weight="1"/>
+			</s:stroke>
+		</s:Line>
+	</s:Group>
+	
 </s:Skin>

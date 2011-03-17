@@ -125,7 +125,7 @@ flashcommander|AutoComplete#editorInput s|TextInput {
 	horizontalCenter: 0 ;
 }
 s|DropDownList {
-	skinClass: ClassReference("com.pentagram.view.skins.controls.DropDownList");
+	skinClass: ClassReference("com.pentagram.view.skins.controls.DropDown");
 }
 .darkPanel s|Label {
 	color: #ffffff;	
@@ -146,6 +146,11 @@ s|DropDownList {
 }
 .darkPanel s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.DarkTextInput');
+}
+.darkPanel s|List {
+	selectionColor:#FFFFFF;
+	rollOverColor:#FFFFFF;
+	color: #666666;
 }
 .darkPanel s|TextArea {
 	borderVisible:false;

@@ -45,7 +45,7 @@ package com.pentagram.instance.view.visualizer.renderers
 
 		private static var rcFill:Rectangle = new Rectangle();
 		private var info:RendererInfo;
-		private var infoVisible:Boolean = false;
+		private var _infoVisible:Boolean = false;
 		private var radius:Number = 0;
 		private var _data:Object;
 		
@@ -96,57 +96,87 @@ package com.pentagram.instance.view.visualizer.renderers
 			item = value.item as NormalizedVO;
 			if(infoVisible && item.country == info.country && item.content != null && info.content != item.content)
 				info.content = item.content;
+			else if(infoVisible && item.country != info.country) {
+				info.country = item.country;
+				info.content = item.content;
+				moveInfo();
+			}
 		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
 		{
 			super.updateDisplayList(unscaledWidth, unscaledHeight);
-			var g:Graphics = graphics;
-			
+			draw2(unscaledWidth, unscaledHeight);
+		}
+		private function draw2(unscaledWidth:Number,unscaledHeight:Number):void {
+			var state:String = "";
+			var colors:Array;
 			var color:uint = _data.item.color;
 			var alpha:Number = _data.item.alpha;
 			var adjustedRadius:Number = 0;
-
 			
-			var colors:Array;
-			if(alpha > 0.2) {
+			if(alpha > 0.2)
 				colors = [color,Colors.darker(color)];
-				
-			}
-			else {
+			else
 				colors =  [color,color];
-			}	
-			if(_data.item.textColor == 0)
-				_data.item.textColor = alpha > 0.2 ?0xffffff:color;
-			var stroke:IStroke = new Stroke(color,1,1);
-			stroke.apply(g,null,null);
+			
+			switch (state)
+			{
+				case ChartItem.FOCUSED:
+				case ChartItem.ROLLOVER:
+					adjustedRadius = getStyle('adjustedRadius');
+					if (!adjustedRadius)
+						adjustedRadius = 0;
+					break;
+				case ChartItem.DISABLED:
+					break;
+				case ChartItem.FOCUSEDSELECTED:
+				case ChartItem.SELECTED:
+					adjustedRadius = getStyle('adjustedRadius');
+					if (!adjustedRadius)
+						adjustedRadius = 0;
+					break;
+				default:
+				break;
+			}
+			var stroke:IStroke = getStyle("stroke");
+			Stroke(stroke).color = color;
+			Stroke(stroke).alpha = 1;
 			var w:Number = stroke ? stroke.weight / 2 : 0;
 			
+			rcFill.right = unscaledWidth;
+			rcFill.bottom = unscaledHeight;
+			
 			var rW:Number = unscaledWidth - 2 * w + adjustedRadius * 2;
-			var rH:Number = unscaledHeight - 2 * w + adjustedRadius * 2
+			var rH:Number = unscaledHeight - 2 * w + adjustedRadius * 2;
+			radius = rH;
 			var matr:Matrix = new Matrix();
 			matr.createGradientBox(rW*2,rH*2, Math.PI/1.7, 0, 0);
 			
 			rcFill.right = unscaledWidth;
 			rcFill.bottom = unscaledHeight;
 			
+			var g:Graphics = graphics;
 			g.clear();		
-			stroke.apply(g,null,null);
+			if (stroke)
+				stroke.apply(g,null,null);
+			
 			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[alpha,alpha],FILL_RATIO,matr);
 			g.drawEllipse(w - adjustedRadius, w - adjustedRadius,rW,rH);
-			radius = rH;
-			g.endFill()
-			
-			textFormat.color = _data.item.textColor;
+			g.endFill();	
+				
+			textFormat.color = alpha>0.4?0xffffff:color;
 			label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 			label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
 			label.defaultTextFormat = textFormat;
 			label.text = _data.item.shortname;
+			if(infoVisible && item.country != info.country)
+				trace(item.country.shortname,info.country.shortname);
 			
-			if(unscaledWidth - 2 * w + adjustedRadius * 2 > 0) {	
+			if(unscaledWidth - 2 * w + adjustedRadius * 2 > 0)	
 				this.visible = true;
-			}
 			else
 				this.visible = false;
+			
 		}
 		public function draw():void { 
 			
@@ -157,6 +187,8 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function move(x:Number, y:Number):void {
 			super.move(x,y);
+			//if(infoVisible && item.country != info.country)
+			//	trace(item.country.shortname,info.country.shortname);
 			if(infoVisible && item.country == info.country) {
 				dirtyTooltipFlag = true;
 				this.invalidateProperties();
@@ -199,7 +231,13 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.rightTipVisible = false;
 				info.x = pt.x+width+offset;
 			}
-			info.y = pt.y+radius/2-info.height/2;
+			info.y = pt.y+radius/2-info.height/2-4;
+		}
+		private function set infoVisible(value:Boolean):void {
+			_infoVisible = value;
+		}
+		private function get infoVisible():Boolean {
+			return _infoVisible;
 		}
 	}
 }

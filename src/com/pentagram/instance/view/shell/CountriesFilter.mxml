@@ -67,9 +67,10 @@
 		</s:stroke>
 	</s:Rect>	
 	<s:Group width="100%" height.closed="0" height.open="{this.parent.parent.height}" top="24" clipAndEnableScrolling="true" id="gridHolder">
-		<s:DataGrid width="100%" id="countryList" contentBackgroundAlpha="1" contentBackgroundColor="0x242424" borderVisible="false" 
+		<s:DataGrid width="100%" id="countryList" contentBackgroundAlpha="1"  borderVisible="false" 
 			height="100%" left="4" right="4"  bottom="34" top="4" 
-			selectionColor="0xffffff" rollOverColor="0xffffff" skinClass="com.pentagram.view.skins.controls.DarkDataGrid" sortableColumns="true" 
+			selectionColor="0xffffff" rollOverColor="0xffffff" contentBackgroundColor="0x242424"
+			skinClass="com.pentagram.view.skins.controls.DarkDataGrid" sortableColumns="true" 
 			selectionMode="multipleRows">
 			<s:columns>
 				<s:ArrayList>

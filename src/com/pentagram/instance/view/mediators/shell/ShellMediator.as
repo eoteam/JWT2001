@@ -158,6 +158,16 @@ package com.pentagram.instance.view.mediators.shell
 					if(view.graphView.datasets[3]) {
 						datasetids += ','+view.graphView.datasets[3].id.toString();
 					}
+					
+					var arr:Array = [];
+					if(view.graphView.datasets[0].type == 1)
+						arr.push(view.graphView.datasets[0]);
+					if(view.graphView.datasets[1].type == 1)
+						arr.push(view.graphView.datasets[1]);
+					if(view.graphView.datasets[2].type == 1)
+						arr.push(view.graphView.datasets[2]);
+					view.filterTools.optionsPanel.datasets = new ArrayList(arr);
+					
 					checkNotes();
 					restoreViewOptions(view.graphView);
 					this.formatVizTitle(view.graphView.datasets);
@@ -252,6 +262,15 @@ package com.pentagram.instance.view.mediators.shell
 					if(event.args[3]) 
 						datasetids += ","+event.args[3].id.toString()
 	
+					var arr:Array = [];
+					if(event.args[0].type == 1)
+						arr.push(event.args[0]);
+					if(event.args[1].type == 1)
+						arr.push(event.args[1]);
+					if(event.args[2].type == 1)
+						arr.push(event.args[2]);
+					view.filterTools.optionsPanel.datasets = new ArrayList(arr);
+					
 					checkNotes();
 					formatVizTitle(view.graphView.datasets);
 				break;
@@ -367,14 +386,17 @@ package com.pentagram.instance.view.mediators.shell
 					IDataVisualizer(view.currentVisualizer).selectCountries(event.args[1]);
 				break;
 				case "rangeSelection":
-					if(view.visualizerArea.selectedIndex == model.MAP_INDEX)
-						ds1 = view.mapView.datasets[2];
-					else
-						ds1 = view.clusterView.datasets[3];
+//					if(view.visualizerArea.selectedIndex == model.MAP_INDEX)
+//						ds1 = view.mapView.datasets[2];
+//					else if(view.visualizerArea.selectedIndex == model.CLUSTER_INDEX)
+//						ds1 = view.clusterView.datasets[3];
+//					else if(view.visualizerArea.selectedIndex == model.GRAPH_INDEX)
+//						ds1 = view.graphView.datasets
+					ds1 = view.filterTools.optionsPanel.datasetList.selectedItem as Dataset;
 					ds1.min = event.args[1][0];
 					ds1.max = event.args[1][1];
-					if(view.visualizerArea.selectedIndex == model.MAP_INDEX || view.visualizerArea.selectedIndex == model.CLUSTER_INDEX)
-						view.currentVisualizer.update();
+					//if(view.visualizerArea.selectedIndex != model.MAP_INDEX )
+					view.currentVisualizer.update();
 				break;
 			}
 		}
@@ -429,6 +451,15 @@ package com.pentagram.instance.view.mediators.shell
 						ds3 = model.client.datasets.getItemAt(0) as Dataset;
 						view.tools.thirdSet.selectedIndex = 0;
 					}
+					
+					var arr:Array = [];
+					if(ds1.type == 1)
+						arr.push(ds1);
+					if(ds2.type == 1)
+						arr.push(ds2);
+					if(ds3.type == 1)
+						arr.push(ds3);
+					view.filterTools.optionsPanel.datasets = new ArrayList(arr);
 					
 					view.tools.fourthSet.dataProvider = fourthSetList;
 					var ds4:Dataset = view.tools.fourthSet.selectedItem = regionOption;

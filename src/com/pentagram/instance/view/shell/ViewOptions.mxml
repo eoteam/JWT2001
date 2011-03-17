@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" creationComplete="group1_creationCompleteHandler(event)"
-		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="org.flashcommander.components.*" xmlns:vo="com.pentagram.model.vo.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:components="org.flashcommander.components.*" 
+		 xmlns:vo="com.pentagram.model.vo.*">
 
 	<fx:Script>
 		<![CDATA[
@@ -90,11 +92,11 @@
 				</s:stroke>
 			</s:Rect>
 			
-			<s:VGroup width="100%" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="false">
+			<s:VGroup width="100%" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="false" styleName="darkPanel">
 				<s:DropDownList width="100%" labelField="name" dataProvider="{_datasets}"  id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
 				
 				<mx:HSlider thumbCount="2" minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}" chromeColor="0x1a1a1a" showDataTip="true" accentColor="0xcccccc"  
-							allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.minCopy,dataset.maxCopy]:[0,0]}" 
+							allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.min,dataset.max]:[0,0]}" 
 							tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" id="range"   />				
 			</s:VGroup>
 
