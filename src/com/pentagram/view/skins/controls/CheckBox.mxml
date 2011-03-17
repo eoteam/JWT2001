@@ -40,9 +40,10 @@
 			<s:SolidColorStroke caps="none" color="#E6E6E6" joints="miter" miterLimit="4" weight="1"/>
 		</s:stroke>
 	</s:Path>
+	
 	<s:Label id="labelDisplay"
 			 textAlign="start"
-			 verticalAlign="middle"
+			 verticalAlign="middle" 
 			 maxDisplayedLines="1"
-			 left="18" right="0" top="3" bottom="3" verticalCenter="2" />
+			 left="18" right="0" top="3" bottom="3" verticalCenter="0" />
 </s:Skin>

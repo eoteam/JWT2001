@@ -132,7 +132,7 @@
     
     <s:Group left="0" right="0" top="0" bottom="0">
 
-		<s:Path verticalCenter="0" visible="{hostComponent._pinned &amp;&amp; hostComponent.leftTipVisible}"
+		<s:Path verticalCenter="0" visible="{hostComponent.isPinned &amp;&amp; hostComponent.leftTipVisible}"
 				id="leftTip"  winding="nonZero"
 				data="M 0 0 L -16 10 L 0 20 L 0 0 Z">
 			<s:fill>
@@ -145,7 +145,7 @@
 		
 		
 		<s:Path id="rightTp" right="-16" data="M 0 0 L 16 10 L 0 20 L 0 0 Z"  verticalCenter="0" winding="nonZero"
-		visible="{hostComponent._pinned &amp;&amp; hostComponent.rightTipVisible}"> <!-- -->
+		visible="{hostComponent.isPinned &amp;&amp; hostComponent.rightTipVisible}"> <!-- -->
 			<s:fill>
 				<s:SolidColor color="#1A1A1A" alpha="0.75"/>
 			</s:fill>

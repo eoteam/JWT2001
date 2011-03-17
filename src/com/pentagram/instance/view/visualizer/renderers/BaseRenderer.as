@@ -108,8 +108,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			if(_radius == 0)
 				visible = false;
 			else
-				visible = true;
-			
+				visible = true;		
 		}		
 		public function get fillColor():uint { return _fillColor; }
 		public function set fillColor(c:uint):void { _fillColor = c; }
@@ -123,56 +122,56 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 		}	
 		
-		public function get fillHue():Number { return Colors.hue(_fillColor); }
-		public function set fillHue(h:Number):void {
-			_fillColor = Colors.hsv(h, Colors.saturation(_fillColor),
-				Colors.value(_fillColor), Colors.a(_fillColor)); 
-			
-		}
-		
-		public function get fillSaturation():Number { return Colors.saturation(_fillColor); }
-		public function set fillSaturation(s:Number):void {
-			_fillColor = Colors.hsv(Colors.hue(_fillColor), s,
-				Colors.value(_fillColor), Colors.a(_fillColor));
-			
-		}
-		
-		public function get fillValue():Number { return Colors.value(_fillColor); }
-		public function set fillValue(v:Number):void {
-			_fillColor = Colors.hsv(Colors.hue(_fillColor),
-				Colors.saturation(_fillColor), v, Colors.a(_fillColor));
-			
-		}
-		
-		public function get lineColor():uint { return _lineColor; }
-		public function set lineColor(c:uint):void { _lineColor = c;  }
-		
-		public function get lineAlpha():Number { return Colors.a(_lineColor) / 255; }
-		public function set lineAlpha(a:Number):void {
-			_lineColor = Colors.setAlpha(_lineColor, uint(255*a)%256);
-			
-		}
-		
-		public function get lineHue():Number { return Colors.hue(_lineColor); }
-		public function set lineHue(h:Number):void {
-			_lineColor = Colors.hsv(h, Colors.saturation(_lineColor),
-				Colors.value(_lineColor), Colors.a(_lineColor));
-			
-		}
-		
-		public function get lineSaturation():Number { return Colors.saturation(_lineColor); }
-		public function set lineSaturation(s:Number):void {
-			_lineColor = Colors.hsv(Colors.hue(_lineColor), s,
-				Colors.value(_lineColor), Colors.a(_lineColor));
-			
-		}
-		
-		public function get lineValue():Number { return Colors.value(_lineColor); }
-		public function set lineValue(v:Number):void {
-			_lineColor = Colors.hsv(Colors.hue(_lineColor),
-				Colors.saturation(_lineColor), v, Colors.a(_lineColor));
-			
-		}
+//		public function get fillHue():Number { return Colors.hue(_fillColor); }
+//		public function set fillHue(h:Number):void {
+//			_fillColor = Colors.hsv(h, Colors.saturation(_fillColor),
+//				Colors.value(_fillColor), Colors.a(_fillColor)); 
+//			
+//		}
+//		
+//		public function get fillSaturation():Number { return Colors.saturation(_fillColor); }
+//		public function set fillSaturation(s:Number):void {
+//			_fillColor = Colors.hsv(Colors.hue(_fillColor), s,
+//				Colors.value(_fillColor), Colors.a(_fillColor));
+//			
+//		}
+//		
+//		public function get fillValue():Number { return Colors.value(_fillColor); }
+//		public function set fillValue(v:Number):void {
+//			_fillColor = Colors.hsv(Colors.hue(_fillColor),
+//				Colors.saturation(_fillColor), v, Colors.a(_fillColor));
+//			
+//		}
+//		
+//		public function get lineColor():uint { return _lineColor; }
+//		public function set lineColor(c:uint):void { _lineColor = c;  }
+//		
+//		public function get lineAlpha():Number { return Colors.a(_lineColor) / 255; }
+//		public function set lineAlpha(a:Number):void {
+//			_lineColor = Colors.setAlpha(_lineColor, uint(255*a)%256);
+//			
+//		}
+//		
+//		public function get lineHue():Number { return Colors.hue(_lineColor); }
+//		public function set lineHue(h:Number):void {
+//			_lineColor = Colors.hsv(h, Colors.saturation(_lineColor),
+//				Colors.value(_lineColor), Colors.a(_lineColor));
+//			
+//		}
+//		
+//		public function get lineSaturation():Number { return Colors.saturation(_lineColor); }
+//		public function set lineSaturation(s:Number):void {
+//			_lineColor = Colors.hsv(Colors.hue(_lineColor), s,
+//				Colors.value(_lineColor), Colors.a(_lineColor));
+//			
+//		}
+//		
+//		public function get lineValue():Number { return Colors.value(_lineColor); }
+//		public function set lineValue(v:Number):void {
+//			_lineColor = Colors.hsv(Colors.hue(_lineColor),
+//				Colors.saturation(_lineColor), v, Colors.a(_lineColor));
+//			
+//		}
 
 		
 		// -- Methods ---------------------------------------------------------
@@ -192,7 +191,7 @@ package com.pentagram.instance.view.visualizer.renderers
 //		}
 		override public function set x(value:Number):void {
 			super.x = value;
-			if(infoVisible) {
+			if(infoVisible && info.pinned) {
 				moveInfo();
 //				dirtyTooltipFlag = true;
 //				this.commitProperties();
@@ -200,7 +199,7 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function set y(value:Number):void {
 			super.y = value;
-			if(infoVisible) {
+			if(infoVisible && info.pinned) {
 				moveInfo();
 //				dirtyTooltipFlag = true;
 //				this.commitProperties();

@@ -148,23 +148,19 @@
 						if(dataset.id != -1) {
 							if(dataset.time == 1) {
 								value = c.data[currentYear];
-								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max)
 									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;
-//									if(r < 0) trace("Negative Radius",r);
-									content = generateContent(value,currentYear);
-								}
 								else
 									r = 0;
+								content = generateContent(value,currentYear);
 							}
 							else {
 								value = c.data.value;
-								if(!isNaN(value) && value >= dataset.min && c.data.value <= dataset.max) {
+								if(!isNaN(value) && value >= dataset.min && c.data.value <= dataset.max)
 									r = (value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-									content = generateContent(value);
-								}
-								else {
+								else 
 									r = 0;
-								}
+								content = generateContent(value);
 							}
 						}
 						else r = maxRadius;
@@ -240,9 +236,7 @@
 			public function toggleOpacity(value:Number):void {
 				if(mapHolder) {
 					var a:int = value==1?0:1;
-					
 					opacity = value==1?false:true;
-					TweenLite.to(mapHolder,.5,{alpha:a});
 				}
 				for each(var renderer:MapParticle in renderers) {
 					var c:uint = value==1?0xffffff:renderer.fillColor; 
@@ -288,23 +282,20 @@
 							if(dataset.time == 1) {
 								currentYear = dataset.years[0];
 								value = row[dataset.years[0]];
-								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
-									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;
-									content =  generateContent(value,dataset.years[0]);
-									if(r < 0) trace("Negative Radius",r);
-								}
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max)
+									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;	
+									//if(r < 0) trace("Negative Radius",r);
 								else 
 									r = 0;
+								content =  generateContent(value,dataset.years[0]);
 							}
 							else {
 								value = row.value;
-								if(!isNaN(value) && value >= dataset.min && value <= dataset.max) {
+								if(!isNaN(value) && value >= dataset.min && value <= dataset.max)
 									r = (value - dataset.min) / (dataset.max - dataset.min) * maxRadius;
-									content = generateContent(value);
-								}
-								else {
+								else
 									r = 0;
-								}	
+								content = generateContent(value);
 							}	
 						}
 						else {

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008">
+<s:Skin xmlns:s="library://ns.adobe.com/flex/spark" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:d="http://ns.adobe.com/fxg/2008/dt" xmlns:flm="http://ns.adobe.com/flame/2008" xmlns:controls="com.pentagram.view.controls.*">
 	<fx:Metadata>[HostComponent("spark.components.ToggleButton")]</fx:Metadata>
 	<s:states>
-		<s:State name="up"/>
-		<s:State name="over"/>
-		<s:State name="down"/>
-		<s:State name="disabled"/>
-		<s:State name="upAndSelected"/>
-		<s:State name="overAndSelected"/>
-		<s:State name="downAndSelected"/>
-		<s:State name="disabledAndSelected"/>
+		<s:State name="up" stateGroups="normal"/>
+		<s:State name="over" stateGroups="normal"/>
+		<s:State name="down" stateGroups="normal"/>
+		<s:State name="disabled" stateGroups="normal"/>
+		<s:State name="upAndSelected" stateGroups="selected"/>
+		<s:State name="overAndSelected" stateGroups="selected"/>
+		<s:State name="downAndSelected" stateGroups="selected"/>
+		<s:State name="disabledAndSelected" stateGroups="selected"/>
 	</s:states>
 	<s:Rect height="31" id="rect1"  width="30" x="0" y="0">
 		<s:fill>
@@ -98,4 +98,8 @@
 			</s:LinearGradient>
 		</s:fill>
 	</s:Path>
+	<controls:ButtonToolTip bodyText="Loop"  includeInLayout="false"
+	rectWidth="70" tipPlacement="{70/2-5}"
+	y="{-height-14}" x="{width/2-35}"
+	visible="false" visible.overAndSelected="true"  visible.over="true" />
 </s:Skin>

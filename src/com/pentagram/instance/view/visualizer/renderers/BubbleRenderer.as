@@ -189,7 +189,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			super.move(x,y);
 			//if(infoVisible && item.country != info.country)
 			//	trace(item.country.shortname,info.country.shortname);
-			if(infoVisible && item.country == info.country) {
+			if(infoVisible && item.country == info.country && info.pinned) {
 				dirtyTooltipFlag = true;
 				this.invalidateProperties();
 			}

@@ -43,6 +43,7 @@ package com.pentagram.main.mediators
 			
 			
 			TweenPlugin.activate([HexColorsPlugin]);
+			TweenPlugin.activate([TransformMatrixPlugin]);
 			
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
 			eventMap.mapListener(eventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);

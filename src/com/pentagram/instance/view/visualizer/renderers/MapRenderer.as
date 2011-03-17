@@ -125,18 +125,14 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function set x(value:Number):void {
 			super.x = value;
-			if(infoVisible)
-				moveInfo();
 		}
 		override public function set y(value:Number):void {
 			super.y = value;
-			if(infoVisible)
-				moveInfo();
 		}
 		public function move(x:Number,y:Number):void {
 			this.x = x;
 			this.y = y;
-			if(infoVisible)
+			if(infoVisible && info.pinned) 
 				moveInfo();
 		}
 		override public function set radius(r:Number):void {

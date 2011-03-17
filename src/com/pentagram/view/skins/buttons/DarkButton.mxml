@@ -55,9 +55,8 @@
 		</s:stroke>
 	</s:Rect>
 	<s:Label id="labelDisplay"
-			 textAlign="center"
-			 maxDisplayedLines="1"  color="#ffffff"
-			 horizontalCenter="0" verticalCenter="1" verticalAlign="middle"
-			 left="20" right="20" y="5">
+			 textAlign="{this.hostComponent.getStyle('textAlignLast')}"
+			 maxDisplayedLines="1"  color="#ffffff" left="5" right="5"
+			 verticalCenter="1" verticalAlign="middle" y="5">
 	</s:Label>
 </s:Skin>

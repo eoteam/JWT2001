@@ -492,7 +492,7 @@
 			<s:Label fontFamily="FlamaBold" text="# of pages (100 tweets per page)"  color="0xffffff" />
 			<s:HSlider minimum="1" maximum="15" id="pageSlider" skinClass="com.pentagram.view.skins.controls.DarkHSlider" stepSize="1"
 			showDataTip="true"  change="this.pageTotal=pageSlider.value" width="255"  />
-			<s:Button label="Save" width="100%" click="handleClick(event)"  skinClass="com.pentagram.view.skins.buttons.DarkButton"/>
+			<s:Button label="Save" width="100%" click="handleClick(event)"  skinClass="com.pentagram.view.skins.buttons.DarkButton" textAlignLast="center"/>
 		</s:VGroup>
 	</s:Group>
 	

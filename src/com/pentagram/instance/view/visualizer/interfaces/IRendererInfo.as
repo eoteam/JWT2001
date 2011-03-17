@@ -10,11 +10,13 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function set content(value:String):void;
 		
 		function get content():String;
-		
-		function get pinned():Boolean;
-		
+				
 		function get data():Object;
 		
 		function set data(value:Object):void;
+		
+		function get pinned():Boolean;
+		
+		function set pinned(value:Boolean):void;
 	}
 }

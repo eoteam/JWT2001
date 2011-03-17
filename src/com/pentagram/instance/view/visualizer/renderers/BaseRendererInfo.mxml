@@ -21,12 +21,18 @@
 			
 			private var controlBarPressed:Boolean = false;
 			private var _content:String;
+
+			
 			public function close():void {
 				dispatchEvent(new CloseEvent(CloseEvent.CLOSE)); 
 			}			
 			public function get pinned():Boolean {
-				return _pinned;
+				return isPinned;
 			}
+			public function set pinned(value:Boolean):void {
+				isPinned = value;
+			}
+									   
 			private function titlewindow1_creationCompleteHandler(event:FlexEvent):void {
 				this.moveArea.addEventListener(MouseEvent.MOUSE_DOWN,controlBarMouseHandler);
 				this.moveArea.addEventListener(MouseEvent.MOUSE_UP,controlBarMouseHandler);
@@ -42,12 +48,12 @@
 						break;
 					case MouseEvent.MOUSE_MOVE:
 						if(controlBarPressed)
-							_pinned = false;
+							pinned = false;
 						break;
 				}	
 			}
 			private function titlewindow1_closeHandler(event:CloseEvent):void {
-				_pinned = true;
+				pinned = true;
 				PopUpManager.removePopUp(this); 
 			}
 			public function set content(value:String):void {
@@ -63,14 +69,15 @@
 			public function set data(value:Object):void {
 				
 			}
+			
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<fx:Boolean id="_pinned">true</fx:Boolean>
 		<fx:Boolean id="leftTipVisible">true</fx:Boolean>
 		<fx:Boolean id="rightTipVisible">false</fx:Boolean>
 		<fx:Boolean id="previousTipVisible">true</fx:Boolean>
 		<s:Fade id="fadeIn" alphaTo="1" duration="250" />
 		<s:TextFlow id="ctf" />
+		<fx:Boolean id="isPinned">true</fx:Boolean>
 	</fx:Declarations>
 </controls:ResizableTitleWindow>

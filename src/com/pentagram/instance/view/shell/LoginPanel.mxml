@@ -80,8 +80,7 @@
 			<s:TextInput width="100%" displayAsPassword="true"  id="pwInput"  text.loggedout=""/>
 		</s:HGroup>	
 		<s:Rect width="8" />
-
-		<s:Button label="Log In" id="loginBtn" width="100%"   />
+		<s:Button label="Log In" id="loginBtn" width="100%"  textAlignLast="center" />
 	</s:Group>
 	
 	<s:Group width="100%" height="100%" includeIn="loggedin">
@@ -97,7 +96,7 @@
 			</s:stroke>
 		</s:Line>
 		<s:Rect height="20" />
-		<s:Button label="Log Out" id="logoutBtn" width="100%"/>
+		<s:Button label="Log Out" id="logoutBtn" width="100%" textAlignLast="center"/>
 	</s:Group>
 
 </s:Group>

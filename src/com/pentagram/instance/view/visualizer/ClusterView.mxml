@@ -55,22 +55,20 @@
 						for (j=0;j<dp.length;j++) {
 							circle = dp[j];
 							value = circle.data2[currentYear];
-							if(value >= ds2.min && value <= ds2.max) {
+							if(value >= ds2.min && value <= ds2.max)
 								circle.radiusBeforeRendering =  (value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-								circle.content = this.generateContent(value,currentYear);
-							}
 							else circle.radiusBeforeRendering = 0;
+							circle.content = this.generateContent(value,currentYear);
 						}
 					}
 					else {
 						for (j=0;j<dp.length;j++) {
 							circle = dp[j];
 							value = circle.data2.value;
-							if(value >= ds2.min && value <= ds2.max) {
+							if(value >= ds2.min && value <= ds2.max)
 								circle.radiusBeforeRendering =  (value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-								circle.content = this.generateContent(value);
-							}
 							else circle.radiusBeforeRendering = 0;
+							circle.content = this.generateContent(value);
 						}
 					}
 					if(!c.filterMode)
@@ -286,19 +284,17 @@
 											if(ds2.time == 1) {
 												currentYear = ds2.years[0];	
 												value2 = row2[ds2.years[0]];
-												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-													content = generateContent(value2,ds2.years[0]);
-												}
 												else r = 0;
+												content = generateContent(value2,ds2.years[0]);
 											}
 											else {
 												value2 = row2.value;
-												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-													content = generateContent(value2);
-												}
 												else r = 0;
+												content = generateContent(value2);
 											}	
 										}
 										else if(ds2.id == -1) {
@@ -324,19 +320,17 @@
 					for each(row in ds2.rows) {
 						if(ds2.time == 1) {
 							value2 = row[ds2.years[0]];
-							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 								r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
-								content = generateContent(value2,ds2.years[0]);
-							}
 							else r = 0;
+							content = generateContent(value2,ds2.years[0]);
 						}
 						else {
 							value2 = row.value;
-							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max) {
+							if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 								r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
-								content = generateContent(value2);
-							}
 							else r = 0;
+							content = generateContent(value2);
 						}
 						if(!isNaN(r))
 							arr.push({data:null,radius:r,color:row.country.region.color,data2:row,content:content});

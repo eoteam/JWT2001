@@ -80,6 +80,7 @@
 			</s:stroke>
 		</s:Line>
 		<s:RichText fontSize="14" textFlow="{ctf}" paddingLeft="7" paddingRight="7" color="#ffffff" maxDisplayedLines="1"  width="100%"/>
+		
 		<s:Line  width="100%" height="1" includeIn="link">
 			<s:stroke>
 				<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>
