@@ -41,11 +41,13 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		public function get data():DataRow { return _data; }
 		public function set data(d:DataRow):void { 
-			_data = d;
-			fillColor=d.country.region.color;
-			if(_sprite)
-				MapRenderer(_sprite).data = d;
-		}	
+			if(_data != d) {
+				_data = d;
+				fillColor = d.country.region.color;
+				if(MapRenderer(_sprite).data != d)
+					MapRenderer(_sprite).data = d;
+			}
+		}
 		override public function set radius(r:Number):void {
 			if(isNaN(r)) this.collidable = false;
 			else this.collidable = true;
@@ -89,7 +91,7 @@ package com.pentagram.instance.view.visualizer.renderers
 					}	
 					else {
 						TweenLite.to(_sprite,0.5,{alpha:0,onComplete:hide});
-						trace(MapRenderer(_sprite).data.country.region.name);
+						//trace(MapRenderer(_sprite).data.country.region.name);
 					}
 				}
 			}

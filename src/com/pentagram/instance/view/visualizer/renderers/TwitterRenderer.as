@@ -25,74 +25,37 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltipContainer.addElement(TWRendererToolTip(tooltip));
 			TWRendererToolTip(tooltip).visible = false;
 		}		
-//		public function set state(value:Boolean):void {
-//			if(value && !stateFlag)
-//				dirtyFlag = true;
-//			stateFlag = value;
-//		}
-//		public function get state():Boolean {
-//			return stateFlag;
-//		}
-
-//		protected function updateDisplayList():void
-//		{
-//			//super.updateDisplayList(unscaledWidth,unscaledHeight);
-//			if(dirtyFlag && stateFlag)
-//				draw();
-//			else if(!stateFlag) {
-//				graphics.clear();
-//				if(labelTF)
-//					labelTF.visible = false;
-//			}
-//		}
-
 		override public function set data(d:Object):void {
 			super.data = d;
 			content =  '<P ALIGN="left"><FONT FACE="FlamaBook" SIZE="12" COLOR="#cccccc" LETTERSPACING="0" KERNING="1">'+
 						'Results: <FONT COLOR="#ffffff">'+_data.count+'</FONT></FONT></P>';
-		}
-		
+		}		
 		override public function draw():void {
 			labelTF.text = _data.value;
 			super.draw();			
 		}	
-		override protected function mouseEventHandler(event:Event):void {
-			var mouseEvent:MouseEvent = event as MouseEvent;
-			switch (event.type)
-			{
-				case MouseEvent.ROLL_OVER:
-				{
-					if(this.directParent.x + this.x + radius + TWRendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
-						TWRendererToolTip(tooltip).leftTip.visible = false;
-						TWRendererToolTip(tooltip).rightTp.visible = true;
-						TWRendererToolTip(tooltip).x = this.directParent.x +this.x - radius - TWRendererToolTip(tooltip).width - offset;
-					}
-					else { 
-						TWRendererToolTip(tooltip).leftTip.visible = true;
-						TWRendererToolTip(tooltip).rightTp.visible = false;
-						TWRendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
-					}
-					TWRendererToolTip(tooltip).y = this.y - TWRendererToolTip(tooltip).height/2;
-					TWRendererToolTip(tooltip).topic = this._data as TwitterTopic;
-					TWRendererToolTip(tooltip).visible = true;	
-					TWRendererToolTip(tooltip).content = _content;
-					break;
-				}
-					
-				case MouseEvent.ROLL_OUT:
-				{	
-					TWRendererToolTip(tooltip).visible = false;
-					break;
-				}		
-				case MouseEvent.CLICK:
-				{
-					toggleInfo(true);
-					break;
-				}
-			}
-		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
+		}
+		override public function toggleTooltip(visible:Boolean):void {
+			if(visible) {
+				if(this.directParent.x + this.x + radius + TWRendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
+					TWRendererToolTip(tooltip).leftTip.visible = false;
+					TWRendererToolTip(tooltip).rightTp.visible = true;
+					TWRendererToolTip(tooltip).x = this.directParent.x +this.x - radius - TWRendererToolTip(tooltip).width - offset;
+				}
+				else { 
+					TWRendererToolTip(tooltip).leftTip.visible = true;
+					TWRendererToolTip(tooltip).rightTp.visible = false;
+					TWRendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
+				}
+				TWRendererToolTip(tooltip).y = this.y - TWRendererToolTip(tooltip).height/2;
+				TWRendererToolTip(tooltip).topic = this._data as TwitterTopic;
+				TWRendererToolTip(tooltip).visible = true;	
+				TWRendererToolTip(tooltip).content = _content;
+			}
+			else
+				TWRendererToolTip(tooltip).visible = false;
 		}
 		override public function set content(v:String):void {
 			super.content = v;

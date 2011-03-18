@@ -194,3 +194,13 @@ global
 	modal-transparency-color: #1a1a1a;
 	modal-transparency-duration: 0;
 }
+s|GridColumnHeaderGroup {
+	fontFamily: FlamaBold;
+	fontLookup:embeddedCFF;
+	fontWeight:normal;
+}
+s|DefaultGridHeaderRenderer s|Label {
+	fontFamily: FlamaBold;
+	fontLookup:embeddedCFF;
+	fontWeight:normal;
+}

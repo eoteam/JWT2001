@@ -36,51 +36,37 @@ package com.pentagram.instance.view.visualizer.renderers
 			tooltip = new RendererToolTip();
 			tooltipContainer.addElement(RendererToolTip(tooltip));
 			RendererToolTip(tooltip).visible = false;
-		}	
+		}		
 		override public function set data(d:Object):void { 
 			_data = d;
 			if(d)
-				fillColor = textColor = DataRow(d).country.region.color;
-		}
-		override protected function mouseEventHandler(event:Event):void {
-			var mouseEvent:MouseEvent = event as MouseEvent;
-			switch (event.type)
-			{
-				case MouseEvent.ROLL_OVER:
-				{
-					if(_data) {
-						if(this.directParent.x + this.x + radius + RendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
-							RendererToolTip(tooltip).leftTip.visible = false;
-							RendererToolTip(tooltip).rightTp.visible = true;
-							RendererToolTip(tooltip).x = this.directParent.x +this.x - radius - RendererToolTip(tooltip).width - offset;
-						}
-						else { 
-							RendererToolTip(tooltip).leftTip.visible = true;
-							RendererToolTip(tooltip).rightTp.visible = false;
-							RendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
-						}
-						RendererToolTip(tooltip).y = this.y - RendererToolTip(tooltip).height/2;
-						RendererToolTip(tooltip).visible = true;	
-						RendererToolTip(tooltip).content = _content;
-						RendererToolTip(tooltip).country = _data.country;
-					}
-					break;
-				}
-				case MouseEvent.ROLL_OUT: 
-				{	
-					RendererToolTip(tooltip).visible = false;
-					break;
-				}		
-				case MouseEvent.CLICK:
-				{
-					toggleInfo(true);
-					break;
-				}
-			}
+				fillColor = DataRow(d).country.region.color;
 		}
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}	
+		
+		override public function toggleTooltip(visible:Boolean):void {
+			if(visible) {
+				if(_data) {
+					if(this.directParent.x + this.x + radius + RendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
+						RendererToolTip(tooltip).leftTip.visible = false;
+						RendererToolTip(tooltip).rightTp.visible = true;
+						RendererToolTip(tooltip).x = this.directParent.x +this.x - radius - RendererToolTip(tooltip).width - offset;
+					}
+					else { 
+						RendererToolTip(tooltip).leftTip.visible = true;
+						RendererToolTip(tooltip).rightTp.visible = false;
+						RendererToolTip(tooltip).x = this.directParent.x + this.x + radius + offset;
+					}
+					RendererToolTip(tooltip).y = this.y - RendererToolTip(tooltip).height/2;
+					RendererToolTip(tooltip).visible = true;	
+					RendererToolTip(tooltip).content = _content;
+					RendererToolTip(tooltip).country = _data.country;
+				}
+			}else
+				RendererToolTip(tooltip).visible = false;
+		} 
 		override public function draw():void {
 			if(_data) {
 				labelTF.text = DataRow(_data).country.shortname;

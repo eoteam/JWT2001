@@ -181,7 +181,10 @@ package com.pentagram.instance.view.visualizer.renderers
 		public function draw():void { 
 			
 		}
-
+		public function toggleTooltip(visible:Boolean):void {
+			
+		}
+		
 		private function handleInfoClose(event:CloseEvent):void {
 			infoVisible = false;
 		}

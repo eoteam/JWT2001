@@ -6,6 +6,8 @@ package com.pentagram.instance.view.visualizer.interfaces
 	{
 		function toggleInfo(visible:Boolean):void;
 		
+		function toggleTooltip(visible:Boolean):void;
+		
 		function draw():void;
 		
 		function set content(value:String):void;

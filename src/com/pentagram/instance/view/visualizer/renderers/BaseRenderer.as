@@ -219,7 +219,25 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 		}
 		protected function mouseEventHandler(event:Event):void {
-			
+			var mouseEvent:MouseEvent = event as MouseEvent;
+			switch (event.type)
+			{
+				case MouseEvent.ROLL_OVER:
+				{
+					toggleTooltip(true);
+					break;
+				}
+				case MouseEvent.ROLL_OUT: 
+				{	
+					toggleTooltip(false);
+					break;
+				}		
+				case MouseEvent.CLICK:
+				{
+					toggleInfo(true);
+					break;
+				}
+			}
 		}
 		private function handleRemoved(event:Event):void {
 			if(tooltipContainer.contains(tooltip))
@@ -279,6 +297,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			_content = value;
 		}
 		public function toggleInfo(visible:Boolean):void {
+			
+		}
+		public function toggleTooltip(visible:Boolean):void {
 			
 		}
 	}

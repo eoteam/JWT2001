@@ -281,7 +281,7 @@ declarations define DataGrid skin parts except <code>headerColumnSeparator</code
         <!--- @private -->
         <s:GridColumnHeaderGroup id="columnHeaderGroup"
             paddingLeft="1" paddingTop="1" paddingRight="1" minHeight="21" 
-            columnSeparator="{headerColumnSeparator}"
+            columnSeparator="{headerColumnSeparator}" 
             headerRenderer="{headerRenderer}"/>
 
         <s:Group height="100%">
