@@ -96,11 +96,11 @@ package com.pentagram.instance.view.visualizer.renderers
 			item = value.item as NormalizedVO;
 			if(infoVisible && item.country == info.country && item.content != null && info.content != item.content)
 				info.content = item.content;
-			else if(infoVisible && item.country != info.country) {
-				info.country = item.country;
-				info.content = item.content;
-				moveInfo();
-			}
+//			else if(infoVisible && item.country != info.country) {
+//				info.country = item.country;
+//				info.content = item.content;
+//				moveInfo();
+//			}
 		}		
 		override protected function updateDisplayList(unscaledWidth:Number,unscaledHeight:Number):void
 		{

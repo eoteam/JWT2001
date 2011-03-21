@@ -18,6 +18,8 @@ package com.pentagram.main.event
 		public static const START_IMAGE_SAVE:String = "startSaveImage";
 		public static const END_IMAGE_SAVE:String = "endSaveImage";
 		
+		public static const UPDATE_TIMELINE:String = "updateTimeline";
+		
 		public static const START_COMPARE:String = "startCompare";
 		
 		public static const WINDOW_FOCUS:String = "windowFocus";

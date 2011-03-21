@@ -70,21 +70,13 @@
 					}
 					chart.horizontalAxis   = hAxisRenderer.axis = createAxis(ds1);	
 					chart.verticalAxis  = vAxisRenderer.axis = createAxis(ds2);
-//					if(ds3.id > 0 && ds3.type == 1) {
-//						var linearAxis:LinearAxis = new LinearAxis();
-//						linearAxis.title = '';
-//						linearAxis.maximum = 1
-//						linearAxis.minimum = 0;
-//					}
 		
 					hLabel.text = ds1.name;
 					vLabel.text = ds2.name;
 					
-					hAxisRenderer.visible = ds1.id == -1?false:true;
-					vAxisRenderer.visible = ds2.id == -1?false:true;
+					hAxisRenderer.visible = ds1.id == -2?false:true;
+					vAxisRenderer.visible = ds2.id == -2?false:true;
 					
-					//if(ds3)
-					//	chart.radiusAxis = createRadiusAxis(ds3);
 					chart.verticalAxisRenderers = [vAxisRenderer]; 
 					chart.horizontalAxisRenderers = [hAxisRenderer];
 				
@@ -100,12 +92,11 @@
 					linearAxis.minimum = dataset.min - Math.abs(dataset.min*.1);
 					return linearAxis;
 				}
-				else if(dataset.id != -1) {
+				else if(dataset.id != -2) {
 					var categoryAxis:CategoryAxis = new CategoryAxis();
 					categoryAxis.title = '';
 					categoryAxis.categoryField = "name";
 					categoryAxis.dataProvider = ViewUtils.vectorToArray(dataset.optionsArray);
-					//categoryAxis.dataProvider = new ArrayCollection(ViewUtils.vectorToArray(dataset.optionsArray));
 					return categoryAxis;
 				}
 				else {
@@ -115,7 +106,7 @@
 					return linearAxis;
 				}
 			}
-			private function createRadiusAxis(dataset:Dataset):IAxis {
+			private function createRadiusAxis(dataset:Dataset):IAxis {	
 				var axis:LinearAxis = new LinearAxis();
 				axis.minimum = 0;
 				axis.maximum = 100;
@@ -140,10 +131,6 @@
 					LinearAxis(chart.verticalAxis).minimum = ds2.min - Math.abs(ds2.min*.1);
 					LinearAxis(chart.verticalAxis).maximum = ds2.max + Math.abs(ds2.max*.1);;				
 				}
-//				if(ds2.type == 1) {
-//					LinearAxis(chart.radiusAxis).minimum = ds3.min - Math.abs(ds3.min*.1);
-//					LinearAxis(chart.radiusAxis).maximum = ds3.max + Math.abs(ds3.max*.1);;				
-//				}
 			}
 			public function updateMaxRadius(value:Number):void {
 				this.maxRadius = value;
@@ -219,9 +206,9 @@
 			}
 			private function generateContent(item:NormalizedVO):void {
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
-				result += ds1.id > 0 ? '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>' : '';
-				result += ds2.id > 0 ? '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>' : '';
-				if(ds3 && ds3.id > 0) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + item.radiusValue + '</span>';			
+				result += ds1.id > -2 ? '<span color="#cccccc">'+ds1.name + ':  </span><span color="#ffffff">' + item.x + '</span><br/>' : '';
+				result += ds2.id > -2 ? '<span color="#cccccc">'+ds2.name + ':  </span><span color="#ffffff">' + item.y + '</span>' : '';
+				if(ds3 && ds3.id > -2) result += '<br/><span color="#cccccc">'+ds3.name + ':  </span><span color="#ffffff">' + item.radiusValue + '</span>';			
 				result += "</p></TextFlow>";	
 				item.content = result;
 			}

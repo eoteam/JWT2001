@@ -167,7 +167,7 @@
 			</s:fill>
 		</s:Rect>-->
 		
-		<shell:ViewOptions width="100%" id="optionsPanel" />
+		<shell:ViewOptions width="100%" id="optionsPanel" map.map="true" map="false" twitter="false" twitter.twitter="true" />
 		<s:Rect width="100%" height="2">
 			<s:fill>
 				<s:SolidColor color="0xB3B3B3"/>

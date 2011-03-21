@@ -124,13 +124,23 @@ package com.pentagram.instance.controller
 		}
 		private function addNoneSets():void {
 			var none:Dataset = new Dataset();
-			none.name = "None";
+			none.name = "Region";
+			var o:String = '';
+			for each(var r:Region in model.regions.source) 
+			{
+				o += r.name+',';
+				none.optionsArray.push(r);
+			}
+			none.options = o.substr(0,o.length-1);
+			none.type = 0;
+			none.time = 0;
 			none.id = -1;
 			for each(var country:Country in model.client.countries.source) {
 				var row:DataRow = new DataRow();
 				row.country = country;
 				row.dataset = none;
 				row.id = -1;
+				row.value = country.region.name;
 				row.color = country.region.color;
 				row.name = country.name;
 				none.rows.addItem(row);

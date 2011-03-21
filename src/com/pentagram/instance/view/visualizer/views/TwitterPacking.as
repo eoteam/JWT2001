@@ -26,13 +26,24 @@ package com.pentagram.instance.view.visualizer.views
 	public class TwitterPacking extends SpriteVisualElement
 	{
 		public var renderers:Vector.<TwitterRenderer>;
-		private var circlePositions:Vector.<Point3D>;
-		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
 		public var dataProvider:Array = [];
 		public var scaler:Number = 1;
+		
+		private var circlePositions:Vector.<Point3D>;
+		private var MIN_SPACE_BETWEEN_CIRCLES:uint = 2;
+
+		private var disposeCounter:int = 2;
+		private var c:TwitterRenderer = null;
+		private var _loc_2:Number = NaN;
+		private var _loc_7:uint = 0;
+		private var _loc_3:Number = 0;
+		private var _loc_4:* = new Point();
+		private var _loc_5:Number;
+		private var timer:Timer;
+		
 		protected var tooltipContainer:Group;
 		protected var animateCoord:Boolean = false;
-		//private var _layout:ILayout2d;
+
 		public function TwitterPacking(arr:Array,parent:Group) {
 			super();			
 			this.dataProvider = arr;
@@ -50,7 +61,6 @@ package com.pentagram.instance.view.visualizer.views
 				  
 				  this.addChild(sprite);
 				}
-				//sprite.state = false;
 				sprite.data = dataProvider[i];
 				sprite.fillColor = 0x5599BB;
 				sprite.fillAlpha = 0.2;
@@ -60,37 +70,24 @@ package com.pentagram.instance.view.visualizer.views
 				
 				renderers.push(sprite);
 			}
-//			_layout = new Flow(width-40,height-40);
-//			_layout.x=20; _layout.y=20; 
-//			_layout.updateMethod = 	LayoutUpdateMethod.UPDATE_AND_RENDER;
-//			LayoutTransitioner.tweenFunction=tweenItem;
 			if(this.dataProvider.length > 2 )
 				doLayout();
 		}
-		private var disposeCounter:int = 2;
-		private var c:TwitterRenderer = null;
-		private var _loc_2:Number = NaN;
-		private var _loc_7:uint = 0;
-		private var _loc_3:Number = 0;
-		private var _loc_4:* = new Point();
-		private var _loc_5:Number;
-		private var timer:Timer;
 		private function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
 			circlePositions = new Vector.<Point3D>;			
 			circlePositions.push(new Point3D(0, 0, this.renderers[0].radiusBeforeRendering));
 			circlePositions.push(new Point3D(this.renderers[0].radiusBeforeRendering + this.renderers[1].radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES, 0,this.renderers[1].radiusBeforeRendering));
 			_loc_5 = this.circlePositions[1].x + this.circlePositions[1].z;
-			timer = new Timer(5);
+			timer = new Timer(2);
 			timer.addEventListener(TimerEvent.TIMER,onTimer);
 			timer.start();
 
 		}
-		protected function onTimer(event:TimerEvent):void {	
+		private function onTimer(event:TimerEvent):void {	
 			if(disposeCounter < this.dataProvider.length){
 				timer.stop();
 				c = this.renderers[disposeCounter];
-				//this.graphics.moveTo(0, 0);
 				_loc_2 = this.renderers[0].radiusBeforeRendering + c.radiusBeforeRendering + MIN_SPACE_BETWEEN_CIRCLES;
 				_loc_3 = 2 * Math.PI * Math.random();
 				_loc_7 = 0;
@@ -107,7 +104,6 @@ package com.pentagram.instance.view.visualizer.views
 					}
 					_loc_7 = _loc_7 + 1;
 				}
-				//	draw(true);
 				disposeCounter++;
 				timer.start();
 			}
@@ -123,7 +119,7 @@ package com.pentagram.instance.view.visualizer.views
 				this.dispatchEvent(new Event("layoutComplete"));
 			}
 		}
-		protected function testCircleAtPoint(point:Point, radius:Number) : Boolean {
+		private function testCircleAtPoint(point:Point, radius:Number) : Boolean {
 			var _loc_3:uint = 1;
 			while (_loc_3 < this.circlePositions.length){
 				
@@ -191,14 +187,6 @@ package com.pentagram.instance.view.visualizer.views
 		
 		public function sort():void {
 			quickSort(0,renderers.length-1);
-//			for(var i:int=0; i<renderers.length; i++) 
-//			{
-//				_layout.addNode(renderers[i],true);
-//			}
-
-			//_layout.updateAndRender();
-			//_layout.
-			//(LAYOUT_WIDTH-40, LAYOUT_HEIGHT-40);
 		}
 		
 		private function quickSort(left:int,right:int):void {

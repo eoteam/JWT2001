@@ -50,10 +50,10 @@
 				"their","what","so","up","out","if","about","who","get","which","go","me","when","make","can","like","time","no",
 				"just","him","know","take","person","into","year","your","good","some","could","them","see","other","than","then",
 				"now","look","only","come","its","over","think","also","back","after","use","two","how","our","	","first","well",
-				"way","even","new","want","because","any","these","give","day","most","us",
+				"way","even","new","want","because","any","these","give","day","most","us"," don't",
 				
 				"http","bit","ly","rt","www","com","here","lots","ever","are","more","is","why","it's","was","were","had","did","has",
-				"quot","amp","'s","youtu",
+				"quot","amp","'s","youtu","fb",
 			
 				//spanish
 				"de","la","que","y","el","en","a","los","se","no","un","las","del","por","con","una","es","lo","para","su","al","como",
@@ -348,14 +348,9 @@
 					}
 				}
 				var pack:TwitterPacking;
-				//if(firstPass) {
-					pack = new TwitterPacking(_topics,this);
-					pack.percentHeight = pack.percentWidth = 100;
-					holder.addElement(pack);
-				//}
-				//else 
-				//	pack = holder.getElementAt(0) as TwitterPacking;
-				
+				pack = new TwitterPacking(_topics,this);
+				holder.addElement(pack);
+				pack.percentHeight = pack.percentWidth = 100;
 				pack.build();
 				pack.addEventListener("layoutComplete",handleLayout,false,0,true);
 				this.updateSize();

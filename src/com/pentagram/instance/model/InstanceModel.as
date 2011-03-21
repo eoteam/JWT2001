@@ -139,19 +139,19 @@ package com.pentagram.instance.model
 				
 				//getting rows
 				var row:DataRow = ds1.rows.getItemAt(i) as DataRow;
-				if(ds2.id != -1) {
+				if(ds2.id != -2) {
 					for each(var row2:DataRow in ds2.rows) {
 						if(row2.country == row.country)
 							break;
 					}
 				}
-				if(ds3 && ds3.id != -1) {
+				if(ds3 && ds3.id != -2) {
 					for each(var row3:DataRow in ds3.rows) {
 						if(row3.country == row.country)
 							break;
 					}
 				}
-				if(ds4 && ds4.id != -1) {
+				if(ds4 && ds4.id != -2) {
 					for each(var row4:DataRow in ds4.rows) {
 						if(row4.country == row.country)
 							break;
@@ -167,7 +167,7 @@ package com.pentagram.instance.model
 				//ds1
 				if(ds1.time == 1) 
 					obj.x = ds1.rows.getItemAt(i)[ds1.years[0]];
-				else if(ds1.id != -1)
+				else if(ds1.id != -2)
 					obj.x = ds1.rows.getItemAt(i).value;
 				else
 					obj.x = 1;
@@ -175,13 +175,13 @@ package com.pentagram.instance.model
 				//ds2
 				if(ds2.time == 1) 
 					obj.y = row2[ds2.years[0]];
-				else  if(ds2.id != -1)
+				else  if(ds2.id != -2)
 					obj.y = row2.value;
 				else
 					obj.y = 1;
 				
 				//ds3
-				if(ds3 && ds3.id != -1) {
+				if(ds3 && ds3.id > 0) {
 					if(ds3.time == 1) {
 						obj.radius = obj.prevRadius = (row3[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
 						obj.radiusValue = row3[ds3.years[0]];

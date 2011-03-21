@@ -170,6 +170,8 @@ package com.pentagram.instance.view.visualizer.views
 		public function draw(): void {			
 			var c:ClusterRenderer;
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
+			if(this.renderers.length ==0)
+				return;
 			if (this.renderers.length < 2){
 					c = this.renderers[0];
 					TweenLite.killTweensOf(c,false);

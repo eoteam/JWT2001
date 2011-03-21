@@ -47,10 +47,10 @@ public function get currentVisualizer():IVisualizer {
 }
 protected function group1_clickHandler(event:MouseEvent):void
 {
-	if(event.target != tools.settingsBtn) {
+	if(event.target != bottomTools.settingsBtn) {
 		if(event.target is DisplayObject && exportPanel.contains(DisplayObject(event.target)))
 			return;
-		tools.settingsBtn.selected = false;
+		bottomTools.settingsBtn.selected = false;
 	}
 	if(event.target != bottomBarView.loginBtn) {
 		if(event.target is DisplayObject && loginPanel.contains(DisplayObject(event.target)))

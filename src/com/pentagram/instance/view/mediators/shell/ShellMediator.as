@@ -107,7 +107,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.SHELL_LOADED));
 			
 			regionOption = new Dataset();
-			regionOption.name = "Region";
+			regionOption.name = "None";
 			regionOption.id = -2;
 			for each(var r:Region in model.regions) {
 				var c:Category = new Category();
@@ -141,7 +141,7 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			else if(event.newIndex == model.GRAPH_INDEX){
 			 	if(view.graphView == null) {
-					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
+					view.bottomTools.firstSet.selectedIndex = view.bottomTools.secondSet.selectedIndex = view.bottomTools.thirdSet.selectedIndex = view.bottomTools.fourthSet.selectedIndex = -1;
 					util = new ModuleUtil();
 					util.addEventListener("moduleLoaded",handleGraphLoaded);
 					util.loadModule("com/pentagram/instance/view/visualizer/GraphView.swf");
@@ -179,7 +179,7 @@ package com.pentagram.instance.view.mediators.shell
 					util.addEventListener("moduleLoaded",handleClusterLoaded);
 					util.loadModule("com/pentagram/instance/view/visualizer/ClusterView.swf");	
 					loaders.push(util);
-					view.tools.firstSet.selectedIndex = view.tools.secondSet.selectedIndex = view.tools.thirdSet.selectedIndex = view.tools.fourthSet.selectedIndex = -1;
+					view.bottomTools.firstSet.selectedIndex = view.bottomTools.secondSet.selectedIndex = view.bottomTools.thirdSet.selectedIndex = view.bottomTools.fourthSet.selectedIndex = -1;
 				}
 				else if(view.clusterView.didVisualize)  {
 					if(view.clusterView.datasets[2])
@@ -247,7 +247,7 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case model.GRAPH_INDEX:
 					
-					if(event.args[3].id > 0  && Dataset(event.args[3]).type == 0)
+					if(event.args[3].id > -2  && Dataset(event.args[3]).type == 0)
 						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
 					else if(event.args[3].id == -2)
 						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
@@ -306,10 +306,10 @@ package com.pentagram.instance.view.mediators.shell
 				IDataVisualizer(view.currentVisualizer).pause();
 		}
 		private function restoreDatasets(viz:IDataVisualizer):void {
-			view.tools.firstSet.selectedItem 	= viz.datasets[0] ? viz.datasets[0] : null;				
-			view.tools.secondSet.selectedItem	= viz.datasets[1] ? viz.datasets[1] : null;				
-			view.tools.thirdSet.selectedItem	= viz.datasets[2] ? viz.datasets[2] : null;				
-			view.tools.fourthSet.selectedItem	= viz.datasets[3] ? viz.datasets[3] : null;				
+			view.bottomTools.firstSet.selectedItem 	= viz.datasets[0] ? viz.datasets[0] : null;				
+			view.bottomTools.secondSet.selectedItem	= viz.datasets[1] ? viz.datasets[1] : null;				
+			view.bottomTools.thirdSet.selectedItem	= viz.datasets[2] ? viz.datasets[2] : null;				
+			view.bottomTools.fourthSet.selectedItem	= viz.datasets[3] ? viz.datasets[3] : null;				
 		}
 		private function handlePlayTimeline(event:VisualizerEvent):void {
 			//view.currentVisualizer.continous = true;
@@ -367,13 +367,13 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case 'maxRadius':
 					if(view.visualizerArea.selectedIndex == model.GRAPH_INDEX) {
-						var ds1:Dataset = view.tools.firstSet.selectedItem as Dataset;
-						var ds2:Dataset = view.tools.secondSet.selectedItem as Dataset;
-						var ds3:Dataset = view.tools.thirdSet.selectedItem as Dataset;
-						var ds4:Dataset = view.tools.fourthSet.selectedItem as Dataset;
+						var ds1:Dataset = view.bottomTools.firstSet.selectedItem as Dataset;
+						var ds2:Dataset = view.bottomTools.secondSet.selectedItem as Dataset;
+						var ds3:Dataset = view.bottomTools.thirdSet.selectedItem as Dataset;
+						var ds4:Dataset = view.bottomTools.fourthSet.selectedItem as Dataset;
 						var year:String = '';
-						if(view.tools.yearSlider.dataProvider) {
-							year =  view.tools.yearSlider.dataProvider.getItemAt(view.tools.yearSlider.selectedIndex).year;
+						if(view.bottomTools.yearSlider.dataProvider) {
+							year =  view.bottomTools.yearSlider.dataProvider.getItemAt(view.bottomTools.yearSlider.selectedIndex).year;
 						}
 						model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);
 					}
@@ -386,16 +386,9 @@ package com.pentagram.instance.view.mediators.shell
 					IDataVisualizer(view.currentVisualizer).selectCountries(event.args[1]);
 				break;
 				case "rangeSelection":
-//					if(view.visualizerArea.selectedIndex == model.MAP_INDEX)
-//						ds1 = view.mapView.datasets[2];
-//					else if(view.visualizerArea.selectedIndex == model.CLUSTER_INDEX)
-//						ds1 = view.clusterView.datasets[3];
-//					else if(view.visualizerArea.selectedIndex == model.GRAPH_INDEX)
-//						ds1 = view.graphView.datasets
 					ds1 = view.filterTools.optionsPanel.datasetList.selectedItem as Dataset;
 					ds1.min = event.args[1][0];
 					ds1.max = event.args[1][1];
-					//if(view.visualizerArea.selectedIndex != model.MAP_INDEX )
 					view.currentVisualizer.update();
 				break;
 			}
@@ -437,39 +430,40 @@ package com.pentagram.instance.view.mediators.shell
 			if(util.view is IGraphView) {
 				this.view.graphView = util.view as IGraphView;
 				view.graphHolder.addElement(util.view as Group);
-				//if(model.client.datasets.length > 2) {
-					var ds1:Dataset = view.tools.firstSet.selectedItem =  model.client.datasets.length > 1 ?
-						model.client.datasets.getItemAt(1) : model.client.datasets.getItemAt(0);
-					
-					var ds2:Dataset = view.tools.secondSet.selectedItem =  model.client.datasets.length > 2 ?
-						model.client.datasets.getItemAt(2) : model.client.datasets.getItemAt(0);
-					
-					var ds3:Dataset = view.tools.thirdSet.selectedItem =  model.client.quantityDatasets.length > 2 ?
-						model.client.quantityDatasets.getItemAt(model.client.quantityDatasets.length-1) : model.client.datasets.getItemAt(0);
 
-					if(ds3 == ds1 || ds3 == ds2) {
-						ds3 = model.client.datasets.getItemAt(0) as Dataset;
-						view.tools.thirdSet.selectedIndex = 0;
-					}
-					
-					var arr:Array = [];
-					if(ds1.type == 1)
-						arr.push(ds1);
-					if(ds2.type == 1)
-						arr.push(ds2);
-					if(ds3.type == 1)
-						arr.push(ds3);
-					view.filterTools.optionsPanel.datasets = new ArrayList(arr);
-					
-					view.tools.fourthSet.dataProvider = fourthSetList;
-					var ds4:Dataset = view.tools.fourthSet.selectedItem = regionOption;
-					
-					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4);		
-					view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
-					datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
-					checkNotes();
-					this.formatVizTitle(view.graphView.datasets);
-				//}
+				var ds1:Dataset = view.bottomTools.firstSet.selectedItem =  model.client.datasets.length > 1 ?
+					model.client.datasets.getItemAt(1) : model.client.datasets.getItemAt(0);
+				
+				var ds2:Dataset = view.bottomTools.secondSet.selectedItem =  model.client.datasets.length > 2 ?
+					model.client.datasets.getItemAt(2) : model.client.datasets.getItemAt(0);
+				
+				var ds3:Dataset = view.bottomTools.thirdSet.selectedItem =  model.client.quantityDatasets.length > 2 ?
+					model.client.quantityDatasets.getItemAt(model.client.quantityDatasets.length-1) : model.client.datasets.getItemAt(0);
+
+				if(ds3 == ds1 || ds3 == ds2) {
+					ds3 = model.client.datasets.getItemAt(0) as Dataset;
+					view.bottomTools.thirdSet.selectedIndex = 0;
+				}
+				
+				var arr:Array = [];
+				if(ds1.type == 1)
+					arr.push(ds1);
+				if(ds2.type == 1)
+					arr.push(ds2);
+				if(ds3.type == 1)
+					arr.push(ds3);
+				view.filterTools.optionsPanel.datasets = new ArrayList(arr);
+				
+				view.bottomTools.fourthSet.dataProvider = fourthSetList;
+				var ds4:Dataset = view.bottomTools.fourthSet.selectedItem = regionOption;
+				
+				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4);		
+				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,ds1,ds2,ds3,ds4));
+				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
+				checkNotes();
+				this.formatVizTitle(view.graphView.datasets);
+				
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 25;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;	
 			}
@@ -502,18 +496,9 @@ package com.pentagram.instance.view.mediators.shell
 					}
 				}	
 				view.mapView.visualize(dataset);
-				view.tools.thirdSet.selectedItem = dataset;
-			
-				var years:ArrayList = new ArrayList();
-				if(dataset.time == 1) {
-					view.tools.timelineContainer.visible = true;
-					
-					for (var i:int=0;i<dataset.years.length;i++) {
-						years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
-					}
-					view.tools.yearSlider.dataProvider = years;
-				}
+				view.bottomTools.thirdSet.selectedItem = dataset;
 				view.filterTools.optionsPanel.datasets = new ArrayList([dataset]);
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,dataset));
 				datasetids = dataset.id.toString();
 				checkNotes();	
 			}
@@ -521,9 +506,10 @@ package com.pentagram.instance.view.mediators.shell
 				dataset = model.client.datasets.getItemAt(0) as Dataset;
 				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,false));
 				view.mapView.visualize(dataset);
-				view.tools.thirdSet.selectedItem = dataset;
+				view.bottomTools.thirdSet.selectedItem = dataset;
 				view.filterTools.optionsPanel.datasets = null;
 			}
+			
 			this.formatVizTitle(view.mapView.datasets);
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 		}
@@ -536,8 +522,8 @@ package com.pentagram.instance.view.mediators.shell
 
 				var dataset1:Dataset = model.client.qualityDatasets.length > 1? model.client.qualityDatasets.getItemAt(1) as Dataset:model.client.qualityDatasets.getItemAt(0) as Dataset;
 				var dataset2:Dataset = model.client.quantityDatasets.length > 1? model.client.quantityDatasets.getItemAt(1) as Dataset:model.client.quantityDatasets.getItemAt(0) as Dataset
-				view.tools.thirdSet.selectedItem = dataset1;
-				view.tools.fourthSet.selectedItem = dataset2;
+				view.bottomTools.thirdSet.selectedItem = dataset1;
+				view.bottomTools.fourthSet.selectedItem = dataset2;
 				view.clusterView.visualize(dataset1,dataset2);
 				
 				if(dataset1.id != -1) 
@@ -552,7 +538,7 @@ package com.pentagram.instance.view.mediators.shell
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 				checkNotes();
 			
-
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,dataset1,dataset2));
 				this.formatVizTitle(view.clusterView.datasets);
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;
@@ -575,7 +561,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TOGGLE_PROGRESS,event.type=='vizComplete'?false:true));
 			if(event.target == view.twitterView) {
 				if(event.type == 'vizStarted')
-					view.tools.twitterOptionsBtn.selected = false;
+					view.bottomTools.twitterOptionsBtn.selected = false;
 				else
 					view.filterTools.topics.topicsList.dataProvider = new ArrayCollection(view.twitterView.topics);
 			}

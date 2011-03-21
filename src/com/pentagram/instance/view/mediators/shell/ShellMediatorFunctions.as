@@ -84,6 +84,6 @@ private function checkNotes():void {
 private function handleCompareBtn(event:ViewEvent):void {
 	for each(var item:Category in  ArrayList(view.filterTools.comparator.categoryHolder.dataProvider).source) {
 		if(item.selected)
-			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,view.tools.thirdSet.selectedItem,item));
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,view.bottomTools.thirdSet.selectedItem,item));
 	}
 }

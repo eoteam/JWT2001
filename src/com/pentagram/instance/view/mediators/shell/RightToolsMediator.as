@@ -37,7 +37,7 @@ package com.pentagram.instance.view.mediators.shell
 		[Inject]
 		public var model:InstanceModel;
 
-		
+		private var twitterCreated:Boolean = false;
 		override public function onRegister():void
 		{	
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);
@@ -109,6 +109,7 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case model.TWITTER_INDEX:
 					view.currentState = view.isOpen? 'openAndTwitter' : 'closedAndTwitter';
+					view.categoriesPanel.continentList.dataProvider = null;
 				break;
 			}
 		}
@@ -174,7 +175,9 @@ package com.pentagram.instance.view.mediators.shell
 				view.optionsPanel.xrayToggle.addEventListener(Event.CHANGE,handleCheck,false,0,true);
 			}	
 			if(view.state == "Twitter") {
-				view.topics.topicsList.addEventListener(GridSelectionEvent.SELECTION_CHANGE,handleTopicsSelection,false,0,true);
+				twitterCreated = true;
+				eventMap.mapListener(view.topics.topicsList,GridSelectionEvent.SELECTION_CHANGE,handleTopicsSelection,GridSelectionEvent);
+				eventMap.mapListener(view.topics.clearSelection,MouseEvent.CLICK,handleTopicsClear,MouseEvent);
 			}
 		}
 		private function handleCheck(event:Event):void {
@@ -185,6 +188,10 @@ package com.pentagram.instance.view.mediators.shell
 			else if(event.target == view.optionsPanel.mapToggle) {
 				dispatchPropEvent('mapToggle',view.optionsPanel.mapToggle.selected);
 			}
+		}
+		private function handleTopicsClear(event:MouseEvent):void {
+			view.topics.topicsList.selectedIndex = -1;
+			dispatchPropEvent('topics',new Vector.<Object>());
 		}
 		private function handleTopicsSelection(event:Event):void {
 			dispatchPropEvent('topics',view.topics.topicsList.selectedItems);
@@ -253,6 +260,11 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.unmapListener(view.optionsPanel.mapToggle,Event.CHANGE,handleCheck,Event);
 			eventMap.unmapListener(view.optionsPanel.range,SliderEvent.CHANGE,handleRangeChange,SliderEvent);
 			
+			if(twitterCreated) {
+				eventMap.unmapListener(view.topics.topicsList,GridSelectionEvent.SELECTION_CHANGE,handleTopicsSelection,GridSelectionEvent);
+				eventMap.unmapListener(view.topics.clearSelection,MouseEvent.CLICK,handleTopicsClear,MouseEvent);
+			}
+			
 			eventMap.unmapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
 					
 			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
@@ -266,19 +278,27 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function tileTooltips(event:MouseEvent):void {
 			var openWinList:Array = [];
+			var targetWidth:int;//availWidth / numCols - ((gap * (numCols - 1)) / numCols);
+			var targetHeight:int;//availHeight / numRows - ((gap * (numRows - 1)) / numRows);
+			
+				
 			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
-				//trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
 				var child:DisplayObject = view.systemManager.getChildAt(i);
-				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
-					getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
+				trace(getQualifiedClassName(child));
+				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo') {
 					openWinList.push(child);
+					targetWidth = 240; targetHeight = 120;
+				}		
+				else if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo') {
+					openWinList.push(child);
+					targetWidth = 200; targetHeight = 80;					
 				}
 			}
 			var gap:int = 1;
 			var numWindows:int = openWinList.length;
 			var fillAvailableSpace:Boolean = false;
 			
-			var tileMinimizeWidth:int = 240; var minTilePadding:int = 2;
+			var minTilePadding:int = 2;
 			if(numWindows > 1)
 			{
 				var sqrt:int = Math.round(Math.sqrt(numWindows));
@@ -288,10 +308,8 @@ package com.pentagram.instance.view.mediators.shell
 				var row:int = 0;
 				var availWidth:Number =  view.parentDocument.width
 				var availHeight:Number = view.parentDocument.height;
-				var maxTiles:int = availWidth / (tileMinimizeWidth + minTilePadding);
-				var targetWidth:Number = 240;//availWidth / numCols - ((gap * (numCols - 1)) / numCols);
-				var targetHeight:Number = 120;//availHeight / numRows - ((gap * (numRows - 1)) / numRows);
-				
+				var maxTiles:int = availWidth / (targetWidth + minTilePadding);
+
 				var effectItems:Array = [];
 				var eff:Parallel = new Parallel();
 				var interpolator:IInterpolator = new RectInterpolator();

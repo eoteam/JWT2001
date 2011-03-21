@@ -49,12 +49,13 @@
 		</s:stroke>
 	</s:Rect>	
 	<s:Group width="100%" height.closed="0" height.open="{this.parent.parent.height}" top="24" clipAndEnableScrolling="true" id="gridHolder">
-		<s:Rect width="0.25" height="100%" left="24">
+<!--		<s:Rect width="0.25" height="100%" left="24">
 			<s:stroke>
 				<s:SolidColorStroke weight="0.25" color="0x666666"/>
 			</s:stroke>
-		</s:Rect>
-		<s:DataGrid width="100%" id="topicsList" contentBackgroundAlpha="1" contentBackgroundColor="0x242424" borderVisible="false" height="100%" left="25" 
+		</s:Rect>-->
+		<s:DataGrid width="100%" id="topicsList" contentBackgroundAlpha="1" contentBackgroundColor="0x242424" borderVisible="false"
+		height="100%" left="4" right="4"  bottom="34" top="4" 			
 		 selectionColor="0xffffff" rollOverColor="0xffffff" skinClass="com.pentagram.view.skins.controls.DarkDataGrid" sortableColumns="true"  selectionMode="multipleRows">
 			<s:columns>
 				<s:ArrayList>
@@ -93,7 +94,7 @@
 				</s:ArrayList>
 			</s:columns>
 		</s:DataGrid>
-	
+		<s:Button label="Clear Selection" id="clearSelection" styleName="darkButton" width="100%"  left="8" right="8" bottom="4" />		
 	</s:Group>
 	
 </s:Group>

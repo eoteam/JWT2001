@@ -23,6 +23,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.utils.ByteArray;
+	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayList;
@@ -50,37 +51,31 @@ package com.pentagram.instance.view.mediators.shell
 		private var counter:uint = 0;
 		private var normalizedData:Array;
 		private var maxRadius:Number = 25;
+		private var twitterCreated:Boolean = false;
 		
 		override public function onRegister():void
 		{
-			view.visualizerArea.addEventListener(IndexChangedEvent.CHANGE,handleIndexChanged,false,0,true);	
+			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);	
 			
-
-			view.firstSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
-			view.secondSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
-			view.thirdSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);
-			view.fourthSet.addEventListener(IndexChangeEvent.CHANGE,handleDatasetSelection,false,0,true);	
+			eventMap.mapListener(view.firstSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.mapListener(view.secondSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.mapListener(view.thirdSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.mapListener(view.fourthSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);	
 			
-			view.yearSlider.addEventListener(IndexChangeEvent.CHANGE,handleYearSelection,false,0,true); 
-			view.playBtn.addEventListener(MouseEvent.CLICK,handlePlayButton,false,0,true);
-			view.pdfBtn.addEventListener(MouseEvent.CLICK,saveImage,false,0,true);
-			view.addEventListener(MouseEvent.CLICK,closeSettingsPanel,false,0,true);
+			eventMap.mapListener(view.yearSlider,IndexChangeEvent.CHANGE,handleYearSelection,IndexChangeEvent); 
+			eventMap.mapListener(view.playBtn,MouseEvent.CLICK,handlePlayButton,MouseEvent);
+			eventMap.mapListener(view.pdfBtn,MouseEvent.CLICK,saveImage,MouseEvent);
+			eventMap.mapListener(view,MouseEvent.CLICK,closeSettingsPanel,MouseEvent);
+						
+			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
+			eventMap.mapListener(eventDispatcher,ViewEvent.UPDATE_TIMELINE,handleTimeline,ViewEvent);
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
+			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+						
 			yearTimer = new Timer(700);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
-			
-			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
-			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
-			
-			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 		}
-		
-		
-//		private function handleImageSaveStart(event:ViewEvent):void {
-//			var a:int = event.type == ViewEvent.START_IMAGE_SAVE ? 0:1;
-//			for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
-//				year.alpha = a;
-//			}
-//		}
+
 		private function handleCategoryChange(event:VisualizerEvent):void {
 			if(view.visualizerArea.selectedIndex == 0) {
 				if(yearTimer.running) {
@@ -151,30 +146,68 @@ package com.pentagram.instance.view.mediators.shell
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					view.currentState = 'cluster';
-					model.client.qualityDatasets.getItemAt(0).name = "Region";
 				break;
 				
 				case model.MAP_INDEX:
 					view.currentState = 'map';	
-					model.client.qualityDatasets.getItemAt(0).name = "None";
 				break;					
 				
 				case model.GRAPH_INDEX:
 					view.currentState = 'graph';
-					model.client.qualityDatasets.getItemAt(0).name = "None";
+//					Dataset(model.client.quantityDatasets.getItemAt(0)).name = "None";
 				break;	
 				
-				case model.TWITTER_INDEX:
-					model.client.qualityDatasets.getItemAt(0).name = "None";
+				case model.TWITTER_INDEX:	
 					view.currentState = 'twitter';
-					view.twitterOptions.addEventListener(DropDownEvent.CLOSE,handleDatasetSelection,false,0,true);
-					view.twitterSearch.addEventListener(FlexEvent.ENTER,handleTwitterSearch,false,0,true);
-					view.reloadVisualization.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
-					view.twitterOptionsBtn.addEventListener(MouseEvent.CLICK,handleReload,false,0,true);
-					//view.sortButton.addEventListener(MouseEvent.CLICK,handleSort,false,0,true);
+					if(!twitterCreated){
+						twitterCreated = true;
+						eventMap.mapListener(view.twitterOptions,DropDownEvent.CLOSE,handleDatasetSelection,DropDownEvent);
+						eventMap.mapListener(view.twitterSearch,FlexEvent.ENTER,handleTwitterSearch,FlexEvent);
+						eventMap.mapListener(view.reloadVisualization,MouseEvent.CLICK,handleReload,MouseEvent);
+						eventMap.mapListener(view.twitterOptionsBtn,MouseEvent.CLICK,handleReload,MouseEvent);
+					}
 				break;	
 			}
 		}	
+		private function handleTimeline(event:ViewEvent):void {
+			updateTimeline(event);
+		}
+		private function updateTimeline(...args):void {
+			var datasets:Array;
+			var year:String;
+			if(args[0] is ViewEvent)
+				datasets = ViewEvent(args[0]).args;
+			else datasets = args;
+			
+			var years:ArrayList = new ArrayList();
+			var uniqueYears:Dictionary = new Dictionary();
+			var count:int;
+			for each(var dataset:Dataset in datasets) {
+				if(dataset.time == 1) {	
+					count++;
+					for (var i:int=0;i<dataset.years.length;i++) {
+						year = dataset.years[i];
+						if(uniqueYears[year])
+							uniqueYears[year] += 1;
+						else uniqueYears[year] = 1;
+					}
+				}
+			}
+			var ys:Array = [];
+			for (year in uniqueYears) {
+				if(uniqueYears[year] >= count)
+					ys.push(year);
+			}
+			ys.sort();
+			for each(year in ys) {
+				years.addItem(new Year(year,year.split('_').join('-'),1)); 	
+			}
+				
+				
+			view.yearSlider.dataProvider = years;
+			view.yearSlider.selectedIndex = 0;
+			view.timelineContainer.visible = years.length>0?true:false;	
+		}
 		private function handleTwitterSearch(event:FlexEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SEARCH,model.client.shortname + " " + view.twitterSearch.text));
 		}
@@ -187,8 +220,7 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleSort(event:MouseEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SORT));
-		}
-		
+		}	
 		private function handleDatasetSelection(event:Event):void {
 			var years:ArrayList = new ArrayList();
 			var i:int;
@@ -198,24 +230,16 @@ package com.pentagram.instance.view.mediators.shell
 					if(view.thirdSet.selectedItem) {
 						dataset = view.thirdSet.selectedItem as Dataset;
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset,view.fourthSet.selectedItem));
+						updateTimeline(dataset,view.fourthSet.selectedItem);
 					}
-					break;
+				break;
 				case model.MAP_INDEX:
 					if(view.thirdSet.selectedItem) {
-						dataset = view.thirdSet.selectedItem as Dataset;
-					
-						if(dataset.time == 1) {
-							view.timelineContainer.visible = true;
-							
-							for (i=0;i<dataset.years.length;i++) {
-								years.addItem(new Year(dataset.years[i],dataset.years[i].split('_').join('-'),1)); 
-							}
-							view.yearSlider.dataProvider = years;
-						}
-						else view.timelineContainer.visible = false;
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset));
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.thirdSet.selectedItem));
+						updateTimeline(view.thirdSet.selectedItem);
 					}
-					break; 
+				break; 
+				
 				case model.GRAPH_INDEX:	
 					if(view.firstSet.selectedItem && view.secondSet.selectedItem) {
 						
@@ -224,49 +248,28 @@ package com.pentagram.instance.view.mediators.shell
 						var ds3:Dataset = view.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.fourthSet.selectedItem as Dataset;
 						
-						var minYear:int = 10000; var maxYear:int; var showTime:Boolean = false;		
-						if(ds1.time == 1) {
-							showTime = true;
-							minYear = ds1.years[0];
-							maxYear = ds1.years[ds1.years.length-1];
-						}
-//						if(ds2.time == 1) {
+//						var minYear:int = 10000; var maxYear:int; var showTime:Boolean = false;		
+//						if(ds1.time == 1) {
 //							showTime = true;
-//							if(ds2.years[0] < minYear)
-//								minYear = ds2.years[0];
-//							if(ds2.years[1] > maxYear)
-//								maxYear = ds2.years[ds2.years.length-1];	
-//						} 
-//						if(ds3 && ds3.time == 1) {
-//							showTime = true;
-//							if(ds3.years[0] < minYear)
-//								minYear = ds3.years[0];
-//							if(ds3.years[1] > maxYear)
-//								maxYear = ds3.years[ds3.years.length-1];	
+//							minYear = ds1.years[0];
+//							maxYear = ds1.years[ds1.years.length-1];
 //						}
-//						if(ds4 && ds4.time ==1) {
-//							showTime = true;
-//							if(ds4.years[0] < minYear)
-//								minYear = ds4.years[0];
-//							if(ds4.years[1] > maxYear)
-//								maxYear = ds4.years[ds4.years.length-1];	
+//						view.yearSlider.visible = showTime;
+//						if(showTime) {
+//							for (i=0;i<ds1.years.length;i++) {
+//								years.addItem(new Year(ds1.years[i],ds1.years[i].toString().split('_').join('-'),1));
+//							}
+//							view.yearSlider.dataProvider = years;					
 //						}
-						view.yearSlider.visible = showTime;
-						if(showTime) {
-							for (i=0;i<ds1.years.length;i++) {
-								years.addItem(new Year(ds1.years[i],ds1.years[i].toString().split('_').join('-'),1));
-							}
-							view.yearSlider.dataProvider = years;					
-						}
 						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,ds1,ds2,ds3,ds4));	
+						updateTimeline(ds1,ds2,ds3,ds4);
 					}
-					break;
-					case model.TWITTER_INDEX:
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.twitterOptions.selectedItem));
-							
-					break;
+				break;
+				
+				case model.TWITTER_INDEX:
+					this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.twitterOptions.selectedItem));	
+				break;
 			}
-			
 		}
 
 		private function handleTimer(event:TimerEvent):void {
@@ -291,7 +294,6 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function handleYearSelection(event:IndexChangeEvent=null):void {
-		
 			var ds1:Dataset;
 			var ds2:Dataset;
 			var ds3:Dataset;
@@ -321,6 +323,36 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleCleanup(event:ViewEvent):void {
 			this.mediatorMap.removeMediator(this);
+		}
+		override public function onRemove():void {
+			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);	
+			
+			eventMap.unmapListener(view.firstSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.unmapListener(view.secondSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.unmapListener(view.thirdSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
+			eventMap.unmapListener(view.fourthSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);	
+			
+			eventMap.unmapListener(view.yearSlider,IndexChangeEvent.CHANGE,handleYearSelection,IndexChangeEvent); 
+			eventMap.unmapListener(view.playBtn,MouseEvent.CLICK,handlePlayButton,MouseEvent);
+			eventMap.unmapListener(view.pdfBtn,MouseEvent.CLICK,saveImage,MouseEvent);
+			eventMap.unmapListener(view,MouseEvent.CLICK,closeSettingsPanel,MouseEvent);
+			
+
+			yearTimer.removeEventListener(TimerEvent.TIMER,handleTimer);
+			
+			eventMap.unmapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
+			eventMap.unmapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
+			eventMap.unmapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
+			
+			if(twitterCreated) {
+				eventMap.unmapListener(view.twitterOptions,DropDownEvent.CLOSE,handleDatasetSelection,DropDownEvent);
+				eventMap.unmapListener(view.twitterSearch,FlexEvent.ENTER,handleTwitterSearch,FlexEvent);
+				eventMap.unmapListener(view.reloadVisualization,MouseEvent.CLICK,handleReload,MouseEvent);
+				eventMap.unmapListener(view.twitterOptionsBtn,MouseEvent.CLICK,handleReload,MouseEvent);
+			}
+			
+			trace("BottomTools Mediator Released");
+			super.onRemove();
 		}
 	}
 }
