@@ -2,14 +2,30 @@
 <s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					   xmlns:s="library://ns.adobe.com/flex/spark" 
 					   xmlns:mx="library://ns.adobe.com/flex/mx"
-					   xmlns:samples="samples.*" visible="false"
+					   xmlns:samples="samples.*" 
 					   xmlns:view="com.pentagram.view.*" showStatusBar="false"
 					   creationComplete="handleCreationComplete()"   frameRate="60"
-					   applicationComplete="init()" xmlns:modules="ws.tink.spark.modules.*" xmlns:instance="com.pentagram.instance.*" >
-	
+					   applicationComplete="init()" 
+					   xmlns:modules="ws.tink.spark.modules.*"
+					   xmlns:instance="com.pentagram.instance.*" 
+					   backgroundAlpha.landing="0" backgroundAlpha="1"  
+					   currentState="normal"  click="closeLanding(event)"
+					   alwaysInFront.landing="true" alwaysInFront="false" 
+					   alpha="0" alpha.landing="1">
+
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="landing" />
+		<s:State name="network" />
+	</s:states>
+	<s:transitions>
+		<s:Transition fromState="*" toState="landing">
+			<s:Fade targets="{[this,landingBG,landingHolder]}" duration="500" />
+		</s:Transition>
+	</s:transitions>
 	<fx:Style source="assets/main.css" />
-	<fx:Declarations>
-	</fx:Declarations>
+
+
 	<fx:Script>
 		<![CDATA[
 			import air.net.URLMonitor;
@@ -38,23 +54,23 @@
 			import mx.events.FlexEvent;
 			import mx.events.StyleEvent;
 			import mx.managers.ToolTipManager;
-			
-
-			
-			protected var monitor:URLMonitor;
-			public var appUpdater:ApplicationUpdaterUI = new ApplicationUpdaterUI(); // Used for auto-update
-			protected var file:File; // Used for preferences file
-			protected var currentVersion:String="2.0.0";			
+	
+			private var monitor:URLMonitor;
+			private var file:File; // Used for preferences file
+		
 			public var context:ViewContext;
+			public var appUpdater:ApplicationUpdaterUI 
 			
+			override public function set visible(value:Boolean):void {
+				super.visible = value;
+			}
 			public function get applicationEventDispatcher():IEventDispatcher
 			{
 				return context.eventDispatcher;
 			} 
 			
-			private function handleCreationComplete(): void {		
-				context = new ViewContext();
-				context.contextView = this;		
+			private function handleCreationComplete(): void {
+				appUpdater = new ApplicationUpdaterUI(); // Used for auto-update
 				TextLineRecycler.textLineRecyclerEnabled = false;
 				ToolTipManager.showDelay = 0;
 			}  	
@@ -63,7 +79,6 @@
 				checkUpdate();
 				setupNetworking();
 				setupIdle();
-				loadPreferences();
 			}
 			private function setupNetworking():void {
 				monitor = new URLMonitor(new URLRequest("http://www.google.com")); // change URL to URL desired
@@ -83,19 +98,47 @@
 				NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, onInvoke);
 				loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, errorHandler);
 			}
-			private function loadPreferences():void {
+			public function loadPreferences():void {
 				file = File.applicationStorageDirectory;
-				file = file.resolvePath("Preferences/version.txt");
-				if (file.exists)
-					checkVersion();
-				else firstRun();
+				file = file.resolvePath("Preferences/landing.txt");
+				var stream:FileStream = new FileStream();
+				if (!file.exists) {
+					showLanding();
+				}
+				else {
+					stream.open(file, FileMode.READ);
+					var c:String = stream.readUTFBytes(stream.bytesAvailable);
+					stream.close();
+					landing = c == 'true'?true:false;
+					if(landing) {
+						showLanding();
+					}
+					else this.visible = false;
+				}			
 			}
+			private function showLanding():void {
+				
+				this.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;
+				this.stage.addEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreenChange);
+				currentState = "landing";
+				this.orderToFront();
+				this.setFocus();
+			}
+			private function handleFullScreenChange(event:FullScreenEvent):void {
+				if(!event.fullScreen && currentState == "landing") {
+					closeLanding();
+				}
+			}
+			private function setFS():void {this.stage.displayState = StageDisplayState.FULL_SCREEN_INTERACTIVE;}
 			private function onStatusChange(e:StatusEvent):void {
 				if (monitor.available || Constants.LOCAL) {
-					visible = false;
-					this.dispatchEvent(new Event("networkOn"));
+					if(!context) {
+						context = new ViewContext();
+						context.contextView = this;
+						this.dispatchEvent(new Event("networkOn"));
+					}		
 				} else {
-					visible = true;
+					this.currentState = "network";
 				}
 			}
 			private function checkUpdate():void {
@@ -123,12 +166,9 @@
 				trace(event.type + "-----" + flash.utils.getQualifiedClassName(event));		
 				if(event is StatusUpdateEvent) {
 					var version:String = StatusUpdateEvent(event).version;
-					if(version != currentVersion) {
-						this.currentVersion = version;
-						var v:NativeWindow = NativeApplication.nativeApplication.openedWindows[1] as NativeWindow;
-						v.x = v.y = 50;
-						v.alwaysInFront = true;
-					}
+					var v:NativeWindow = NativeApplication.nativeApplication.openedWindows[1] as NativeWindow;
+					v.x = v.y = 50;
+					v.alwaysInFront = true;	
 				}
 				if(event is DownloadErrorEvent) {
 					trace("Error");
@@ -150,27 +190,6 @@
 				e.preventDefault();
 				Alert.show("An error has occurred and been caught by the global error handler: " + e.error.toString(), "My Global Error Handler");
 			}
-			private function checkVersion():void {
-				var stream:FileStream = new FileStream();
-				stream.open(file, FileMode.READ);
-				var prevVersion:String = stream.readUTFBytes(stream.bytesAvailable);
-				stream.close();
-				if (prevVersion == currentVersion) {
-					return;
-				}
-				else
-					writeVersionFile();
-			}	
-			private function firstRun():void {
-				trace("First time the application has been run, save to the file.");
-				writeVersionFile();
-			}
-			private function writeVersionFile():void {
-				var stream:FileStream = new FileStream();
-				stream.open(file, FileMode.WRITE);
-				stream.writeUTFBytes(currentVersion);
-				stream.close();
-			}
 			private function onAppActivate(event:Event):void {
 				
 			}
@@ -180,7 +199,150 @@
 			private function onInvoke(invokeEvt:InvokeEvent):void  {
 				
 			}
+
+			private function closeLanding(event:MouseEvent=null):void
+			{
+				if(currentState == "landing" && (!event || (event && event.target != this.showAgainCheck && event.target != this.helpButton) )) {
+					this.stage.removeEventListener(FullScreenEvent.FULL_SCREEN,handleFullScreenChange);
+					this.stage.displayState = StageDisplayState.NORMAL;
+					this.currentState='normal';
+				}
+			}
+
+
+
+			protected function showAgainCheck_changeHandler(event:Event):void
+			{
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.WRITE);
+				stream.writeUTFBytes((!showAgainCheck.selected).toString());
+				stream.close();		
+			}
+
 		]]>
 	</fx:Script>
-	<s:Label fontSize="20" verticalCenter="0" horizontalCenter="0" text="You seem to be working offline, please check your network connection" />
+	<fx:Declarations>
+<!--		<fx:Boolean id="showAgain">false</fx:Boolean>-->
+		<fx:Boolean id="landing">true</fx:Boolean>
+		<s:Fade alphaTo="0" duration="500" id="fadeOut" />
+	</fx:Declarations>
+	<s:Label fontSize="20" verticalCenter="0" horizontalCenter="0" includeIn="network" 
+	text="You seem to be working offline, please check your network connection" />
+	
+	<s:Rect id="landingBG" left="0" right="0" top="0" bottom="0" includeIn="landing" alpha="0" alpha.landing="1">
+		<s:fill>
+			<s:SolidColor color="0xD32339" alpha="0.9" />
+		</s:fill>
+	</s:Rect>
+	
+	<s:VGroup id="landingHolder" paddingLeft="30" paddingRight="30" paddingTop="40" width="100%" height="100%"  includeIn="landing" alpha="0" alpha.landing="1">
+		<s:HGroup verticalAlign="middle" width="100%">
+			<s:Label text="View 2" fontFamily="FlamaBold" fontSize="42" color="0xffffff" />
+			<s:Rect width="100%" />
+			<s:Group mouseChildren="false" useHandCursor="true" buttonMode="true" id="closeButton" click="closeLanding(event)">
+				<s:Rect left="0" right="0" top="0" bottom="0" alpha="0" />
+				<s:Line xFrom="0" yFrom="0" xTo="-24" yTo="24">
+					<s:stroke>
+						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+					</s:stroke>
+				</s:Line>
+				<s:Line xFrom="-24" yFrom="0" xTo="0" yTo="24">
+					<s:stroke>
+						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+					</s:stroke>
+				</s:Line>
+			</s:Group>
+		</s:HGroup>
+		
+		<s:Line width="100%">
+			<s:stroke>
+				<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+			</s:stroke>
+		</s:Line>
+		<s:Rect height="10" />
+		
+		
+		<s:HGroup verticalAlign="middle" width="100%" height="100%" gap="25">
+			<s:VGroup height="100%" width="40%" gap="4">				
+				
+				<s:Group>
+					<s:Ellipse x="1.5" y="1.5" width="326.039" height="326.039">
+						<s:stroke>
+							<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+						</s:stroke>
+					</s:Ellipse>
+					<s:Group x="142.22" y="205.932">
+						<s:Path winding="nonZero" data="M37.9229 5.76953 38.0913 5.60156 32.4902 0 0 32.4883 5.60107 38.0898 28.0542 15.6387 28.0542 70.9531 35.9766 70.9531 35.9766 15.0254 58.9043 37.9531 64.5049 32.3525 37.9229 5.76953Z">
+							<s:fill>
+								<s:SolidColor color="#FFFFFF"/>
+							</s:fill>
+						</s:Path>
+					</s:Group>
+					<s:Group x="135.91" y="200.293">
+						<s:Path winding="nonZero" data="M80.0024 8.89062 0 8.89062 0 0 80.0024 0 80.0024 8.89062 80.0024 8.89062Z">
+							<s:fill>
+								<s:SolidColor color="#FFFFFF"/>
+							</s:fill>
+						</s:Path>
+					</s:Group>
+				</s:Group>
+				
+				<s:Rect height="11"/>
+				<s:Line width="100%">
+					<s:stroke>
+						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+					</s:stroke>
+				</s:Line>
+				<s:Rect height="11"/>
+				
+				<s:Label text="Recently Uploaded" fontFamily="FlamaBold" fontSize="18" color="0xffffff" />
+				<s:Label fontFamily="FlamaBook" fontSize="18" id="helpButton" color="0xffffff"  buttonMode="true" mouseChildren="false" useHandCursor="true"/>
+				
+				
+			</s:VGroup>
+			
+			<s:VGroup height="100%" width="60%" gap="4">
+				<s:RichText fontFamily="FlamaBold" fontSize="55" color="0xffffff">
+					<s:textFlow>
+						<s:TextFlow>
+							<s:p>
+								<s:span>JWT View is a visualization</s:span>
+								<s:br/>
+								<s:span>application that helps</s:span>
+								<s:br/>
+								<s:span>analyze qualitative and</s:span>
+								<s:br/>
+								<s:span>quantitative brand data</s:span>
+								<s:br/>
+								<s:span>on a global scale.</s:span>
+							</s:p>
+						</s:TextFlow>
+					</s:textFlow>
+				</s:RichText>
+				
+				<s:Rect height="11"/>
+				<s:Line width="100%">
+					<s:stroke>
+						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+					</s:stroke>
+				</s:Line>
+				<s:Rect height="11"/>
+				
+				<s:Label text="How do I get started?" fontFamily="FlamaBold" fontSize="18" color="0xffffff" />
+				<s:Label text="View Help" fontFamily="FlamaBook" fontSize="18"  color="0xffffff"  buttonMode="true" mouseChildren="false" useHandCursor="true"/>
+				
+				<s:Rect height="11"/>
+				<s:Line width="100%">
+					<s:stroke>
+						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
+					</s:stroke>
+				</s:Line>
+				<s:Rect height="11"/>
+				
+				<s:CheckBox fontFamily="FlamaBook" label="Don't show this screen again on start up" color="0xffffff" chromeColor="0xffffff" fontSize="18" 
+				skinClass="com.pentagram.view.skins.controls.WhiteCheckBox"  change="showAgainCheck_changeHandler(event)"
+				symbolColor="0x000000"  id="showAgainCheck" selected="{!landing}"/>	
+			</s:VGroup>
+		</s:HGroup>
+	</s:VGroup>
 </s:WindowedApplication>

@@ -2,7 +2,9 @@ package com.pentagram.main.mediators
 {
 	import com.adobe.serialization.json.JSON;
 	import com.darronschall.serialization.ObjectTranslator;
+	import com.greensock.plugins.*;
 	import com.pentagram.events.AppEvent;
+	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.model.AppModel;
@@ -14,6 +16,7 @@ package com.pentagram.main.mediators
 	import flash.display.NativeMenuItem;
 	import flash.display.NativeWindow;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
@@ -21,8 +24,9 @@ package com.pentagram.main.mediators
 	import flash.system.System;
 	import flash.utils.Timer;
 	
+	import mx.events.StateChangeEvent;
+	
 	import org.robotlegs.mvcs.Mediator;
-	import com.greensock.plugins.*;
 	
 	public class MainMediator extends Mediator
 	{
@@ -40,23 +44,23 @@ package com.pentagram.main.mediators
 		
 		public override function onRegister():void
 		{
-			
-			
 			TweenPlugin.activate([HexColorsPlugin]);
 			TweenPlugin.activate([TransformMatrixPlugin]);
 			
 			eventMap.mapListener(eventDispatcher, AppEvent.STARTUP_COMPLETE, handleStartUp, AppEvent); 
 			eventMap.mapListener(eventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_FOCUS,handleWindowFocus);
-			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.WINDOW_CLOSED,handleWindowClosed);
+			eventMap.mapListener(eventDispatcher, InstanceWindowEvent.FIRST_WINDOW_CREATED,handleFirstWindowCreated);
+			
+			//eventMap.mapListener(eventDispatcher, InstanceWindowEvent.FIRST_WINDOW_CREATED,handleFirstWindowCreated);
+			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChange,StateChangeEvent);
+			
+			
 			
 			if(NativeApplication.supportsMenu) {
 				instanceWindowModel.buildMenu();
 			}
-			// Manually close all open Windows when app closes.
-			view.nativeWindow.addEventListener(Event.CLOSING,onAppWinClose);
-			view.addEventListener("networkOn",handleNetworkOn);
-			
+			eventMap.mapListener(view, "networkOff",handleNetworkOff,Event);
 			
 			var file:File = File.applicationStorageDirectory;
 			file = file.resolvePath("Preferences/user.txt");
@@ -69,12 +73,13 @@ package com.pentagram.main.mediators
 				appModel.user.persisted = true;
 				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
 			}
-		}
-		private function handleNetworkOn(event:Event):void {
+			
 			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
 		}
-		private function handleWindowFocus(event:InstanceWindowEvent):void {
+		private function handleNetworkOff(event:Event):void {
 			
+		}
+		private function handleWindowFocus(event:InstanceWindowEvent):void {
 			var window:InstanceWindow = instanceWindowModel.getWindowFromUID(event.uid);
 			window.windowFocused = true;
 			instanceWindowModel.currentWindow = window;
@@ -82,13 +87,19 @@ package com.pentagram.main.mediators
 				if(w != window)
 					w.windowFocused = false;
 			}
-			
-//			if(window.currentState == "visualizer") 
-//				instanceWindowModel.toggleToolBars.label = window.shellView.currentState == 'fullScreen'?"Show Tool Bars":"Hide Tool Bars";
+		}
+		private function handleFirstWindowCreated(event:InstanceWindowEvent):void {
+			var t:Timer = new Timer(1000,1);	
+			t.addEventListener(TimerEvent.TIMER,loadPreferences);
+			t.start();
+		}
+		private function loadPreferences(event:TimerEvent):void {
+			view.loadPreferences();
 		}
 		private function handleStartUp(event:Event):void {
 			eventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW));
 		}
+
 		// Handle Menu item selection
 		private function handleLogin(event:AppEvent):void {
 			if(NativeApplication.supportsMenu)
@@ -103,24 +114,18 @@ package com.pentagram.main.mediators
 				stream.close();
 			}
 		}
-
-		// Called when application window closes
-		private function onAppWinClose(e:Event):void
-		{
-			//trace("Handling application window close event");
+		private function onAppWinClose(e:Event):void {
 			closeOpenWindows(e);
 		}
-		
-		// Closes all open windows
-		private function closeOpenWindows(e:Event):void
-		{
-			// This code can be uncommented to prevent the default close action from occurringand first call the close method on each open window to
-			// perform any actions needed. Closes each from most recently opened to oldest.
-			//e.preventDefault();
-			//for (var i:int = NativeApplication.nativeApplication.openedWindows.length - 1; i>= 0; --i)
-			//{
-			//NativeWindow(NativeApplication.nativeApplication.openedWindows[i]).close();
-			//}
+		private function closeOpenWindows(e:Event):void {
+
+		}
+		private function handleStateChange(event:Event):void {
+			if(view.currentState == "landing")
+				eventMap.mapListener(view.helpButton, MouseEvent.CLICK,handleHelpClicked,MouseEvent);
+		}
+		private function handleHelpClicked(event:MouseEvent):void {
+			this.dispatch(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"helpWindow"));
 		}
 
 		private function handleWindowClosed(event:Event):void {

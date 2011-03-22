@@ -23,7 +23,7 @@
 			{
 				context = new InstanceContext(appEventDispatcher,this);
 				this.nativeWindow.x = (Capabilities.screenResolutionX - this.width) / 2;
-				this.nativeWindow.y = (Capabilities.screenResolutionY - this.height) / 2;
+				this.nativeWindow.y = (Capabilities.screenResolutionY - this.height) / 2; 
 			}
 			public function get nativeX():Number
 			{
@@ -100,5 +100,7 @@
 	</s:HGroup>	
 	<shell:LoginPanel  id="loginPanel" bottom="48" left="10" tipPadding="-95" visible="{loginBtn.selected}" />
 	
+	
+
 	<!--<debugger:FlexFPSMonitor />-->
 </s:Window>

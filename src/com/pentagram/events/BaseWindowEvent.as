@@ -9,7 +9,7 @@ package  com.pentagram.events
 		public static const WINDOW_ADDED:String = "infoWindowAdded";
 		public static const WINDOW_CLOSED:String = "infoWindowClosed";
 		public static const WINDOW_REMOVED:String = "infoWindowRemoved";
-		
+	
 		public var uid:String;
 		
 		public function BaseWindowEvent(type:String, uid:String = null)

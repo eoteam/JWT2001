@@ -95,7 +95,8 @@
 	<mx:ViewStack width="100%" height="100%" top="50" bottom="50" top.fullScreen="0" bottom.fullScreen="0" selectedIndex.fullScreen="0" 
 		id="mainStack" backgroundColor="0xFAFCFB" change="mainStack_changeHandler(event)">
 		
-		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea" hide="viewArea_hideHandler(event)">
+		<s:NavigatorContent width="100%" height="100%" label="Visualizer" id="viewArea" hide="viewArea_hideHandler(event)" 
+		show="visualizerArea_updateCompleteHandler(event)" hideEffect="{fadeOut}" showEffect="{fadeIn}">
 			<s:SkinnableComponent skinClass="com.pentagram.view.controls.DottedGrid" width="100%" top="61" bottom="{bottomTools.height}" 
 			top.fullScreen="0" bottom.fullScreen="0"/>
 			<!-- viewing area -->
@@ -147,7 +148,7 @@
 			<shell:BottomTools id="bottomTools" bottom="0" width="100%" client="{this.client}" visualizerArea="{visualizerArea}" clipAndEnableScrolling="false" excludeFrom="fullScreen"/>
 		</s:NavigatorContent>
 	
-		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn">
+		<s:NavigatorContent width="100%" height="100%" label="Data Editor" includeIn="loggedIn" show="visualizerArea_updateCompleteHandler(event)" hideEffect="{fadeOut}" showEffect="{fadeIn}">
 			<s:Rect width="100%" height="100%">
 				<s:fill>
 					<s:SolidColor color="0xf7f7f7" />

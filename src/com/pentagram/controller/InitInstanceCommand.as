@@ -2,6 +2,7 @@ package com.pentagram.controller
 {
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.InstanceWindowsProxy;
 	
@@ -38,8 +39,8 @@ package com.pentagram.controller
 				exp,imp,tool,image,
 				!NativeWindow.supportsMenu);
 			
-			
-			
+			if(windowModel.windowMap.size() == 1)
+				this.dispatch(new InstanceWindowEvent(InstanceWindowEvent.FIRST_WINDOW_CREATED));
 		}
 	}
 }

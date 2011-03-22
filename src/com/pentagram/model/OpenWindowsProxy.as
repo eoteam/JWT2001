@@ -25,6 +25,7 @@ package com.pentagram.model
 		public const USERS_WINDOW:String = "userWindow";
 		public const UPLOADER_WINDOW:String = "uploaderWindow";
 		public const HELP_WINDOW:String = "helpWindow";
+		public const LANDING_WINDOW:String = "landingWindow";
 		/**
 		 * Hash of currently open windows
 		 */
@@ -41,6 +42,7 @@ package com.pentagram.model
 			viewsMap.put(COUNTRIES_WINDOW,"com.pentagram.main.windows.CountriesWindow");
 			viewsMap.put(UPLOADER_WINDOW,"com.pentagram.main.windows.BatchUploader");
 			viewsMap.put(HELP_WINDOW,"com.pentagram.main.windows.HelpWindow");
+			viewsMap.put(LANDING_WINDOW,"com.pentagram.main.windows.LandingWindow");
 		}
 		
 		/**

@@ -2,6 +2,7 @@ package com.pentagram.controller
 {
 	import com.pentagram.events.InstanceWindowEvent;
 	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.model.AppModel;
 	import com.pentagram.model.InstanceWindowsProxy;
 	
 	import mx.core.FlexGlobals;
@@ -15,6 +16,9 @@ package com.pentagram.controller
 		
 		[Inject]
 		public var event:InstanceWindowEvent;
+		
+		[Inject]
+		public var model:AppModel;
 		
 		override public function execute():void
 		{
@@ -32,7 +36,7 @@ package com.pentagram.controller
 			window.compareArgs = event.args;
 			window.appEventDispatcher = FlexGlobals.topLevelApplication.applicationEventDispatcher;
 			window.open();
-			window.orderToFront();
+			//window.orderToFront();
 		}
 	}
 }

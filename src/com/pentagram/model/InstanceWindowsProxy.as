@@ -38,7 +38,7 @@ package com.pentagram.model
 		[Inject]
 		public var appModel:AppModel;
 		
-		protected var windowMap:IMap;
+		public var windowMap:IMap;
 		
 		public var currentWindow:InstanceWindow;
 		public var exportMenuItem:NativeMenuItem;

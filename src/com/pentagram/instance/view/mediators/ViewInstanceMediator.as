@@ -31,7 +31,6 @@ package com.pentagram.instance.view.mediators
 	import flash.events.MouseEvent;
 	import flash.events.NativeWindowBoundsEvent;
 	
-	
 	import mx.events.AIREvent;
 	
 	import org.robotlegs.mvcs.Mediator;
@@ -53,14 +52,16 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener(eventDispatcher, VisualizerEvent.CLIENT_DATA_LOADED, handleClientDataLoaded, VisualizerEvent);
 			eventMap.mapListener(eventDispatcher, VisualizerEvent.LOAD_SEARCH_VIEW, loadSearchView, VisualizerEvent);
 			eventMap.mapListener(eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
-			eventMap.mapListener(eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);			
+			eventMap.mapListener(eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
+			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
+			
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent);
-			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
+			
 			eventMap.mapListener(view.nativeWindow, NativeWindowBoundsEvent.RESIZE, handleWindowResize, NativeWindowBoundsEvent);
 			eventMap.mapListener(view, ViewEvent.WINDOW_FOCUS,handleWindowFocusChange, ViewEvent);
-			
+
 			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.INIT_INSTANCE,view.id,handleInit));
 			setupWindowsMenu();
 		} 
