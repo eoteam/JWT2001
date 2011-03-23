@@ -372,7 +372,7 @@ package com.pentagram.instance.view.mediators.shell
 						var ds3:Dataset = view.bottomTools.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.bottomTools.fourthSet.selectedItem as Dataset;
 						var year:String = '';
-						if(view.bottomTools.yearSlider.dataProvider) {
+						if(view.bottomTools.yearSlider.dataProvider && view.bottomTools.yearSlider.dataProvider.length>0) {
 							year =  view.bottomTools.yearSlider.dataProvider.getItemAt(view.bottomTools.yearSlider.selectedIndex).year;
 						}
 						model.updateData(view.filterTools.selectedCategories,view.graphView.visdata,year,ds1,ds2,ds3,ds4);

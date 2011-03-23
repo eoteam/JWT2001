@@ -385,6 +385,7 @@ package com.pentagram.instance.view.mediators.editor
 				}
 				else {
 					row[field] = parseFloat(copy);
+					trace(row[field],copy);
 				}
 			}
 			row.modifiedProps.push(field);

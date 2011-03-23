@@ -33,11 +33,14 @@ package com.pentagram.controller.startup
 		private var total:int;
 		override public function execute():void
 		{
-			total = 3;
+			total = 4;
 			appService.loadContinents();
 			appService.addHandlers(handleContinents);
 			appService.loadColors();
 			appService.addHandlers(handleColorLoaded);
+			clientService.getLatestDataset();
+			clientService.addHandlers(handleLatestDataset);
+			
 		}
 		private function handleColorLoaded(event:ResultEvent):void {
 			counter++;
@@ -45,6 +48,11 @@ package com.pentagram.controller.startup
 			for each(var item:Object in event.token.results) {
 				appModel.colors.push(Number(item.value.toString()));
 			}
+		}
+		private function handleLatestDataset(event:ResultEvent):void {
+			counter++;
+			checkCount();
+			appModel.latestDataset = event.token.results[0];
 		}
 		private function handleContinents(event:ResultEvent):void
 		{

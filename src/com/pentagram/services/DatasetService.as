@@ -6,7 +6,7 @@ package com.pentagram.services
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.services.interfaces.IDatasetService;
 	
-	
+	import mx.utils.StringUtil;
 	
 	public class DatasetService extends AbstractService implements IDatasetService
 	{
@@ -25,10 +25,15 @@ package com.pentagram.services
 			params.action = "createDataset";
 			params.contentid = model.client.id;
 			var n:String;
+			var regExp:RegExp =  /[^a-z0-9]/gi;
+				
 			if(model.client.shortname)
-				n = String(model.client.shortname.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();
+				n = StringUtil.trim(model.client.shortname)+'_'+StringUtil.trim(dataset.name);	// String(model.client.shortname.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();
 			else
-				n = String(model.client.name.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();;
+				n =  StringUtil.trim(model.client.shortname)+'_'+StringUtil.trim(dataset.name); //String(model.client.name.split(' ').join('_')+'_'+dataset.name.split(' ').join('_').split('_').join('')).toLowerCase();;
+			
+			n = n.replace(regExp,'_').toLowerCase();
+			
 			params.tablename = n;
 			params.name = dataset.name;
 			var countryids:String = '';
@@ -44,7 +49,9 @@ package com.pentagram.services
 			params.createdby = model.user.id;				
 			params.options = (dataset.options == '' || dataset.options == null) ? 'NULL':dataset.options;
 			params.modifiedby = model.user.id;
-			params.datasetname = dataset.name.split(' ').join('_').split('_').join('').toLowerCase();
+			params.datasetname = StringUtil.trim(dataset.name).replace(regExp,'_').toLowerCase();
+			var d:Date = new Date();
+			params.createdate = params.modifieddate = Math.floor(d.time / 1000);
 			if(dataset.time == 1)
 				params.years = dataset.years.join(',');
 			this.createService(params,ResponseType.STATUS);			

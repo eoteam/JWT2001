@@ -31,5 +31,8 @@ package com.pentagram.services.interfaces
 		function updateNote(note:Note):void;
 		function createNode(note:Note):void;
 		
+		function getLatestDataset():void;
+		
+		
 	}
 }

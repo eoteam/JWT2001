@@ -54,9 +54,7 @@ package com.pentagram.main.mediators
 			
 			//eventMap.mapListener(eventDispatcher, InstanceWindowEvent.FIRST_WINDOW_CREATED,handleFirstWindowCreated);
 			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleStateChange,StateChangeEvent);
-			
-			
-			
+
 			if(NativeApplication.supportsMenu) {
 				instanceWindowModel.buildMenu();
 			}
@@ -121,8 +119,11 @@ package com.pentagram.main.mediators
 
 		}
 		private function handleStateChange(event:Event):void {
-			if(view.currentState == "landing")
+			if(view.currentState == "landing") {
 				eventMap.mapListener(view.helpButton, MouseEvent.CLICK,handleHelpClicked,MouseEvent);
+				view.clientname.text = appModel.latestDataset.client;
+				view.datasetname.text = appModel.latestDataset.dataset;
+			}
 		}
 		private function handleHelpClicked(event:MouseEvent):void {
 			this.dispatch(new BaseWindowEvent(BaseWindowEvent.CREATE_WINDOW,"helpWindow"));

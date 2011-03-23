@@ -15,6 +15,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import flash.geom.Matrix;
 	import flash.geom.Point;
 	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.text.TextFormat;
 	
 	import mx.containers.Canvas;
@@ -84,8 +85,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			labelTF.selectable = false;
 			labelTF.embedFonts = true;
 			labelTF.mouseEnabled = false;
+			//labelTF.autoSize = TextFieldAutoSize.CENTER;
 			labelTF.defaultTextFormat = textFormat;
-			labelTF.width = 30; labelTF.height = 20;	
+//			labelTF.width = 30; labelTF.height = 20;	
 			labelTF.rotationY = 180;
 			this.addChild(labelTF);
 			
@@ -266,27 +268,19 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
+			textFormat.color = _textColor;	
 			
-			labelTF.width = labelTF.textWidth;
+			scaleTextToFitInTextField();
+			scaleTextFieldToFitText()
 			
-			if(_radius < labelTF.textWidth && _radius > labelTF.textWidth/2)  {
-				textFormat.size = 10;
-				labelTF.visible = true;
-			}
-			else if(_radius <= labelTF.textWidth/2)
-				labelTF.visible = false;
-			else {
-				textFormat.size = 12;
-				labelTF.visible = true;	
-			}
-			textFormat.color = _textColor;			
 			if(labelTF.rotationY == 0)
 				labelTF.x = -labelTF.textWidth/2;
 			else
 				labelTF.x = labelTF.textWidth/2;
+			
 			labelTF.y = -labelTF.textHeight/2;
-			labelTF.width = labelTF.textWidth+4;
-			labelTF.height = labelTF.textHeight+4;	
+//			labelTF.width = labelTF.textWidth+4;
+//			labelTF.height = labelTF.textHeight+4;	
 			labelTF.defaultTextFormat = textFormat;
 			
 			if(this.alpha == 0) {
@@ -301,6 +295,29 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		public function toggleTooltip(visible:Boolean):void {
 			
+		}
+		protected function scaleTextToFitInTextField():void
+		{  		
+			textFormat.size = labelTF.width;
+			labelTF.setTextFormat( textFormat );
+			var ranThrough:Boolean = false;
+			while ( labelTF.textWidth > labelTF.width - 4) 
+			{    
+				textFormat.size = int( textFormat.size ) - 1;    
+				labelTF.setTextFormat( textFormat );  
+				if(textFormat.size < 4) 
+					break;
+			}
+			labelTF.setTextFormat( textFormat );  
+			labelTF.visible = labelTF.width>1?true:false;
+		}
+		
+		protected function scaleTextFieldToFitText() : void
+		{
+			//the 4s take into account Flash's default padding.
+			//If I omit them, edges of character get cut off.
+			labelTF.width = _radius - 4>0?_radius-4:0;
+			labelTF.height = labelTF.textHeight + 4;
 		}
 	}
 }

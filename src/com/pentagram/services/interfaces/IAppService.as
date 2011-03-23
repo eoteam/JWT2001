@@ -32,6 +32,5 @@ package com.pentagram.services.interfaces
 		function addFileToContent(contentid:int,mediaid:int,usage:String=''):void;
 		
 		function removeClientThumb(clientid:int,usage:String):void;
-		
 	}
 }

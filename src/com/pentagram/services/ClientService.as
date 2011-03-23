@@ -139,6 +139,10 @@ package com.pentagram.services
 			params.datasets = note.datasets;
 			this.createService(params,ResponseType.STATUS);	
 		}
-		
+		public function getLatestDataset():void {
+			var params:Object = new  Object();
+			params.action = "getLatestDataset";
+			this.createService(params,ResponseType.DATA);				
+		}
 	}
 }

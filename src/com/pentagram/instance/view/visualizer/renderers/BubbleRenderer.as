@@ -165,6 +165,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.endFill();	
 				
 			textFormat.color = alpha>0.4?0xffffff:color;
+			scaleTextToFitInTextField();
+			scaleTextFieldToFitText()
+			
 			label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 			label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
 			label.defaultTextFormat = textFormat;
@@ -241,6 +244,29 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		private function get infoVisible():Boolean {
 			return _infoVisible;
+		}
+		protected function scaleTextToFitInTextField():void
+		{  		
+			textFormat.size = label.width;
+			label.setTextFormat( textFormat );
+			var ranThrough:Boolean = false;
+			while ( label.textWidth > label.width - 4) 
+			{    
+				textFormat.size = int( textFormat.size ) - 1;    
+				label.setTextFormat( textFormat );  
+				if(textFormat.size < 4) 
+					break;
+			}
+			label.setTextFormat( textFormat );  
+			label.visible = label.width>1?true:false;
+		}
+		
+		protected function scaleTextFieldToFitText() : void
+		{
+			//the 4s take into account Flash's default padding.
+			//If I omit them, edges of character get cut off.
+			label.width = radius - 4>0 ? radius-4:0;
+			label.height = label.textHeight + 4;
 		}
 	}
 }

@@ -34,6 +34,8 @@ package com.pentagram.model
 		
 		public var user:User;	
 		
+		public var latestDataset:Object;
+		
 		public function cloneRegions():ArrayList {
 			var result:ArrayList = new ArrayList();
 			//var countries:ArrayList = new ArrayList();
