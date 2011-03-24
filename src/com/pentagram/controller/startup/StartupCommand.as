@@ -102,6 +102,22 @@ package com.pentagram.controller.startup
 					var alt:Array = CSVUtils.CsvToArray(country.altnames);
 					country.alternateNames.source = alt[0];
 				}
+				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
+				result += '<span color="#cccccc">GDP in US$:';
+				result += '</span><span color="#ffffff">'+country.gdp_current+'</span><br/>';
+				
+				result += '<span color="#cccccc">GDP growth:';
+				result += '</span><span color="#ffffff">'+country.gdp_growth+'</span><br/>';
+				
+				result += '<span color="#cccccc">Population:';
+				result += '</span><span color="#ffffff">'+country.population+'</span><br/>';
+				
+				result += '<span color="#cccccc">Pop. Growth:';
+				result += '</span><span color="#ffffff">'+country.pop_growth+'</span><br/>';
+				
+				
+				result += "</p></TextFlow>";
+				country.info = result;
 				//trace(country.thumb);
 				appModel.countryNames[country.name.toLowerCase()] = country;
 				appModel.countryNames[country.shortname.toLowerCase()] = country;

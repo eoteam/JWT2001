@@ -9,6 +9,7 @@
 			   xmlns:renderers="com.pentagram.instance.view.visualizer.renderers.*">
 	<fx:Script>
 		<![CDATA[
+			import flashx.textLayout.conversion.TextConverter;
 			private function button1_clickHandler(event:MouseEvent):void {
 				if(this.currentState == "closed")
 					this.currentState = "open";
@@ -20,12 +21,16 @@
 			}
 			override public function set data(value:Object):void {
 				country = value as Country;
+				if(country) {
+					ctf2 =  TextConverter.importToFlow(country.info,TextConverter.TEXT_LAYOUT_FORMAT); 
+				}
 			}
 
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<vo:Country id="country" />
+		<s:TextFlow id="ctf2" />
 	</fx:Declarations>
 	<renderers:states>
 		<s:State name="closed"/>
@@ -48,7 +53,7 @@
 		complete="flag.width=flag.sourceWidth*30/flag.sourceHeight"/>
 	</s:HGroup>
 	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer" >
-		
+		<s:RichText width="100%" height="100%" fontSize="12"  fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6" textFlow="{ctf2}" />	
 	</s:VGroup>
 	<s:Line  width="100%" height="1">
 		<s:stroke>

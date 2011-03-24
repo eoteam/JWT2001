@@ -17,6 +17,16 @@ package com.pentagram.model.vo
 		public var alternateNames:ArrayList = new ArrayList();
 		//session info,
 		public var isNew:Boolean = true;
+		
+		
+		public var gdp_current:String;
+		public var gdp_growth:String;
+		public var gdp_pc:String;
+		public var population:String;
+		public var pop_growth:String;
+		
+		
+		public var info:String;
 
 	}
 }
