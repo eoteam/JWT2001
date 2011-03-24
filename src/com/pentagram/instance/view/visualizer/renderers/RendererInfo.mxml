@@ -42,7 +42,7 @@
 		</s:Transition>
 	</renderers:transitions>
 	<renderers:layout>
-		<s:VerticalLayout />
+		<s:VerticalLayout gap="4" />
 	</renderers:layout>
 	
 	<s:HGroup paddingLeft="6" paddingRight="6" verticalAlign="middle" height="35" width="100%" >
@@ -52,9 +52,9 @@
 		maxHeight="30"  smooth="true" height="30" smoothingQuality="high" scaleMode="stretch"  fillMode="scale"
 		complete="flag.width=flag.sourceWidth*30/flag.sourceHeight"/>
 	</s:HGroup>
-	<s:VGroup width="100%" height.open="60" height="0" id="infoContainer" >
-		<s:RichText width="100%" height="100%" fontSize="12"  fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6" textFlow="{ctf2}" />	
-	</s:VGroup>
+	
+	<s:RichText width="100%"  height.open="60" height="0" fontSize="12" id="infoContainer"  fontLookup="embeddedCFF" paddingLeft="6" paddingRight="6" textFlow="{ctf2}"/>	
+
 	<s:Line  width="100%" height="1">
 		<s:stroke>
 			<s:SolidColorStroke caps="none" color="#4D4D4D" joints="miter" miterLimit="4" weight="1"/>

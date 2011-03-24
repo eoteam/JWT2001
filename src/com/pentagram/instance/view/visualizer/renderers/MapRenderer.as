@@ -41,11 +41,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			_data = d;
 			if(d)
 				fillColor = DataRow(d).country.region.color;
-		}
-		private function handleInfoClose(event:CloseEvent):void {
-			infoVisible = false;
-		}	
-		
+		}		
 		override public function toggleTooltip(visible:Boolean):void {
 			if(visible) {
 				if(_data) {

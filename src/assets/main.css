@@ -111,6 +111,9 @@ s|List {
 	selectionColor:#00BCFF;
 	rollOverColor:#99E4FF;
 }
+s|Image {
+	skinClass: ClassReference("com.pentagram.view.skins.controls.Image");
+}
 flashcommander|AutoComplete s|TextInput {
 	skinClass: ClassReference('com.pentagram.view.skins.controls.SearchInput');
 }

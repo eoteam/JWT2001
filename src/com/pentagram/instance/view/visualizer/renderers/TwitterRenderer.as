@@ -33,9 +33,6 @@ package com.pentagram.instance.view.visualizer.renderers
 		override public function draw():void {
 			labelTF.text = _data.value;
 			super.draw();			
-		}	
-		private function handleInfoClose(event:CloseEvent):void {
-			infoVisible = false;
 		}
 		override public function toggleTooltip(visible:Boolean):void {
 			if(visible) {

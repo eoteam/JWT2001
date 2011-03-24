@@ -12,7 +12,7 @@
 	<s:SkinnableContainer backgroundColor="0xE3E4E4" height="{barHeight}" width="100%">
 		
 		<s:Image id="logo" horizontalAlign="left" verticalAlign="middle" left="4" top="4" complete="logo_completeHandler(event)" 
-		height="37"  scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high"
+		height="37"  scaleMode="letterbox" fillMode="scale" smooth="true" smoothingQuality="high" ioError="logo_ioErrorHandler(event)" 
 		source="{client.thumb}"/>
 		
 		<s:HGroup gap="0" verticalAlign="middle" width="100%" height="100%" id="holder">
@@ -171,13 +171,13 @@
 			import mx.collections.ArrayList;
 			[Bindable] public var client:Client;
 
-			protected function togglebutton1_clickHandler(event:MouseEvent):void
+			private function togglebutton1_clickHandler(event:MouseEvent):void
 			{
 				this.currentState = infoBtn.selected ? "opened":"closed";
 			}
 
 
-			protected function button1_clickHandler(event:MouseEvent):void
+			private function button1_clickHandler(event:MouseEvent):void
 			{
 				var url:String = client.website;
 				if(client.website.substr(0,7) != 'http://')
@@ -187,11 +187,18 @@
 			}
 
 
-			protected function logo_completeHandler(event:Event):void
+			private function logo_completeHandler(event:Event):void
 			{
 				var r:Number = logo.sourceWidth / logo.sourceHeight;
 				var w:Number = r*37;
 				holder.setStyle('left',w+8);
+				logo.visible = true;
+			}
+
+
+			private function logo_ioErrorHandler(event:IOErrorEvent):void
+			{
+				logo.visible = false;
 			}
 
 		]]>

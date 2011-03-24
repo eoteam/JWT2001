@@ -36,14 +36,18 @@
 
 			private function viewArea_hideHandler(event:FlexEvent):void
 			{
-				for (var i:int = systemManager.numChildren-1;i>=0;i--){
-					//trace(getQualifiedClassName(systemManager.getChildAt(i)));
-					var child:DisplayObject = systemManager.getChildAt(i);
-					if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
-						getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
-						systemManager.removeChildAt(i);
-					}
-				}
+//				for (var i:int = systemManager.numChildren-1;i>=0;i--){
+//					//trace(getQualifiedClassName(systemManager.getChildAt(i)));
+//					var child:DisplayObject = systemManager.getChildAt(i);
+//					if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
+//						getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){
+//						systemManager.removeChildAt(i);
+//					}
+//				}
+				if(clusterView) clusterView.clearTooltips();
+				if(twitterView) twitterView.clearTooltips();
+				if(graphView) graphView.clearTooltips();
+				mapView.clearTooltips();
 			}
 
 		]]>

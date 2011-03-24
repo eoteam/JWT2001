@@ -21,6 +21,7 @@ package com.pentagram.instance.view.visualizer.renderers
 	import mx.containers.Canvas;
 	import mx.core.IVisualElement;
 	import mx.core.UIComponent;
+	import mx.events.CloseEvent;
 	import mx.graphics.IStroke;
 	import mx.graphics.Stroke;
 	
@@ -226,7 +227,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			{
 				case MouseEvent.ROLL_OVER:
 				{
-					toggleTooltip(true);
+					if(!infoVisible || (info &&!info.pinned))
+						toggleTooltip(true);
 					break;
 				}
 				case MouseEvent.ROLL_OUT: 
@@ -244,8 +246,11 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function handleRemoved(event:Event):void {
 			if(tooltipContainer.contains(tooltip))
 				tooltipContainer.removeElement(tooltip);
-			if(infoVisible)
+			if(infoVisible) {
+				info.removeEventListener(CloseEvent.CLOSE,handleInfoClose);
 				info.close();
+				info= null;
+			}
 		}
 		public function draw():void {
 			var g:Graphics = this.graphics;
@@ -264,7 +269,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				colors =  [_fillColor,_fillColor];
 				//_textColor = 0xffffff;
 			}
-			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr)			
+			g.beginGradientFill(DEFAULT_GRADIENTTYPE,colors,[_fillAlpha,_fillAlpha],FILL_RATIO,matr);			
 			g.drawCircle(0, 0, _radius);
 			g.endFill();	
 			
@@ -305,11 +310,12 @@ package com.pentagram.instance.view.visualizer.renderers
 			{    
 				textFormat.size = int( textFormat.size ) - 1;    
 				labelTF.setTextFormat( textFormat );  
-				if(textFormat.size < 4) 
+				if(textFormat.size < 8) 
 					break;
 			}
-			labelTF.setTextFormat( textFormat );  
-			labelTF.visible = labelTF.width>1?true:false;
+			labelTF.setTextFormat( textFormat ); 
+			
+			labelTF.visible = textFormat.size>=8?true:false;
 		}
 		
 		protected function scaleTextFieldToFitText() : void
@@ -319,5 +325,8 @@ package com.pentagram.instance.view.visualizer.renderers
 			labelTF.width = _radius - 4>0?_radius-4:0;
 			labelTF.height = labelTF.textHeight + 4;
 		}
+		protected function handleInfoClose(event:CloseEvent):void {
+			infoVisible = false;
+		}	
 	}
 }

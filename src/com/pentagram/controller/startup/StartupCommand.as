@@ -76,7 +76,7 @@ package com.pentagram.controller.startup
 			appModel.clients = new ArrayList(event.token.results as Array);
 			counter++;
 			for each(var client:Client in appModel.clients.source) {
-				client.thumb = Constants.FILES_URL+client.thumb;
+				client.thumb = client.thumb==''?'':Constants.FILES_URL+client.thumb;
 				for each(var region:Region in appModel.regions.source) {
 					var cRegion:Region = new Region();
 					cRegion.color = region.color;
@@ -97,22 +97,23 @@ package com.pentagram.controller.startup
 			for each(var country:Country in countries)
 			{
 				country.region = region;
-				country.thumb = Constants.FILES_URL+country.thumb;
+				country.thumb = country.thumb==''?'':Constants.FILES_URL+country.thumb;
 				if(country.altnames) {
 					var alt:Array = CSVUtils.CsvToArray(country.altnames);
 					country.alternateNames.source = alt[0];
 				}
+				
 				var result:String = "<TextFlow xmlns='http://ns.adobe.com/textLayout/2008'><p fontFamily='FlamaBook'>";
-				result += '<span color="#cccccc">GDP in US$:';
+				result += '<span color="#cccccc">GDP in US$:  ';
 				result += '</span><span color="#ffffff">'+country.gdp_current+'</span><br/>';
 				
-				result += '<span color="#cccccc">GDP growth:';
+				result += '<span color="#cccccc">GDP growth:  ';
 				result += '</span><span color="#ffffff">'+country.gdp_growth+'</span><br/>';
 				
-				result += '<span color="#cccccc">Population:';
+				result += '<span color="#cccccc">Population:  ';
 				result += '</span><span color="#ffffff">'+country.population+'</span><br/>';
 				
-				result += '<span color="#cccccc">Pop. Growth:';
+				result += '<span color="#cccccc">Pop. Growth:  ';
 				result += '</span><span color="#ffffff">'+country.pop_growth+'</span><br/>';
 				
 				

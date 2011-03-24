@@ -41,9 +41,6 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		public function get data2():DataRow {
 			return _data2;
-		}
-		private function handleInfoClose(event:CloseEvent):void {
-			infoVisible = false;
 		}	
 		override public function toggleTooltip(visible:Boolean):void {
 			if(visible) {
