@@ -86,11 +86,11 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function saveImage(event:Event):void {	
-			if(view.yearSlider.dataProvider) {
-				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
-					year.alpha = 0;
-				}
-			}
+//			if(view.yearSlider.dataProvider) {
+//				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
+//					year.alpha = 0;
+//				}
+//			}
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
 			view.callLater(resumeImageSave);
 		}
@@ -127,10 +127,10 @@ package com.pentagram.instance.view.mediators.shell
 			}	
 			Shell(view.parentApplication.shellView).savingPanel.visible = true;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.END_IMAGE_SAVE));
-			if(view.yearSlider.dataProvider){
-				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) 
-					year.alpha = 1;
-			}
+//			if(view.yearSlider.dataProvider){
+//				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) 
+//					year.alpha = 1;
+//			}
 		}
 		private function closeSettingsPanel(event:MouseEvent):void {
 			if(event.target != view.settingsBtn)
@@ -146,15 +146,17 @@ package com.pentagram.instance.view.mediators.shell
 			switch(view.visualizerArea.selectedIndex) {
 				case model.CLUSTER_INDEX:
 					view.currentState = 'cluster';
+					view.thirdSet.dataProvider.getItemAt(0).name = "Region";
 				break;
 				
 				case model.MAP_INDEX:
 					view.currentState = 'map';	
+					view.thirdSet.dataProvider.getItemAt(0).name = "Region";
 				break;					
 				
 				case model.GRAPH_INDEX:
 					view.currentState = 'graph';
-//					Dataset(model.client.quantityDatasets.getItemAt(0)).name = "None";
+					view.thirdSet.dataProvider.getItemAt(0).name = "None";
 				break;	
 				
 				case model.TWITTER_INDEX:	
@@ -172,7 +174,7 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleTimeline(event:ViewEvent):void {
 			updateTimeline(event);
 		}
-		private function updateTimeline(...args):void {
+		private function updateTimeline(...args):ArrayList {
 			var datasets:Array;
 			var year:String;
 			if(args[0] is ViewEvent)
@@ -202,11 +204,11 @@ package com.pentagram.instance.view.mediators.shell
 			for each(year in ys) {
 				years.addItem(new Year(year,year.split('_').join('-'),1)); 	
 			}
-				
-				
+			
 			view.yearSlider.dataProvider = years;
 			view.yearSlider.selectedIndex = 0;
 			view.timelineContainer.visible = years.length>0?true:false;	
+			return years;
 		}
 		private function handleTwitterSearch(event:FlexEvent):void {
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.TWITTER_SEARCH,model.client.shortname + " " + view.twitterSearch.text));
@@ -229,40 +231,22 @@ package com.pentagram.instance.view.mediators.shell
 				case model.CLUSTER_INDEX:
 					if(view.thirdSet.selectedItem) {
 						dataset = view.thirdSet.selectedItem as Dataset;
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset,view.fourthSet.selectedItem));
-						updateTimeline(dataset,view.fourthSet.selectedItem);
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,dataset,view.fourthSet.selectedItem,updateTimeline(dataset,view.fourthSet.selectedItem)));	
 					}
 				break;
 				case model.MAP_INDEX:
 					if(view.thirdSet.selectedItem) {
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.thirdSet.selectedItem));
-						updateTimeline(view.thirdSet.selectedItem);
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,view.thirdSet.selectedItem,updateTimeline(view.thirdSet.selectedItem)));
 					}
 				break; 
 				
 				case model.GRAPH_INDEX:	
 					if(view.firstSet.selectedItem && view.secondSet.selectedItem) {
-						
 						var ds1:Dataset = view.firstSet.selectedItem as Dataset;
 						var ds2:Dataset = view.secondSet.selectedItem as Dataset;
 						var ds3:Dataset = view.thirdSet.selectedItem as Dataset;
 						var ds4:Dataset = view.fourthSet.selectedItem as Dataset;
-						
-//						var minYear:int = 10000; var maxYear:int; var showTime:Boolean = false;		
-//						if(ds1.time == 1) {
-//							showTime = true;
-//							minYear = ds1.years[0];
-//							maxYear = ds1.years[ds1.years.length-1];
-//						}
-//						view.yearSlider.visible = showTime;
-//						if(showTime) {
-//							for (i=0;i<ds1.years.length;i++) {
-//								years.addItem(new Year(ds1.years[i],ds1.years[i].toString().split('_').join('-'),1));
-//							}
-//							view.yearSlider.dataProvider = years;					
-//						}
-						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,ds1,ds2,ds3,ds4));	
-						updateTimeline(ds1,ds2,ds3,ds4);
+						this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.DATASET_SELECTION_CHANGE,ds1,ds2,ds3,ds4,updateTimeline(ds1,ds2,ds3,ds4)));			
 					}
 				break;
 				
@@ -271,7 +255,6 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 			}
 		}
-
 		private function handleTimer(event:TimerEvent):void {
 			counter++;
 			

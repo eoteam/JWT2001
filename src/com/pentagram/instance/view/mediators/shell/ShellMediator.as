@@ -24,6 +24,7 @@ package com.pentagram.instance.view.mediators.shell
 	import flash.events.FullScreenEvent;
 	import flash.events.MouseEvent;
 	import flash.filesystem.File;
+	import flash.utils.Dictionary;
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
@@ -224,7 +225,7 @@ package com.pentagram.instance.view.mediators.shell
 					else  {
 						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
 					}	
-					view.clusterView.visualize(event.args[0],event.args[1]);
+					view.clusterView.visualize(event.args[0],event.args[1],event.args[2]);
 					datasetids = event.args[0].id.toString()+','+event.args[1].id.toString();
 					checkNotes();
 					formatVizTitle(view.clusterView.datasets);
@@ -250,11 +251,15 @@ package com.pentagram.instance.view.mediators.shell
 					if(event.args[3].id > -2  && Dataset(event.args[3]).type == 0)
 						view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(Dataset(event.args[3]).optionsArray));
 					else if(event.args[3].id == -2)
-						view.filterTools.categoriesPanel.continentList.dataProvider = model.regions;
+						view.filterTools.categoriesPanel.continentList.dataProvider = null;
 					else
 						view.filterTools.categoriesPanel.continentList.dataProvider = null;
 					
-					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3]);	
+					var y:String;
+					if(event.args[4] && event.args[4].length > 0)
+						y = event.args[4].getItemAt(0).year;
+					
+					var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,event.args[0],event.args[1],event.args[2],event.args[3],y);	
 					view.graphView.visualize(model.maxRadius,d,event.args[0],event.args[1],event.args[2],event.args[3]);
 								
 					datasetids = event.args[0].id.toString() + "," + event.args[1].id.toString()  + "," + event.args[2].id.toString();
@@ -455,11 +460,16 @@ package com.pentagram.instance.view.mediators.shell
 				view.filterTools.optionsPanel.datasets = new ArrayList(arr);
 				
 				view.bottomTools.fourthSet.dataProvider = fourthSetList;
-				var ds4:Dataset = view.bottomTools.fourthSet.selectedItem = regionOption;
-				
-				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4);		
-				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
+				var ds4:Dataset = view.bottomTools.fourthSet.selectedItem = fourthSetList.getItemAt(1);
 				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,ds1,ds2,ds3,ds4));
+				
+				var y:String;
+				var years:ArrayList = updateTimeline(ds1,ds2,ds3,ds4);
+				if(years && years.length>0)
+					y = years.getItemAt(0).year;
+				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4,y);		
+				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
+				
 				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();
 				checkNotes();
 				this.formatVizTitle(view.graphView.datasets);
@@ -524,7 +534,8 @@ package com.pentagram.instance.view.mediators.shell
 				var dataset2:Dataset = model.client.quantityDatasets.length > 1? model.client.quantityDatasets.getItemAt(1) as Dataset:model.client.quantityDatasets.getItemAt(0) as Dataset
 				view.bottomTools.thirdSet.selectedItem = dataset1;
 				view.bottomTools.fourthSet.selectedItem = dataset2;
-				view.clusterView.visualize(dataset1,dataset2);
+				
+				view.clusterView.visualize(dataset1,dataset2,updateTimeline(dataset1,dataset2));
 				
 				if(dataset1.id != -1) 
 					view.filterTools.categoriesPanel.continentList.dataProvider = new ArrayList(ViewUtils.vectorToArray(dataset1.optionsArray));					
@@ -537,7 +548,7 @@ package com.pentagram.instance.view.mediators.shell
 					view.filterTools.optionsPanel.datasets = null;
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 				checkNotes();
-			
+				
 				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,dataset1,dataset2));
 				this.formatVizTitle(view.clusterView.datasets);
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
@@ -619,6 +630,38 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 			}
 			view.vizTitle.text = t;
+		}
+		private function updateTimeline(...args):ArrayList {
+			var datasets:Array;
+			var year:String;
+			if(args[0] is ViewEvent)
+				datasets = ViewEvent(args[0]).args;
+			else datasets = args;
+			
+			var years:ArrayList = new ArrayList();
+			var uniqueYears:Dictionary = new Dictionary();
+			var count:int;
+			for each(var dataset:Dataset in datasets) {
+				if(dataset.time == 1) {	
+					count++;
+					for (var i:int=0;i<dataset.years.length;i++) {
+						year = dataset.years[i];
+						if(uniqueYears[year])
+							uniqueYears[year] += 1;
+						else uniqueYears[year] = 1;
+					}
+				}
+			}
+			var ys:Array = [];
+			for (year in uniqueYears) {
+				if(uniqueYears[year] >= count)
+					ys.push(year);
+			}
+			ys.sort();
+			for each(year in ys) {
+				years.addItem(new Year(year,year.split('_').join('-'),1)); 	
+			}
+			return years;
 		}
 		private function handleCleanup(event:ViewEvent):void {
 			this.mediatorMap.removeMediator(this);

@@ -218,6 +218,7 @@ package com.pentagram.instance.view.visualizer.views
 		public function show():void {
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
+			percentHeight = percentWidth = 100;
 
 		}
 		private function updateRenderer(renderer:ClusterRenderer):void {

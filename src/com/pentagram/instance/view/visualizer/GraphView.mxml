@@ -18,6 +18,7 @@
 			import mx.charts.HitData;
 			import mx.charts.events.ChartItemEvent;
 			import mx.charts.series.items.BubbleSeriesItem;
+			import mx.collections.ArrayList;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -47,13 +48,12 @@
 			
 			private var categories:Array;
 			private var firstPass:Boolean = true;
-
+	
 			public function get datasets():Array {
 				return [ds1,ds2,ds3,ds4];
 			}
 			public function visualize(maxRadius:Number,arr:ArrayCollection,...props):void {
 				ds1 = props[0]; ds2 = props[1]; ds3 = props[2]; ds4 = props[3];
-				
 				_visdata = arr;
 				this.maxRadius = maxRadius;		
 				if(!firstPass) {
@@ -141,7 +141,6 @@
 						item.radius = item.prevRadius;
 				}				
 			}
-			
 			public function removeCategory(value:Category,count:int):void {
 				for each(var item:NormalizedVO in _visdata) {
 					if(item.category == value.name)
@@ -183,7 +182,8 @@
 			}
 			public function clearTooltips():void {
 				for each(var item:BubbleSeriesItem in this.mainSeries.items) {
-					BubbleRenderer(item.itemRenderer).toggleInfo(false);
+					if(item.itemRenderer)
+						BubbleRenderer(item.itemRenderer).toggleInfo(false);
 				}
 			}
 			public function selectAllCategories():void {

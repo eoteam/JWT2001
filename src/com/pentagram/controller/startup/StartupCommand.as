@@ -116,10 +116,9 @@ package com.pentagram.controller.startup
 				result += '<span color="#cccccc">Pop. Growth:  ';
 				result += '</span><span color="#ffffff">'+country.pop_growth+'</span><br/>';
 				
-				
 				result += "</p></TextFlow>";
 				country.info = result;
-				//trace(country.thumb);
+
 				appModel.countryNames[country.name.toLowerCase()] = country;
 				appModel.countryNames[country.shortname.toLowerCase()] = country;
 				for each(var altname:String in country.alternateNames.source)

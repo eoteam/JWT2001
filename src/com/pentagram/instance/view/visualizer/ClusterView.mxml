@@ -13,6 +13,8 @@
 		<![CDATA[
 			import com.greensock.TweenLite;
 			import com.pentagram.instance.view.visualizer.views.CirclePacking;
+			
+			import mx.collections.ArrayList;
 			[Embed(source="/assets/fonts/FlamaBold.ttf", fontName="FlamaBookMx2",embedAsCFF="false",mimeType = "application/x-font")]
 			private var _flamaBook:Class;
 			
@@ -32,13 +34,17 @@
 			private var firstPass:Boolean = true;
 			private var ds1:Dataset;
 			private var ds2:Dataset;
+			private var years:ArrayList;
+			
 			protected var resizeFlag:Boolean = false
-				
+	 	
 			public function get datasets():Array {
 				return [null,null,ds1,ds2];
 			}
-			public function visualize(dataset1:Dataset,dataset2:Dataset=null):void {
-				this.ds1 = dataset1; this.ds2 = dataset2;
+			public function visualize(dataset1:Dataset,dataset2:Dataset=null,years:ArrayList=null):void {
+				this.ds1 = dataset1; this.ds2 = dataset2; this.years = years;
+				if(years && years.length > 0)
+					currentYear = years.getItemAt(0).year;
 				if(!firstPass) {
 					doVisualize();
 				}
@@ -64,7 +70,9 @@
 					else {
 						for (j=0;j<dp.length;j++) {
 							circle = dp[j];
-							value = circle.data2.value;
+							if(ds2.time == 1)
+								value = circle.data2[currentYear];
+							else value = circle.data2.value;
 							if(value >= ds2.min && value <= ds2.max)
 								circle.radiusBeforeRendering =  (value - ds2.min) / (ds2.max - ds2.min) * maxRadius;	
 							else circle.radiusBeforeRendering = 0;
@@ -125,16 +133,26 @@
 			}
 			public function toggleOpacity(value:Number):void {
 				opacity = value==1?false:true;
+				doOpacity(value,true);
+			}	
+			private function doOpacity(value:Number,animate:Boolean):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					for (var j:int=0;j<c.numChildren;j++) {
 						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
-						renderer.textColor = value==1 ?0xffffffff:renderer.fillColor;
-						TweenLite.killTweensOf(renderer,true);
-						TweenLite.to(renderer, .5, {hexColors:{textColor:value==1?0xffffff:renderer.fillColor},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+						var tc:uint = value==1?0xffffff:renderer.fillColor;
+						if(animate) {
+							TweenLite.killTweensOf(renderer,true);
+							TweenLite.to(renderer, .5, {hexColors:{textColor:tc},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+						}
+						else {
+							renderer.textColor  = tc;
+							renderer.fillAlpha = value;
+							renderer.draw();
+						}
 					}
 				}
-			}	
+			}
 			public function updateSize():void {
 				resizeFlag = true;
 				this.invalidateDisplayList();
@@ -160,6 +178,7 @@
 						c.filter();
 					}
 				}
+				this.doOpacity(this.opacity?0.2:1,false);
 				var t:Timer = new Timer(100,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
 				t.start();
@@ -183,6 +202,7 @@
 						c.filter();
 					}
 				}
+				this.doOpacity(this.opacity?0.2:1,false);
 				var t:Timer = new Timer(1000,1);
 				t.addEventListener(TimerEvent.TIMER,handleTimer);
 				t.start();
@@ -197,9 +217,6 @@
 						}
 						else {
 							c.show();
-							c.percentHeight = c.percentWidth = 100;
-							c.height = holder.height;
-							c.width = holder.width/holder.numElements;
 						}
 					}
 					else {
@@ -214,6 +231,8 @@
 						}
 						c.filter();
 					}
+					
+					this.doOpacity(this.opacity?0.2:1,false);
 					var t:Timer = new Timer(100,1);
 					t.addEventListener(TimerEvent.TIMER,handleTimer);
 					t.start();
@@ -254,6 +273,7 @@
 			}
 			private function updateRenderer(renderer:ClusterRenderer):void {
 				renderer.draw();
+				trace(renderer.fillAlpha);
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();
@@ -268,12 +288,13 @@
 				
 				if(ds1.id!= -1 && ds1) {
 					if(ds1.type == 0) { //quantitative
+						
 						for each(var item:Category in ds1.optionsArray) {
 							item.selected = true;
 							arr = [];
 							r = 1;
 							for each(row in ds1.rows) {
-								var value:String = ds1.time == 1 ? row[ds1.years[0]] : row.value;
+								var value:String = ds1.time == 1 ? row[years.getItemAt(0)] : row.value;
 								if(value == item.name) {
 									if(ds2) {
 										for each(row2 in ds2.rows) {
@@ -282,12 +303,12 @@
 										}
 										if(ds2.type == 1) {
 											if(ds2.time == 1) {
-												currentYear = ds2.years[0];	
-												value2 = row2[ds2.years[0]];
+												
+												value2 = row2[years.getItemAt(0)];
 												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
 												else r = 0;
-												content = generateContent(value2,ds2.years[0]);
+												content = generateContent(value2,years.getItemAt(0).year);
 											}
 											else {
 												value2 = row2.value;

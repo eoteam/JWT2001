@@ -275,8 +275,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 			textFormat.color = _textColor;	
 			
+			scaleTextFieldToFitText();
 			scaleTextToFitInTextField();
-			scaleTextFieldToFitText()
+			
 			
 			if(labelTF.rotationY == 0)
 				labelTF.x = -labelTF.textWidth/2;
@@ -314,7 +315,6 @@ package com.pentagram.instance.view.visualizer.renderers
 					break;
 			}
 			labelTF.setTextFormat( textFormat ); 
-			
 			labelTF.visible = textFormat.size>=8?true:false;
 		}
 		

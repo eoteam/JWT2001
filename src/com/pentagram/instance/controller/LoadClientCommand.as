@@ -122,7 +122,7 @@ package com.pentagram.instance.controller
 			dataset.rows.sort = null;
 			checkCount();
 		}
-		private function addNoneSets():void {
+		private function getNoneSets():Dataset {
 			var none:Dataset = new Dataset();
 			none.name = "Region";
 			var o:String = '';
@@ -130,11 +130,14 @@ package com.pentagram.instance.controller
 			{
 				o += r.name+',';
 				none.optionsArray.push(r);
+				none.colorArray[r.name] = r.color;
+
 			}
 			none.options = o.substr(0,o.length-1);
 			none.type = 0;
 			none.time = 0;
 			none.id = -1;
+			
 			for each(var country:Country in model.client.countries.source) {
 				var row:DataRow = new DataRow();
 				row.country = country;
@@ -145,17 +148,18 @@ package com.pentagram.instance.controller
 				row.name = country.name;
 				none.rows.addItem(row);
 			}
-			
-			model.client.datasets.addItemAt(none,0);
-			model.client.qualityDatasets.addItemAt(none,0);
-			model.client.quantityDatasets.addItemAt(none,0);
+			return none;
 		}
 		private function checkCount():void {
 			counter++;
 			if(counter == total) {
 				model.client.loaded = true;
-				addNoneSets();
-					eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
+				
+				model.client.datasets.addItemAt(getNoneSets(),0);
+				model.client.qualityDatasets.addItemAt(getNoneSets(),0);
+				model.client.quantityDatasets.addItemAt(getNoneSets(),0);
+				
+				eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.CLIENT_DATA_LOADED));
 				trace("CLIENT LOADED");
 				this.commandMap.release(this);
 			}

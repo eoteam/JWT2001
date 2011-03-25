@@ -14,10 +14,10 @@ package com.pentagram.instance.model
 	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
-	
-	import org.robotlegs.mvcs.Actor;
 	import mx.collections.Sort;
 	import mx.collections.SortField;
+	
+	import org.robotlegs.mvcs.Actor;
 	
 	public class InstanceModel extends Actor
 	{
@@ -132,7 +132,7 @@ package com.pentagram.instance.model
 			}
 			return res;
 		}
-		public function normalizeData(categories:Array,ds1:Dataset,ds2:Dataset,ds3:Dataset=null,ds4:Dataset=null):ArrayCollection {
+		public function normalizeData(categories:Array,ds1:Dataset,ds2:Dataset,ds3:Dataset=null,ds4:Dataset=null,year:String=null):ArrayCollection {
 			var data:ArrayCollection = new ArrayCollection();
 			
 			for (var i:int=0;i<ds1.rows.length;i++) {
@@ -166,7 +166,7 @@ package com.pentagram.instance.model
 				obj.rows = [row,row2,row3,row4];
 				//ds1
 				if(ds1.time == 1) 
-					obj.x = ds1.rows.getItemAt(i)[ds1.years[0]];
+					obj.x = ds1.rows.getItemAt(i)[year];
 				else if(ds1.id != -2)
 					obj.x = ds1.rows.getItemAt(i).value;
 				else
@@ -174,7 +174,7 @@ package com.pentagram.instance.model
 
 				//ds2
 				if(ds2.time == 1) 
-					obj.y = row2[ds2.years[0]];
+					obj.y = row2[year];
 				else  if(ds2.id != -2)
 					obj.y = row2.value;
 				else
@@ -183,7 +183,7 @@ package com.pentagram.instance.model
 				//ds3
 				if(ds3 && ds3.id > 0) {
 					if(ds3.time == 1) {
-						obj.radius = obj.prevRadius = (row3[ds3.years[0]] - ds3.min) / (ds3.max - ds3.min);
+						obj.radius = obj.prevRadius = (row3[year] - ds3.min) / (ds3.max - ds3.min);
 						obj.radiusValue = row3[ds3.years[0]];
 					}
 					else {
@@ -197,17 +197,17 @@ package com.pentagram.instance.model
 				}
 				
 				//ds4
-				if(ds4 && ds4.id != -1 && ds4.id != -2) {
+				if(ds4 && ds4.id != -2) {
 					var value:String;
 					if(ds4.time == 1) 
-						value = row4[ds4.years[0]];
+						value = row4[year];
 					else
 						value = row4.value;
 					obj.color = ds4.colorArray[value];	
 					obj.category = value;
 				}
 				else if(ds4.id == -2) {
-					obj.color = row.country.region.color;
+					obj.color = 0;//	row.country.region.color;
 					obj.category = row.country.region.name;
 				}
 				else {

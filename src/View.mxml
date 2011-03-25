@@ -73,6 +73,7 @@
 				appUpdater = new ApplicationUpdaterUI(); // Used for auto-update
 				TextLineRecycler.textLineRecyclerEnabled = false;
 				ToolTipManager.showDelay = 0;
+				//flash.profiler.showRedrawRegions ( true, 0x0000FF );
 			}  	
 			private function init():void {
 				setupListeners();

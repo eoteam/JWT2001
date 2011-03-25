@@ -20,10 +20,10 @@
         <airExclude path="com/.DS_Store"/>
         <airExclude path="assets/icons/cursor_resize.gif"/>
         <airExclude path="flex"/>
-        <airExclude path="com/pentagram/instance/view/visualizer/.DS_Store"/>
         <airExclude path="assets/icons/cursor_move.gif"/>
-        <airExclude path="com/pentagram/view"/>
+        <airExclude path="com/pentagram/instance/view/visualizer/.DS_Store"/>
         <airExclude path="com/pentagram/instance/view/shell"/>
+        <airExclude path="com/pentagram/view"/>
         <airExclude path="com/pentagram/instance/view/.DS_Store"/>
         <airExclude path="com/pentagram/.DS_Store"/>
         <airExclude path="assets/fonts"/>
