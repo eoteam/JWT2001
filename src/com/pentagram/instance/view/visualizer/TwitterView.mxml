@@ -21,6 +21,7 @@
 			
 			import mx.collections.ArrayList;
 			import mx.events.FlexEvent;
+			import mx.rpc.AsyncToken;
 			import mx.rpc.events.ResultEvent;
 			
 			import spark.events.IndexChangeEvent;
@@ -33,15 +34,23 @@
 			private var maxRadius:Number = 100;
 			private var opacity:Boolean = true;
 
+		
+
+	
+			private var _searchTerm:String;
+			private var apiSearchTerm:String;
+			private var currentCommonWords:Array;
+			
+			//single state vars
+			private var text:String = '';
 			private var counter:int = 1;
 			private var pageTotal:int = 3;
 			private var limit:int = 10;
+			private var allTopics:Array;
+			private var allwords:Dictionary; 
 			private var allTweets:Array;
-			private var _searchTerm:String;
-			private var apiSearchTerm:String;
-			private var text:String = '';
-			private var currentCommonWords:Array;
-			private var _topics:Array;	
+			
+			
 			private var english:Boolean
 			private var firstPass:Boolean = true;
 			private var termChanged:Boolean = false;
@@ -70,9 +79,13 @@
 			
 			
 			protected var resizeFlag:Boolean = false
-		
-			
-			
+	
+			public function set state(value:String):void {
+				if(views.currentState != value) {
+					views.currentState = value;
+					start();
+				}
+			}
 			public function updateSize():void {
 				resizeFlag = true;
 				this.invalidateDisplayList();
@@ -85,51 +98,23 @@
 				
 			}
 			public function get topics():Array {
-				return _topics;
+				return allTopics;
 			}
 			public function selectTweets(tweets:Vector.<Object>):void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					for (var j:int=0;j<pack.numChildren;j++) {
-						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-						if(tweets.indexOf(renderer.data) != -1) {
-							TweenLite.killTweensOf(renderer);
-							TweenLite.to(renderer, .5, {hexColors:{textColor:0xffffff},fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-							renderer.toggleInfo(true);
-						}
-						else {
-							TweenLite.killTweensOf(renderer);
-							TweenLite.to(renderer, .5, {hexColors:{textColor:renderer.fillColor},fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-							renderer.toggleInfo(false);
-						}
-					}
-				}
+				views.selectTweets(tweets)
 			}
 			public function get viewOptions():Array {
 				return [maxRadius,opacity,0];
 			}
 			public function toggleOpacity(value:Number):void {
 				opacity = value==1?false:true;
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					for (var j:int=0;j<pack.numChildren;j++) {
-						var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
-						TweenLite.killTweensOf(renderer);
-						TweenLite.to(renderer, .5, {hexColors:{textColor:value==1?0xffffff 	:renderer.fillColor},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]}); 
-					}
-				}
+				views.updateOpacity(value);
 			}
 			public function updateMaxRadius(value:Number):void {
 				maxRadius = value;
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					pack.scaler = value/100;
-					pack.draw();
-				}
+				views.updateRadius(maxRadius);
 			}
-			private function updateRenderer(renderer:TwitterRenderer):void {
-				renderer.draw();
-			}
+
 			public function showOptions(value:Boolean):void {
 				optionsPanel.visible = value;
 				if(!value) {
@@ -140,17 +125,12 @@
 			public function clear():void {
 				counter = 1;
 				allTweets = [];
-				_topics = [];
+				allTopics = [];
 				text = '';
-				holder.removeAllElements();
+				views.clear();
 			}
 			public function clearTooltips():void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					for each(var r:TwitterRenderer in pack.renderers) {
-						r.toggleInfo(false);
-					}
-				}
+				views.clearTooltips();
 			}
 			override protected function updateDisplayList(w:Number, h:Number):void {
 				super.updateDisplayList(w,h);
@@ -160,14 +140,11 @@
 				}
 			}
 			private function handleResize(event:Event=null):void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					pack.percentHeight = pack.percentWidth = 100;
-					pack.draw();			
-				}
+				views.resize();
 			}
 			private function httpservice1_resultHandler(event:ResultEvent):void {
 				var o:Object  = JSON.decode(event.result.toString());
+				trace(o.results.length);
 				allTweets = allTweets.concat(o.results);
 				for each(var item:Object in o.results) {
 					text+= item.text + "\n";
@@ -185,7 +162,8 @@
 				}
 				counter++;
 			}
-			private function countWords(tweet:Object,p:int):void {
+			
+			private function countWords(tweet:Object,p:int,dic:Dictionary):void {
 								
 				var m:Array = new Array();
 				var m1:Array = new Array();
@@ -296,16 +274,16 @@
 					//trace(N[0],N[i],N[0]*0.1);
 					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
 						var topic:Object;
-						if(!allwords[m1[i]]) {
+						if(!dic[m1[i]]) {
 							topic =  new Object();
 							topic.count = Number(N[i]);
 							topic.value = m1[i];
 							topic.tweets = [];
 							topic.tweets.push(tweet);
-							allwords[m1[i]] = topic;
+							dic[m1[i]] = topic;
 						}
 						else {
-							topic = allwords[m1[i]];
+							topic = dic[m1[i]];
 							topic.tweets.push(tweet);
 							topic.count +=  Number(N[i]);
 						}
@@ -314,13 +292,13 @@
 				}
 				//return results; 
 			}
-			private var allwords:Dictionary; 
+			
 			private function linksService_resultHandler(event:ResultEvent):void {
-				allwords = new Dictionary();
+				
 				var topic:TwitterTopic
 				var item:Object
 				for each(item in allTweets) {
-					countWords(item,0);
+					countWords(item,0,allwords);
 					var regExp:RegExp = /((?:http|https):\/\/[a-z0-9\/\?=_#&%~-]+(\.[a-z0-9\/\?=_#&%~-]+)+)|(www(\.[a-z0-9\/\?=_#&%~-]+){2,})/gi;
 					var output:String = '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008"><p fontFamily="FlamaBook"><span color="#cccccc">';
 					output += item.text.replace(regExp,'</span><a href="$&"><span color="#ffffff">$&</span></a><span color="#cccccc">');
@@ -329,11 +307,11 @@
 				}				
 				for each(item in allwords) {
 					if(item.count > limit) {
-						topic = new TwitterTopic();;
+						topic = new TwitterTopic();
 						topic.count = item.count;
 						topic.value = item.value;
 						topic.tweets = new ArrayList(item.tweets);
-						_topics.push(topic);
+						allTopics.push(topic);
 					}
 				}
 				// allwords = null;
@@ -344,29 +322,23 @@
 						topic.link = true;
 						topic.count = item.count;
 						topic.value = item.value;
-						_topics.push(topic);
+						allTopics.push(topic);
 					}
 				}
-				var pack:TwitterPacking;
-				pack = new TwitterPacking(_topics,this);
-				holder.addElement(pack);
-				pack.percentHeight = pack.percentWidth = 100;
-				pack.build();
-				pack.addEventListener("layoutComplete",handleLayout,false,0,true);
+				views.visualize(allTopics);	
 				this.updateSize();
 				firstPass = false;
 			}
-			private function handleLayout(event:Event):void {
-				updateSize();
-				this.currentState = "loaded";
-				_searchTerm = null;
-				this.dispatchEvent(new Event('vizComplete'));
-			}
 			public function sort():void {
-				for (var i:int=0;i<holder.numElements;i++) {
-					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
-					pack.sort();
-				}
+//				for (var i:int=0;i<holder.numElements;i++) {
+//					var pack:TwitterPacking = holder.getElementAt(i) as TwitterPacking;
+//					pack.sort();
+//				}
+			}
+			private var _colors:Vector.<uint>;
+			public function set colors(arr:Vector.<uint>):void 
+			{
+				_colors = arr;
 			}
 			private function handleClick(event:MouseEvent):void {
 				this.limit = list.selectedItem.value;
@@ -379,16 +351,36 @@
 			}
 			private function start():void {
 				this.dispatchEvent(new Event('vizStarted'));
-				counter = 1;
-				allTweets = [];
-				_topics = [];
-				text = '';	
 				currentState = "loading";
-				service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
-				service.send();
+				if(views.currentState == 'single') {
+					counter = 1;
+					text = '';	
+					allTopics = [];
+					allwords = new Dictionary();
+					allTweets = [];
+					service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
+					service.send();
+				}
+				else {
+					tudeCounter = 0;
+					text1 = text2 = text3 = '';
+					tudeTopics = [];
+					tude1Tweets = [];
+					tude2Tweets = [];
+					tude3Tweets = [];
+					tude1Words = new Dictionary();
+					tude2Words = new Dictionary();
+					tude3Words = new Dictionary();
+					tudeDic = [{counter:1,value:'&tude[]=:)'},
+							   {counter:1,value:'&tude[]=:('},
+							   {counter:1,value:'&tude[]=?'}];
+					
+					service2.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1&tude[]=:(";
+					service2.send();
+				}
 			}
 			public function reload():void {
-				holder.removeAllElements();
+				views.clear();
 				start();
 			}
 			public function set searchTerm(q:String):void {
@@ -398,7 +390,7 @@
 					counter = 1;
 					currentCommonWords = [];
 					allTweets = [];
-					_topics = [];
+					allTopics = [];
 					apiSearchTerm = '';
 					text = '';
 					var tmp:Array = _searchTerm.split(" ");
@@ -417,15 +409,159 @@
 					if(!firstPass) {
 						this.optionsPanel.visible = true;
 						this.currentState = "preload";
-						holder.removeAllElements();
+						views.clear();
 					}
 				}
 			}
+
+			private function views_completeHandler(event:Event):void
+			{
+				updateSize();
+				this.currentState = "loaded";
+				_searchTerm = null;
+				this.dispatchEvent(new Event('vizComplete'));
+			}
+
+			private var tudeCounter:int;
+			
+			private var tude1Tweets:Array;
+			private var tude2Tweets:Array;
+			private var tude3Tweets:Array;
+			
+			private var tude1Words:Dictionary;
+			private var tude2Words:Dictionary;
+			private var tude3Words:Dictionary;
+			
+			private var text1:String;
+			private var text2:String;
+			private var text3:String;
+			
+			private var tudeDic:Array = [{counter:1,value:'&tude[]=:('},{counter:1,value:'&tude[]=:)'},{counter:1,value:'&tude[]=?'}];
+
+			private var tudesArr:Array;
+			private var tudesDic:Array;
+			private var tudeTopics:Array = [];
+			private function service2_resultHandler(event:ResultEvent):void
+			{
+				var o:Object  = JSON.decode(event.result.toString());
+				trace(o.results.length);
+				//allTweets = allTweets.concat(o.results);
+				var tude:String;
+				var t:String;
+				for each(var item:Object in o.results) {
+					t+= item.text + "\n";
+				}
+				switch(tudeCounter) {
+					case 0:
+						tude1Tweets = tude1Tweets.concat(o.results);
+						text1 += t;
+					break
+					
+					case 1:
+						tude2Tweets = tude2Tweets.concat(o.results);
+						text2 += t;
+					break;
+					
+					case 2:
+						tude3Tweets = tude3Tweets.concat(o.results);
+						text3 += t;
+					break;
+				}
+				
+				if(o.results.length < 100)
+					tudeCounter++;
+				else
+					tudeDic[tudeCounter].counter++;
+				if(tudeCounter < 3) {
+		
+					service2.url = baseURL+apiSearchTerm+ tudeDic[tudeCounter].value +"&lang=en&rpp=100&page="+tudeDic[tudeCounter].counter;
+					service2.send();
+				}
+				else {
+					
+					tudesArr = [tude1Tweets,tude2Tweets,tude3Tweets];
+					tudesDic = [tude1Words,tude2Words,tude3Words];
+					var params:Object;
+					var tok:AsyncToken;
+					
+					params = new Object();
+					params.action = "getLinks"
+					params.text = text1;
+					linksService2.url =  Constants.DB_EXECUTE;
+					tok = linksService2.send(params);
+					tok.index = 0;
+					
+					params = new Object();
+					params.action = "getLinks"
+					params.text = text2;
+					linksService2.url =  Constants.DB_EXECUTE;
+					tok = linksService2.send(params);
+					tok.index = 1;
+					
+					params = new Object();
+					params.action = "getLinks"
+					params.text = text3;
+					linksService2.url =  Constants.DB_EXECUTE;
+					tok = linksService2.send(params);
+					tok.index = 2;
+				}
+			}
+
+			private function linksService2_resultHandler(event:ResultEvent):void
+			{
+				var index:int = event.token.index;
+				var topic:TwitterTopic
+				var item:Object;
+				var arr:Array = tudesArr[index];
+				var dic:Dictionary = tudesDic[index];
+				var tops:Array = [];
+				
+				for each(item in arr) {
+					countWords(item,0,dic);
+					var regExp:RegExp = /((?:http|https):\/\/[a-z0-9\/\?=_#&%~-]+(\.[a-z0-9\/\?=_#&%~-]+)+)|(www(\.[a-z0-9\/\?=_#&%~-]+){2,})/gi;
+					var output:String = '<TextFlow xmlns="http://ns.adobe.com/textLayout/2008"><p fontFamily="FlamaBook"><span color="#cccccc">';
+					output += item.text.replace(regExp,'</span><a href="$&"><span color="#ffffff">$&</span></a><span color="#cccccc">');
+					output += "</span></p></TextFlow>";
+					item.text = output;
+				}		
+				
+				for each(item in dic) {
+					if( (index == 2 && item.count > limit) || index < 2) {
+					topic = new TwitterTopic();
+					topic.count = item.count;
+					topic.value = item.value;
+					topic.color = _colors[index];
+					topic.tweets = new ArrayList(item.tweets);
+					tops.push(topic);
+					}					
+				}
+				var o:Array = JSON.decode(event.result.toString()) as Array;
+				for each(item  in o) {
+					if( (index == 2 && item.count > limit) || index < 2) {
+					topic = new TwitterTopic();
+					topic.link = true;
+					topic.count = item.count;
+					topic.value = item.value;
+					topic.color = _colors[index];
+					tops.push(topic);
+					}
+				}
+				tudeTopics.push(tops);
+				if(index == 2) {
+					views.visualize(tudeTopics);	
+					this.updateSize();
+				}
+				firstPass = false;			
+			}
+
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<s:HTTPService id="service"  resultFormat="text" concurrency="multiple" result="httpservice1_resultHandler(event)" method="GET"/>
+		<s:HTTPService id="service2"  resultFormat="text" concurrency="multiple" result="service2_resultHandler(event)"  method="GET"/>
+		
 		<s:HTTPService id="linksService" resultFormat="text" concurrency="multiple" method="POST" result="linksService_resultHandler(event)"/>
+		<s:HTTPService id="linksService2" resultFormat="text" concurrency="multiple" method="POST" result="linksService2_resultHandler(event)"/>
 	</fx:Declarations>
 	<fx:Metadata>
 		[Event(name="vizComplete",type="flash.events.Event")]
@@ -435,8 +571,9 @@
 		<s:State name="loading" />
 		<s:State name="loaded" />
 	</modules:states>
-	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="holder"/>
-			
+
+	<views:TwitterViews width="100%" height="100%" id="views" complete="views_completeHandler(event)" />
+	
 	<s:Group left="5" bottom="0" styleName="darkPanel" id="optionsPanel" width="240" height="200">
 		<s:filters>
 			<s:DropShadowFilter alpha="0.4" angle="90" distance="2" quality="2"/>

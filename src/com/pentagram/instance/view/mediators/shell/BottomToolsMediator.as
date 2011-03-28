@@ -320,7 +320,6 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.unmapListener(view.pdfBtn,MouseEvent.CLICK,saveImage,MouseEvent);
 			eventMap.unmapListener(view,MouseEvent.CLICK,closeSettingsPanel,MouseEvent);
 			
-
 			yearTimer.removeEventListener(TimerEvent.TIMER,handleTimer);
 			
 			eventMap.unmapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);

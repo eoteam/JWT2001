@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark"  stateChangeComplete="group1_stateChangeCompleteHandler(event)"
+		 xmlns:mx="library://ns.adobe.com/flex/mx">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Metadata>
+		[Event(name="complete", type="flash.events.Event")]
+	</fx:Metadata>
+	<fx:Script>
+		<![CDATA[
+			import com.greensock.TweenLite;
+			import com.pentagram.instance.view.visualizer.renderers.TwitterRenderer;
+			
+			import mx.events.FlexEvent;
+			public function clear():void {
+				if(singleHolder)	singleHolder.removeAllElements();
+				if(manyHolder)		manyHolder.removeAllElements();
+			}
+			private var completeCounter:int;
+			
+			public function visualize(topics:Array):void {
+				var pack:TwitterPacking;
+				if(currentState == "single") {
+					pack = new TwitterPacking(topics,this);
+					singleHolder.addElement(pack);
+					pack.percentHeight = pack.percentWidth = 100;
+					pack.addEventListener("layoutComplete",handleLayout,false,0,true);
+					pack.build();
+				}
+				else {
+					completeCounter = 0;
+					for each(var t:Array in topics) {
+						pack = new TwitterPacking(t,this);
+						manyHolder.addElement(pack);
+						pack.percentHeight = pack.percentWidth = 100;
+						pack.addEventListener("layoutComplete",handleLayout,false,0,true);
+						pack.build();
+					
+					}
+				}
+			}
+			private function handleLayout(event:Event):void {
+				if(this.currentState == 'single')
+					this.dispatchEvent(new Event("complete"));
+				else {
+					completeCounter++;
+					if(completeCounter == 3)
+						this.dispatchEvent(new Event("complete"));
+				}
+			}
+			public function selectTweets(tweets:Vector.<Object>):void {
+				var pack:TwitterPacking
+				if(currentState == "single" && singleHolder.numElements > 0) {			
+					pack = singleHolder.getElementAt(0) as TwitterPacking;
+					selectTweetsForPack(pack,tweets);
+				}
+				else if(currentState == "many") {
+					for (var i:int=0;i<manyHolder.numElements;i++) {
+						pack = manyHolder.getElementAt(i) as TwitterPacking;
+						selectTweetsForPack(pack,tweets);
+					}
+				}
+			}
+			private function selectTweetsForPack(pack:TwitterPacking,tweets:Vector.<Object>):void {			
+				for (var j:int=0;j<pack.numChildren;j++) {
+					var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer; 
+					if(tweets.indexOf(renderer.data) != -1) {
+						TweenLite.killTweensOf(renderer);
+						TweenLite.to(renderer, .5, {hexColors:{textColor:0xffffff},fillAlpha:1,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+						renderer.toggleInfo(true);
+					}
+					else {
+						TweenLite.killTweensOf(renderer);
+						TweenLite.to(renderer, .5, {hexColors:{textColor:renderer.fillColor},fillAlpha:0.2,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+						renderer.toggleInfo(false);
+					}
+				}
+			}
+			private function updateRenderer(renderer:TwitterRenderer):void {
+				renderer.draw();
+			}
+			public function updateRadius(value:Number):void {
+				var pack:TwitterPacking
+				if(currentState == "single" && singleHolder.numElements > 0) {			
+					pack = singleHolder.getElementAt(0) as TwitterPacking;
+					updatePackRadius(pack,value);
+				}
+				else if(currentState == "many") {
+					for (var i:int=0;i<manyHolder.numElements;i++) {
+						pack = manyHolder.getElementAt(i) as TwitterPacking;
+						updatePackRadius(pack,value);
+					}
+				}
+			}
+			private function updatePackRadius(pack:TwitterPacking,value:Number):void {
+				pack.scaler = value/100;
+				pack.draw();
+			}
+			public function updateOpacity(value:Number):void {
+				var pack:TwitterPacking
+				if(currentState == "single" && singleHolder.numElements > 0) {			
+					pack = singleHolder.getElementAt(0) as TwitterPacking;
+					updatePackOpacity(pack,value);
+				}
+				else if(currentState == "many") {
+					for (var i:int=0;i<manyHolder.numElements;i++) {
+						pack = manyHolder.getElementAt(i) as TwitterPacking;
+						updatePackOpacity(pack,value);
+					}
+				}
+			}
+			private function updatePackOpacity(pack:TwitterPacking,value:Number):void {
+				for (var j:int=0;j<pack.numChildren;j++) {
+					var renderer:TwitterRenderer =  pack.getChildAt(j) as TwitterRenderer;
+					TweenLite.killTweensOf(renderer);
+					TweenLite.to(renderer, .5, {hexColors:{textColor:value==1?0xffffff 	:renderer.fillColor},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]}); 
+				}
+			}
+			public function clearTooltips():void {
+				var pack:TwitterPacking
+				if(currentState == "single" && singleHolder.numElements > 0) {			
+					pack = singleHolder.getElementAt(0) as TwitterPacking;
+					clearPackTooltips(pack);
+				}
+				else if(currentState == "many") {
+					for (var i:int=0;i<manyHolder.numElements;i++) {
+						pack = manyHolder.getElementAt(i) as TwitterPacking;
+						clearPackTooltips(pack);
+					}
+				}
+			}
+			private function clearPackTooltips(pack:TwitterPacking):void {
+				for each(var r:TwitterRenderer in pack.renderers) {
+					r.toggleInfo(false);
+				}		
+			}
+			public function resize():void {
+				var pack:TwitterPacking
+				if(currentState == "single" && singleHolder.numElements > 0) {			
+					pack = singleHolder.getElementAt(0) as TwitterPacking;
+					resizePack(pack);
+				}
+				else if(currentState == "many") {
+					for (var i:int=0;i<manyHolder.numElements;i++) {
+						pack = manyHolder.getElementAt(i) as TwitterPacking;
+						resizePack(pack);
+					}
+				}
+			}
+			private function resizePack(pack:TwitterPacking):void {
+				pack.percentHeight = pack.percentWidth = 100;
+				pack.draw();		
+			}
+			protected function group1_stateChangeCompleteHandler(event:FlexEvent):void
+			{
+				if(currentState == "many") {
+					
+				}
+			}
+
+		]]>
+	</fx:Script>
+	<s:states>
+		<s:State name="single" />
+		<s:State name="many" />
+	</s:states>
+	
+	
+	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="singleHolder" includeIn="single"/>
+	<s:HGroup verticalAlign="middle" gap="2" width="100%" height="100%" id="manyHolder" includeIn="many"/>
+</s:Group>

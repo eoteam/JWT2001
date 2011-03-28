@@ -152,7 +152,7 @@
 			<s:DropDownList maxWidth="180" minWidth="75" labelField="name" selectedIndex="0" id="twitterOptions">
 				<s:dataProvider>
 					<s:ArrayList>
-						<fx:Object value="lang" name="Languages"/>
+						<fx:Object value="none" name="None"/>
 						<fx:Object value="tude" name="Attitude" />
 					</s:ArrayList>
 				</s:dataProvider>

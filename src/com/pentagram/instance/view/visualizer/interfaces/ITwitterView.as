@@ -17,5 +17,9 @@ package com.pentagram.instance.view.visualizer.interfaces
 		function sort():void; 
 		
 		function showOptions(value:Boolean):void;
+		
+		function set state(value:String):void;
+		
+		function set colors(arr:Vector.<uint>):void;
 	}
 }

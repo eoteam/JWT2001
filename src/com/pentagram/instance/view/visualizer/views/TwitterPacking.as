@@ -62,16 +62,19 @@ package com.pentagram.instance.view.visualizer.views
 				  this.addChild(sprite);
 				}
 				sprite.data = dataProvider[i];
-				sprite.fillColor = 0x5599BB;
+				sprite.fillColor = dataProvider[i].color;
 				sprite.fillAlpha = 0.2;
-				sprite.textColor = 0x5599BB;
+				sprite.textColor = dataProvider[i].color;
 				sprite.radiusBeforeRendering = dataProvider[i].count;
 				sprite.scaleX= -1;
-				
 				renderers.push(sprite);
 			}
 			if(this.dataProvider.length > 2 )
 				doLayout();
+			else  {
+				draw();
+				this.dispatchEvent(new Event("layoutComplete"));
+			}
 		}
 		private function doLayout(animate:Boolean=false):void {
 			animateCoord = animate;
@@ -133,9 +136,25 @@ package com.pentagram.instance.view.visualizer.views
 		
 		public function draw(fast:Boolean=false) : void {			
 			var c:TwitterRenderer;
-			if (this.dataProvider.length < 2){
+			if(dataProvider.length == 0)
+				return;
+			if (this.dataProvider.length <= 2){
+				renderers[0].x = (width-25)/2;
+				renderers[0].y = (height-25)/2;
+				renderers[0].radius = 25;
+				renderers[0].alpha = 1;
+				renderers[0].draw();
+				if(dataProvider.length > 1) {
+					renderers[1].x = renderers[0].x+50;
+					renderers[1].y = renderers[0].y;
+					renderers[1].radius = 25;
+					renderers[1].alpha = 1;
+					renderers[1].draw();
+				}
 				return;
 			}
+			if(!circlePositions)
+				return;
 			var _loc_2:Number = Math.floor(Math.min(width, height) * 0.5) - 3;
 			var i:uint = 0;
 			for (i=0; i < this.circlePositions.length;i++){

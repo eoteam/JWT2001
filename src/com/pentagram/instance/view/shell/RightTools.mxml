@@ -59,13 +59,13 @@
 				else currentState = "closedAnd"+state;
 			}
 			public function adjustCategories(view:Object):void {
-				categoriesPanel.continentList.dataProvider = view.value == "lang"?twitterLanguages:this.twitterOptions;
+				categoriesPanel.continentList.dataProvider = view.value == "tude"?this.twitterOptions:null;
 			}
 		]]>
 	</fx:Script>
 
 	<fx:Declarations> 
-		<s:ArrayList id="twitterLanguages">
+<!--		<s:ArrayList id="twitterLanguages">
 			<fx:Object value="all" name="Any Language" selected="true"/>
 												<fx:Object value="ar" name="Arabic (العربية)" selected="true"/>
 			<fx:Object value="da" name="Danish (dansk)" selected="true"/>
@@ -86,7 +86,7 @@
 			<fx:Object value="es" name="Spanish (español)" selected="true"/>
 			<fx:Object value="sv" name="Swedish (Svenska)" selected="true"/>
 			<fx:Object value="th" name="Thai (ไทย)" selected="true"/>
-		</s:ArrayList>
+		</s:ArrayList>-->
 		
 		<s:ArrayList id="twitterOptions">
 			<fx:Object value="pos" name="Positive Attitude :)" selected="true"/>

@@ -282,6 +282,7 @@ package com.pentagram.instance.view.mediators.shell
 				case model.TWITTER_INDEX:
 					view.twitterView.changeView(event.args[0]);
 					view.filterTools.adjustCategories(event.args[0]);
+					view.twitterView.state = event.args[0].value == "none" ?'single':'many';
 				break;
 			}
 		}
@@ -562,6 +563,7 @@ package com.pentagram.instance.view.mediators.shell
 				util.view.addEventListener('vizComplete',handleVizComplete);
 				util.view.addEventListener('vizStarted',handleVizComplete);
 				view.twitterView = util.view as ITwitterView;
+				view.twitterView.colors = model.colors;
 				view.twitterView.searchTerm = model.client.shortname != '' ?model.client.shortname:model.client.name;
 				view.twitterHolder.addElement(util.view as Group);	
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;

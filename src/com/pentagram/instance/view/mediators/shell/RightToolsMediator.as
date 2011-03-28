@@ -81,10 +81,10 @@ package com.pentagram.instance.view.mediators.shell
 				view.comparator.categoryHolder.dataProvider = newDP;
 				view.categoriesPanel.check.selected = false;
 			}
-			for(var i:int=0;i<view.twitterLanguages.length;i++) {
-				view.twitterLanguages.getItemAt(i).color = model.colors[i];
-			}
-			for(i=0;i<view.twitterOptions.length;i++) {
+//			for(var i:int=0;i<view.twitterLanguages.length;i++) {
+//				view.twitterLanguages.getItemAt(i).color = model.colors[i];
+//			}
+			for(var i:int=0;i<view.twitterOptions.length;i++) {
 				view.twitterOptions.getItemAt(i).color = model.colors[i];
 			}
 		}
@@ -124,7 +124,7 @@ package com.pentagram.instance.view.mediators.shell
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.optionsPanel.range.values));
 		}
 		private function handleRegionSelect(event:Event):void {
-			if(view.state != "twitter") {
+			if(view.state.toLowerCase() != "twitter") {
 				var item:Category = event.target.data as Category;
 				view.categoriesPanel.check.selected = false;	
 				var region:Category;
