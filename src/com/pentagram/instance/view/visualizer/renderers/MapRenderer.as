@@ -43,6 +43,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				fillColor = DataRow(d).country.region.color;
 		}		
 		override public function toggleTooltip(visible:Boolean):void {
+			super.toggleTooltip(visible);
 			if(visible) {
 				if(_data) {
 					if(this.directParent.x + this.x + radius + RendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {

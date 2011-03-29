@@ -34,9 +34,6 @@
 			private var maxRadius:Number = 100;
 			private var opacity:Boolean = true;
 
-		
-
-	
 			private var _searchTerm:String;
 			private var apiSearchTerm:String;
 			private var currentCommonWords:Array;
@@ -80,6 +77,10 @@
 			
 			protected var resizeFlag:Boolean = false
 	
+				
+			private var singleLoaded:Boolean = false;
+			private var manyLoaded:Boolean = false;
+			
 			public function set state(value:String):void {
 				if(views.currentState != value) {
 					views.currentState = value;
@@ -294,8 +295,7 @@
 			}
 			
 			private function linksService_resultHandler(event:ResultEvent):void {
-				
-				var topic:TwitterTopic
+				var topic:TwitterTopic;
 				var item:Object
 				for each(item in allTweets) {
 					countWords(item,0,allwords);
@@ -313,8 +313,8 @@
 						topic.tweets = new ArrayList(item.tweets);
 						allTopics.push(topic);
 					}
-				}
-				// allwords = null;
+				}	
+				
 				var o:Array  = JSON.decode(event.result.toString()) as Array;
 				for each(item  in o) {
 					if(item.count > limit) {
@@ -350,9 +350,8 @@
 				}
 			}
 			private function start():void {
-				this.dispatchEvent(new Event('vizStarted'));
-				currentState = "loading";
-				if(views.currentState == 'single') {
+				if(views.currentState == 'single' && !singleLoaded) {
+					prepareStart();
 					counter = 1;
 					text = '';	
 					allTopics = [];
@@ -361,7 +360,8 @@
 					service.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1";
 					service.send();
 				}
-				else {
+				else if(!manyLoaded) {
+					prepareStart();
 					tudeCounter = 0;
 					text1 = text2 = text3 = '';
 					tudeTopics = [];
@@ -375,11 +375,16 @@
 							   {counter:1,value:'&tude[]=:('},
 							   {counter:1,value:'&tude[]=?'}];
 					
-					service2.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1&tude[]=:(";
+					service2.url = baseURL+apiSearchTerm+"&lang=en&rpp=100&page=1&tude[]=:)";
 					service2.send();
 				}
 			}
+			private function prepareStart():void {
+				this.dispatchEvent(new Event('vizStarted'));
+				currentState = "loading";
+			}
 			public function reload():void {
+				singleLoaded = manyLoaded = false;
 				views.clear();
 				start();
 			}
@@ -409,7 +414,7 @@
 					if(!firstPass) {
 						this.optionsPanel.visible = true;
 						this.currentState = "preload";
-						views.clear();
+						//views.clear();
 					}
 				}
 			}
@@ -420,6 +425,9 @@
 				this.currentState = "loaded";
 				_searchTerm = null;
 				this.dispatchEvent(new Event('vizComplete'));
+				if(views.currentState == 'single')
+					singleLoaded = true;
+				else manyLoaded = true;
 			}
 
 			private var tudeCounter:int;
@@ -475,6 +483,7 @@
 				if(tudeCounter < 3) {
 		
 					service2.url = baseURL+apiSearchTerm+ tudeDic[tudeCounter].value +"&lang=en&rpp=100&page="+tudeDic[tudeCounter].counter;
+					trace(service2.url);
 					service2.send();
 				}
 				else {
@@ -526,30 +535,33 @@
 				}		
 				
 				for each(item in dic) {
-					if( (index == 2 && item.count > limit) || index < 2) {
-					topic = new TwitterTopic();
-					topic.count = item.count;
-					topic.value = item.value;
-					topic.color = _colors[index];
-					topic.tweets = new ArrayList(item.tweets);
-					tops.push(topic);
+					//if( (index == 2 && item.count > limit) || index < 2) {
+					if(item.count > limit) {	
+						topic = new TwitterTopic();
+						topic.count = item.count;
+						topic.value = item.value;
+						topic.color = _colors[index];
+						topic.tweets = new ArrayList(item.tweets);
+						tops.push(topic);
 					}					
 				}
 				var o:Array = JSON.decode(event.result.toString()) as Array;
 				for each(item  in o) {
-					if( (index == 2 && item.count > limit) || index < 2) {
-					topic = new TwitterTopic();
-					topic.link = true;
-					topic.count = item.count;
-					topic.value = item.value;
-					topic.color = _colors[index];
-					tops.push(topic);
+					//if( (index == 2 && item.count > limit) || index < 2) {
+					if(item.count > limit) {
+						topic = new TwitterTopic();
+						topic.link = true;
+						topic.count = item.count;
+						topic.value = item.value;
+						topic.color = _colors[index];
+						tops.push(topic);
 					}
 				}
 				tudeTopics.push(tops);
 				if(index == 2) {
 					views.visualize(tudeTopics);	
 					this.updateSize();
+					allTopics = tudeTopics[0].concat(tudeTopics[1]).concat(tudeTopics[2]);
 				}
 				firstPass = false;			
 			}

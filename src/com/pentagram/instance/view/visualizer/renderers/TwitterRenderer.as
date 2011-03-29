@@ -35,6 +35,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			super.draw();			
 		}
 		override public function toggleTooltip(visible:Boolean):void {
+			super.toggleTooltip(visible);
 			if(visible) {
 				if(this.directParent.x + this.x + radius + TWRendererToolTip(tooltip).width + 10 > this.tooltipContainer.width) {
 					TWRendererToolTip(tooltip).leftTip.visible = false;

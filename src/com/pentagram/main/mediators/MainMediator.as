@@ -67,9 +67,11 @@ package com.pentagram.main.mediators
 				stream.open(file, FileMode.READ);
 				var userInfo:String = stream.readUTFBytes(stream.bytesAvailable);
 				stream.close();
-				appModel.user = ObjectTranslator.objectToInstance(JSON.decode(userInfo),User);
-				appModel.user.persisted = true;
-				eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
+				if(userInfo != '') {
+					appModel.user = ObjectTranslator.objectToInstance(JSON.decode(userInfo),User);
+					appModel.user.persisted = true;
+					eventDispatcher.dispatchEvent(new AppEvent(AppEvent.LOGGEDIN,appModel.user));
+				}
 			}
 			
 			eventDispatcher.dispatchEvent(new AppEvent(AppEvent.STARTUP_BEGIN));
@@ -101,7 +103,8 @@ package com.pentagram.main.mediators
 		// Handle Menu item selection
 		private function handleLogin(event:AppEvent):void {
 			if(NativeApplication.supportsMenu)
-				instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.userMenuItem.enabled = instanceWindowModel.countriesMenuItem.enabled = true;
+				instanceWindowModel.clientMenuItem.enabled =  instanceWindowModel.countriesMenuItem.enabled = true;
+				//instanceWindowModel.userMenuItem.enabled =
 			if(!appModel.user.persisted) {
 				var userJson:String = event.args[1] as String;
 				var file:File = File.applicationStorageDirectory;

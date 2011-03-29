@@ -86,11 +86,6 @@ package com.pentagram.instance.view.mediators.shell
 			}
 		}
 		private function saveImage(event:Event):void {	
-//			if(view.yearSlider.dataProvider) {
-//				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) {
-//					year.alpha = 0;
-//				}
-//			}
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
 			view.callLater(resumeImageSave);
 		}
@@ -127,10 +122,6 @@ package com.pentagram.instance.view.mediators.shell
 			}	
 			Shell(view.parentApplication.shellView).savingPanel.visible = true;
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.END_IMAGE_SAVE));
-//			if(view.yearSlider.dataProvider){
-//				for each(var year:Year in  ArrayList(view.yearSlider.dataProvider).source) 
-//					year.alpha = 1;
-//			}
 		}
 		private function closeSettingsPanel(event:MouseEvent):void {
 			if(event.target != view.settingsBtn)
@@ -207,6 +198,8 @@ package com.pentagram.instance.view.mediators.shell
 			
 			view.yearSlider.dataProvider = years;
 			view.yearSlider.selectedIndex = 0;
+			view.yearSlider.invalidateDisplayList();
+			view.yearSlider.invalidateSkinState();
 			view.timelineContainer.visible = years.length>0?true:false;	
 			return years;
 		}

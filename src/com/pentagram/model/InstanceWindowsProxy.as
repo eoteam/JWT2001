@@ -44,7 +44,7 @@ package com.pentagram.model
 		public var exportMenuItem:NativeMenuItem;
 		public var importMenuItem:NativeMenuItem;
 		public var clientMenuItem:NativeMenuItem;
-		public var userMenuItem:NativeMenuItem;
+		//public var userMenuItem:NativeMenuItem;
 		public var countriesMenuItem:NativeMenuItem;
 		public var toolBarMenuItem:NativeMenuItem;
 		public var exportImageMenuItem:NativeMenuItem;
@@ -308,14 +308,14 @@ package com.pentagram.model
 			countries.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,COUNTRIES_WINDOW];
 			countries.enabled = false;
 			
-			var users:NativeMenuItem = new NativeMenuItem("Users");
-			users.addEventListener(Event.SELECT,handleMenuItem);
-			users.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW];
-			users.enabled = false;
-			
-			var uploader:NativeMenuItem = new NativeMenuItem("Uploader");
-			uploader.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW];
-			uploader.addEventListener(Event.SELECT,handleMenuItem);
+//			var users:NativeMenuItem = new NativeMenuItem("Users");
+//			users.addEventListener(Event.SELECT,handleMenuItem);
+//			users.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,USERS_WINDOW];
+//			users.enabled = false;
+//			
+//			var uploader:NativeMenuItem = new NativeMenuItem("Uploader");
+//			uploader.data = [BaseWindowEvent,BaseWindowEvent.CREATE_WINDOW,UPLOADER_WINDOW];
+//			uploader.addEventListener(Event.SELECT,handleMenuItem);
 			//uploader.enabled = false;
 			
 			//Item within Window Menu
@@ -390,7 +390,7 @@ package com.pentagram.model
 				window.stage.nativeWindow.menu.addItem(hroot);
 			}
 			clientMenuItem = clients;
-			userMenuItem = users;
+			//userMenuItem = users;
 			countriesMenuItem = countries;
 			
 			windowMenu.submenu.addItemAt(arrange,0);
@@ -404,8 +404,8 @@ package com.pentagram.model
 			
 			managers.addItem(clients);
 			managers.addItem(countries);
-			managers.addItem(users);
-			managers.addItem(uploader);
+			//managers.addItem(users);
+			//managers.addItem(uploader);
 			
 			help.addItem(helpItem);
 

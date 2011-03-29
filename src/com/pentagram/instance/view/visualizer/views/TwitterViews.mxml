@@ -15,8 +15,10 @@
 			
 			import mx.events.FlexEvent;
 			public function clear():void {
-				if(singleHolder)	singleHolder.removeAllElements();
-				if(manyHolder)		manyHolder.removeAllElements();
+				if(singleHolder)	
+					singleHolder.removeAllElements();
+				if(manyHolder)		
+					manyHolder.removeAllElements();
 			}
 			private var completeCounter:int;
 			

@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark"  alpha="0"
 		 implements="mx.core.IToolTip" width="200" height.link="85" height="55"   
-		 styleName="darkPanel"
+		 styleName="darkPanel" 
 		 showEffect="{fadeIn}" hideEffect="{fadeOut}" show="group1_showHandler(event)" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:vo="com.pentagram.model.vo.*">
 	<fx:Script>

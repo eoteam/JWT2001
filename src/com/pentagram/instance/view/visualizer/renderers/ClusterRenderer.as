@@ -76,6 +76,7 @@ package com.pentagram.instance.view.visualizer.renderers
 			}
 		}
 		override public function toggleInfo(visible:Boolean):void {
+			super.toggleTooltip(visible);
 			if(!visible && infoVisible) {
 				this.info.close();
 			}

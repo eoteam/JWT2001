@@ -468,7 +468,7 @@ package com.pentagram.instance.view.mediators.shell
 				var years:ArrayList = updateTimeline(ds1,ds2,ds3,ds4);
 				if(years && years.length>0)
 					y = years.getItemAt(0).year;
-				var d:ArrayCollection = model.normalizeData(view.filterTools.selectedCategories,ds1,ds2,ds3,ds4,y);		
+				var d:ArrayCollection = model.normalizeData(ds4.options.split(','),ds1,ds2,ds3,ds4,y);		
 				view.graphView.visualize(model.maxRadius,d,ds1,ds2,ds3,ds4);
 				
 				datasetids = ds1.id.toString()+','+ds2.id.toString()+','+ds3.id.toString();

@@ -6,6 +6,9 @@ package com.pentagram.controller
 	import com.pentagram.services.interfaces.IAppService;
 	
 	import flash.display.NativeWindow;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
 	
 	import mx.rpc.events.ResultEvent;
 	
@@ -28,8 +31,17 @@ package com.pentagram.controller
 		override public function execute():void
 		{
 			appModel.user = null;
+			var file:File = File.applicationStorageDirectory;
+			file = file.resolvePath("Preferences/user.txt");
+			if(file.exists) {
+				var stream:FileStream = new FileStream();
+				stream.open(file, FileMode.WRITE);
+				stream.writeUTFBytes('');
+				stream.close();
+			}
 			if(!NativeWindow.supportsMenu) {
-				instanceModel.clientMenuItem.enabled =  instanceModel.userMenuItem.enabled = instanceModel.countriesMenuItem.enabled = false;
+				instanceModel.clientMenuItem.enabled =  instanceModel.countriesMenuItem.enabled = false;
+				// instanceModel.userMenuItem.enabled =
 			}
 		}
 	}

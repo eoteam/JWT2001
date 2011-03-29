@@ -250,6 +250,7 @@ package com.pentagram.instance.view.visualizer.renderers
 				info.removeEventListener(CloseEvent.CLOSE,handleInfoClose);
 				info.close();
 				info= null;
+				infoVisible = false;
 			}
 		}
 		public function draw():void {
@@ -300,7 +301,9 @@ package com.pentagram.instance.view.visualizer.renderers
 			
 		}
 		public function toggleTooltip(visible:Boolean):void {
-			
+			if(this.tooltip != null && this.tooltip.parent == null && this.tooltipContainer != null) {
+				this.tooltipContainer.addElement(tooltip);
+			}
 		}
 		protected function scaleTextToFitInTextField():void
 		{  		
