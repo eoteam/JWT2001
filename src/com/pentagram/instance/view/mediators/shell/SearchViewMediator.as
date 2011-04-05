@@ -4,7 +4,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.Search;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Client;
 	
 	import flash.events.Event;
@@ -91,7 +91,8 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventMap.unmapListener(view.newClientBtn,MouseEvent.CLICK,handleNewClientBtn,MouseEvent);
 	
-			view.searchInput.dataProvider = null;			
+			if(view.searchInput)
+				view.searchInput.dataProvider = null;			
 			trace("Search Mediator Released");
 			super.onRemove();
 		}

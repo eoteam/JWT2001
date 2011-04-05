@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="240" height="200" xmlns:controls="bxf.ui.controls.*">
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 		]]>
 	</fx:Script>
 

@@ -165,7 +165,6 @@
 			}
 			
 			private function countWords(tweet:Object,p:int,dic:Dictionary):void {
-								
 				var m:Array = new Array();
 				var m1:Array = new Array();
 				var N:Array = new Array ();
@@ -478,8 +477,11 @@
 				
 				if(o.results.length < 100)
 					tudeCounter++;
+				else if(tudeDic[tudeCounter].counter >= pageTotal)
+					tudeCounter++;
 				else
 					tudeDic[tudeCounter].counter++;
+				trace(tudeCounter);
 				if(tudeCounter < 3) {
 		
 					service2.url = baseURL+apiSearchTerm+ tudeDic[tudeCounter].value +"&lang=en&rpp=100&page="+tudeDic[tudeCounter].counter;

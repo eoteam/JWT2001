@@ -5,7 +5,7 @@ package com.pentagram.instance.view.mediators.editor
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.editor.OverviewEditor;
 	import com.pentagram.instance.view.editor.RegionDrawer;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Country;
 	import com.pentagram.model.vo.MimeType;
 	import com.pentagram.model.vo.Region;

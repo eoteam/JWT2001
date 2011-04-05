@@ -5,7 +5,7 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 			import com.pentagram.model.vo.Country;
 			
 			import mx.collections.ArrayCollection;

@@ -3,7 +3,7 @@ package com.pentagram.main.mediators
 	import com.pentagram.controller.Constants;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.main.windows.ClientsWindow;
 	import com.pentagram.model.AppModel;
 	import com.pentagram.model.vo.Client;

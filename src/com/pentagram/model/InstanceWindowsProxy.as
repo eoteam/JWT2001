@@ -220,9 +220,9 @@ package com.pentagram.model
 						SimpleMotionPath(orphan.motionPaths[0]).valueTo.width = orphanWidth;
 						//orphan.window.width = orphanWidth;
 						
-						SimpleMotionPath(orphan.motionPaths[0]).valueTo.width = (j - (numWindows - numOrphans)) * orphanWidth;
+						SimpleMotionPath(orphan.motionPaths[0]).valueTo.width = orphanWidth // (j - (numWindows - numOrphans)) * ;
 						if(orphanCount > 0) 
-							SimpleMotionPath(orphan.motionPaths[0]).valueTo.width  += gap * orphanCount;
+							SimpleMotionPath(orphan.motionPaths[0]).valueTo.x = (gap+orphanWidth) * orphanCount	;
 						orphanCount++;
 					}
 				} 

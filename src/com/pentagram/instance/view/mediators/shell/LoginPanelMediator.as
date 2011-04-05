@@ -4,7 +4,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.LoginPanel;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.main.windows.LoginWindow;
 	import com.pentagram.model.AppModel;
 	

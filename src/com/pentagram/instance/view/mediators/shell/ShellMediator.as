@@ -12,7 +12,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.view.visualizer.interfaces.IMapView;
 	import com.pentagram.instance.view.visualizer.interfaces.ITwitterView;
 	import com.pentagram.instance.view.visualizer.interfaces.IVisualizer;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Dataset;
 	import com.pentagram.model.vo.Region;
@@ -74,7 +74,6 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.WINDOW_RESIZE,handleFullScreen);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.UPDATE_VISUALIZER_VIEW,handleViewChange);
 			
-			 
 			eventMap.mapListener(eventDispatcher,EditorEvent.ERROR,handleImportFailed);
 			eventMap.mapListener(eventDispatcher,EditorEvent.NOTIFY,handleNotification);
 			eventMap.mapListener(eventDispatcher,EditorEvent.START_IMPORT,handleStartImport);
@@ -410,7 +409,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
 
 			if(view.mapView) {
-				
+			
 				for each(util in loaders) {
 					util.unloadModule();
 				}
@@ -419,7 +418,6 @@ package com.pentagram.instance.view.mediators.shell
 				view.graphView = null;
 				view.twitterView = null;
 				loaders = [];
-				
 			}
 			view.callLater(function resume():void {
 				var util:ModuleUtil
@@ -462,7 +460,7 @@ package com.pentagram.instance.view.mediators.shell
 				
 				view.bottomTools.fourthSet.dataProvider = fourthSetList;
 				var ds4:Dataset = view.bottomTools.fourthSet.selectedItem = fourthSetList.getItemAt(1);
-				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,ds1,ds2,ds3,ds4));
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,[ds1,ds2,ds3,ds4]));
 				
 				var y:String;
 				var years:ArrayList = updateTimeline(ds1,ds2,ds3,ds4);
@@ -496,8 +494,9 @@ package com.pentagram.instance.view.mediators.shell
 			
 			if(model.client.quantityDatasets.length > 1) {
 				var dataset:Dataset = model.selectedSet = model.isCompare ? model.compareArgs[1] : model.client.quantityDatasets.getItemAt(1) as Dataset;
-				
+				var year:String;
 				if(model.isCompare) {
+					year = model.compareArgs[3];
 					for each(var r:Region in model.regions.source) {
 						if(r.name == model.compareArgs[2].name) {
 							r.selected = true;
@@ -509,7 +508,7 @@ package com.pentagram.instance.view.mediators.shell
 				view.mapView.visualize(dataset);
 				view.bottomTools.thirdSet.selectedItem = dataset;
 				view.filterTools.optionsPanel.datasets = new ArrayList([dataset]);
-				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,dataset));
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,[dataset],year));
 				datasetids = dataset.id.toString();
 				checkNotes();	
 			}
@@ -550,7 +549,7 @@ package com.pentagram.instance.view.mediators.shell
 				datasetids = dataset1.id.toString()+','+dataset2.id.toString();	
 				checkNotes();
 				
-				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,dataset1,dataset2));
+				this.eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.UPDATE_TIMELINE,[dataset1,dataset2]));
 				this.formatVizTitle(view.clusterView.datasets);
 				view.filterTools.optionsPanel.maxRadiusSlider.value = 100;
 				view.filterTools.optionsPanel.xrayToggle.selected = true;

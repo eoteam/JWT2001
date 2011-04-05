@@ -24,7 +24,7 @@
 			import com.pentagram.instance.view.editor.prompt.YesNoPrompt;
 		import com.pentagram.model.vo.Dataset;
 		import com.pentagram.main.event.DataPromptEvent;
-		import com.pentagram.main.event.ViewEvent;
+		import com.pentagram.events.ViewEvent;
 		
 		import mx.core.IVisualElement;
 		import mx.core.UIComponent;

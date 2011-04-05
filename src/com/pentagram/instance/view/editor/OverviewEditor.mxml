@@ -9,7 +9,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.controller.Constants;
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 			import com.pentagram.model.vo.MimeType;
 			import com.pentagram.model.vo.Region;
 			
@@ -20,10 +20,16 @@
 			
 			import spark.events.TextOperationEvent;
 
-
-
 			private function handlePropChange(event:Event,prop:String):void {
 				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,prop,event.target.text));
+			}
+			private function toggleState(event:MouseEvent):void {
+				if(toggleBtn.selected) {
+					this.currentState = 'countries';
+				}
+				else {
+					this.currentState = 'normal';					
+				}
 			}
 		]]>
 	</fx:Script>
@@ -32,23 +38,28 @@
 		<fx:int id="FIELD_WIDTH">400</fx:int>
 		<vo:Client id="client" />
 	</fx:Declarations>
-	
+	<s:states>
+		<s:State name="normal" />
+		<s:State name="countries" />
+	</s:states>
 	<s:layout>
 		<s:VerticalLayout paddingRight="100"  />
 	</s:layout>
 
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Full Name" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.name}" change="handlePropChange(event,'name')"/>
 	</s:HGroup>
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  	
 		<s:Label width="{LABEL_WIDTH}" text="Short Name" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.shortname}" change="handlePropChange(event,'shortname')" />
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Logo" />
 		<s:Rect width="8" />
 		<controls:EditorPanel width="100%" id="logoHolder" height="110">
@@ -62,25 +73,25 @@
 		</controls:EditorPanel>
 	</s:HGroup>		
 	
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Website" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.website}" change="handlePropChange(event,'website')" />
 	</s:HGroup>
 	
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Founded" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.founded}" change="handlePropChange(event,'founded')" />
 	</s:HGroup>
 
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
 	</s:HGroup>
 
-	<s:HGroup verticalAlign="top" width="100%" gap="0">  
+	<s:HGroup verticalAlign="top" width="100%" gap="0" includeIn="normal">  
 		<s:Label width="{LABEL_WIDTH}" text="Employees" />
 		<s:Rect width="8" />
 		<s:TextInput width="100%" text="{client.employees}" change="handlePropChange(event,'employees')" />
@@ -99,7 +110,8 @@
 				<components:AutoComplete height="19"  labelField="name" width="160" id="countryInput"/>
 				<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
 				<s:Rect width="100%" />
-				<s:Button label="— Delete" color="0xC61023" id="deleteBtn" />         
+				<s:Button label="— Delete" color="0xC61023" id="deleteBtn" /> 
+				<s:ToggleButton skinClass="com.pentagram.view.skins.buttons.FullScreenToggle" click="toggleState(event)" id="toggleBtn" /> 
 			</controls:controlBarContent>
 		</controls:EditorPanel>
 		

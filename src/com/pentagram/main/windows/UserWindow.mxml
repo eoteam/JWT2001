@@ -6,7 +6,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.controller.Constants;
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 			import com.pentagram.view.renderers.BasicListItemRenderer;
 			
 			import mx.collections.ArrayCollection;

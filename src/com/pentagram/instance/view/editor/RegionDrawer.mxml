@@ -29,13 +29,14 @@
 	<fx:Declarations>
 		<vo:Region id="region" />
 		<fx:String id="label" />
+		<fx:Number id="dHeight" />
 	</fx:Declarations>
 	<fx:Metadata>
 		[Event(name="change",type="spark.events.IndexChangeEvent")]
 	</fx:Metadata>
-	<fx:Binding source="{flowLayout.currentHeight}" destination="drawer.contentHeight" />
+	<fx:Binding source="{flowLayout.currentHeight+6}" destination="dHeight" twoWay="false" />
 	
-	<controls:Drawer opened="true" width="100%" label="{region.name}" contentHeight="{flowLayout.currentHeight+6}" id="drawer">
+	<controls:Drawer opened="true" width="100%" label="{region.name}" contentHeight="{dHeight}" id="drawer">
 		
 		<s:List  allowMultipleSelection="true" id="countryList" width="100%" height="100%" creationComplete="countryList_creationCompleteHandler(event)"
 		dataProvider="{region.countries}" labelField="name" borderVisible="false" contentBackgroundAlpha="0" change="countryList_changeHandler(event)">

@@ -83,7 +83,12 @@ private function checkNotes():void {
 }
 private function handleCompareBtn(event:ViewEvent):void {
 	for each(var item:Category in  ArrayList(view.filterTools.comparator.categoryHolder.dataProvider).source) {
-		if(item.selected)
-			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,model.client,view.bottomTools.thirdSet.selectedItem,item));
+		if(item.selected) {
+			var year:String;
+			if(view.bottomTools.yearSlider.dataProvider && view.bottomTools.yearSlider.dataProvider.length > 0)  
+				year = view.bottomTools.yearSlider.selectedItem.year;
+			appEventDispatcher.dispatchEvent(new InstanceWindowEvent(InstanceWindowEvent.CREATE_WINDOW,null,
+																		model.client,view.bottomTools.thirdSet.selectedItem,item,year));
+		}
 	}
 }

@@ -5,7 +5,7 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 			
 			import mx.events.FlexEvent;
 			protected function button1_clickHandler(event:MouseEvent):void

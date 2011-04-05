@@ -12,7 +12,7 @@
 				preinitialize="preinit(event)"  title="View" creationPolicy="none">
 	<fx:Script>
 		<![CDATA[
-			import com.pentagram.main.event.ViewEvent;
+			import com.pentagram.events.ViewEvent;
 			
 			import flashx.textLayout.conversion.TextConverter;
 			

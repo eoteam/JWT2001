@@ -1,5 +1,6 @@
 package com.pentagram.instance.view.mediators
 {
+	import com.flexoop.utilities.dateutils.DateUtils;
 	import com.pentagram.events.AppEvent;
 	import com.pentagram.events.BaseWindowEvent;
 	import com.pentagram.events.EditorEvent;
@@ -7,21 +8,14 @@ package com.pentagram.instance.view.mediators
 	import com.pentagram.instance.InstanceWindow;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
-	import com.pentagram.instance.view.editor.DatasetCreator;
-	import com.pentagram.instance.view.editor.DatasetEditor;
-	import com.pentagram.instance.view.editor.EditorMainView;
-	import com.pentagram.instance.view.editor.OverviewEditor;
-	import com.pentagram.instance.view.shell.BottomBar;
-	import com.pentagram.instance.view.shell.BottomTools;
-	import com.pentagram.instance.view.shell.LoginPanel;
-	import com.pentagram.instance.view.shell.RightTools;
-	import com.pentagram.instance.view.shell.Search;
 	import com.pentagram.instance.view.shell.Shell;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Client;
 	import com.pentagram.model.vo.User;
 	
 	import flash.desktop.NativeApplication;
+	import flash.display.BitmapData;
+	import flash.display.IBitmapDrawable;
 	import flash.display.NativeMenu;
 	import flash.display.NativeMenuItem;
 	import flash.display.NativeWindow;
@@ -30,11 +24,19 @@ package com.pentagram.instance.view.mediators
 	import flash.events.EventDispatcher;
 	import flash.events.MouseEvent;
 	import flash.events.NativeWindowBoundsEvent;
+	import flash.filesystem.File;
+	import flash.filesystem.FileMode;
+	import flash.filesystem.FileStream;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+	import flash.utils.ByteArray;
 	
 	import mx.events.AIREvent;
+	import mx.graphics.ImageSnapshot;
+	import mx.graphics.codec.PNGEncoder;
 	
 	import org.robotlegs.mvcs.Mediator;
-	
+
 	public class ViewInstanceMediator extends Mediator
 	{
 		[Inject]
@@ -157,6 +159,7 @@ package com.pentagram.instance.view.mediators
 				model.selectedSet = view.compareArgs[1];
 				model.isCompare = true;
 				model.compareArgs = view.compareArgs;
+				
 				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_SELECTED));
 			}		
 			if(model.singletonWindowModel)
@@ -204,7 +207,43 @@ package com.pentagram.instance.view.mediators
 			}
 		}
 		private function handleImageExport(event:Event):void {
-			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.MENU_IMAGE_SAVE));
+			if(view.currentState == 'visualizer') {
+				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
+				view.shellView.filterTools.visible = true;
+				view.callLater(doSaveImage);
+			}
+		}
+		private function doSaveImage():void {
+			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
+			var pt:Point;
+//			if(view.parent)
+//				pt = view.parent.localToGlobal(new Point(view.x,view.y));
+//			else
+//				pt = view.parentApplication.localToGlobal(new Point(view.x,view.y));
+//			
+			var bmd:BitmapData = new BitmapData(imageSnap.width, imageSnap.height);
+			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,imageSnap.height);
+			
+			bmd.copyPixels(imageSnap,rect,new Point( 0, 0 ));
+			imageSnap.dispose();
+			var enc:PNGEncoder = new PNGEncoder();
+			var imgByteArray:ByteArray = enc.encode(bmd);
+			var fs:FileStream = new FileStream();
+			var d:Date = new Date();
+			var time:String = DateUtils.dateTimeFormat(d,"MM/DD/YY L:NN:SS A");
+			time = time.split('/').join('-').split(':').join('.');
+			var fl:File = model.exportDirectory.resolvePath("View Screen Shot "+time+".png");
+			try{
+				fs.open(fl,FileMode.WRITE); 
+				fs.writeBytes(imgByteArray);
+				fs.close();
+			}
+			catch(e:Error){	
+				trace(e.message);
+			}	
+			Shell(view.shellView).savingPanel.visible = true;
+			view.shellView.filterTools.visible = true;
+			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.END_IMAGE_SAVE));
 		}
 		private function handleMenuItem(event:Event):void {
 			var args:Array = event.target.data as Array;

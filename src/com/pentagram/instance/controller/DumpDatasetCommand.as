@@ -26,6 +26,8 @@ package com.pentagram.instance.controller
 			//check max min
 			if(dataset.type == 1) {
 				updateMinMax();
+				dataset.minCopy = dataset.min;
+				dataset.maxCopy = dataset.max;
 			}
 			if(dataset.modified) { 
 				service.updateDataset(dataset);

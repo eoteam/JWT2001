@@ -236,7 +236,7 @@
 			public function toggleOpacity(value:Number):void {
 				if(mapHolder) {
 					var a:int = value==1?0:1;
-					transparency = value==1?false:true;
+					transparency = value == 1 ? false:true;
 				}
 				for each(var renderer:MapParticle in renderers) {
 					var c:uint = value==1?0xffffff:renderer.fillColor; 
@@ -372,8 +372,7 @@
 					var matr:Matrix;
 					var nw:Number; var nh:Number;  
 					child = FXGLoader(mapHolder.getElementAt(0)) as FXGLoader;
-					if(!holder.running)
-						TweenLite.to(child,0.5,{alpha:1});
+					child.alpha=1;
 					fxgSprite = child.fxgSprite;
 					widestSprite = fxgSprite.getChildAt(0) as Sprite;
 					fxgRatio = fxgSprite.width / fxgSprite.height;

@@ -1,7 +1,7 @@
 package com.pentagram.main.mediators
 {
 	import com.pentagram.events.BaseWindowEvent;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.main.windows.ExportSpreadSheetWindow;
 	import com.pentagram.model.InstanceWindowsProxy;
 	import com.pentagram.model.vo.Client;

@@ -1,19 +1,16 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.flexoop.utilities.dateutils.DateUtils;
-	import com.pentagram.instance.InstanceWindow;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.model.vo.Year;
 	import com.pentagram.instance.view.shell.BottomTools;
 	import com.pentagram.instance.view.shell.Shell;
-	import com.pentagram.main.event.ViewEvent;
 	import com.pentagram.model.vo.Dataset;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.IBitmapDrawable;
-	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -28,7 +25,6 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import mx.collections.ArrayList;
 	import mx.events.FlexEvent;
-	import mx.events.FlexMouseEvent;
 	import mx.events.IndexChangedEvent;
 	import mx.graphics.ImageSnapshot;
 	import mx.graphics.codec.PNGEncoder;
@@ -37,7 +33,6 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import spark.events.DropDownEvent;
 	import spark.events.IndexChangeEvent;
-	import spark.events.TextOperationEvent;
 	
 	public class BottomToolsMediator extends Mediator
 	{
@@ -87,11 +82,11 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function saveImage(event:Event):void {	
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
-			view.callLater(resumeImageSave);
-		}
-		private function resumeImageSave():void {
 			view.callLater(doSaveImage);
 		}
+//		private function resumeImageSave():void {
+//			view.callLater(doSaveImage);
+//		}
 		private function doSaveImage():void {
 			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
 			var pt:Point;
@@ -168,8 +163,13 @@ package com.pentagram.instance.view.mediators.shell
 		private function updateTimeline(...args):ArrayList {
 			var datasets:Array;
 			var year:String;
-			if(args[0] is ViewEvent)
-				datasets = ViewEvent(args[0]).args;
+			var selectedYear:Year;
+			var y:String;
+			if(args[0] is ViewEvent) {
+				datasets = ViewEvent(args[0]).args[0] as Array;
+				if( ViewEvent(args[0]).args.length > 1)
+					y =  ViewEvent(args[0]).args[1];
+			}
 			else datasets = args;
 			
 			var years:ArrayList = new ArrayList();
@@ -193,11 +193,13 @@ package com.pentagram.instance.view.mediators.shell
 			}
 			ys.sort();
 			for each(year in ys) {
-				years.addItem(new Year(year,year.split('_').join('-'),1)); 	
+				var yy:Year = new Year(year,year.split('_').join('-'),1);
+				years.addItem(yy); 	
+				if(y!= null && year == y)
+					selectedYear = yy;
 			}
-			
 			view.yearSlider.dataProvider = years;
-			view.yearSlider.selectedIndex = 0;
+			view.yearSlider.selectedIndex = selectedYear?years.getItemIndex(selectedYear):0;
 			view.yearSlider.invalidateDisplayList();
 			view.yearSlider.invalidateSkinState();
 			view.timelineContainer.visible = years.length>0?true:false;	

@@ -1,4 +1,4 @@
-package com.pentagram.main.event
+package com.pentagram.events
 {
 	import flash.events.Event;
 	

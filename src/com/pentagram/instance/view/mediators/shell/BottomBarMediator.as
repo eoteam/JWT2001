@@ -4,7 +4,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.BottomBar;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Client;
 	
 	import flash.events.EventDispatcher;

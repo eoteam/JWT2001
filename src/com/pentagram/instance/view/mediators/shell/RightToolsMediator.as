@@ -5,7 +5,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.instance.view.visualizer.renderers.BaseRendererInfo;
-	import com.pentagram.main.event.ViewEvent;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.RectInterpolator;
@@ -41,7 +41,6 @@ package com.pentagram.instance.view.mediators.shell
 		override public function onRegister():void
 		{	
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);
-			
 			eventMap.mapListener(view.categoriesPanel.continentList,'addRegion',handleRegionSelect,Event);
 			eventMap.mapListener(view.categoriesPanel.continentList,'removeRegion',handleRegionSelect,Event);
 			eventMap.mapListener(view.categoriesPanel.continentList,'selectRegion',handleRegionSelect,Event);
@@ -59,6 +58,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventMap.mapListener(view,StateChangeEvent.CURRENT_STATE_CHANGE,handleFilterToolsStateChange,Event);
 				
+
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientDataLoaded);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.DATASET_SELECTION_CHANGE,handleDatasetSelection);
@@ -87,9 +87,15 @@ package com.pentagram.instance.view.mediators.shell
 			for(var i:int=0;i<view.twitterOptions.length;i++) {
 				view.twitterOptions.getItemAt(i).color = model.colors[i];
 			}
+			view.currentState = 'openAndMap';
 		}
 		private function handleClientDataLoaded(event:VisualizerEvent):void {
 			view.countriesPanel.countryList.dataProvider = new ArrayCollection(model.client.countries.source);
+			view.optionsPanel.xrayToggle.selected = view.optionsPanel.mapToggle.selected = true;
+			view.optionsPanel.maxRadiusSlider.value = 25;
+			view.optionsPanel.currentState = view.countriesPanel.currentState = view.comparator.currentState = 'closed';
+			if(view.topics)
+				view.topics.currentState = 'closed';
 		}
 		private function handleImageSaveStart(event:ViewEvent):void {
 			if(!model.includeTools)

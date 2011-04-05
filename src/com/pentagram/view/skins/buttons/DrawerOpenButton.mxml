@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Skin
-		xmlns:fx="http://ns.adobe.com/mxml/2009"
-		xmlns:s="library://ns.adobe.com/flex/spark"
-		minWidth="21" minHeight="21">
-
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	minWidth="21" minHeight="21">
+	
 	<fx:Metadata>
 		[HostComponent("spark.components.Button")]
 	</fx:Metadata>
-
+	
 	<s:states>
 		<s:State name="up" />
 		<s:State name="over" />
 		<s:State name="down" />
 		<s:State name="disabled" />
 	</s:states>
-
-
+	
+	
 	<!-- arrow -->
 	<s:Path data="M 10,0 L 16,6 4,6 Z" verticalCenter="0">
 		<s:fill>
@@ -29,7 +29,7 @@
 			 verticalAlign="middle"
 			 maxDisplayedLines="1"
 			 verticalCenter="1" left="22"
-			  top="2" bottom="2">
+			 top="2" bottom="2">
 	</s:Label>
 	<s:Rect left="{labelDisplay.width+35}" verticalCenter="0" right="0" height="0.25">
 		<s:stroke>
