@@ -17,10 +17,12 @@ package com.pentagram.instance.view.mediators.editor
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.NativeDragEvent;
+	import flash.events.TimerEvent;
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
 	import flash.net.FileFilter;
+	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
 	import mx.utils.StringUtil;
@@ -116,8 +118,6 @@ package com.pentagram.instance.view.mediators.editor
 			var dataset:Dataset = event.args[0] as Dataset;
 			ArrayCollection(view.datasetList.dataProvider).refresh();
 			view.currentState = view.datasetState.name;
-			view.datasetList.selectedItem = dataset;
-			model.selectedSet = view.datasetList.selectedItem as Dataset;
 			view.statusModule.updateStatus("Data Set Created");
 			
 			if(view.datasetEditor) {
@@ -126,10 +126,16 @@ package com.pentagram.instance.view.mediators.editor
 			}
 			counter++;
 			trace("Dataset import",counter,totalSets);
-			if(counter == totalSets)  //in casenew countries are added
+			if(counter == totalSets) { //in casenew countries are added
 				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.UPDATE_CLIENT_DATA,false));
-				
-			
+				view.datasetList.selectedItem = model.selectedSet = model.client.datasets.getItemAt(model.client.datasets.length-1)  as Dataset; 
+				var t:Timer = new Timer(100,1);
+				t.addEventListener(TimerEvent.TIMER_COMPLETE,setIndex); 
+				t.start();
+			}
+		}
+		private function setIndex(event:TimerEvent):void {
+			view.datasetList.selectedIndex = view.datasetList.dataProvider.length-1;
 		}
 		private function handleDatasetDeleted(event:EditorEvent):void {
 			view.statusModule.updateStatus("Data Set Deleted");

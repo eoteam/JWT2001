@@ -62,7 +62,6 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.pdfBtn,MouseEvent.CLICK,saveImage,MouseEvent);
 			eventMap.mapListener(view,MouseEvent.CLICK,closeSettingsPanel,MouseEvent);
 						
-			eventMap.mapListener(eventDispatcher,ViewEvent.MENU_IMAGE_SAVE,saveImage,ViewEvent);
 			eventMap.mapListener(eventDispatcher,ViewEvent.UPDATE_TIMELINE,handleTimeline,ViewEvent);
 			eventMap.mapListener(eventDispatcher,VisualizerEvent.CATEGORY_CHANGE,handleCategoryChange,VisualizerEvent);
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
@@ -82,41 +81,6 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function saveImage(event:Event):void {	
 			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
-			view.callLater(doSaveImage);
-		}
-//		private function resumeImageSave():void {
-//			view.callLater(doSaveImage);
-//		}
-		private function doSaveImage():void {
-			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
-			var pt:Point;
-			if(view.parent)
-				pt = view.parent.localToGlobal(new Point(view.x,view.y));
-			else
-				pt = view.parentApplication.localToGlobal(new Point(view.x,view.y));
-			
-			var bmd:BitmapData = new BitmapData(imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
-			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,(pt.y /view.parentApplication.height) * imageSnap.height);
-				
-			bmd.copyPixels(imageSnap,rect,new Point( 0, 0 ));
-			imageSnap.dispose();
-			var enc:PNGEncoder = new PNGEncoder();
-			var imgByteArray:ByteArray = enc.encode(bmd);
-			var fs:FileStream = new FileStream();
-			var d:Date = new Date();
-			var time:String = DateUtils.dateTimeFormat(d,"MM/DD/YY L:NN:SS A");
-			time = time.split('/').join('-').split(':').join('.');
-			var fl:File = model.exportDirectory.resolvePath("View Screen Shot "+time+".png");
-			try{
-				fs.open(fl,FileMode.WRITE); 
-				fs.writeBytes(imgByteArray);
-				fs.close();
-			}
-			catch(e:Error){	
-				trace(e.message);
-			}	
-			Shell(view.parentApplication.shellView).savingPanel.visible = true;
-			eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.END_IMAGE_SAVE));
 		}
 		private function closeSettingsPanel(event:MouseEvent):void {
 			if(event.target != view.settingsBtn)
@@ -197,7 +161,7 @@ package com.pentagram.instance.view.mediators.shell
 				years.addItem(yy); 	
 				if(y!= null && year == y)
 					selectedYear = yy;
-			}
+				}
 			view.yearSlider.dataProvider = years;
 			view.yearSlider.selectedIndex = selectedYear?years.getItemIndex(selectedYear):0;
 			view.yearSlider.invalidateDisplayList();

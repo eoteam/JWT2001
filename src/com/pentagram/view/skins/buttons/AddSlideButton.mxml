@@ -89,6 +89,6 @@
 		</s:Group>
 	</s:Group>
 	</s:Group>
-	<controls:ButtonToolTip bodyText="Save Image" includeInLayout="false"   y="{-height-5}" x="{width/2-50}"  tipPlacement="45" 
+	<controls:ButtonToolTip bodyText="Save Image (Cmd-I)" includeInLayout="false"   y="{-height-5}" x="{width/2-50}"  tipPlacement="45" 
 	visible="false" visible.overAndSelected="true"  visible.over="true" rectWidth="100" labelFontSize="12"/>
 </s:Skin>

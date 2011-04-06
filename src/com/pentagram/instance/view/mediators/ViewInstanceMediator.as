@@ -56,7 +56,8 @@ package com.pentagram.instance.view.mediators
 			eventMap.mapListener(eventDispatcher, ViewEvent.CLIENT_SELECTED, handleClientSelected, ViewEvent);
 			eventMap.mapListener(eventDispatcher, ViewEvent.SHELL_LOADED, handleShellLoaded, ViewEvent);
 			eventMap.mapListener(eventDispatcher, VisualizerEvent.TOGGLE_PROGRESS, handleProgress, VisualizerEvent);
-			
+			eventMap.mapListener(eventDispatcher, ViewEvent.START_IMAGE_SAVE, handleImageExport, ViewEvent);
+
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDIN, handleLogin, AppEvent);
 			eventMap.mapListener(appEventDispatcher, AppEvent.LOGGEDOUT, handleLogout, AppEvent);
 			eventMap.mapListener(appEventDispatcher, EditorEvent.CLIENT_DELETED, handleClientDeleted, EditorEvent);
@@ -208,19 +209,12 @@ package com.pentagram.instance.view.mediators
 		}
 		private function handleImageExport(event:Event):void {
 			if(view.currentState == 'visualizer') {
-				eventDispatcher.dispatchEvent(new ViewEvent(ViewEvent.START_IMAGE_SAVE));
-				view.shellView.filterTools.visible = true;
+				view.shellView.filterTools.visible = model.includeTools;
 				view.callLater(doSaveImage);
 			}
 		}
 		private function doSaveImage():void {
-			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);
-			var pt:Point;
-//			if(view.parent)
-//				pt = view.parent.localToGlobal(new Point(view.x,view.y));
-//			else
-//				pt = view.parentApplication.localToGlobal(new Point(view.x,view.y));
-//			
+			var imageSnap:BitmapData = ImageSnapshot.captureBitmapData(view.systemManager.getTopLevelRoot() as IBitmapDrawable);		
 			var bmd:BitmapData = new BitmapData(imageSnap.width, imageSnap.height);
 			var rect:Rectangle = new Rectangle(0,0,imageSnap.width,imageSnap.height);
 			

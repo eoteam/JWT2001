@@ -84,7 +84,7 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			eventMap.mapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);
-
+	
 			eventMap.mapListener(eventDispatcher,ViewEvent.WINDOW_CLEANUP,handleCleanup,ViewEvent);
 			
 			eventMap.mapListener(view.errorPanel,"okEvent",handleOkError,Event);
@@ -395,6 +395,9 @@ package com.pentagram.instance.view.mediators.shell
 					ds1.min = event.args[1][0];
 					ds1.max = event.args[1][1];
 					view.currentVisualizer.update();
+				break;
+				case 'radiusThumbRelease':
+					view.currentVisualizer.updateSize();
 				break;
 			}
 		}

@@ -1,11 +1,11 @@
 package com.pentagram.instance.view.mediators.shell
 {
 	import com.greensock.TweenLite;
+	import com.pentagram.events.ViewEvent;
 	import com.pentagram.instance.events.VisualizerEvent;
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.instance.view.visualizer.renderers.BaseRendererInfo;
-	import com.pentagram.events.ViewEvent;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.RectInterpolator;
@@ -28,6 +28,7 @@ package com.pentagram.instance.view.mediators.shell
 	
 	import spark.effects.interpolation.IInterpolator;
 	import spark.events.GridSelectionEvent;
+	import spark.events.TrackBaseEvent;
 	
 	public class RightToolsMediator extends Mediator
 	{
@@ -50,6 +51,10 @@ package com.pentagram.instance.view.mediators.shell
 			eventMap.mapListener(view.countriesPanel.clearSelection,MouseEvent.CLICK,handleClearSelection,MouseEvent);
 
 			eventMap.mapListener(view.optionsPanel.maxRadiusSlider,Event.CHANGE,handleMaxRadius,Event);
+			eventMap.mapListener(view.optionsPanel.maxRadiusSlider,TrackBaseEvent.THUMB_RELEASE,handleRadiusThumbRelease,TrackBaseEvent);
+			
+
+				
 			eventMap.mapListener(view.optionsPanel.closeTooltipsBtn,MouseEvent.CLICK,handleCloseTooltips,MouseEvent);
 			eventMap.mapListener(view.optionsPanel.organiseTooltipsBtn,MouseEvent.CLICK,tileTooltips,MouseEvent);
 			eventMap.mapListener(view.optionsPanel.xrayToggle,Event.CHANGE,handleCheck,Event);
@@ -205,10 +210,19 @@ package com.pentagram.instance.view.mediators.shell
 		private function handleMapToggle(event:Event):void {
 
 		}
+		private var lastValues:Array = [];
+		
 		private function handleMaxRadius(event:Event):void {
-			model.maxRadius = view.optionsPanel.maxRadiusSlider.value;
+			model.maxRadius  = view.optionsPanel.maxRadiusSlider.value;
+			lastValues.push(view.optionsPanel.maxRadiusSlider.value);
 			dispatchPropEvent('maxRadius',view.optionsPanel.maxRadiusSlider.value);
 		}
+		private function handleRadiusThumbRelease(event:TrackBaseEvent):void {
+			if(lastValues[lastValues.length-2] > view.optionsPanel.maxRadiusSlider.value)
+				dispatchPropEvent('radiusThumbRelease',null);
+			lastValues = [];
+		}
+		
 		private function dispatchPropEvent(prop:String,value:*):void {
 			dispatch(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,prop,value));
 		}

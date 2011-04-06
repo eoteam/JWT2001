@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" styleName="darkPanel" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="240" height="200" xmlns:controls="bxf.ui.controls.*">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="240" height="140" xmlns:controls="bxf.ui.controls.*">
 	<fx:Script>
 		<![CDATA[
 			import com.pentagram.events.ViewEvent;
@@ -34,8 +34,7 @@
 		</s:Line>
 		<s:Rect height="10" />
 		
-		<s:CheckBox label="Include Header" color="0xffffff" fontFamily="FlamaBook" id="includeHeader" />
-		<s:CheckBox label="Include Tools" color="0xffffff" fontFamily="FlamaBook" id="includeTools"  />
+		<s:CheckBox label="Include Tools" color="0xffffff" fontFamily="FlamaBook" id="includeTools" selected="true"  />
 		<s:Rect height="8" />			
 		<s:HGroup verticalAlign="middle">
 			<s:Label text="Browse for Directory:" />

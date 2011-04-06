@@ -52,7 +52,6 @@ package com.pentagram.instance.model
 		
 		
 		public var exportDirectory:File;
-		public var includeHeader:Boolean = true;
 		public var includeTools:Boolean = true;
 		
 		public var isCompare:Boolean = false;
