@@ -321,7 +321,7 @@ package com.pentagram.model
 			//Item within Window Menu
 			var newWindow:NativeMenuItem = new NativeMenuItem("New Window");	
 			newWindow.keyEquivalent = "n";
-			newWindow.keyEquivalentModifiers = [Keyboard.COMMAND];
+			newWindow.keyEquivalentModifiers = [cmdKey];
 			newWindow.data = [InstanceWindowEvent,InstanceWindowEvent.CREATE_WINDOW];
 			newWindow.addEventListener(Event.SELECT,handleMenuItem);				
 			
@@ -345,8 +345,7 @@ package com.pentagram.model
 			var imp:NativeMenuItem = new NativeMenuItem("Import SpreadSheet...");
 			imp.enabled = false;
 			//imp.data = [EditorEvent,EditorEvent.START_IMPORT];
-			
-			
+
 			/////////
 			var windowMenu:NativeMenuItem;
 			var fileMenu:NativeMenuItem;
@@ -394,13 +393,13 @@ package com.pentagram.model
 			countriesMenuItem = countries;
 			
 			windowMenu.submenu.addItemAt(arrange,0);
-			windowMenu.submenu.addItem(fullScreen);
-			windowMenu.submenu.addItem(newWindow);		
+			windowMenu.submenu.addItem(fullScreen);	
 			windowMenu.submenu.addItem(toolBar);
 			windowMenu.submenu.addItem(exportImage);
 			
 			fileMenu.submenu.addItemAt(exp,0);	
 			fileMenu.submenu.addItemAt(imp,0);
+			fileMenu.submenu.addItemAt(newWindow,0);	
 			
 			managers.addItem(clients);
 			managers.addItem(countries);

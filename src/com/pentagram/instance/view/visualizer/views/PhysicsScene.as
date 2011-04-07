@@ -11,7 +11,7 @@ package com.pentagram.instance.view.visualizer.views
 
 	public class PhysicsScene extends SpriteVisualElement
 	{
-		protected var balls:APEGroup;
+		public var balls:APEGroup;
 		private var walls:Walls;
 		
 		public var timer:Timer;

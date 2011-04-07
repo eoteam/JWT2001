@@ -91,7 +91,6 @@ package com.pentagram.instance.view.visualizer.renderers
 					}	
 					else {
 						TweenLite.to(_sprite,0.5,{alpha:0,onComplete:hide});
-						//trace(MapRenderer(_sprite).data.country.region.name);
 					}
 				}
 			}
@@ -107,8 +106,6 @@ package com.pentagram.instance.view.visualizer.renderers
 			_visible = v;
 			this.collidable = v;
 			_sprite.visible = v;
-			if(!v && _data)
-				trace(_data.country.region.name);
 		}
 	}
 }	

@@ -107,7 +107,7 @@
 			</s:Scroller>   
 			<controls:controlBarContent>
 				<s:Label id="countryTotal" text="Total: {client.countries.length}" styleName="FlamaBold" />
-				<components:AutoComplete height="19"  labelField="name" width="160" id="countryInput"/>
+				<components:AutoComplete height="19"  labelField="name" filterField="name" width="160" id="countryInput"/>
 				<s:DropDownList width="130"  id="continentList" labelField="name" prompt="Add a Region" />
 				<s:Rect width="100%" />
 				<s:Button label="— Delete" color="0xC61023" id="deleteBtn" /> 

@@ -55,6 +55,10 @@ mx|UIComponent {
 	fontFamily: FlamaBookMx;
 	embedFonts:true;
 }
+mx|HSlider mx|Label {
+	color: #ffffff;
+	fontSize: 10;
+}
 s|WindowedApplication{
 	backgroundColor: #FAFCFB;
 	fontFamily: FlamaBook;

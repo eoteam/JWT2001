@@ -132,7 +132,19 @@ package com.pentagram.instance.view.mediators.shell
 			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"countrySelection",new Vector.<Object>()));	
 		}
 		private function handleRangeChange(event:SliderEvent):void {
-			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",view.optionsPanel.range.values));
+			var min:Number;
+			var max:Number
+			if(view.optionsPanel.range.values[0]  == 0)
+				min = view.optionsPanel.datasetList.selectedItem.minCopy;
+			else
+				min = view.optionsPanel.range.values[0] *  (view.optionsPanel.datasetList.selectedItem.maxCopy - view.optionsPanel.datasetList.selectedItem.minCopy) / 100;
+			
+			if(view.optionsPanel.range.values[1]  == 100)
+				max = view.optionsPanel.datasetList.selectedItem.maxCopy;
+			else
+				max = view.optionsPanel.range.values[1] *  (view.optionsPanel.datasetList.selectedItem.maxCopy - view.optionsPanel.datasetList.selectedItem.minCopy) / 100;
+			
+			this.eventDispatcher.dispatchEvent(new VisualizerEvent(VisualizerEvent.UPDATE_VISUALIZER_VIEW,"rangeSelection",[min,max]));
 		}
 		private function handleRegionSelect(event:Event):void {
 			if(view.state.toLowerCase() != "twitter") {
@@ -241,7 +253,6 @@ package com.pentagram.instance.view.mediators.shell
 		}
 		private function handleCloseTooltips(event:MouseEvent):void {
 			for (var i:int = view.systemManager.numChildren-1;i>=0;i--){
-				//trace(getQualifiedClassName(view.systemManager.getChildAt(i)));
 				var child:DisplayObject = view.systemManager.getChildAt(i);
 				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo' ||
 				   getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo'){

@@ -18,7 +18,9 @@
 			private function handleInputSelect():void {
 				
 			}
-			
+			public function getLabel(item:Object):String {
+				return item.name + " (" + item.shortname + ")";
+			}
 		]]>
 	</fx:Script>
 	<s:states>
@@ -63,8 +65,8 @@
 		</s:Ellipse>
 		<components:AutoComplete verticalCenter="0" horizontalCenter="0" width="260"  popUpMatchesWidth="true"
 		 id="searchInput" showEffect="{fadeIn}" alpha.search="1" alpha.notfound="0"
-		 includeIn="search" visible="false" 
-		 labelField="name" creationComplete="this.setFocus();searchInput.inputTxt.prompt='Search for a client...'" />
+		 includeIn="search" visible="false"  labelFunction="{getLabel}"
+		 labelField="name" filterField="name,shortname" creationComplete="this.setFocus();searchInput.inputTxt.prompt='Search for a client...'" />
 		
 		<s:VGroup id="errorMessageHolder"  horizontalCenter="0" verticalCenter="120" 
 				  gap="12" showEffect="{fadeIn}" includeIn="notfound" alpha="0" alpha.notfound="1">

@@ -167,14 +167,11 @@ package com.pentagram.instance.view.visualizer.renderers
 			textFormat.color = alpha>0.4?0xffffff:color;
 			scaleTextFieldToFitText(rW)
 			scaleTextToFitInTextField();
-			
-			
+						
 			label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 			label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
 			label.defaultTextFormat = textFormat;
 			label.text = _data.item.shortname;
-			if(infoVisible && item.country != info.country)
-				trace(item.country.shortname,info.country.shortname);
 			
 			if(unscaledWidth - 2 * w + adjustedRadius * 2 > 0)	
 				this.visible = true;
@@ -194,8 +191,6 @@ package com.pentagram.instance.view.visualizer.renderers
 		}
 		override public function move(x:Number, y:Number):void {
 			super.move(x,y);
-			//if(infoVisible && item.country != info.country)
-			//	trace(item.country.shortname,info.country.shortname);
 			if(infoVisible && item.country == info.country && info.pinned) {
 				dirtyTooltipFlag = true;
 				this.invalidateProperties();

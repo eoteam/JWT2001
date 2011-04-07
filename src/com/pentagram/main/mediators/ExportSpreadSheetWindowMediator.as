@@ -72,7 +72,6 @@ package com.pentagram.main.mediators
 		//called once the file has been saved
 		private function onFileSave(e:Event):void
 		{
-			
 			trace("File Saved");
 			fr = null;
 			view.close();

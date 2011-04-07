@@ -45,24 +45,31 @@ package org.flashcommander.components
 			this.setStyle("skinClass", Class(AutoCompleteSkin));
 			this.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut)
 			collection.addEventListener(CollectionEvent.COLLECTION_CHANGE, collectionChange)
-			
 		}
 		
 		public var maxRows:Number = 6;
 		public var minChars:Number = 1;
 		public var prefixOnly:Boolean = true;
 		public var requireSelection:Boolean = false;
+		public var returnField:String;
+		public var sortFunction:Function = defaultSortFunction;
+		
 		[Bindable] public var popUpMatchesWidth:Boolean = false;
 		[Bindable] public var popUpPosition:String = "below";
 		
 		[SkinPart(required="true",type="spark.components.Group")]
 		public var dropDown:Group;
+		
 		[SkinPart(required="true",type="spark.components.PopUpAnchor")]
 		public var popUp:PopUpAnchor;
+		
 		[SkinPart(required="true",type="spark.components.List")]
 		public var list:List;
+		
 		[SkinPart(required="true",type="spark.components.TextInput")]
 		public var inputTxt:TextInput;
+		
+		private var collection:ListCollectionView = new ArrayCollection();
 		
 		override protected function partAdded(partName:String, instance:Object) : void{
 			super.partAdded(partName, instance)
@@ -94,9 +101,6 @@ package org.flashcommander.components
 				popUp.popUpPosition = this.popUpPosition;
 			}
 		}
-		
-		private var collection:ListCollectionView = new ArrayCollection();
-		
 		public function set dataProvider(value:Object):void{
 			if(value) {
 				if (value is Array)
@@ -130,22 +134,28 @@ package org.flashcommander.components
 			return _text;
 		}
 		
+		
 		private var _labelField : String;
+		
 		public function set labelField(field:String) : void	{
 			_labelField = field; 
 			if (list) list.labelField = field 
 		}
 		public function get labelField():String { return _labelField };
 		
+		
+		private var _labelFunction:Function;
+		
 		public function set labelFunction(func:Function) : void	{
 			_labelFunction = func; 
 			if (list) list.labelFunction = func 
 		}
+	
 		public function get labelFunction() : Function	{ return _labelFunction; }
 		
-		private var _labelFunction:Function;
 		
-		public var returnField:String;
+		
+		private var _selectedItem:Object;
 		
 		public function get selectedItem() : Object	{ return _selectedItem; }
 		
@@ -155,10 +165,22 @@ package org.flashcommander.components
 			text = returnFunction(item)
 		}
 		
-		private var _selectedItem:Object;
+		
+		private var _selectedIndex : int = -1;
 		
 		public function get selectedIndex() : int { return _selectedIndex; }
-		private var _selectedIndex : int = -1;
+		
+		
+		
+		
+		private var _filterField : String;
+		
+		public function set filterField(field:String) : void	{
+			_filterField = field; 
+		}
+		public function get filterField():String { return _filterField };
+		
+		
 		
 		private function onChange(event:TextOperationEvent):void{
 			_text = inputTxt.text;
@@ -191,30 +213,46 @@ package org.flashcommander.components
 					list.selectedIndex = 0;
 				else
 					list.selectedIndex = -1;
-//				list.dataGroup.verticalScrollPosition = 0
-//				list.dataGroup.horizontalScrollPosition = 0
-				//list.height = Math.min(maxRows, collection.length) * 22 + 2 ;
-				//list.validateNow()
-				//popUp.width = inputTxt.width
 			}
 		}
 		
 		// default filter function 
 		
 		public function filterFunction(item:Object):Boolean{
-			var label:String = itemToLabel(item).toLowerCase();
+			
+			var labels:Array = itemToLabel2(item);
+			var res:Boolean = false;
+			var label:String;
 			// prefix mode
 			if (prefixOnly){
-				if (label.search(text.toLowerCase()) == 0) 
-					return true;
-				else 
-					return false
+				for each(label in labels) {
+					if (label.toLowerCase().search(text.toLowerCase()) == 0)
+						return true;
+				}
 			}
 			// infix mode
 			else {
-				if (label.search(text.toLowerCase()) != -1) return true;
+				for each(label in labels) {
+					if (label.search(text.toLowerCase()) != -1)
+						return true;
+				}
 			}
 			return false;
+		}
+		public function itemToLabel2(item:Object):Array
+		{
+			if (item == null) return [""];
+			
+			 if (filterField) {
+				var res:Array = [];
+				var arr:Array = filterField.split(',');
+				for each(var f:String in arr)
+				if(item[f])
+					res.push(item[f]);
+				return res;
+			}
+			else
+				return [item.toString()];
 		}
 		
 		public function itemToLabel(item:Object):String
@@ -240,7 +278,7 @@ package org.flashcommander.components
 		
 		// default sorting - alphabetically ascending
 		
-		public var sortFunction:Function = defaultSortFunction;
+		
 			
 		public function defaultSortFunction(item1:Object, item2:Object, fields:Array=null):int{
 			var label1:String = itemToLabel(item1);

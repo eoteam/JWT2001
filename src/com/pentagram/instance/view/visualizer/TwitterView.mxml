@@ -145,7 +145,6 @@
 			}
 			private function httpservice1_resultHandler(event:ResultEvent):void {
 				var o:Object  = JSON.decode(event.result.toString());
-				trace(o.results.length);
 				allTweets = allTweets.concat(o.results);
 				for each(var item:Object in o.results) {
 					text+= item.text + "\n";
@@ -271,7 +270,6 @@
 				var results:Array = [];
 				for (i=1;i<=NN;i++)		// sets up C for showing
 				{	
-					//trace(N[0],N[i],N[0]*0.1);
 					if(currentCommonWords.indexOf(m1[i].toLowerCase()) == -1 && m1[i].length > 1) {
 						var topic:Object;
 						if(!dic[m1[i]]) {
@@ -451,8 +449,8 @@
 			private function service2_resultHandler(event:ResultEvent):void
 			{
 				var o:Object  = JSON.decode(event.result.toString());
-				trace(o.results.length);
-				//allTweets = allTweets.concat(o.results);
+				//trace(o.results.length);
+
 				var tude:String;
 				var t:String;
 				for each(var item:Object in o.results) {

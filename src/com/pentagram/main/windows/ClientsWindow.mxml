@@ -163,7 +163,7 @@
 						</s:List>
 						<controls:controlBarContent>
 							<s:Label  text="Total: 0" />
-							<components:AutoComplete height="19" labelField="name" width="160" id="clientInput"/>
+							<components:AutoComplete height="19" labelField="name" filterField="name,shortname" width="160" id="clientInput"/>
 							<s:Rect width="100%" />
 							<s:Button label="- Delete" color="0xC61023" id="deleteBtn2" />							
 						</controls:controlBarContent>					

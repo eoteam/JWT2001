@@ -96,17 +96,27 @@
 			</s:Rect>
 			
 			<s:VGroup width="100%" paddingLeft="8" paddingRight="8" clipAndEnableScrolling="false" styleName="darkPanel" visible="{!twitter}" includeInLayout="{!twitter}">
-				<s:Label text="Scale Filter" color="0xFFFFFF" />
-				<s:DropDownList width="100%" labelField="name" dataProvider="{_datasets}"  id="datasetList" chromeColor="0x1a1a1a" color="0xffffff" change="this.dataset=datasetList.selectedItem as Dataset"/>
+				<s:Label text="Percentile" color="0xFFFFFF" />
+				<s:DropDownList width="100%" labelField="name" dataProvider="{_datasets}" id="datasetList"
+				chromeColor="0xffffff" color="0x1a1a1a" change="this.dataset=datasetList.selectedItem as Dataset"/>
 				
-				<mx:HSlider thumbCount="2" minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}" chromeColor="0x1a1a1a" showDataTip="true" accentColor="0xcccccc"  
-				allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  values="{dataset?[dataset.min,dataset.max]:[0,0]}" 
-				tickColor="0xcccccc"  tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" id="range"   />	
-				<s:HGroup width="100%">
-					<s:Label text="min" color="0xffffff" />
+				<mx:HSlider thumbCount="2" showDataTip="true"
+				accentColor="0xcccccc" chromeColor="0x1a1a1a" tickColor="0xffffff" labelStyleName="tickLabel"
+				allowThumbOverlap="false" allowTrackClick="true" snapInterval="0.001"  
+				values="{dataset?[0,100]:[0,0]}" 
+				minimum="0" maximum="{dataset?100:0}" tickInterval="25"
+				labels="{['0','25%','50%','75%','100%']}"
+				id="range"   />
+				
+				<!-- values="{dataset?[dataset.min,dataset.max]:[0,0]}" 
+				minimum="{dataset?dataset.minCopy:0}" maximum="{dataset?dataset.maxCopy:0}"
+				tickInterval="{dataset?Math.floor((dataset.maxCopy - dataset.minCopy))/10:1}" -->
+				
+<!--				<s:HGroup width="100%">
+					<s:Label text="0%" color="0xffffff" />
 					<s:Spacer width="100%" />
-					<s:Label text="max" color="0xffffff" />
-				</s:HGroup>
+					<s:Label text="100%" color="0xffffff" />
+				</s:HGroup>-->
 				
 			</s:VGroup>
 

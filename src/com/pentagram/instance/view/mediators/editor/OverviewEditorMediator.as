@@ -123,7 +123,6 @@ package com.pentagram.instance.view.mediators.editor
 		private function onDragDrop(event:NativeDragEvent):void {
 			if(event.clipboard.hasFormat(ClipboardFormats.FILE_LIST_FORMAT)) {
 				var files:Array = event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
-				//trace("file:///" + File(files[0]).nativePath); 
 				if(MimeType.getMimetype(File(files[0]).extension) == MimeType.IMAGE) {
 					view.logo.source = "file:///" + File(files[0]).nativePath;
 					

@@ -240,14 +240,18 @@
 		<s:HGroup verticalAlign="middle" width="100%">
 			<s:Label text="View 2" fontFamily="FlamaBold" fontSize="42" color="0xffffff" />
 			<s:Rect width="100%" />
-			<s:Group mouseChildren="false" useHandCursor="true" buttonMode="true" id="closeButton" click="closeLanding(event)">
-				<s:Rect left="0" right="0" top="0" bottom="0" alpha="0" />
-				<s:Line xFrom="0" yFrom="0" xTo="-24" yTo="24">
+			<s:Group  useHandCursor="true" buttonMode="true" id="closeButton" click="closeLanding(event)">
+				<s:Rect width="24" height="24">
+					<s:fill>
+						<s:SolidColor alpha="0" />
+					</s:fill>
+				</s:Rect>
+				<s:Line xFrom="0" yFrom="0" xTo="24" yTo="24">
 					<s:stroke>
 						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
 					</s:stroke>
 				</s:Line>
-				<s:Line xFrom="-24" yFrom="0" xTo="0" yTo="24">
+				<s:Line xFrom="24" yFrom="0" xTo="0" yTo="24">
 					<s:stroke>
 						<s:SolidColorStroke weight="3" caps="none" joints="miter" miterLimit="4" color="#FFFFFF"/>
 					</s:stroke>

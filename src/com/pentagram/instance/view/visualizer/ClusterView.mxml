@@ -172,7 +172,6 @@
 								renderer.radius = 0;
 							else {
 								c.filteredRenderers.push(renderer);
-								trace(renderer.data2.country.region.name);
 							}
 						}
 						c.filter();
@@ -226,7 +225,6 @@
 								renderer.radius = 0;
 							else {
 								c.filteredRenderers.push(renderer);
-								trace(renderer.data2.country.region.name);
 							}
 						}
 						c.filter();
@@ -273,7 +271,6 @@
 			}
 			private function updateRenderer(renderer:ClusterRenderer):void {
 				renderer.draw();
-				trace(renderer.fillAlpha);
 			}
 			protected function doVisualize():void {
 				holder.removeAllElements();

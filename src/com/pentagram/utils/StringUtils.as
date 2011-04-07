@@ -192,7 +192,6 @@
 		*/
 		public static function capitalize(p_string:String, ...args):String {
 			var str:String = trimLeft(p_string);
-			//trace('capl', args[0])
 			if (args[0] === true) { return str.replace(/^.|\b./g, _upperCase);}
 			else { return str.replace(/(^\w)/, _upperCase); }
 		}

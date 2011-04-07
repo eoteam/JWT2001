@@ -43,7 +43,7 @@
 
 			private function logoHolder_nativeDragDropHandler(event:NativeDragEvent):void
 			{
-				trace("TRRRRRRRR");
+
 			}
 			private function handlePropChange(event:Event,prop:String,tprop:String):void {
 				this.dispatchEvent(new ViewEvent(ViewEvent.CLIENT_PROP_CHANGED,country,prop,event.target[tprop]));

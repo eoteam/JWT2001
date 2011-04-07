@@ -155,10 +155,8 @@ package flex.utils.spark {
 			if (skinComponent.hasOwnProperty("scroller") && (skinComponent["scroller"] != null)) {
 				var scroller:Scroller = (skinComponent["scroller"] as Scroller);
 				if (skinComponent == component1) {
-					trace("set scroller 1 " + (scroller != null));
 					scroller1 = scroller;
 				} else if (skinComponent == component2) {
-					trace("set scroller 2 " + (scroller != null));
 					scroller2 = scroller;
 				}
 			}
@@ -166,10 +164,8 @@ package flex.utils.spark {
 		
 		private function unsetScroller(skinComponent:SkinnableComponent):void {
 			if (skinComponent == component1) {
-				trace("unset scroller 1");
 				scroller1 = null;
 			} else if (skinComponent == component2) {
-				trace("unset scroller 2");
 				scroller2 = null;
 			}
 		}

@@ -18,7 +18,6 @@
 				var children:Array = []
 				for (var i:int=0;i<numChildren;i++) {
 					var c:DisplayObject = getChildAt(i);
-					//trace(UIComponent(c).numChildren);
 					if(c is AxisRenderer && c != newXAxis && c != newYAxis) {
 						c.visible = false;
 						AxisRenderer(c).includeInLayout  = false;

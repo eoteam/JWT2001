@@ -392,8 +392,10 @@ package com.pentagram.instance.view.mediators.shell
 				break;
 				case "rangeSelection":
 					ds1 = view.filterTools.optionsPanel.datasetList.selectedItem as Dataset;
+					trace(ds1.min,ds1.max);
 					ds1.min = event.args[1][0];
 					ds1.max = event.args[1][1];
+					trace(ds1.min,ds1.max);
 					view.currentVisualizer.update();
 				break;
 				case 'radiusThumbRelease':

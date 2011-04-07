@@ -45,7 +45,6 @@
 					c.name = v;
 					d.dataset.optionsArray.push(c);		
 					d.dataset.options += ","+value;
-					//trace(d.dataset.options);	
 					if(d.dataset.modifiedProps.indexOf("options") == -1)	
 						d.dataset.modifiedProps.push("options");	
 					d.modified = true;
@@ -65,5 +64,5 @@
 		]]>
 	</fx:Script>
 	<components:AutoComplete text="{value}" left="0" right="0" top="0" bottom="0"  select="editorInput_enterHandler(event)"
-	id="editorInput" dataProvider="{dp}" labelField="name"  enter="editorInput_enterHandler(event)" />	
+	id="editorInput" dataProvider="{dp}" labelField="name" filterField="name"  enter="editorInput_enterHandler(event)" />	
 </s:GridItemEditor>

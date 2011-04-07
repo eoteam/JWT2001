@@ -246,7 +246,6 @@ package flex.utils.spark.resize {
 			var oldHeight:Number = resizeComponent.height;
 			var newWidth:Number = oldWidth + event.stageX - resizeInitX;
 			var newHeight:Number = oldHeight + event.stageY - resizeInitY;
-			//trace("Changing size from " + oldWidth + "x" + oldHeight + " to " + newWidth + "x" + newHeight);
 
 			var resizeH:Boolean = (resizeDirection != DIRECTION_VERTICAL);
 			var resizeV:Boolean = (resizeDirection != DIRECTION_HORIZONTAL);

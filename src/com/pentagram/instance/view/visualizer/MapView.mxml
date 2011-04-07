@@ -142,7 +142,6 @@
 				for each(var c:MapParticle in renderers) {
 					var r:Number;
 					var value:Number;
-					trace(c.visible);
 					if(c.data) {
 						var content:String;
 						if(dataset.id != -1) {
@@ -177,6 +176,8 @@
 					loadWorldMap();
 				for each(var c:MapParticle in renderers) {
 					if(c && c.data) {
+						if(!c.visible)
+							holder.balls.addParticle(c);
 						c.visible = true;
 					}
 				}
@@ -189,6 +190,7 @@
 				for each(var c:MapParticle in renderers) {					
 					if(c && c.data && c.data.country.region.name == region.name) {
 						c.visible = true;	
+						holder.balls.addParticle(c);
 						c.draw(holder.running);
 					}
 				}
@@ -202,6 +204,7 @@
 				for each(var c:MapParticle in renderers) {			
 					if(c && c.data && c.data.country.region.name == region.name) {
 						c.visible = false;
+						holder.balls.removeParticle(c);
 						c.draw(holder.running);
 					}
 				}
@@ -225,9 +228,11 @@
 					for each(var c:MapParticle in renderers) {
 						if(c && c.data && c.data.country.region.name != region.name) {
 							c.visible = false;
+							holder.balls.removeParticle(c);
 						}
 						if(c && c.data && c.data.country.region.name == region.name) {
 							c.visible = true;
+							holder.balls.addParticle(c);
 						}
 					}
 					this.clearTooltips();
@@ -284,7 +289,6 @@
 								value = row[dataset.years[0]];
 								if(!isNaN(value) && value >= dataset.min && value <= dataset.max)
 									r = (value - dataset.min) / (dataset.max - dataset.min)* maxRadius;	
-									//if(r < 0) trace("Negative Radius",r);
 								else 
 									r = 0;
 								content =  generateContent(value,dataset.years[0]);
