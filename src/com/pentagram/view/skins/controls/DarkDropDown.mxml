@@ -26,7 +26,7 @@
       @productversion Flex 4
 -->
 <s:SparkSkin xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" styleName="darkPanel"
-    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabled=".5"> 
+    xmlns:fb="http://ns.adobe.com/flashbuilder/2009" alpha.disabled=".5" xmlns:controls="com.pentagram.view.controls.*"> 
 
     <!-- host component -->
     <fx:Metadata>
@@ -103,7 +103,7 @@
         <p>In a custom skin class that uses transitions, set the 
         <code>itemDestructionPolicy</code> property to <code>none</code>.</p>
     -->
-    <s:PopUpAnchor id="popUp"  displayPopUp.normal="false" displayPopUp.open="true" includeIn="open"
+    <controls:CustomPopUpAnchor id="popUp"  displayPopUp.normal="false" displayPopUp.open="true" includeIn="open"
         left="0" right="0" top="0" bottom="0" itemDestructionPolicy="auto"
         popUpPosition="below" popUpWidthMatchesAnchorWidth="true">
         
@@ -148,7 +148,7 @@
                 </s:DataGroup> 
             </s:Scroller>
         </s:Group>
-    </s:PopUpAnchor>
+  	</controls:CustomPopUpAnchor>
     
     <!---  The default skin is DropDownListButtonSkin. 
             @copy spark.components.supportClasses.DropDownListBase#openButton

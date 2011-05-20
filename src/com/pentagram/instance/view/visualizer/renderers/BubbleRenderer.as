@@ -165,8 +165,13 @@ package com.pentagram.instance.view.visualizer.renderers
 			g.endFill();	
 				
 			textFormat.color = alpha>0.4?0xffffff:color;
-			scaleTextFieldToFitText(rW)
-			scaleTextToFitInTextField();
+			textFormat.size = 14;
+			label.width = rW - 4 > 0 ? rW-4:0;
+			label.height = label.textHeight + 4;
+			label.visible = label.width >= 10 ? true:false;
+			trace(label.width);
+			//scaleTextFieldToFitText(rW)
+			//scaleTextToFitInTextField();
 						
 			label.x = (unscaledWidth - 2 * w + adjustedRadius * 2)/2 - label.textWidth/2;
 			label.y = (unscaledHeight - 2 * w + adjustedRadius * 2)/2 - label.textHeight/2;
@@ -241,28 +246,28 @@ package com.pentagram.instance.view.visualizer.renderers
 		private function get infoVisible():Boolean {
 			return _infoVisible;
 		}
-		protected function scaleTextToFitInTextField():void
-		{  		
-			textFormat.size = label.width;
-			label.setTextFormat( textFormat );
-			var ranThrough:Boolean = false;
-			while ( label.textWidth > label.width - 4) 
-			{    
-				textFormat.size = int( textFormat.size ) - 1;    
-				label.setTextFormat( textFormat );  
-				if(textFormat.size < 8) 
-					break;
-			}
-			label.setTextFormat( textFormat );  
-			label.visible = textFormat.size>=8?true:false;
-		}
-		
-		protected function scaleTextFieldToFitText(r:Number) : void
-		{
-			//the 4s take into account Flash's default padding.
-			//If I omit them, edges of character get cut off.
-			label.width = r - 4>0 ? r-4:0;
-			label.height = label.textHeight + 4;
-		}
+//		protected function scaleTextToFitInTextField():void
+//		{  		
+//			textFormat.size = label.width;
+//			label.setTextFormat( textFormat );			
+//			var ranThrough:Boolean = false;
+//			while ( label.textWidth > label.width - 4) 
+//			{    
+//				textFormat.size = int( textFormat.size ) - 1;    
+//				label.setTextFormat( textFormat );  
+//				if(textFormat.size < 8) 
+//					break;
+//			}
+//			label.setTextFormat( textFormat );  
+//			label.visible = textFormat.size>=8?true:false;
+//		}
+//		
+//		protected function scaleTextFieldToFitText(r:Number) : void
+//		{
+//			//the 4s take into account Flash's default padding.
+//			//If I omit them, edges of character get cut off.
+//			label.width = r - 4>0 ? r-4:0;
+//			label.height = label.textHeight + 4;
+//		}
 	}
 }

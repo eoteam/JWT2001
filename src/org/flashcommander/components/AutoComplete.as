@@ -3,6 +3,8 @@ package org.flashcommander.components
 
 
 	
+	import com.pentagram.view.controls.CustomPopUpAnchor;
+	
 	import flash.events.Event;
 	import flash.events.FocusEvent;
 	import flash.events.KeyboardEvent;
@@ -60,8 +62,8 @@ package org.flashcommander.components
 		[SkinPart(required="true",type="spark.components.Group")]
 		public var dropDown:Group;
 		
-		[SkinPart(required="true",type="spark.components.PopUpAnchor")]
-		public var popUp:PopUpAnchor;
+		[SkinPart(required="true",type="com.pentagram.view.controls.CustomPopUpAnchor")]
+		public var popUp:CustomPopUpAnchor;
 		
 		[SkinPart(required="true",type="spark.components.List")]
 		public var list:List;
@@ -208,7 +210,7 @@ package org.flashcommander.components
 				popUp.displayPopUp = false
 			}
 			else {
-				popUp.displayPopUp = true
+				popUp.displayPopUp  = true
 				if (requireSelection)
 					list.selectedIndex = 0;
 				else

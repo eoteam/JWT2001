@@ -41,6 +41,8 @@ package com.pentagram.instance.view.mediators.shell
 		private var twitterCreated:Boolean = false;
 		override public function onRegister():void
 		{	
+			
+			
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);
 			eventMap.mapListener(view.categoriesPanel.continentList,'addRegion',handleRegionSelect,Event);
 			eventMap.mapListener(view.categoriesPanel.continentList,'removeRegion',handleRegionSelect,Event);
@@ -99,6 +101,7 @@ package com.pentagram.instance.view.mediators.shell
 			view.optionsPanel.xrayToggle.selected = view.optionsPanel.mapToggle.selected = true;
 			view.optionsPanel.maxRadiusSlider.value = 25;
 			view.optionsPanel.currentState = view.countriesPanel.currentState = view.comparator.currentState = 'closed';
+			view.optionsPanel.datasets = null;
 			if(view.topics)
 				view.topics.currentState = 'closed';
 		}

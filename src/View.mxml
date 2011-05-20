@@ -232,13 +232,14 @@
 	
 	<s:Rect id="landingBG" left="0" right="0" top="0" bottom="0" includeIn="landing" alpha="0" alpha.landing="1">
 		<s:fill>
-			<s:SolidColor color="0xD32339" alpha="0.9" />
+			<s:SolidColor color="0xED1C24" alpha="0.94" />
 		</s:fill>
 	</s:Rect>
 	
 	<s:VGroup id="landingHolder" paddingLeft="30" paddingRight="30" paddingTop="40" width="100%" height="100%"  includeIn="landing" alpha="0" alpha.landing="1">
 		<s:HGroup verticalAlign="middle" width="100%">
-			<s:Label text="View 2" fontFamily="FlamaBold" fontSize="42" color="0xffffff" />
+			<!--<s:Label text="View 2" fontFamily="FlamaBold" fontSize="42" color="0xffffff" />-->
+			<s:Image source="assets/icons/mark.png"  />
 			<s:Rect width="100%" />
 			<s:Group  useHandCursor="true" buttonMode="true" id="closeButton" click="closeLanding(event)">
 				<s:Rect width="24" height="24">
@@ -258,6 +259,9 @@
 				</s:Line>
 			</s:Group>
 		</s:HGroup>
+		
+		<s:Rect height="10" />
+		
 		
 		<s:Line width="100%">
 			<s:stroke>

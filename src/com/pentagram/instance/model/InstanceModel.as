@@ -218,6 +218,7 @@ package com.pentagram.instance.model
 					else
 						obj.radius = 0;
 				}
+				trace(obj.country.name,obj.radius);
 				data.addItem(obj);
 			}
 			return data;
@@ -241,11 +242,11 @@ package com.pentagram.instance.model
 					dataset = datasets[2] as Dataset;
 					row = item.rows[2] as DataRow;
 					if(Dataset(datasets[2]).time == 1) {
-						item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
+						item.radius = item.prevRadius = (row[year] - dataset.min) / (dataset.max - dataset.min);
 						item.radiusValue = row[year];
 					}
 					else {
-						item.radius = item.prevRadius = (row.value - dataset.min) / (dataset.max - dataset.min) + maxRadius/100;
+						item.radius = item.prevRadius = (row.value - dataset.min) / (dataset.max - dataset.min);
 						item.radiusValue = row.value;
 					}
 				}
@@ -266,6 +267,7 @@ package com.pentagram.instance.model
 					else
 						item.radius = 0;
 				}
+				trace(item.country.name,item.radius);
 			}
 		}
 		

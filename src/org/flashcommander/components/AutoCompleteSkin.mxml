@@ -25,7 +25,7 @@
         The PopUpAnchor control that opens the drop-down list. 
     -->
 
-	<s:PopUpAnchor id="popUp"  displayPopUp="false"
+	<controls:CustomPopUpAnchor id="popUp"  displayPopUp="false"
         top="0" bottom="0" left="0" right="0"  popUpHeightMatchesAnchorHeight="false"
 		popUpWidthMatchesAnchorWidth="{this.hostComponent.popUpMatchesWidth}" 
          popUpPosition="{this.hostComponent.popUpPosition}">
@@ -42,9 +42,8 @@
 				</components:itemRenderer>
 			</components:ListAutoComplete>
         </s:Group>
-		
-    </s:PopUpAnchor>
-	
+	</controls:CustomPopUpAnchor>		
+
 	<s:TextInput  skinClass="com.pentagram.view.skins.controls.TextInput" id="inputTxt" left="0" right="0" top="0" bottom="0" />
 
 

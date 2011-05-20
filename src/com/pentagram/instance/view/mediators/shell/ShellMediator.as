@@ -412,9 +412,9 @@ package com.pentagram.instance.view.mediators.shell
 			view.visualizerArea.selectedIndex = model.MAP_INDEX;
 			
 			eventMap.unmapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleStackChange,IndexChangedEvent);
-
+				
 			if(view.mapView) {
-			
+				
 				for each(util in loaders) {
 					util.unloadModule();
 				}

@@ -185,7 +185,7 @@
 					if(item.itemRenderer)
 						BubbleRenderer(item.itemRenderer).toggleInfo(false);
 				}
-			}
+			}	
 			public function selectAllCategories():void {
 				for each(var item:NormalizedVO in _visdata) {
 					item.radius = item.prevRadius;

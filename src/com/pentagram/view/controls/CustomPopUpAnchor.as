@@ -31,8 +31,6 @@ package com.pentagram.view.controls
 	import mx.utils.MatrixUtil;
 	
 	import spark.components.PopUpPosition;
-
-
 	
 	use namespace mx_internal;
 	
@@ -117,7 +115,7 @@ package com.pentagram.view.controls
 		private var popUpSizeCaptured:Boolean = false;
 		
 		private static var decomposition:Vector.<Number> = new <Number>[0,0,0,0,0];
-		
+		public var isModal:Boolean = false;
 		//--------------------------------------------------------------------------
 		//
 		//  Properties
@@ -197,7 +195,7 @@ package com.pentagram.view.controls
 		//----------------------------------
 		//  displayPopUp
 		//----------------------------------
-		public var isModal:Boolean = false;
+		
 		private var _displayPopUp:Boolean = false;
 		
 		
@@ -361,7 +359,8 @@ package com.pentagram.view.controls
 		protected function calculatePopUpPosition():Point
 		{
 			// This implementation doesn't handle rotation
-			var matrix:Matrix = MatrixUtil.getConcatenatedMatrix(this, true /*excludingRootSprite*/);
+			var sandboxRoot:DisplayObject = systemManager.getSandboxRoot();
+			var matrix:Matrix = MatrixUtil.getConcatenatedMatrix(this, sandboxRoot);
 			
 			var regPoint:Point = new Point();
 			
@@ -466,7 +465,7 @@ package com.pentagram.view.controls
 			
 			if (layoutDirection == LayoutDirection.RTL)
 				regPoint.x += popUpBounds.width;
-			return MatrixUtil.getConcatenatedComputedMatrix(this, true /*excludingRootSprite*/).transformPoint(regPoint);
+			return MatrixUtil.getConcatenatedComputedMatrix(this, sandboxRoot).transformPoint(regPoint);
 		}
 		
 		//--------------------------------------------------------------------------
@@ -488,7 +487,7 @@ package com.pentagram.view.controls
 			
 			if (DisplayObject(popUp).parent == null && displayPopUp)
 			{
-				PopUpManager.addPopUp(popUp,this.parent,isModal);
+				PopUpManager.addPopUp(popUp,this,false);
 				if (popUp is IUIComponent)
 					IUIComponent(popUp).owner = this;
 				popUpIsDisplayed = true;
@@ -568,7 +567,7 @@ package com.pentagram.view.controls
 			if (!popUpIsDisplayed)
 				return;
 			
-			var m:Matrix = MatrixUtil.getConcatenatedMatrix(this, true /*excludingRootSprite*/);
+			var m:Matrix = MatrixUtil.getConcatenatedMatrix(this, systemManager.getSandboxRoot());
 			
 			// Set the dimensions explicitly because UIComponents always set themselves to their
 			// measured / explicit dimensions if they are parented by the SystemManager. 

@@ -50,6 +50,9 @@ package com.pentagram.instance.view.mediators.shell
 		
 		override public function onRegister():void
 		{
+			
+			eventMap.mapListener(eventDispatcher,VisualizerEvent.CLIENT_DATA_LOADED,handleClientLoaded,VisualizerEvent);
+			
 			eventMap.mapListener(view.visualizerArea,IndexChangedEvent.CHANGE,handleIndexChanged,IndexChangedEvent);	
 			
 			eventMap.mapListener(view.firstSet,IndexChangeEvent.CHANGE,handleDatasetSelection,IndexChangeEvent);
@@ -69,7 +72,12 @@ package com.pentagram.instance.view.mediators.shell
 			yearTimer = new Timer(700);
 			yearTimer.addEventListener(TimerEvent.TIMER,handleTimer);
 		}
-
+		private function handleClientLoaded(event:Event):void {
+			if(view.yearSlider && view.yearSlider.dataProvider) {
+				view.yearSlider.dataProvider = null;
+				view.timelineContainer.visible = false;
+			}
+		}
 		private function handleCategoryChange(event:VisualizerEvent):void {
 			if(view.visualizerArea.selectedIndex == 0) {
 				if(yearTimer.running) {

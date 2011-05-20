@@ -20,11 +20,12 @@
 			}
 			public function set datasets(value:ArrayList):void {
 				_datasets = value;
-				
 				if(_datasets && _datasets.length > 0) {
 					datasetList.selectedIndex = 0;
 					dataset = _datasets.getItemAt(0) as Dataset;
 				}
+				else
+					dataset=null;
 			}
 		]]>
 	</fx:Script>
