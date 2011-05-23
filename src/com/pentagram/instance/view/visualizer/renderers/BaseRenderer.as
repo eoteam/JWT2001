@@ -290,9 +290,10 @@ package com.pentagram.instance.view.visualizer.renderers
 //			labelTF.height = labelTF.textHeight+4;	
 			labelTF.defaultTextFormat = textFormat;
 			
-			if(this.alpha == 0) {
-				alpha = 1;visible = true;
-			}
+//			if(this.alpha == 0) {
+//				alpha = 1;
+//				visible = true;
+//			}
 		}
 		public function set content(value:String):void {
 			_content = value;

@@ -1,8 +1,10 @@
 package com.pentagram.instance.view.visualizer.views
 {
 	import com.greensock.TweenLite;
+	import com.greensock.TweenMax;
 	import com.pentagram.instance.model.vo.Point3D;
 	import com.pentagram.instance.view.visualizer.renderers.ClusterRenderer;
+	import com.pentagram.utils.ViewUtils;
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -203,7 +205,7 @@ package com.pentagram.instance.view.visualizer.views
 					c.x =  dp[i].x * _loc_2 + width/2;
 					c.y = dp[i].y * _loc_2+ height/2;
 					TweenLite.killTweensOf(c,false);
-					TweenLite.to(c,.5,{radius:dp[i].z * _loc_2 * scaler,onUpdate:updateRenderer,onUpdateParams:[c]});
+					TweenLite.to(c,.5,{alpha:1,radius:dp[i].z * _loc_2 * scaler,onUpdate:updateRenderer,onUpdateParams:[c]});
 				}
 				i++;
 			}
@@ -213,16 +215,16 @@ package com.pentagram.instance.view.visualizer.views
 			this.includeInLayout = this.visible = animateCoord = false;
 			for each(var c:ClusterRenderer in this.renderers) {
 				c.toggleInfo(false);
+				c.alpha = 0;
 			}
 		}
 		public function show():void {
 			this.includeInLayout = this.visible = true;
 			animateCoord = false;
 			percentHeight = percentWidth = 100;
-
 		}
 		private function updateRenderer(renderer:ClusterRenderer):void {
 			renderer.draw();
-		}
+		} 
 	}
 }		

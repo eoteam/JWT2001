@@ -309,7 +309,7 @@
 			</s:VGroup>
 			
 			<s:VGroup height="100%" width="60%" gap="4">
-				<s:RichText fontFamily="FlamaBold" fontSize="55" color="0xffffff">
+				<s:RichText fontFamily="FlamaMedium" fontSize="55" color="0xffffff">
 					<s:textFlow>
 						<s:TextFlow>
 							<s:p>

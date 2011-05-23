@@ -6,6 +6,7 @@ package com.pentagram.instance.view.mediators.shell
 	import com.pentagram.instance.model.InstanceModel;
 	import com.pentagram.instance.view.shell.RightTools;
 	import com.pentagram.instance.view.visualizer.renderers.BaseRendererInfo;
+	import com.pentagram.instance.view.visualizer.renderers.TWRendererInfo;
 	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.Region;
 	import com.pentagram.utils.RectInterpolator;
@@ -321,35 +322,45 @@ package com.pentagram.instance.view.mediators.shell
 				trace(getQualifiedClassName(child));
 				if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::RendererInfo') {
 					openWinList.push(child);
-					targetWidth = 240; targetHeight = 120;
+					targetWidth = 240; 
+					targetHeight = 180;
 				}		
 				else if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo') {
 					openWinList.push(child);
-					targetWidth = 200; targetHeight = 80;					
+					targetWidth = TWRendererInfo(child).wVar = 350;
 				}
 			}
 			var gap:int = 1;
 			var numWindows:int = openWinList.length;
 			var fillAvailableSpace:Boolean = false;
-			
+			var availWidth:Number =  view.parentDocument.width;
+			var availHeight:Number = view.parentDocument.height;
 			var minTilePadding:int = 2;
 			if(numWindows > 1)
 			{
 				var sqrt:int = Math.round(Math.sqrt(numWindows));
-				var numCols:int = Math.ceil(numWindows / sqrt);
+				var numCols:int = Math.floor(availWidth / (targetWidth + minTilePadding));//Math.ceil(numWindows / sqrt);
 				var numRows:int = Math.ceil(numWindows / numCols);
+				if(view.state == 'Twitter')
+					targetHeight = Math.floor(availHeight / numRows);
+				
 				var col:int = 0;
 				var row:int = 0;
-				var availWidth:Number =  view.parentDocument.width
-				var availHeight:Number = view.parentDocument.height;
-				var maxTiles:int = availWidth / (targetWidth + minTilePadding);
+				
+				
+				//var maxTiles:int = availWidth / (targetWidth + minTilePadding);
 
 				var effectItems:Array = [];
 				var eff:Parallel = new Parallel();
 				var interpolator:IInterpolator = new RectInterpolator();
 				for(i=0; i < openWinList.length; i++)
 				{	
-					var win:BaseRendererInfo = openWinList[i] as BaseRendererInfo;					
+					var win:BaseRendererInfo = openWinList[i] as BaseRendererInfo;	
+					if(view.state == 'Twitter') {
+						TWRendererInfo(win).hVar = targetHeight;
+						if(TWRendererInfo(win).currentState == 'open')
+							TWRendererInfo(win).height = targetHeight;
+					}
 					
 					var rect:Rectangle = new Rectangle();
 					rect.width = targetWidth;

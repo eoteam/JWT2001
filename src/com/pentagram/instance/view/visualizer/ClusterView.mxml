@@ -138,23 +138,26 @@
 			private function doOpacity(value:Number,animate:Boolean):void {
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
-					for (var j:int=0;j<c.numChildren;j++) {
-						var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
-						var tc:uint = value==1?0xffffff:renderer.fillColor;
-						if(animate) {
-							TweenLite.killTweensOf(renderer,true);
-							TweenLite.to(renderer, .5, {hexColors:{textColor:tc},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
-						}
-						else {
-							renderer.textColor  = tc;
-							renderer.fillAlpha = value;
-							renderer.draw();
+					if(c.visible) {
+						for (var j:int=0;j<c.numChildren;j++) {
+							var renderer:ClusterRenderer =  c.getChildAt(j) as ClusterRenderer;
+							var tc:uint = value==1?0xffffff:renderer.fillColor;
+							if(animate) {
+								TweenLite.killTweensOf(renderer,true);
+								TweenLite.to(renderer, .5, {hexColors:{textColor:tc},fillAlpha: value,onUpdate:updateRenderer,onUpdateParams:[renderer]});
+							}
+							else {
+								renderer.textColor  = tc;
+								renderer.fillAlpha = value;
+								renderer.draw();
+							}
 						}
 					}
 				}
 			}
 			public function updateSize():void {
 				resizeFlag = true;
+				holder.invalidateSize();
 				this.invalidateDisplayList();
 			}
 			public function addCategory(value:Category,count:int):void {
@@ -229,12 +232,11 @@
 						}
 						c.filter();
 					}
-					
-					this.doOpacity(this.opacity?0.2:1,false);
-					var t:Timer = new Timer(100,1);
-					t.addEventListener(TimerEvent.TIMER,handleTimer);
-					t.start();
 				}
+				this.doOpacity(this.opacity?0.2:1,false);
+				var t:Timer = new Timer(100,3);
+				t.addEventListener(TimerEvent.TIMER,handleTimer);
+				t.start();
 			}
 			public function selectAllCategories():void {
 				for (var i:int=0;i<holder.numElements;i++) {
@@ -393,7 +395,6 @@
 				for (var i:int=0;i<holder.numElements;i++) {
 					var c:CirclePacking = holder.getElementAt(i) as CirclePacking;
 					if(c.visible) {
-						c.percentHeight = c.percentWidth = 100;
 						c.draw();
 					}
 				}
