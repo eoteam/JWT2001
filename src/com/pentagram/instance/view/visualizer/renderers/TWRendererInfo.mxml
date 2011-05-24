@@ -5,7 +5,7 @@
 	   xmlns:vo="com.pentagram.model.vo.*" 
 	   xmlns:controls="com.pentagram.view.controls.*"
 	   xmlns:s="library://ns.adobe.com/flex/spark"
-
+	   dragComplete="arranged=false"
 	   width="200" maxWidth="{wVar}" minWidth="200" 
 	   height="80" alpha="0"  width.open="{wVar}" 
 	   height.open="{hVar}"  minHeight="80"	   
@@ -20,16 +20,24 @@
 			import flashx.textLayout.conversion.TextConverter;
 			
 			import mx.events.FlexEvent;
-			
+			private var prevY:Number;
 			protected function button1_clickHandler(event:MouseEvent):void
 			{
 				if(this.currentState == "closed") {
 					wVar = 350;///parent.width*.9>700 ? 700:parent.width*.9;
 					hVar = isNaN(hVar) ? this.parent.height-300 : hVar;
 					this.currentState = "open";
+					prevY = this.y;
+					moveEff.yTo = 5;
+					
 				}
-				else
+				else {
+					moveEff.yTo = prevY;
 					this.currentState = "closed";
+					
+				}
+				if(!arranged)
+					moveEff.play();
 			}
 
 			private function resizabletitlewindow1_stateChangeCompleteHandler(event:FlexEvent):void
@@ -59,6 +67,8 @@
 		<vo:TwitterTopic id="topic" />
 		<fx:Number id="wVar">450</fx:Number>
 		<fx:Number id="hVar">NaN</fx:Number>
+		<s:Move target="{this}"  id="moveEff" />
+		<fx:Boolean id="arranged">false</fx:Boolean>
 	</fx:Declarations>	
 	<renderers:states>
 		<s:State name="closed" />
@@ -68,7 +78,6 @@
 	<renderers:transitions>
 		<s:Transition toState="*">
 			<s:Parallel>
-				<s:Move target="{this}" />
 				<s:Resize targets="{[infoContainer,this]}" duration="500" />
 			</s:Parallel>	
 		</s:Transition>

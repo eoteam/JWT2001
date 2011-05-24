@@ -2,6 +2,7 @@
 {
 	import com.pentagram.events.EditorEvent;
 	import com.pentagram.instance.model.InstanceModel;
+	import com.pentagram.model.vo.Category;
 	import com.pentagram.model.vo.DataRow;
 	import com.pentagram.services.interfaces.IDatasetService;
 	
@@ -58,7 +59,16 @@
 		
 		private function checkCount():void {
 			if(counter == total) {
-				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_UPDATED)); 
+				//repopulate color info for options for quant datasets
+				if(model.selectedSet.type == 0) {
+					for(var i:int=0; i < model.selectedSet.optionsArray.length; i++) {		
+						var c:Category = model.selectedSet.optionsArray[i];
+						c.color = model.colors[i];
+						model.selectedSet.colorArray[c.name] = c.color;
+					}
+				}
+				eventDispatcher.dispatchEvent(new EditorEvent(EditorEvent.DATASET_UPDATED));
+				
 			}
 		}
 		private function updateMinMax():void {

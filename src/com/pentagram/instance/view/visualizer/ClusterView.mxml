@@ -303,7 +303,7 @@
 										if(ds2.type == 1) {
 											if(ds2.time == 1) {
 												
-												value2 = row2[years.getItemAt(0)];
+												value2 = row2[years.getItemAt(0).year];
 												if(!isNaN(value2) && value2 >= ds2.min && value2 <= ds2.max)
 													r = (value2 - ds2.min) / (ds2.max - ds2.min) * maxRadius;
 												else r = 0;

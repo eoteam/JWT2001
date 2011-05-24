@@ -47,7 +47,7 @@ package com.pentagram.services
 			params.unit = dataset.unit;
 			params.multiplier = dataset.multiplier;
 			params.createdby = model.user.id;				
-			params.options = (dataset.options == '' || dataset.options == null) ? 'NULL':dataset.options;
+			params.options = (dataset.options == '' || dataset.options == null) ? '':dataset.options;
 			params.modifiedby = model.user.id;
 			params.datasetname = StringUtil.trim(dataset.name).replace(regExp,'_').toLowerCase();
 			var d:Date = new Date();
@@ -79,7 +79,7 @@ package com.pentagram.services
 			params.tablename = row.dataset.tablename;
 			params.countryid = row.country.id;
 			for each(var prop:String in row.modifiedProps)
-			params[prop.toString()] = row[prop];
+				params[prop.toString()] = row[prop];
 			this.createService(params,ResponseType.STATUS);
 		}
 	}

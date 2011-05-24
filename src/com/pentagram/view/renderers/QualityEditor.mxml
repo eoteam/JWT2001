@@ -44,7 +44,7 @@
 					var c:Category = new Category();
 					c.name = v;
 					d.dataset.optionsArray.push(c);		
-					d.dataset.options += ","+value;
+					d.dataset.options = (d.dataset.options == '') ? value.toString() : d.dataset.options+','+value.toString();
 					if(d.dataset.modifiedProps.indexOf("options") == -1)	
 						d.dataset.modifiedProps.push("options");	
 					d.modified = true;

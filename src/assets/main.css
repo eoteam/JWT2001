@@ -204,7 +204,7 @@ global
 s|GridColumnHeaderGroup {
 	fontFamily: FlamaBold;
 	fontLookup:embeddedCFF;
-	fontWeight:normal;
+	fontWeight:normal;	
 }
 s|DefaultGridHeaderRenderer s|Label {
 	fontFamily: FlamaBold;

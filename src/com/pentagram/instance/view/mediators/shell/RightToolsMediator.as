@@ -328,6 +328,7 @@ package com.pentagram.instance.view.mediators.shell
 				else if(getQualifiedClassName(child) == 'com.pentagram.instance.view.visualizer.renderers::TWRendererInfo') {
 					openWinList.push(child);
 					targetWidth = TWRendererInfo(child).wVar = 350;
+					TWRendererInfo(child).arranged = true;
 				}
 			}
 			var gap:int = 1;

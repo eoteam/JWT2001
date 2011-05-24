@@ -22,8 +22,10 @@
 			protected function preinit(event:FlexEvent):void
 			{
 				context = new InstanceContext(appEventDispatcher,this);
-				this.nativeWindow.x = (Capabilities.screenResolutionX - this.width) / 2;
-				this.nativeWindow.y = (Capabilities.screenResolutionY - this.height) / 2; 
+				var screen:Screen = Screen.screens[Screen.screens.length-1]; 
+				//this.move(screen.visibleBounds.left, screen.visibleBounds.top);
+				this.nativeWindow.x = (screen.visibleBounds.width - this.width) / 2; //screen.visibleBounds.left +
+				this.nativeWindow.y = (screen.visibleBounds.height - this.height) / 2; 
 			}
 			public function get nativeX():Number
 			{

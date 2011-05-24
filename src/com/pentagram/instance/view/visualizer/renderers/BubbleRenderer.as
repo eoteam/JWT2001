@@ -166,10 +166,10 @@ package com.pentagram.instance.view.visualizer.renderers
 				
 			textFormat.color = alpha>0.4?0xffffff:color;
 			textFormat.size = 14;
-			label.width = rW - 4 > 0 ? rW-4:0;
+//			label.width = rW - 4 > 0 ? rW-4:0;
 			label.height = label.textHeight + 4;
-			label.visible = label.width >= 10 ? true:false;
-			trace(label.width);
+			label.visible = (rW-4) >= label.textWidth ? true:false;
+			trace((rW-4) , label.textWidth);
 			//scaleTextFieldToFitText(rW)
 			//scaleTextToFitInTextField();
 						

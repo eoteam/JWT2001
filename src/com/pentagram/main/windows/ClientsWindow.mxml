@@ -122,6 +122,12 @@
 				</s:HGroup>
 				
 				<s:HGroup verticalAlign="top" width="100%" gap="0">  
+					<s:Label width="{LABEL_WIDTH}" text="Founded" />
+					<s:Rect width="8" />
+					<s:TextInput width="100%" text="{client.founded}" change="handlePropChange(event,'founded')" />
+				</s:HGroup>
+				
+				<s:HGroup verticalAlign="top" width="100%" gap="0">  
 					<s:Label width="{LABEL_WIDTH}" text="Headquarters" />
 					<s:Rect width="8" />
 					<s:TextInput width="100%" text="{client.headquarters}" change="handlePropChange(event,'headquarters')" />
