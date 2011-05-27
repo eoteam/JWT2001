@@ -81,10 +81,10 @@ package com.pentagram.instance.view.mediators
 				if(model.user)
 					enableWindowsMenuItems(true);
 				
-				model.exportImageMenuItem = fileMenu.items[1];
-				model.importMenuItem = fileMenu.items[0]
-				model.toolBarMenuItem = windowMenu.items[3];
-				model.exportImageMenuItem = windowMenu.items[4];
+				model.importMenuItem = fileMenu.items[0];
+				model.exportMenuItem = fileMenu.items[1];
+				model.toolBarMenuItem = windowMenu.items[2];
+				model.exportImageMenuItem = windowMenu.items[3];
 				
 				var fullScreenMenuItem:NativeMenuItem = windowMenu.items[1];
 				fullScreenMenuItem.addEventListener(Event.SELECT,handleFullScreen);

@@ -31,7 +31,7 @@ package com.pentagram.controller
 			var image:NativeMenuItem = windowModel.exportImageMenuItem;
 			if(NativeWindow.supportsMenu) {
 			 	var temp:Array = windowModel.buildMenu(windowModel.getWindowFromUID(event.uid));
-				exp = temp[0]; imp = temp[1]; tool = temp[2];
+				exp = temp[0]; imp = temp[1]; tool = temp[2]; image = temp[3];
 			}
 			//var arr:Array = appModel.cloneRegions();
 			callback.call(null,
