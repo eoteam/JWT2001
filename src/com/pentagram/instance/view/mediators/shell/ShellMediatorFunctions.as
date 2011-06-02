@@ -44,9 +44,9 @@ private function handleFullScreen(event:Event):void{
 private function handleExportSettingsSave(event:MouseEvent):void {
 	view.exportPanel.visible = false;
 }
-private function handleIncludeTools(event:Event):void {
-	model.includeTools = view.exportPanel.includeTools.selected;
-}
+//private function handleIncludeTools(event:Event):void {
+//	model.includeTools = view.exportPanel.includeTools.selected;
+//}
 private function selectedNewDirectory(event:MouseEvent):void {
 	model.exportDirectory = new File();
 	model.exportDirectory.addEventListener(Event.SELECT, file_select);

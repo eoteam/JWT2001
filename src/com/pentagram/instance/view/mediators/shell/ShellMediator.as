@@ -80,8 +80,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventMap.mapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
 			eventMap.mapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
-			eventMap.mapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
-			eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
+			//eventMap.mapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.mapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			eventMap.mapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);
 	
@@ -703,7 +702,7 @@ package com.pentagram.instance.view.mediators.shell
 			
 			eventMap.unmapListener(view.stage,FullScreenEvent.FULL_SCREEN,handleFullScreen,FullScreenEvent);
 			eventMap.unmapListener(view.exportPanel.dirButton,MouseEvent.CLICK,selectedNewDirectory,MouseEvent);
-			eventMap.unmapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
+			//eventMap.unmapListener(view.exportPanel.includeTools,Event.CHANGE,handleIncludeTools,Event);
 			eventMap.unmapListener(view.exportPanel.saveBtn,MouseEvent.CLICK,handleExportSettingsSave,MouseEvent);
 			eventMap.unmapListener(view.saveButton,MouseEvent.CLICK,handleInfoChanged,MouseEvent);
 			eventMap.unmapListener(view.filterTools.comparator,ViewEvent.START_COMPARE,handleCompareBtn,ViewEvent);

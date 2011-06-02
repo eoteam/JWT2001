@@ -34,13 +34,13 @@
 		</s:Line>
 		<s:Rect height="10" />
 		
-		<s:CheckBox label="Include Tools" color="0xffffff" fontFamily="FlamaBook" id="includeTools" selected="true"  />
-		<s:Rect height="8" />			
+		<!--<s:CheckBox label="Include Tools" color="0xffffff" fontFamily="FlamaBook" id="includeTools" selected="true"  />
+		<s:Rect height="8" />-->			
 		<s:HGroup verticalAlign="middle">
 			<s:Label text="Browse for Directory:" />
 			<s:Button id="dirButton" scaleX="0.75" scaleY="0.75" skinClass="com.pentagram.view.skins.buttons.FolderButton"/>
 		</s:HGroup>
-		<s:RichText id="dirPath" maxDisplayedLines="3" width="100%" />
+		<s:Label id="dirPath" maxDisplayedLines="2" width="100%" />
 		<s:Rect height="100%" />
 		
 		<s:Button label="Save" id="saveBtn" width="100%" />
